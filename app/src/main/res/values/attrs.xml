@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="diffuse_color" format="color"/>
+    <attr name="diffuse_coreColor" format="color"/>
+    <attr name="diffuse_coreImage" format="reference"/>
+    <attr name="diffuse_coreRadius" format="float"/>
+    <attr name="diffuse_width" format="integer"/>
+    <attr name="diffuse_maxWidth" format="integer"/>
+    <attr name="diffuse_speed" format="integer"/>
+    <declare-styleable name="DiffuseView">
+        <attr name="diffuse_color"/>
+        <attr name="diffuse_coreColor"/>
+        <attr name="diffuse_coreImage"/>
+        <attr name="diffuse_coreRadius"/>
+        <attr name="diffuse_width"/>
+        <attr name="diffuse_maxWidth"/>
+        <attr name="diffuse_speed"/>
+    </declare-styleable>
+
+</resources>

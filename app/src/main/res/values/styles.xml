@@ -1,0 +1,126 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- public theme. -->
+    <style name="DefaultAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/md_light_blue_700</item>
+        <item name="actionMenuTextColor">@color/md_blue_50</item>
+        <item name="titleTextColor">@color/md_blue_50</item>
+        <item name="colorControlNormal">@color/md_blue_50</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
+    </style>
+
+    <style name="BlueAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/md_blue_A700</item>
+        <item name="colorPrimaryDark">@color/md_blue_A700</item>
+        <item name="colorAccent">@color/md_blue_500</item>
+        <item name="actionMenuTextColor">@color/md_blue_50</item>
+        <item name="titleTextColor">@color/md_blue_50</item>
+        <item name="colorControlNormal">@color/md_blue_50</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
+    </style>
+
+
+    <style name="RedAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/md_red_A700</item>
+        <item name="colorPrimaryDark">@color/md_red_A700</item>
+        <item name="colorAccent">@color/md_red_500</item>
+        <item name="actionMenuTextColor">@color/md_red_50</item>
+        <item name="titleTextColor">@color/md_red_50</item>
+        <item name="colorControlNormal">@color/md_red_50</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
+    </style>
+
+
+    <style name="GreenAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/md_green_A700</item>
+        <item name="colorPrimaryDark">@color/md_green_A700</item>
+        <item name="colorAccent">@color/md_green_500</item>
+        <item name="actionMenuTextColor">@color/md_green_50</item>
+        <item name="titleTextColor">@color/md_green_50</item>
+        <item name="colorControlNormal">@color/md_green_50</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
+    </style>
+
+
+    <style name="PurpleAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/md_purple_A700</item>
+        <item name="colorPrimaryDark">@color/md_purple_A700</item>
+        <item name="colorAccent">@color/md_purple_500</item>
+        <item name="actionMenuTextColor">@color/md_purple_50</item>
+        <item name="titleTextColor">@color/md_purple_50</item>
+        <item name="colorControlNormal">@color/md_purple_50</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
+    </style>
+
+    <style name="TealAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/md_teal_A700</item>
+        <item name="colorPrimaryDark">@color/md_teal_A700</item>
+        <item name="colorAccent">@color/md_teal_500</item>
+        <item name="actionMenuTextColor">@color/md_teal_50</item>
+        <item name="titleTextColor">@color/md_teal_50</item>
+        <item name="colorControlNormal">@color/md_teal_50</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
+    </style>
+
+    <style name="LimeAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/md_lime_A700</item>
+        <item name="colorPrimaryDark">@color/md_lime_A700</item>
+        <item name="colorAccent">@color/md_lime_500</item>
+        <item name="actionMenuTextColor">@color/md_lime_50</item>
+        <item name="titleTextColor">@color/md_lime_50</item>
+        <item name="colorControlNormal">@color/md_lime_50</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
+    </style>
+
+    <!--  popup menu style-->
+    <style name="OverflowMenuStyle" parent="@style/Widget.AppCompat.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownWidth">wrap_content</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:popupBackground">?colorPrimary</item>
+        <item name="android:dropDownVerticalOffset">4dp</item>
+        <item name="android:dropDownHorizontalOffset">0dp</item>
+        <item name="android:textColor">@color/md_white_1000</item>
+    </style>
+
+    <!--输入框样式-->
+    <style name="TextOverCount" parent="Base.TextAppearance.AppCompat.Light.Widget.PopupMenu.Small">
+        <item name="android:textColor">@color/white</item>
+        <item name="colorControlNormal">@color/white</item><!--默认显示下划线的颜色-->
+        <item name="colorControlActivated">#F5F5F5</item><!--点击后下划线的颜色-->
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+</resources>
+
+
+

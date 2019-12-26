@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:pv="http://schemas.android.com/apk/res-auto"
+        android:background="?colorPrimary"
+        android:fitsSystemWindows="true">
+
+<!--    <ImageView-->
+<!--            android:id="@+id/logoImage"-->
+<!--            app:srcCompat="@drawable/anim_vector_android_senior"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            tools:ignore="VectorDrawableCompat"/>-->
+
+    <me.wangyuwei.particleview.ParticleView
+            android:id="@+id/mParticleView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            pv:pv_background_color="?colorPrimary"
+            pv:pv_host_text="蓝火"
+            pv:pv_host_text_size="50sp"
+            pv:pv_particle_text="1.0"
+            pv:pv_particle_text_size="20sp"
+            pv:pv_text_color="@color/white"
+            pv:pv_text_anim_time="1000"
+            pv:pv_spread_anim_time="1000"
+            pv:pv_host_text_anim_time="1000" />
+</androidx.constraintlayout.widget.ConstraintLayout>

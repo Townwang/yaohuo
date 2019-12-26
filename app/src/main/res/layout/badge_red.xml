@@ -1,0 +1,21 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <ImageView
+            android:id="@+id/img"
+            android:src="@drawable/anim_vector_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    <TextView
+            android:id="@+id/msg"
+            android:background="@drawable/background_red_50"
+            android:textColor="@android:color/white"
+            android:gravity="right"
+            android:text="1"
+            android:textSize="@dimen/text8Size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded" />
+</LinearLayout>

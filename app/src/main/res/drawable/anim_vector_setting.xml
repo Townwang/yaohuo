@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+                 xmlns:tools="http://schemas.android.com/tools"
+                 android:drawable="@drawable/ic_settings_black_24dp"
+                 tools:targetApi="lollipop">
+    <target
+            android:name="name"
+            android:animation="@animator/main_anim_path"/>
+</animated-vector>

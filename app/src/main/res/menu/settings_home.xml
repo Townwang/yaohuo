@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+            android:id="@+id/toolbar_r_msg"
+            android:icon="@drawable/anim_vector_msg"
+            android:title="@string/massage"
+            app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/toolbar_r_img"
+            android:icon="@drawable/anim_vector_bubble"
+            android:title="@string/menu"
+            app:showAsAction="ifRoom">
+        <menu>
+            <group>
+                <item
+                        android:id="@+id/toolbar_r_setting"
+                        android:icon="@drawable/anim_vector_setting"
+                        android:title="@string/setting"
+                        android:transitionName="share name"
+                        app:showAsAction="ifRoom"
+                        tools:ignore="UnusedAttribute" />
+                <item
+                        android:id="@+id/toolbar_r_theme"
+                        android:icon="@drawable/anim_vector_theme"
+                        android:title="@string/theme"
+                        android:transitionName="share name"
+                        app:showAsAction="ifRoom"
+                        tools:ignore="UnusedAttribute" />
+                <item
+                        android:id="@+id/toolbar_r_about"
+                        android:icon="@drawable/anim_vector_about"
+                        android:title="@string/about"
+                        android:transitionName="share name"
+                        app:showAsAction="ifRoom"
+                        tools:ignore="UnusedAttribute" />
+            </group>
+        </menu>
+    </item>
+</menu>

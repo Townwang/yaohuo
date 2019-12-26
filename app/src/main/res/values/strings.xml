@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">蓝火</string>
+    <string name="home_name">文科中的技术宅</string>
+    <string name="home_news">最新</string>
+    <string name="list_details">帖子详情</string>
+    <string name="home_bbs">论坛</string>
+    <string name="login_name">登录妖火</string>
+    <string name="send_cmd">下发指令</string>
+    <string name="about">关于</string>
+    <string name="setting">设置</string>
+    <string name="theme">主题</string>
+    <string name="menu">菜单</string>
+    <string name="exit_app_hint">再按一次退出程序</string>
+    <string name="content_pic_title">图片附件</string>
+    <string name="_0">0</string>
+    <string name="bbs_res_share">资源共享</string>
+    <string name="bbs_integrated_technology">综合技术</string>
+    <string name="bbs_ml_talk_over">免流讨论</string>
+    <string name="bbs_reward">有奖活动</string>
+    <string name="bbs_tea_house">妖火茶馆</string>
+    <string name="bbs_quest_answer">悬赏问答</string>
+    <string name="bbs_textured_photo">贴图晒照</string>
+    <string name="massage">消息</string>
+</resources>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+        android:transitionName="share name"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:ignore="UnusedAttribute">
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/logoImage"
+            app:srcCompat="@drawable/anim_vector_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:transitionName="share name"
+            tools:ignore="MissingConstraints,VectorDrawableCompat"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+            android:id="@+id/versionName"
+            tools:text="v1.0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:background="@drawable/background_fillet"
+            android:textColor="?actionMenuTextColor"
+            app:layout_constraintStart_toEndOf="@+id/logoImage"
+            app:layout_constraintTop_toTopOf="@+id/logoImage"/>
+
+    <TextView
+            android:text="@string/app_name"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:transitionName="share name"
+            app:layout_constraintTop_toBottomOf="@+id/logoImage"
+            app:layout_constraintEnd_toEndOf="@+id/logoImage"
+            app:layout_constraintStart_toStartOf="@+id/logoImage" android:id="@+id/textView"/>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/openSource"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:transitionName="share name"
+            android:layout_margin="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/md_grey_200"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
+        <TextView
+                android:layout_width="wrap_content"
+                android:text="众人拾柴火焰高，开源无处不在。"
+                android:layout_margin="20dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColor="@color/md_black_1000"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/pubWechat"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:transitionName="share name"
+            android:layout_marginTop="52dp"
+            android:background="@color/md_grey_200"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/openSource" tools:layout_editor_absoluteX="3dp">
+        <TextView
+                android:layout_width="wrap_content"
+                android:text="我在这里等着你，你不离我不弃。"
+                android:layout_margin="20dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColor="@color/md_black_1000"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/post"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:transitionName="share name"
+            android:layout_marginTop="20dp"
+            android:background="@color/md_grey_200"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/pubWechat">
+        <TextView
+                android:layout_width="wrap_content"
+                android:text="唯有热情的回复，铸就更多的功能。"
+                android:layout_margin="20dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColor="@color/md_black_1000"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/praise"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:transitionName="share name"
+            android:layout_marginTop="20dp"
+            android:background="@color/md_grey_200"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/post">
+        <TextView
+                android:layout_width="wrap_content"
+                android:text="请我喝杯饮料，犒劳犒劳我肿么样？"
+                android:layout_margin="20dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColor="@color/md_black_1000"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
