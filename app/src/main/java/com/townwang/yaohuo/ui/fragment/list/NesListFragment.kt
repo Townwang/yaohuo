@@ -59,11 +59,11 @@ class NesListFragment : Fragment() {
         adapter.onItemClickListener = { v, data ->
             val d = data as HomeData
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                activity!!, v.title, "share name"
+                requireActivity(), v.title, "share name"
             ).toBundle()
             ActivityCompat.startActivity(
-                context!!, Intent(
-                    context!!, ActivityDetails::class.java
+                requireContext(), Intent(
+                    requireContext(), ActivityDetails::class.java
                 ).apply {
                     putExtra(HOME_DETAILS_URL_KEY, d.a)
                     putExtra(HOME_DETAILS_READ_KEY, d.read)
@@ -136,7 +136,7 @@ class NesListFragment : Fragment() {
                 true
             }
             R.id.toolbar_r_setting -> {
-                Snackbar.make(view!!, "正在开发...", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView(), "正在开发...", Snackbar.LENGTH_SHORT).show()
                 true
             }
             R.id.toolbar_r_theme -> {
@@ -148,11 +148,11 @@ class NesListFragment : Fragment() {
             }
             R.id.toolbar_r_about -> {
                 val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    activity!!, homeList, "share name"
+                    requireActivity(), homeList, "share name"
                 ).toBundle()
                 ActivityCompat.startActivity(
-                    context!!, Intent(
-                        context!!, ActivityAbout::class.java
+                    requireContext(), Intent(
+                        requireContext(), ActivityAbout::class.java
                     ), bundle
                 )
                 true

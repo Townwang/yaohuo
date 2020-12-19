@@ -56,14 +56,14 @@ class LoginFragment : Fragment() {
             if (it) {
                 val intent = Intent(context, ActivityHome::class.java)
                 val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    activity!!, loginBtn, "share name"
+                    requireActivity(), loginBtn, "share name"
                 ).toBundle()
-                ActivityCompat.startActivity(context!!, intent, bundle)
+                ActivityCompat.startActivity(requireContext(), intent, bundle)
                 activity?.overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
                 Log.d("解析", "登录成功")
                 Snackbar.make(inputGuide, "登录成功", Snackbar.LENGTH_SHORT).show()
             }else{
-                Snackbar.make(view!!, "请勿乱破解，谢谢！", Snackbar.LENGTH_INDEFINITE).apply {
+                Snackbar.make(requireView(), "请勿乱破解，谢谢！", Snackbar.LENGTH_INDEFINITE).apply {
                     setAction(android.R.string.ok) {
                         activity?.finish()
                     }
@@ -103,14 +103,14 @@ class LoginFragment : Fragment() {
             if (it) {
                 val intent = Intent(context, ActivityHome::class.java)
                 val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    activity!!, loginBtn, "share name"
+                    requireActivity(), loginBtn, "share name"
                 ).toBundle()
-                ActivityCompat.startActivity(context!!, intent, bundle)
+                ActivityCompat.startActivity(requireContext(), intent, bundle)
                 activity?.overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
                 Log.d("解析", "登录成功")
                 Snackbar.make(inputGuide, "登录成功", Snackbar.LENGTH_SHORT).show()
             } else {
-                Snackbar.make(view!!, "非内测成员，请关注后续更新", Snackbar.LENGTH_INDEFINITE).apply {
+                Snackbar.make(requireView(), "非内测成员，请关注后续更新", Snackbar.LENGTH_INDEFINITE).apply {
                     setAction(android.R.string.ok) {
                         activity?.finish()
                     }

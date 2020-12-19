@@ -33,17 +33,17 @@ class CommentDialogFragment : DialogFragment() {
         return inflater.inflate(R.layout.fragment_comment_dialog, container, false)
     }
 
-    @SuppressLint("InlinedApi")
+    @SuppressLint("InlinedApi", "WrongConstant")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val editComment = view.findViewById<EditText>(R.id.dialog_comment_et)
         val send = view.findViewById<Button>(R.id.dialog_comment_bt)
 
         // 把传递过来的数据设置给EditText
-        editComment.hint = HtmlCompat.fromHtml(arguments!!.getString(MESSAGE_HINT)?:"",Html.FROM_HTML_MODE_LEGACY)
+        editComment.hint = HtmlCompat.fromHtml(requireArguments().getString(MESSAGE_HINT)?:"",Html.FROM_HTML_MODE_LEGACY)
         editComment.requestFocus()
         editComment.post {
-            (activity!!.getSystemService(
+            (requireActivity().getSystemService(
                 Context
                     .INPUT_METHOD_SERVICE
             ) as InputMethodManager).showSoftInput(editComment, 0)

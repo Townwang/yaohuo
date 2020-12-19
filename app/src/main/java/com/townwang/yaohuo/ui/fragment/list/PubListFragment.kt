@@ -52,11 +52,11 @@ class PubListFragment(private  val classId: Int,private val bbsTitle:String) : F
         adapter.onItemClickListener = { v, data ->
             val d = data as HomeData
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                activity!!, v.title, "share name"
+                requireActivity(), v.title, "share name"
             ).toBundle()
             ActivityCompat.startActivity(
-                context!!, Intent(
-                    context!!, ActivityDetails::class.java
+                requireContext(), Intent(
+                    requireContext(), ActivityDetails::class.java
                 ).apply {
                     putExtra(HOME_DETAILS_URL_KEY, d.a)
                     putExtra(HOME_DETAILS_READ_KEY, d.read)

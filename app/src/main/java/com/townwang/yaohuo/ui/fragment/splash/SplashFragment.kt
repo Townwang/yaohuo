@@ -80,7 +80,7 @@ class SplashFragment : Fragment() {
                 activity?.finish()
                 Log.d("解析", "登录成功")
             } else {
-                Snackbar.make(view!!, "非内测成员，请关注后续更新", Snackbar.LENGTH_INDEFINITE).apply {
+                Snackbar.make(requireView(), "非内测成员，请关注后续更新", Snackbar.LENGTH_INDEFINITE).apply {
                     setAction(android.R.string.ok) {
                         activity?.finish()
                     }
@@ -94,7 +94,7 @@ class SplashFragment : Fragment() {
 //                activity?.overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
 //                activity?.finish()
             }else{
-                Snackbar.make(view!!, "请勿乱破解，谢谢！", Snackbar.LENGTH_INDEFINITE).apply {
+                Snackbar.make(requireView(), "请勿乱破解，谢谢！", Snackbar.LENGTH_INDEFINITE).apply {
                     setAction(android.R.string.ok) {
                         activity?.finish()
                     }

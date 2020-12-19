@@ -97,7 +97,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
         }
         praise.setOnClickListener {
             praise_value.setCompoundDrawablesWithIntrinsicBounds(
-                ContextCompat.getDrawable(context!!, R.drawable.ic_praise_grey),
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_praise_grey),
                 null,
                 null,
                 null
@@ -159,10 +159,10 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
             constraintLayout.visibility = View.VISIBLE
             if (it) {
                 online.text = "在线"
-                online.background = ContextCompat.getDrawable(context!!, R.drawable.background_blue_10)
+                online.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_blue_10)
             } else {
                 online.text = "离线"
-                online.background = ContextCompat.getDrawable(context!!, R.drawable.background_grey_10)
+                online.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_grey_10)
             }
         })
         viewModel.giftMoney.observe(requireActivity(), Observer {
@@ -170,7 +170,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
             //肉
             linearTop.visibility = View.VISIBLE
             icon.text = "肉"
-            icon.background = ContextCompat.getDrawable(context!!, R.drawable.background_yellow_10)
+            icon.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
             subtitle.text = it
         })
         viewModel.reward.observe(requireActivity(), Observer {
@@ -178,7 +178,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
             //悬赏
             linearTop.visibility = View.VISIBLE
             icon.text = "赏"
-            icon.background = ContextCompat.getDrawable(context!!, R.drawable.background_yellow_10)
+            icon.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
             subtitle.text = it
         })
         viewModel.content.observe(requireActivity(), Observer {
@@ -204,7 +204,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
                     context?.toast("图片而已，别瞎几把点了")
                 }
             }).imageDownloader { url ->
-                Glide.with(context!!)
+                Glide.with(requireContext())
                     .asBitmap()
                     .load(url)
                     .submit().get()
@@ -213,23 +213,23 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
         })
         viewModel.image.observe(requireActivity(), Observer {
             it ?: return@Observer
-            val contentImg = LayoutInflater.from(context!!).inflate(R.layout.view_image_style, null)
+            val contentImg = LayoutInflater.from(requireContext()).inflate(R.layout.view_image_style, null)
             list_content.addView(contentImg)
-            Glide.with(context!!)
+            Glide.with(requireContext())
                 .load(it)
                 .apply(RequestOptions.noTransformation())
                 .into(contentImg.image)
         })
         viewModel.avatar.observe(requireActivity(), Observer {
             it ?: return@Observer
-            Glide.with(context!!)
+            Glide.with(requireContext())
                 .load(it)
                 .apply(RequestOptions.bitmapTransform(CircleCrop()))
                 .into(userImg)
         })
         viewModel.download.observe(requireActivity(), Observer {
             it ?: return@Observer
-            val contentLoad = LayoutInflater.from(context!!).inflate(R.layout.view_download_style, null)
+            val contentLoad = LayoutInflater.from(requireContext()).inflate(R.layout.view_download_style, null)
             contentLoad.downloadName.text = it[0].replace("\n", "")
             contentLoad.downloadUrl.setOnClickListener { _ ->
                 val uri = Uri.parse(Uri.encode(it[1], "-![.:/,%?&=]"))
@@ -277,9 +277,9 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
                 ot = 0
                 adapter.datas.clear()
                 viewModel.commentDetails(page, ot)
-                Snackbar.make(view!!, "评论成功", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView(), "评论成功", Snackbar.LENGTH_SHORT).show()
             } else {
-                Snackbar.make(view!!, "评论失败", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView(), "评论失败", Snackbar.LENGTH_SHORT).show()
             }
         })
         viewModel.getDetails(url)

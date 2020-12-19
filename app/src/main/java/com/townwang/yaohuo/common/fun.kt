@@ -76,7 +76,7 @@ fun startAnimator(drawable: Drawable) {
 }
 
 fun Fragment.config(key: String, value: String? = null): String {
-    var config: String by Preference(context!!, key, default = "1")
+    var config: String by Preference(requireContext(), key, default = "1")
     return if (value.isNullOrEmpty()) {
         config
     } else {
