@@ -36,11 +36,11 @@ class BBSFragment : Fragment() {
 
         resourceSharing.setOnClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                activity!!, resourceSharing, "share name"
+                requireActivity(), resourceSharing, "share name"
             ).toBundle()
             ActivityCompat.startActivity(
-                context!!, Intent(
-                    context!!, ActivityList::class.java
+                requireContext(), Intent(
+                    requireContext(), ActivityList::class.java
                 ).apply {
                     putExtra(LIST_CLASS_ID_KEY, 201)
                     putExtra(LIST_BBS_NAME_KEY, getString(R.string.bbs_res_share))
@@ -50,11 +50,11 @@ class BBSFragment : Fragment() {
 
         integratedTechnology.setOnClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                activity!!, resourceSharing, "share name"
+                requireActivity(), resourceSharing, "share name"
             ).toBundle()
             ActivityCompat.startActivity(
-                context!!, Intent(
-                    context!!, ActivityList::class.java
+                requireContext(), Intent(
+                    requireContext(), ActivityList::class.java
                 ).apply {
                     putExtra(LIST_CLASS_ID_KEY, 197)
                     putExtra(LIST_BBS_NAME_KEY,  getString(R.string.bbs_integrated_technology))
@@ -64,11 +64,11 @@ class BBSFragment : Fragment() {
         }
         mlTalkOver.setOnClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                activity!!, resourceSharing, "share name"
+                requireActivity(), resourceSharing, "share name"
             ).toBundle()
             ActivityCompat.startActivity(
-                context!!, Intent(
-                    context!!, ActivityList::class.java
+                requireContext(), Intent(
+                    requireContext(), ActivityList::class.java
                 ).apply {
                     putExtra(LIST_CLASS_ID_KEY, 203)
                     putExtra(LIST_BBS_NAME_KEY,  getString(R.string.bbs_ml_talk_over))
@@ -77,11 +77,11 @@ class BBSFragment : Fragment() {
         }
         reward.setOnClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                activity!!, resourceSharing, "share name"
+                requireActivity(), resourceSharing, "share name"
             ).toBundle()
             ActivityCompat.startActivity(
-                context!!, Intent(
-                    context!!, ActivityList::class.java
+                requireContext(), Intent(
+                    requireContext(), ActivityList::class.java
                 ).apply {
                     putExtra(LIST_CLASS_ID_KEY, 204)
                     putExtra(LIST_BBS_NAME_KEY,  getString(R.string.bbs_reward))
@@ -90,11 +90,11 @@ class BBSFragment : Fragment() {
         }
         teahouse.setOnClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                activity!!, resourceSharing, "share name"
+                requireActivity(), resourceSharing, "share name"
             ).toBundle()
             ActivityCompat.startActivity(
-                context!!, Intent(
-                    context!!, ActivityList::class.java
+                requireContext(), Intent(
+                    requireContext(), ActivityList::class.java
                 ).apply {
                     putExtra(LIST_CLASS_ID_KEY, 177)
                     putExtra(LIST_BBS_NAME_KEY,  getString(R.string.bbs_tea_house))
@@ -103,11 +103,11 @@ class BBSFragment : Fragment() {
         }
         rewardQuestionAndAnswer.setOnClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                activity!!, resourceSharing, "share name"
+                requireActivity(), resourceSharing, "share name"
             ).toBundle()
             ActivityCompat.startActivity(
-                context!!, Intent(
-                    context!!, ActivityList::class.java
+                requireContext(), Intent(
+                    requireContext(), ActivityList::class.java
                 ).apply {
                     putExtra(LIST_CLASS_ID_KEY, 213)
                     putExtra(LIST_BBS_NAME_KEY,  getString(R.string.bbs_quest_answer))
@@ -116,11 +116,11 @@ class BBSFragment : Fragment() {
         }
         texturedPhoto.setOnClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                activity!!, resourceSharing, "share name"
+                requireActivity(), resourceSharing, "share name"
             ).toBundle()
             ActivityCompat.startActivity(
-                context!!, Intent(
-                    context!!, ActivityList::class.java
+                requireContext(), Intent(
+                    requireContext(), ActivityList::class.java
                 ).apply {
                     putExtra(LIST_CLASS_ID_KEY, 240)
                     putExtra(LIST_BBS_NAME_KEY, getString(R.string.bbs_textured_photo))
@@ -139,10 +139,6 @@ class BBSFragment : Fragment() {
         startAnimator(teahouse_img.drawable)
         startAnimator(rewardQuestionAndAnswer_img.drawable)
         startAnimator(texturedPhoto_img.drawable)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
 
