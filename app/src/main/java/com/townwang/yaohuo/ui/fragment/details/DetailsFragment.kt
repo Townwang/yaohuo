@@ -138,23 +138,23 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
     @SuppressLint("InflateParams")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.title.observe(this, Observer {
+        viewModel.title.observe(requireActivity(), Observer {
             it ?: return@Observer
             title.text = it
             title.visibility = View.VISIBLE
         })
-        viewModel.time.observe(this, Observer {
+        viewModel.time.observe(requireActivity(), Observer {
             it ?: return@Observer
             time.text = it
             read_num.visibility = View.VISIBLE
             read_num.text = read.split(" ").first()
         })
-        viewModel.name.observe(this, Observer {
+        viewModel.name.observe(requireActivity(), Observer {
             it ?: return@Observer
             constraintLayout.visibility = View.VISIBLE
             userName.text = it
         })
-        viewModel.online.observe(this, Observer {
+        viewModel.online.observe(requireActivity(), Observer {
             it ?: return@Observer
             constraintLayout.visibility = View.VISIBLE
             if (it) {
@@ -165,7 +165,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
                 online.background = ContextCompat.getDrawable(context!!, R.drawable.background_grey_10)
             }
         })
-        viewModel.giftMoney.observe(this, Observer {
+        viewModel.giftMoney.observe(requireActivity(), Observer {
             it ?: return@Observer
             //肉
             linearTop.visibility = View.VISIBLE
@@ -173,7 +173,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
             icon.background = ContextCompat.getDrawable(context!!, R.drawable.background_yellow_10)
             subtitle.text = it
         })
-        viewModel.reward.observe(this, Observer {
+        viewModel.reward.observe(requireActivity(), Observer {
             it ?: return@Observer
             //悬赏
             linearTop.visibility = View.VISIBLE
@@ -181,7 +181,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
             icon.background = ContextCompat.getDrawable(context!!, R.drawable.background_yellow_10)
             subtitle.text = it
         })
-        viewModel.content.observe(this, Observer {
+        viewModel.content.observe(requireActivity(), Observer {
             it ?: return@Observer
             val textView = XRichText(context)
             val params = LinearLayout.LayoutParams(
@@ -211,7 +211,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
             }.text(it)
             list_content.addView(textView)
         })
-        viewModel.image.observe(this, Observer {
+        viewModel.image.observe(requireActivity(), Observer {
             it ?: return@Observer
             val contentImg = LayoutInflater.from(context!!).inflate(R.layout.view_image_style, null)
             list_content.addView(contentImg)
@@ -220,14 +220,14 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
                 .apply(RequestOptions.noTransformation())
                 .into(contentImg.image)
         })
-        viewModel.avatar.observe(this, Observer {
+        viewModel.avatar.observe(requireActivity(), Observer {
             it ?: return@Observer
             Glide.with(context!!)
                 .load(it)
                 .apply(RequestOptions.bitmapTransform(CircleCrop()))
                 .into(userImg)
         })
-        viewModel.download.observe(this, Observer {
+        viewModel.download.observe(requireActivity(), Observer {
             it ?: return@Observer
             val contentLoad = LayoutInflater.from(context!!).inflate(R.layout.view_download_style, null)
             contentLoad.downloadName.text = it[0].replace("\n", "")
@@ -238,24 +238,24 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
             }
             list_content.addView(contentLoad)
         })
-        viewModel.commentPraise.observe(this, Observer {
+        viewModel.commentPraise.observe(requireActivity(), Observer {
             it ?: return@Observer
             praise_value.text = it
         })
-        viewModel.commentSize.observe(this, Observer {
+        viewModel.commentSize.observe(requireActivity(), Observer {
             it ?: return@Observer
             if (page == 1 && ot == 0) {
                 comment_value.text = it
             }
         })
-        viewModel.commentLists.observe(this, Observer {
+        viewModel.commentLists.observe(requireActivity(), Observer {
             it ?: return@Observer
             comment_tip.visibility = View.VISIBLE
             view_grey.visibility = View.VISIBLE
             @Suppress("UNCHECKED_CAST")
             adapter.datas = it as ArrayList<CommentData>
         })
-        viewModel.loading.observe(this, safeObserver {
+        viewModel.loading.observe(requireActivity(), safeObserver {
             it ?: return@safeObserver
             if (!it) {
                 if (page == 1) {
@@ -265,11 +265,11 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
                 }
             }
         })
-        viewModel.error.observe(this, safeObserver {
+        viewModel.error.observe(requireActivity(), safeObserver {
             it ?: return@safeObserver
             context?.handleException(it)
         })
-        viewModel.commentSuccess.observe(this, safeObserver {
+        viewModel.commentSuccess.observe(requireActivity(), safeObserver {
             it ?: return@safeObserver
             loading?.dismiss()
             if (it) {

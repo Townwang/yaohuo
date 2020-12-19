@@ -51,7 +51,7 @@ class LoginFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.loginSuccess.observe(this, Observer {
+        viewModel.loginSuccess.observe(requireActivity(), Observer {
             it ?: return@Observer
             if (it) {
                 val intent = Intent(context, ActivityHome::class.java)
@@ -70,19 +70,19 @@ class LoginFragment : Fragment() {
                 }.show()
             }
         })
-        viewModel.loginError.observe(this, Observer {
+        viewModel.loginError.observe(requireActivity(), Observer {
             it ?: return@Observer
             Snackbar.make(inputGuide, it, Snackbar.LENGTH_SHORT).show()
         })
-        viewModel.loginUserError.observe(this, Observer {
+        viewModel.loginUserError.observe(requireActivity(), Observer {
             it ?: return@Observer
             user_name.error = it
         })
-        viewModel.loginPsdError.observe(this, Observer {
+        viewModel.loginPsdError.observe(requireActivity(), Observer {
             it ?: return@Observer
             user_password.error = it
         })
-        viewModel.loading.observe(this, safeObserver {
+        viewModel.loading.observe(requireActivity(), safeObserver {
             if (it) {
                 if (loading == null) {
                     loading = Loading("登录中...").create()
@@ -94,11 +94,11 @@ class LoginFragment : Fragment() {
                 loading?.dismiss()
             }
         })
-        viewModel.error.observe(this, safeObserver {
+        viewModel.error.observe(requireActivity(), safeObserver {
             context?.handleException(it)
         })
 
-        viewModel.neiceSuccess.observe(this, safeObserver {
+        viewModel.neiceSuccess.observe(requireActivity(), safeObserver {
             it ?: return@safeObserver
             if (it) {
                 val intent = Intent(context, ActivityHome::class.java)

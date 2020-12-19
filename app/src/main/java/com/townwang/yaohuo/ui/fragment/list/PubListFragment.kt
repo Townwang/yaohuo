@@ -76,14 +76,14 @@ class PubListFragment(private  val classId: Int,private val bbsTitle:String) : F
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.listDates.observe(this, Observer {
+        viewModel.listDates.observe(requireActivity(), Observer {
             it ?: return@Observer
             if (page == 1) {
                 adapter.datas.clear()
             }
             adapter.datas = it as ArrayList<HomeData>
         })
-        viewModel.loading.observe(this, safeObserver {
+        viewModel.loading.observe(requireActivity(), safeObserver {
             if (!it) {
                 if (page == 1) {
                     refreshLayout.finishRefresh()
@@ -92,7 +92,7 @@ class PubListFragment(private  val classId: Int,private val bbsTitle:String) : F
                 }
             }
         })
-        viewModel.error.observe(this, safeObserver {
+        viewModel.error.observe(requireActivity(), safeObserver {
             context?.handleException(it)
         })
     }

@@ -72,7 +72,7 @@ class SplashFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.neiceSuccess.observe(this, safeObserver {
+        viewModel.neiceSuccess.observe(requireActivity(), safeObserver {
             it ?: return@safeObserver
             if (it) {
                 startActivity(Intent(context, ActivityHome::class.java))
@@ -87,7 +87,7 @@ class SplashFragment : Fragment() {
                 }.show()
             }
         })
-        viewModel.cookieSuccess.observe(this, Observer {
+        viewModel.cookieSuccess.observe(requireActivity(), Observer {
             it ?: return@Observer
             if (it) {
 //                startActivity(Intent(context, ActivityHome::class.java))
@@ -101,7 +101,7 @@ class SplashFragment : Fragment() {
                 }.show()
             }
         })
-        viewModel.error.observe(this, safeObserver {
+        viewModel.error.observe(requireActivity(), safeObserver {
             startActivity(Intent(context, ActivityLogin::class.java))
             activity?.overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
             context?.handleException(it)

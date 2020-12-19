@@ -88,7 +88,7 @@ class NesListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.listDates.observe(this, Observer {
+        viewModel.listDates.observe(requireActivity(), Observer {
             it ?: return@Observer
             if (page == 1) {
                 refreshLayout.finishRefresh()
@@ -101,7 +101,7 @@ class NesListFragment : Fragment() {
 
             adapter.datas = it as ArrayList<HomeData>
         })
-        viewModel.loading.observe(this, safeObserver {
+        viewModel.loading.observe(requireActivity(), safeObserver {
             if (!it) {
                 if (page == 1) {
                     refreshLayout.finishRefresh()
@@ -110,10 +110,10 @@ class NesListFragment : Fragment() {
                 }
             }
         })
-        viewModel.error.observe(this, safeObserver {
+        viewModel.error.observe(requireActivity(), safeObserver {
             context?.handleException(it)
         })
-        viewModel.isMessage.observe(this, safeObserver {
+        viewModel.isMessage.observe(requireActivity(), safeObserver {
             it ?: return@safeObserver
             if (it) {
 //                context?.toast("你有一个消息")
