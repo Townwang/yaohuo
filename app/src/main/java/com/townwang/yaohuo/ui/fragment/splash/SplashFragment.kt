@@ -46,7 +46,7 @@ class SplashFragment : Fragment() {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        viewModel.neiceSuccess.observe(viewLifecycleOwner, safeObserver {
+        viewModel.nieceSuccess.observe(viewLifecycleOwner, safeObserver {
             it ?: return@safeObserver
             if (it) {
 //                startActivity(Intent(context, ActivityLogin::class.java))

@@ -6,8 +6,8 @@ import com.townwang.yaohuo.repo.Repo
 
 class SplashModel(private val repo: Repo) : UIViewModel() {
 
-    private val _neiceSuccess = MutableLiveData<Boolean>()
-    val neiceSuccess = _neiceSuccess.asLiveData()
+    private val _nieceSuccess = MutableLiveData<Boolean>()
+    val nieceSuccess = _nieceSuccess.asLiveData()
     private val _cookieSuccess = MutableLiveData<Boolean>()
     val cookieSuccess = _cookieSuccess.asLiveData()
 
@@ -23,13 +23,13 @@ class SplashModel(private val repo: Repo) : UIViewModel() {
             val result = repo.neice()
             result.data.forEach {
                 if (it.phone == getParam(a,"touserid")) {
-                    _neiceSuccess.value = isCrack
+                    _nieceSuccess.value = isCrack
                     return@launchTask
                 }
             }
-            _neiceSuccess.value = false
+            _nieceSuccess.value = false
         } catch (e: Exception) {
-            _neiceSuccess.value = false
+            _nieceSuccess.value = false
         }
     }
 

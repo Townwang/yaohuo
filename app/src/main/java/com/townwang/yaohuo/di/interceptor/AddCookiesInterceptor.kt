@@ -24,16 +24,16 @@ class AddCookiesInterceptor(private val mContext: Context) : Interceptor {
             COOKIE_KEY,
             Context.MODE_PRIVATE
         )
-        if (!TextUtils.isEmpty(url) && sp.contains(url) && !TextUtils.isEmpty(
-                sp.getString(
-                    url,
-                    ""
-                )
-            )
+        if (!TextUtils.isEmpty(url) &&
+            sp.contains(url) &&
+            !TextUtils.isEmpty(sp.getString(url, ""))
         ) {
             return sp.getString(url, "")
         }
-        return if (!TextUtils.isEmpty(domain) && sp.contains(domain) && !TextUtils.isEmpty(
+        return if (
+            !TextUtils.isEmpty(domain) &&
+            sp.contains(domain) &&
+            !TextUtils.isEmpty(
                 sp.getString(
                     domain,
                     ""

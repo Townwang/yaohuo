@@ -12,7 +12,6 @@ class ThemeAdapter : RecyclerView.Adapter<ThemeViewHolder>() {
             field = value
             notifyDataSetChanged()
         }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThemeViewHolder {
         return ThemeViewHolder.create(parent)
     }
