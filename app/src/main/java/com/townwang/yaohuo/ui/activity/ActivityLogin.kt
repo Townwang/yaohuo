@@ -6,7 +6,6 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.ui.fragment.login.LoginFragment
 import kotlinx.android.synthetic.main.appbar.*
-import kotlinx.android.synthetic.main.bottom_nav_view.*
 
 class ActivityLogin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

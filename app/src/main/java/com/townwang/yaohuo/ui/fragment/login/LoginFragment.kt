@@ -20,7 +20,6 @@ import com.townwang.yaohuo.common.Loading
 import com.townwang.yaohuo.common.handleException
 import com.townwang.yaohuo.common.safeObserver
 import com.townwang.yaohuo.ui.activity.ActivityHome
-import com.townwang.yaohuo.ui.activity.ActivityLogin
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
@@ -49,8 +48,8 @@ class LoginFragment : Fragment() {
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
         viewModel.loginSuccess.observe(requireActivity(), Observer {
             it ?: return@Observer
             if (it) {

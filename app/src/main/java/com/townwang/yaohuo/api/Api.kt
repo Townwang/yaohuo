@@ -1,5 +1,5 @@
 package com.townwang.yaohuo.api
-import com.townwang.yaohuo.repo.data.Neice
+import com.townwang.yaohuo.repo.data.Niece
 import org.jsoup.nodes.Document
 import retrofit2.Call
 import retrofit2.http.*
@@ -7,7 +7,7 @@ import retrofit2.http.*
 interface Api {
     @Headers("url_name:town")
     @GET("app/json/yaohuo/neice.do")
-    fun neice(): Call<Neice>
+    fun neice(): Call<Niece>
     /**
      * check bbs
      */

@@ -2,7 +2,6 @@ package com.townwang.yaohuo.ui.fragment.details
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import cn.droidlover.xrichtext.ImageLoader
 import cn.droidlover.xrichtext.XRichText
 import com.bumptech.glide.Glide
 import com.townwang.yaohuo.R

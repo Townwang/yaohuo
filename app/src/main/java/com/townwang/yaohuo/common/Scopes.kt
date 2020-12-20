@@ -1,9 +1,7 @@
 package com.townwang.yaohuo.common
 
-import android.util.Log
-import com.townwang.yaohuo.repo.data.Neice
+import com.townwang.yaohuo.repo.data.Niece
 import kotlinx.coroutines.*
-import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -37,7 +35,7 @@ suspend fun <T> withRepoContext(block: suspend CoroutineScope.() -> T): T =
 class NullResponseBodyException : Exception()
 
 
-suspend fun <T : Neice> Call<T>.getUResp() =
+suspend fun <T : Niece> Call<T>.getUResp() =
     withContext(networkScope.coroutineContext) {
     suspendCoroutine<T> {
         kotlin.runCatching {

@@ -13,7 +13,6 @@ import com.townwang.yaohuo.ui.fragment.list.ListModel
 import com.townwang.yaohuo.ui.fragment.login.LoginModel
 import com.townwang.yaohuo.ui.fragment.splash.SplashModel
 import com.townwang.yaohuo.ui.fragment.theme.ThemeModel
-import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel

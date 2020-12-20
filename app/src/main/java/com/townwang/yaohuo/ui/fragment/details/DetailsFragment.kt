@@ -55,6 +55,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
                 setDisplayHomeAsUpEnabled(true)
             }
         }
+
         refreshLayout.setOnRefreshListener {
             page = 1
             ot = 0
@@ -74,7 +75,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
             viewModel.commentDetails(page, ot)
         }
         attention.setOnClickListener {
-            Snackbar.make(view, "正在开发...", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "正在开发...", Snackbar.LENGTH_SHORT).show()
         }
         reply.setOnClickListener {
             val mfragTransaction = parentFragmentManager.beginTransaction()
@@ -136,9 +137,8 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
         }
     }
 
-    @SuppressLint("InflateParams")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
         viewModel.title.observe(requireActivity(), Observer {
             it ?: return@Observer
             title.text = it
@@ -285,7 +285,6 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
         })
         viewModel.getDetails(url)
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {

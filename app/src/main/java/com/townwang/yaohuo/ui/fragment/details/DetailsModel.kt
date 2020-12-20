@@ -139,7 +139,7 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         getAvatar(handUrl)
         val online = user.select(IMG_GIF).after(IMG_ALT)
         _online.value = online.first().attr(IMG_ALT) == "ONLINE"
-        _commentPraise.value = Regex("(\\(|\\))").split(user.ownText().split(" ").last())[1]
+        _commentPraise.value = Regex("([()])").split(user.ownText().split(" ").last())[1]
         url = user.select("a[href]").last().attr("href")
     }
 
@@ -154,13 +154,13 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         val value = select.first()
         if (value != null) {
             _commentSize.value =
-                convertText(Regex("(\\[|\\])").split(value.text())[1].replace("楼", "")).toString()
+                convertText(Regex("([\\[\\]])").split(value.text())[1].replace("楼", "")).toString()
         }
         val array = arrayListOf<CommentData>()
         select.forEach {
             val url = it.select(A_KEY).first().attr(A_HREF)
             val auth = it.select(A_KEY).last()
-            val floor = Regex("(\\[|\\])").split(it.text())[1].replace("楼", "")
+            val floor = Regex("([\\[\\]])").split(it.text())[1].replace("楼", "")
             var b = ""
             val bEts = it.select("b")
             if (bEts.hasText()) {

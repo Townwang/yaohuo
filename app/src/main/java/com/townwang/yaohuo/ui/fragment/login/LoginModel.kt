@@ -3,10 +3,6 @@ package com.townwang.yaohuo.ui.fragment.login
 import androidx.lifecycle.MutableLiveData
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.Repo
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.jsoup.Connection
-import org.jsoup.Jsoup
 
 class LoginModel(private val repo: Repo) : UIViewModel() {
     private val _loginSuccess = MutableLiveData<Boolean>()
