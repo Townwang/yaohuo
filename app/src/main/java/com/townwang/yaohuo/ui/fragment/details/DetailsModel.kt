@@ -3,25 +3,15 @@ package com.townwang.yaohuo.ui.fragment.details
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.townwang.yaohuo.api.JsApi
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.Repo
 import com.townwang.yaohuo.repo.data.CommentData
+import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.text.SimpleDateFormat
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import java.lang.Exception
-import java.lang.NumberFormatException
 import java.util.*
-import java.util.regex.Pattern.DOTALL
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import java.util.regex.Pattern
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import org.jsoup.Jsoup
-import android.R.attr
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import java.util.regex.Pattern.DOTALL
 
 
 class DetailsModel(private val repo: Repo) : UIViewModel() {
@@ -69,7 +59,7 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
     fun commentDetails(page: Int, ot: Int) = launchTask {
         docData?.run {
             val hand = this.select("div.subtitle").select(A_KEY)
-            val management = hand.last().absUrl(A_HREF)
+            val management = hand.last().attr(A_HREF)
             Log.d("解析", "评论 ： $management")
             val doc = repo.comment(
                 page,
@@ -123,14 +113,14 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         val annex = content.select("div.line")
         val img = annex.select(IMG_JPG).after("src")
         img.forEach {
-            _image.value = it.absUrl("src")
+            _image.value = it.attr("src")
         }
         val urls = annex.select("a.urlbtn")
         annex.select(A_KEY).forEach {
             urls.forEach { i ->
                 if (it.attr("href") == i.attr("href")) {
                     val annexName = it.parentNode().childNodes().first().outerHtml()
-                    val annexUrl = i.absUrl("href")
+                    val annexUrl = i.attr("href")
                     val array = arrayListOf<String>()
                     array.add(annexName)
                     array.add(annexUrl)
@@ -144,18 +134,18 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         val user = doc.select("div.subtitle").last()
         val userName = user.select("a[href]").first()
         _name.value = userName.ownText()
-        val handUrl = userName.absUrl("href")
+        val handUrl = userName.attr("href")
         touserid = getParam(handUrl, "touserid")
         getAvatar(handUrl)
         val online = user.select(IMG_GIF).after(IMG_ALT)
         _online.value = online.first().attr(IMG_ALT) == "ONLINE"
-        _commentPraise.value = Regex("(\\(|\\))").split(user.ownText().split(" ").last())[1]
-        url = user.select("a[href]").last().absUrl("href")
+        _commentPraise.value = Regex("([()])").split(user.ownText().split(" ").last())[1]
+        url = user.select("a[href]").last().attr("href")
     }
 
     private fun getAvatar(handUrl: String) = launchTask {
         val doc = repo.praise(handUrl)
-        _avatar.value = doc.select("div.content").select(IMG_JPG).first().absUrl("src")
+        _avatar.value = doc.select("div.content").select(IMG_JPG).first().attr("src")
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -164,13 +154,13 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         val value = select.first()
         if (value != null) {
             _commentSize.value =
-                convertText(Regex("(\\[|\\])").split(value.text())[1].replace("楼", "")).toString()
+                convertText(Regex("([\\[\\]])").split(value.text())[1].replace("楼", "")).toString()
         }
         val array = arrayListOf<CommentData>()
         select.forEach {
-            val url = it.select(A_KEY).first().absUrl(A_HREF)
+            val url = it.select(A_KEY).first().attr(A_HREF)
             val auth = it.select(A_KEY).last()
-            val floor = Regex("(\\[|\\])").split(it.text())[1].replace("楼", "")
+            val floor = Regex("([\\[\\]])").split(it.text())[1].replace("楼", "")
             var b = ""
             val bEts = it.select("b")
             if (bEts.hasText()) {
@@ -178,7 +168,7 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
             }
             auth.select(IMG_GIF).remove()
             val authString = auth.html()
-            val avatar = auth.absUrl(A_HREF)
+            val avatar = auth.attr(A_HREF)
             val time = it.text().split(" ").last()
             val date = it.text().split(" ")[it.text().split(" ").lastIndex - 1]
 

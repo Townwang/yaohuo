@@ -35,11 +35,6 @@ class AboutFragment : Fragment() {
             }
         }
         startAnimator(logoImage.drawable)
-
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         versionName.text = BuildConfig.VERSION_NAME
         openSource.setOnClickListener {
             val uri = Uri.parse("https://github.com/Townwang")

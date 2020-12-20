@@ -74,8 +74,8 @@ class PubListFragment(private  val classId: Int,private val bbsTitle:String) : F
         refreshLayout.autoRefresh()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
         viewModel.listDates.observe(requireActivity(), Observer {
             it ?: return@Observer
             if (page == 1) {

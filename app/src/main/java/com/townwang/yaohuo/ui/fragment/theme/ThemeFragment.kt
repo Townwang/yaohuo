@@ -43,10 +43,6 @@ class ThemeFragment : Fragment() {
                 reload(config(THEME_KEY,(data as ThemeList).id.toString()))
             }
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         adapter.datas = viewModel.listDates
     }
 

@@ -68,13 +68,12 @@
                             android:layout_height="wrap_content"
                             app:layout_constraintStart_toEndOf="@+id/userImg"
                             app:layout_constraintTop_toTopOf="@+id/userImg"
-                            android:layout_marginLeft="10dp"
                             app:layout_constraintBottom_toBottomOf="@+id/userImg"/>
 
                     <TextView
                             tools:text="在线"
                             android:id="@+id/online"
-                            android:textSize="@dimen/text14Size"
+                            android:textSize="@dimen/text12Size"
                             android:paddingStart="2dp"
                             android:paddingEnd="2dp"
                             android:layout_margin="1dp"
@@ -96,8 +95,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/userImg"
                             app:layout_constraintStart_toStartOf="@+id/userImg"
                             app:layout_constraintEnd_toStartOf="@+id/read_num"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginRight="8dp">
+                            android:layout_marginEnd="8dp">
                         <TextView
                                 tools:text="赏"
                                 android:id="@+id/icon"
@@ -120,8 +118,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                android:layout_marginLeft="5dp"/>
+                                app:layout_constraintStart_toStartOf="parent"/>
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <TextView
@@ -135,7 +132,6 @@
                             android:layout_marginEnd="8dp"
                             android:paddingBottom="10dp"
                             app:layout_constraintEnd_toStartOf="@+id/time"
-                            android:layout_marginRight="8dp"
                             app:layout_constraintTop_toTopOf="@+id/time"
                     />
                     <TextView
@@ -225,7 +221,6 @@
                 android:id="@+id/reply"
                 android:textSize="@dimen/text16Size"
                 android:paddingStart="20dp"
-                android:drawableStart="@drawable/ic_mode_edit_black_24dp"
                 android:text="写回复"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
@@ -236,9 +231,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:drawableLeft="@drawable/ic_mode_edit_black_24dp"
-                android:paddingLeft="10dp"
-                tools:ignore="RtlSymmetry"/>
+                tools:ignore="RtlSymmetry"
+                app:drawableStartCompat="@drawable/ic_mode_edit_black_24dp" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/comment"
@@ -252,10 +246,9 @@
                     android:textSize="@dimen/text10Size"
                     android:padding="7dp"
                     android:drawablePadding="5dp"
-                    android:drawableStart="@drawable/ic_comment_24_dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_comment_24_dp"/>
+                    app:drawableStartCompat="@drawable/ic_comment_24_dp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
@@ -271,10 +264,9 @@
                     android:textSize="@dimen/text10Size"
                     android:padding="7dp"
                     android:drawablePadding="5dp"
-                    android:drawableStart="@drawable/ic_praise"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_praise"/>
+                    app:drawableStartCompat="@drawable/ic_praise" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>

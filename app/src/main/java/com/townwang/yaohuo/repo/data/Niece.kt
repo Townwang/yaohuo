@@ -1,6 +1,6 @@
 package com.townwang.yaohuo.repo.data
 
-open class Neice(
+open class Niece(
     val data: List<Data>,
     val code: Int,
     val message: String

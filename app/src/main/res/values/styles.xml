@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- public theme. -->
-    <style name="DefaultAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="DefaultAppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/md_light_blue_700</item>
@@ -14,7 +14,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
     </style>
 
-    <style name="BlueAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="BlueAppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
         <item name="colorPrimary">@color/md_blue_A700</item>
         <item name="colorPrimaryDark">@color/md_blue_A700</item>
         <item name="colorAccent">@color/md_blue_500</item>
@@ -29,7 +29,7 @@
     </style>
 
 
-    <style name="RedAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="RedAppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
         <item name="colorPrimary">@color/md_red_A700</item>
         <item name="colorPrimaryDark">@color/md_red_A700</item>
         <item name="colorAccent">@color/md_red_500</item>
@@ -44,7 +44,7 @@
     </style>
 
 
-    <style name="GreenAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="GreenAppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
         <item name="colorPrimary">@color/md_green_A700</item>
         <item name="colorPrimaryDark">@color/md_green_A700</item>
         <item name="colorAccent">@color/md_green_500</item>
@@ -59,7 +59,7 @@
     </style>
 
 
-    <style name="PurpleAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="PurpleAppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
         <item name="colorPrimary">@color/md_purple_A700</item>
         <item name="colorPrimaryDark">@color/md_purple_A700</item>
         <item name="colorAccent">@color/md_purple_500</item>
@@ -73,7 +73,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
     </style>
 
-    <style name="TealAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="TealAppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
         <item name="colorPrimary">@color/md_teal_A700</item>
         <item name="colorPrimaryDark">@color/md_teal_A700</item>
         <item name="colorAccent">@color/md_teal_500</item>
@@ -87,7 +87,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
     </style>
 
-    <style name="LimeAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="LimeAppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
         <item name="colorPrimary">@color/md_lime_A700</item>
         <item name="colorPrimaryDark">@color/md_lime_A700</item>
         <item name="colorAccent">@color/md_lime_500</item>

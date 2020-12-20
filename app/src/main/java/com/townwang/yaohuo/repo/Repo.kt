@@ -1,44 +1,38 @@
 package com.townwang.yaohuo.repo
 
-import android.content.Context
-import android.content.LocusId
 import android.util.Log
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.api.Api
-import com.townwang.yaohuo.api.JsApi
 import com.townwang.yaohuo.common.*
-import kotlinx.coroutines.delay
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
 class Repo constructor(
-    private val applicationContext: Context,
-    private val api: Api,
-    private val jsApi: JsApi
+    private val api: Api
 ) {
-
     suspend fun neice() = withRepoContext {
         val bbs = api.neice()
-        bbs.getResp()
+        bbs.getUResp()
     }
 
-
     suspend fun checkNice() = withRepoContext {
-      val doc =   Jsoup.connect("https://yaohuo.me/")
+        val doc = api.checkNice()
         doc.getResp()
     }
 
 
-
     suspend fun cookie() = withRepoContext {
-        val bbs = Jsoup.connect(jsApi.checkCookie())
+        val bbs = api.checkCookie()
         bbs.getResp()
     }
 
     suspend fun login(loginName: String, password: String): Document = withRepoContext {
-        val rs = Jsoup.connect(jsApi.login()).execute()
-        val doc = Jsoup.parse(rs.body())
+        val rs = api.getLoginParameter()
+        val doc = rs.getResp()
+        Log.d("登录数据", doc.html())
         val ets = doc.select(AK_FORM)
+        Log.d("登录数据", ets.html())
         val data = HashMap<String, String>()
         ets.first().allElements.forEach {
             if (it.attr(AK_NAME) == YH_USERNAME) {
@@ -54,56 +48,66 @@ class Repo constructor(
                 data[it.attr(AK_NAME)] = it.attr(AK_VALUE)
             }
         }
-        val con = Jsoup.connect(jsApi.login())
-        val login = con.ignoreContentType(true).method(Connection.Method.POST).data(data).cookies(rs.cookies())
-            .execute()
-        val map = login.cookies()
-        if (login.statusCode() == 200) {
-            setCookie(map)
-        } else {
-            throw  NetworkFailureException("网络故障")
-        }
-        con.get()
+
+        val con = api.login(data)
+        con.getResp()
     }
+
     suspend fun getNewList(classId: Int, page: Int): Document = withRepoContext {
-        val bbs = Jsoup.connect(jsApi.newLists(classId, page))
+        val bbs = api.getNewList(classId.toString(), page.toString())
         bbs.getResp()
     }
+
     suspend fun getNewListDetails(url: String): Document = withRepoContext {
-        val bbs = Jsoup.connect(url)
+        val bbs = api.urlPenetrate(url)
         bbs.getResp()
     }
+
     suspend fun praise(url: String): Document = withRepoContext {
-        val bbs = Jsoup.connect(url)
-        bbs.getResp()
-    }
-    suspend fun comment(page:Int,id: String,classId: Int,ot:Int): Document = withRepoContext {
-        val bbs = Jsoup.connect(jsApi.commentLists(page,id,classId,ot))
+        val bbs = api.urlPenetrate(url)
         bbs.getResp()
     }
 
+    suspend fun comment(page: Int,
+                        id: String,
+                        classId: Int,
+                        ot: Int) = withRepoContext {
+        val bbs = api.commentLists(
+            page.toString(),
+            id,
+            classId.toString(),
+            ot.toString())
+        bbs.getResp()
+    }
 
-    suspend fun reply(url: String,content: String,floor:String? = null,touserid:String? = null): Document = withRepoContext {
-        val rs = Jsoup.connect(url).getResp()
+    suspend fun reply(
+    url: String,
+    content: String,
+    floor: String? = null,
+    touserid: String? = null
+    ): Document = withRepoContext {
+        val bbs = api.urlPenetrate(url)
+        val rs = bbs.getResp()
         val ets = rs.select(AK_FORM)
         val data = HashMap<String, String>()
         ets.first().allElements.forEach {
             if (it.attr(AK_NAME) == "content") {
                 it.attr(AK_VALUE, content)
             }
-            if (it.attr(AK_NAME) == "reply"){
-                it.attr(AK_VALUE,floor)
+            if (it.attr(AK_NAME) == "reply") {
+                it.attr(AK_VALUE, floor)
             }
-            if (it.attr(AK_NAME) == "touserid"){
-                it.attr(AK_VALUE,touserid)
+            if (it.attr(AK_NAME) == "touserid") {
+                it.attr(AK_VALUE, touserid)
             }
             if (it.attr(AK_NAME).isNotEmpty()) {
                 data[it.attr(AK_NAME)] = it.attr(AK_VALUE)
             }
         }
-        val con = Jsoup.connect(jsApi.reply())
-        con.ignoreContentType(true).method(Connection.Method.POST).data(data).cookies(getCookie())
-            .execute()
-        con.get()
+    val con = Jsoup.connect("${BuildConfig.BASE_YAOHUO_URL}/bbs/book_re.aspx")
+    con.ignoreContentType(true).method(Connection.Method.POST)
+        .data(data)
+        .execute()
+    con.get()
     }
 }

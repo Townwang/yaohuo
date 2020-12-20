@@ -26,8 +26,7 @@ const val A_KEY = "a[href]"
 const val A_HREF = "href"
 const val A = "a"
 const val IMG_GIF = "img[src\$=.gif]"
-const val IMG_JPG =
-    "img[src\$=.jpg],img[src\$=.gif],img[src\$=.png],img[src\$=.jpeg],img[src\$=.bmp]"
+const val IMG_JPG = "img[src\$=.jpg],img[src\$=.gif],img[src\$=.png],img[src\$=.jpeg],img[src\$=.bmp]"
 const val IMG_ALT = "alt"
 //妖火字段
 const val YH_USERNAME = "logname"

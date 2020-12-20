@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.ui.fragment.details.DetailsFragment
 import com.townwang.yaohuo.ui.fragment.list.PubListFragment
 import kotlinx.android.synthetic.main.appbar.*
 

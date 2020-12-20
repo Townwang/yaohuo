@@ -4,17 +4,17 @@ import java.util.*
 
 object RelativeDateFormat {
 
-    private val ONE_MINUTE = 60000L
-    private val ONE_HOUR = 3600000L
-    private val ONE_DAY = 86400000L
-    private val ONE_WEEK = 604800000L
+    private const val ONE_MINUTE = 60000L
+    private const val ONE_HOUR = 3600000L
+    private const val ONE_DAY = 86400000L
+    private const val ONE_WEEK = 604800000L
 
-    private val ONE_SECOND_AGO = "秒前"
-    private val ONE_MINUTE_AGO = "分钟前"
-    private val ONE_HOUR_AGO = "小时前"
-    private val ONE_DAY_AGO = "天前"
-    private val ONE_MONTH_AGO = "月前"
-    private val ONE_YEAR_AGO = "年前"
+    private const val ONE_SECOND_AGO = "秒前"
+    private const val ONE_MINUTE_AGO = "分钟前"
+    private const val ONE_HOUR_AGO = "小时前"
+    private const val ONE_DAY_AGO = "天前"
+    private const val ONE_MONTH_AGO = "月前"
+    private const val ONE_YEAR_AGO = "年前"
 
     fun format(date: Date): String {
         val delta = Date().time - date.time

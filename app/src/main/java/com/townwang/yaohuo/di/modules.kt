@@ -1,12 +1,15 @@
 package com.townwang.yaohuo.di
 
 import com.google.gson.GsonBuilder
-import com.townwang.yaohuo.api.Api
 import com.townwang.yaohuo.BuildConfig
-import com.townwang.yaohuo.api.JsApi
+import com.townwang.yaohuo.api.Api
+import com.townwang.yaohuo.di.factory.DocumentConverterFactory
+import com.townwang.yaohuo.di.interceptor.AddCookiesInterceptor
+import com.townwang.yaohuo.di.interceptor.NetCookiesInterceptor
+import com.townwang.yaohuo.di.interceptor.SaveCookiesInterceptor
 import com.townwang.yaohuo.repo.Repo
-import com.townwang.yaohuo.ui.fragment.list.ListModel
 import com.townwang.yaohuo.ui.fragment.details.DetailsModel
+import com.townwang.yaohuo.ui.fragment.list.ListModel
 import com.townwang.yaohuo.ui.fragment.login.LoginModel
 import com.townwang.yaohuo.ui.fragment.splash.SplashModel
 import com.townwang.yaohuo.ui.fragment.theme.ThemeModel
@@ -17,6 +20,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.DateFormat
+
 
 private val netModule = module {
     single {
@@ -29,7 +33,7 @@ private val netModule = module {
 
     single {
         Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(BuildConfig.BASE_YAOHUO_URL)
             .client(OkHttpClient.Builder()
                 .addInterceptor {
                     it.proceed(
@@ -37,22 +41,23 @@ private val netModule = module {
                             .build()
                     )
                 }
+                .addInterceptor(NetCookiesInterceptor())
                 .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+                .addInterceptor(AddCookiesInterceptor(get()))
+                .addInterceptor(SaveCookiesInterceptor(get()))
                 .build()
             )
-            .addConverterFactory(GsonConverterFactory.create(get()))
+            .addConverterFactory(DocumentConverterFactory())
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
     single {
         get<Retrofit>().create(Api::class.java)
     }
-    single {
-        JsApi()
-    }
 }
 
 private val repoModule = module {
-    single { Repo(get(), get(),get()) }
+    single { Repo(get()) }
 }
 private val viewModelModule = module {
     viewModel { ListModel(get()) }
@@ -60,6 +65,7 @@ private val viewModelModule = module {
     viewModel { ThemeModel() }
     viewModel { DetailsModel(get()) }
     viewModel { SplashModel(get()) }
+
 }
 
 val koinModules = viewModelModule + repoModule + netModule
