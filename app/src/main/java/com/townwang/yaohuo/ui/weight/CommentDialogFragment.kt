@@ -12,6 +12,7 @@ import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
 import com.townwang.yaohuo.R
@@ -24,10 +25,9 @@ typealias CommentDialogSendListener = (fragment: CommentDialogFragment, message:
 class CommentDialogFragment : DialogFragment() {
      var mDialogListener: CommentDialogSendListener? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val window = dialog!!.window
-        window?.requestFeature(Window.FEATURE_NO_TITLE)
-        dialog!!.setCancelable(true)
-        dialog!!.setCanceledOnTouchOutside(true)
+      requireDialog().window?.requestFeature(Window.FEATURE_NO_TITLE)
+        requireDialog().setCancelable(true)
+        requireDialog().setCanceledOnTouchOutside(true)
         return inflater.inflate(R.layout.fragment_comment_dialog, container, false)
     }
 
@@ -46,7 +46,7 @@ class CommentDialogFragment : DialogFragment() {
                     .INPUT_METHOD_SERVICE
             ) as InputMethodManager).showSoftInput(editComment, 0)
         }
-        send.setOnClickListener { v ->
+        send.setOnClickListener {
             val commentStr = editComment.text.toString()
             mDialogListener?.invoke(this@CommentDialogFragment, commentStr)
         }
@@ -54,17 +54,16 @@ class CommentDialogFragment : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        val window = dialog?.window
-        if (null != window) {
-            window.setGravity(Gravity.BOTTOM)
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            window.setBackgroundDrawableResource(android.R.color.transparent)
+        requireDialog().window?.let {
+            it.setGravity(Gravity.BOTTOM)
+            it.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            it.setBackgroundDrawableResource(android.R.color.transparent)
+
         }
-        val res = resources
-        val titleDividerId = res.getIdentifier("titleDivider", "id", "android")
+        val titleDividerId = resources.getIdentifier("titleDivider", "id", "android")
         if (titleDividerId > 0) {
-            val titleDivider = dialog?.findViewById<View>(titleDividerId)
-            titleDivider?.setBackgroundColor(res.getColor(android.R.color.transparent))
+            val titleDivider = requireDialog().findViewById<View>(titleDividerId)
+            titleDivider?.setBackgroundColor(ResourcesCompat.getColor(resources,android.R.color.transparent,null))
         }
     }
 

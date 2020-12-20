@@ -20,11 +20,15 @@ private val repoJob = Job(appJob)
 
 
 private val repoScope =
-    CoroutineScope((Executors.newFixedThreadPool(3)
-        .asCoroutineDispatcher()) + repoJob)
+    CoroutineScope(
+        (Executors.newFixedThreadPool(3)
+            .asCoroutineDispatcher()) + repoJob
+    )
 val networkScope =
-    CoroutineScope(Executors.newCachedThreadPool()
-        .asCoroutineDispatcher() + networkJob)
+    CoroutineScope(
+        Executors.newCachedThreadPool()
+            .asCoroutineDispatcher() + networkJob
+    )
 
 suspend fun <T> withRepoContext(block: suspend CoroutineScope.() -> T): T =
     withContext(repoScope.coroutineContext) { block() }
@@ -37,32 +41,32 @@ class NullResponseBodyException : Exception()
 
 suspend fun <T : Niece> Call<T>.getUResp() =
     withContext(networkScope.coroutineContext) {
-    suspendCoroutine<T> {
-        kotlin.runCatching {
-            val result = execute()
-            if (!isVpnUsed()) {
-                if (result.isSuccessful) {
-                    val body = result.body()
-                    if (body != null) {
-                        if (body.code == 200) {
-                            it.resume(body)
+        suspendCoroutine<T> {
+            kotlin.runCatching {
+                val result = execute()
+                if (!isVpnUsed()) {
+                    if (result.isSuccessful) {
+                        val body = result.body()
+                        if (body != null) {
+                            if (body.code == 200) {
+                                it.resume(body)
+                            } else {
+                                it.resumeWithException(ApiErrorException(body.code, body.message))
+                            }
                         } else {
-                            it.resumeWithException(ApiErrorException(body.code, body.message))
+                            it.resumeWithException(NullResponseBodyException())
                         }
                     } else {
-                        it.resumeWithException(NullResponseBodyException())
+                        it.resumeWithException(NetworkFailureException(result.message()))
                     }
                 } else {
-                    it.resumeWithException(NetworkFailureException(result.message()))
+                    it.resumeWithException(UseVPNException("当前网络环境不安全，请切换安全环境"))
                 }
-            } else {
-                it.resumeWithException(UseVPNException("当前网络环境不安全，请切换安全环境"))
+            }.onFailure { error ->
+                it.resumeWithException(error)
             }
-        }.onFailure { error ->
-            it.resumeWithException(error)
         }
     }
-}
 
 /**
  * 检测是否使用VPN
@@ -96,9 +100,9 @@ suspend fun <T : Document> Call<T>.getResp() = withContext(networkScope.coroutin
             if (!isVpnUsed()) {
                 if (result.isSuccessful) {
                     val body = result.body()
-                    if (checkDoc(body,it)) {
+                    if (checkDoc(body, it)) {
                         it.resume(Jsoup.parse(body.toString()))
-                    }else{
+                    } else {
                         it.resumeWithException(NullResponseBodyException())
                     }
                 } else {
@@ -113,21 +117,35 @@ suspend fun <T : Document> Call<T>.getResp() = withContext(networkScope.coroutin
     }
 }
 
-fun checkDoc(document: Element?,it: Continuation<Document>):Boolean{
-    document?:return false
+fun checkDoc(document: Element?, it: Continuation<Document>): Boolean {
+    document ?: return false
     val doc = Jsoup.parse(document.toString())
-    when(doc.title()){
-        "Error 404 (Not Found)" ->{ it.resumeWithException(ApiErrorException(999, "找不到此帖了。"))}
-        "访问验证" ->{ it.resumeWithException(ApiErrorException(1001, "访问验证"))}
+    when (doc.title()) {
+        "Error 404 (Not Found)" -> {
+            it.resumeWithException(ApiErrorException(999, "找不到此帖了。"))
+        }
+        "访问验证" -> {
+            it.resumeWithException(ApiErrorException(1001, "访问验证"))
+        }
     }
-    when(doc.html()){
-        "身份失效了，请重新登录网站" ->{it.resumeWithException(ApiErrorException(1002, "身份失效了，请重新登录"))}
-        "正在审核中" ->{it.resumeWithException(ApiErrorException(1003, "帖子还在审核中.."))}
-        "请输入您的密码" ->{it.resumeWithException(ApiErrorException(1004, "IP已经更改，需要校验密码"))}
+    when (doc.html()) {
+        "身份失效了，请重新登录网站" -> {
+            it.resumeWithException(ApiErrorException(1002, "身份失效了，请重新登录"))
+        }
+        "正在审核中" -> {
+            it.resumeWithException(ApiErrorException(1003, "帖子还在审核中.."))
+        }
+        "请输入您的密码" -> {
+            it.resumeWithException(ApiErrorException(1004, "IP已经更改，需要校验密码"))
+        }
     }
-    when(doc.text()){
-        "请先登录网站" ->{it.resumeWithException(ApiErrorException(1002, "请先登录网站"))}
-        "请开启JavaScript并刷新该页" ->{it.resumeWithException(ApiErrorException(1002, "Cookie过期，需要重新登录"))}
+    when (doc.text()) {
+        "请先登录网站" -> {
+            it.resumeWithException(ApiErrorException(1002, "请先登录网站"))
+        }
+        "请开启JavaScript并刷新该页" -> {
+            it.resumeWithException(ApiErrorException(1002, "Cookie过期，需要重新登录"))
+        }
     }
     return true
 }

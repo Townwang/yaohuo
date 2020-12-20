@@ -1,5 +1,6 @@
 package com.townwang.yaohuo.ui.activity
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AppCompatActivity
 import com.townwang.yaohuo.common.setActTheme
 import com.townwang.yaohuo.common.setSharedElement
@@ -10,7 +11,6 @@ import com.townwang.yaohuo.ui.fragment.theme.ThemeFragment
 import kotlinx.android.synthetic.main.appbar.*
 
 class ActivityTheme : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         setActTheme()
         super.onCreate(savedInstanceState)
