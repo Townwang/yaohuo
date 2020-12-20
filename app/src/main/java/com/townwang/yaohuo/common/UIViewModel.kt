@@ -18,9 +18,6 @@ open class UIViewModel : ViewModel() {
     private val _sqlite = MutableLiveData<T>()
     val loading = _loading.asLiveData()
     val error = _error.asLiveData()
-    @VisibleForTesting
-    fun job() = job
-    private var  msgBoolean = true
     fun launchTask(task: suspend CoroutineScope.() -> Unit) = uiScope.launch {
         // show ui loading
         _loading.value = true
@@ -39,26 +36,6 @@ open class UIViewModel : ViewModel() {
             if (otherJobs.none { it.isActive }) _loading.value = false
         }
     }
-
-//    fun launchSingeTask(task: suspend CoroutineScope.() -> Unit) = uiScope.launch {
-//        runCatching {
-//            if (msgBoolean) {
-//                msgBoolean = false
-////                while (!msgBoolean){
-//                    task()
-////                }
-//            }
-//        }.onFailure {
-//            _error.value = it
-//        }
-//        if (job.children.count() != 0) {
-//            val otherJobs = job.children.filter { it != this }
-//            if (otherJobs.none { it.isActive }) _loading.value = false
-//        }
-//    }
-
-
-
     override fun onCleared() {
         super.onCleared()
         job.cancel()

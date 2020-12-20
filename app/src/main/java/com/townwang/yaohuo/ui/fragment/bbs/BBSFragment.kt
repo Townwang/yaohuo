@@ -23,6 +23,7 @@ class BBSFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_bbs, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).work {
@@ -33,7 +34,6 @@ class BBSFragment : Fragment() {
             setTitleCenter(toolbar)
         }
         startAnim()
-
         resourceSharing.setOnClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 requireActivity(), resourceSharing, "share name"
@@ -127,7 +127,6 @@ class BBSFragment : Fragment() {
                 }, bundle
             )
         }
-
     }
 
 

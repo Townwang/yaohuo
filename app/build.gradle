@@ -60,6 +60,7 @@ android {
         signingConfig signingConfigs.sings
         proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         buildConfigField("String", "BASE_URL", '"https://townwang.com/"')
+        buildConfigField("String", "BASE_YAOHUO_URL", '"https://yaohuo.me/"')
     }
 }
 

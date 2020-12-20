@@ -3,10 +3,6 @@ package com.townwang.yaohuo.ui.fragment.login
 import androidx.lifecycle.MutableLiveData
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.Repo
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.jsoup.Connection
-import org.jsoup.Jsoup
 
 class LoginModel(private val repo: Repo) : UIViewModel() {
     private val _loginSuccess = MutableLiveData<Boolean>()
@@ -34,7 +30,7 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
         val resultPage = doc.body().html()
         when {
             resultPage.indexOf("登录成功") != -1 -> {
-//                _loginSuccess.value = isCrack
+                _loginSuccess.value = isCrack
                 checkId()
             }
             resultPage.indexOf("密码错误") != -1 -> _loginPsdError.value = "密码错误"
@@ -47,7 +43,7 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
     private fun checkId() = launchTask {
         try {
             val doc = repo.checkNice()
-            val a = doc.select("div.top2").select(A_KEY)[1].absUrl(A_HREF)
+            val a = doc.select("div.top2").select(A_KEY)[1].attr(A_HREF)
             val result = repo.neice()
             result.data.forEach {
                 if (it.phone == getParam(a,"touserid")) {
@@ -55,10 +51,8 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
                     return@launchTask
                 }
             }
-            setCookie(emptyMap())
             _neiceSuccess.value = false
         } catch (e: Exception) {
-            setCookie(emptyMap())
             _neiceSuccess.value = false
         }
 

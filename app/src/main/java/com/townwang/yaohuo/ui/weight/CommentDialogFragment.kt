@@ -2,8 +2,6 @@ package com.townwang.yaohuo.ui.weight
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Resources
-import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.Gravity

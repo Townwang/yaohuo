@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.data.CommentData
@@ -54,6 +55,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
                 setDisplayHomeAsUpEnabled(true)
             }
         }
+
         refreshLayout.setOnRefreshListener {
             page = 1
             ot = 0
@@ -73,7 +75,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
             viewModel.commentDetails(page, ot)
         }
         attention.setOnClickListener {
-            Snackbar.make(view, "正在开发...", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "正在开发...", Snackbar.LENGTH_SHORT).show()
         }
         reply.setOnClickListener {
             val mfragTransaction = parentFragmentManager.beginTransaction()
@@ -135,9 +137,8 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
         }
     }
 
-    @SuppressLint("InflateParams")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
         viewModel.title.observe(requireActivity(), Observer {
             it ?: return@Observer
             title.text = it
@@ -206,7 +207,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
             }).imageDownloader { url ->
                 Glide.with(requireContext())
                     .asBitmap()
-                    .load(url)
+                    .load(BuildConfig.BASE_YAOHUO_URL+url)
                     .submit().get()
             }.text(it)
             list_content.addView(textView)
@@ -216,14 +217,14 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
             val contentImg = LayoutInflater.from(requireContext()).inflate(R.layout.view_image_style, null)
             list_content.addView(contentImg)
             Glide.with(requireContext())
-                .load(it)
+                .load(BuildConfig.BASE_YAOHUO_URL+it)
                 .apply(RequestOptions.noTransformation())
                 .into(contentImg.image)
         })
         viewModel.avatar.observe(requireActivity(), Observer {
             it ?: return@Observer
             Glide.with(requireContext())
-                .load(it)
+                .load(BuildConfig.BASE_YAOHUO_URL+it)
                 .apply(RequestOptions.bitmapTransform(CircleCrop()))
                 .into(userImg)
         })
@@ -284,7 +285,6 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
         })
         viewModel.getDetails(url)
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {

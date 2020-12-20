@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
@@ -86,8 +87,8 @@ class NesListFragment : Fragment() {
         inflater.inflate(R.menu.settings_home, menu)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
         viewModel.listDates.observe(requireActivity(), Observer {
             it ?: return@Observer
             if (page == 1) {
@@ -140,10 +141,10 @@ class NesListFragment : Fragment() {
                 true
             }
             R.id.toolbar_r_theme -> {
-                startActivityForResult(
+                ActivityResultContract.SynchronousResult{
                     Intent(context, ActivityTheme::class.java)
-                    , Activity.RESULT_CANCELED
-                )
+                    Activity.RESULT_CANCELED
+                }
                 true
             }
             R.id.toolbar_r_about -> {
@@ -168,9 +169,9 @@ class NesListFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         activity?.work {
             reload(config(THEME_KEY))
         }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 }
