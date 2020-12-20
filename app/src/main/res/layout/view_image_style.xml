@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:paddingLeft="10dp"
             tools:ignore="RtlSymmetry"/>
     <ImageView
             android:id="@+id/image"

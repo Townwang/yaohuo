@@ -109,33 +109,20 @@ fun Activity.reload(string: String?) {
 
 
 fun Activity.setSharedElement() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        setExitSharedElementCallback(object : SharedElementCallback() {
-            override fun onCaptureSharedElementSnapshot(
-                sharedElement: View?,
-                viewToGlobalMatrix: Matrix?,
-                screenBounds: RectF?
-            ): Parcelable {
-                sharedElement?.alpha = 1f
-                return super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds)
-            }
-        })
-    }
+    setExitSharedElementCallback(object : SharedElementCallback() {
+        override fun onCaptureSharedElementSnapshot(
+            sharedElement: View?,
+            viewToGlobalMatrix: Matrix?,
+            screenBounds: RectF?
+        ): Parcelable {
+            sharedElement?.alpha = 1f
+            return super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds)
+        }
+    })
 }
-
-
-fun getCookie(): Map<String, String>?{
-    val cookie: String by Preference(App.getContext(), COOKIE_KEY, "")
-    if (cookie.isEmpty()){
-        return null
-    }
-    val map = HashMap<String, String>()
-    return gson.fromJson(cookie, map.javaClass)
-}
-fun setCookie(cookieMaps:Map<String, String>) {
-    var cookie: String by Preference(App.getContext(), COOKIE_KEY, "")
-    cookie = gson.toJson(cookieMaps)
-    Log.d("妖火","cookie $cookie")
+fun isCookieBoolean(): Boolean {
+    val cookieMaps = App.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE).all
+    return cookieMaps.isNullOrEmpty()
 }
 
 fun setTitleCenter(toolbar: Toolbar) {

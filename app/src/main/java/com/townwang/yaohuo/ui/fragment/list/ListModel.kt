@@ -20,7 +20,7 @@ class ListModel(private val repo: Repo) : UIViewModel() {
         val lists = arrayListOf<HomeData>()
         list.forEach {
             val hrefs = it.select(A_KEY).first()
-            val a = hrefs.absUrl(A_HREF)
+            val a = hrefs.attr(A_HREF)
             val title = hrefs.text()
             val str = it
             str.select(A).first().remove()

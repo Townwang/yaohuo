@@ -77,7 +77,7 @@ class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 //            handler.post {
 //                if (url != null) {
 //                    Glide.with(itemView)
-//                        .load(url.absUrl("src"))
+//                        .load(url.attr("src"))
 //                        .apply(RequestOptions.bitmapTransform(CircleCrop()))
 //                        .into(img)
 //                }

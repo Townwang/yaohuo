@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.data.CommentData
@@ -206,7 +207,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
             }).imageDownloader { url ->
                 Glide.with(requireContext())
                     .asBitmap()
-                    .load(url)
+                    .load(BuildConfig.BASE_YAOHUO_URL+url)
                     .submit().get()
             }.text(it)
             list_content.addView(textView)
@@ -216,14 +217,14 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
             val contentImg = LayoutInflater.from(requireContext()).inflate(R.layout.view_image_style, null)
             list_content.addView(contentImg)
             Glide.with(requireContext())
-                .load(it)
+                .load(BuildConfig.BASE_YAOHUO_URL+it)
                 .apply(RequestOptions.noTransformation())
                 .into(contentImg.image)
         })
         viewModel.avatar.observe(requireActivity(), Observer {
             it ?: return@Observer
             Glide.with(requireContext())
-                .load(it)
+                .load(BuildConfig.BASE_YAOHUO_URL+it)
                 .apply(RequestOptions.bitmapTransform(CircleCrop()))
                 .into(userImg)
         })

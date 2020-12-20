@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center_vertical"
               android:orientation="horizontal">
@@ -9,10 +10,10 @@
             android:layout_width="0dp"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/ic_fiber_new_black_24dp"
             android:textColor="@color/white"
             android:text="最新"
-            android:textSize="@dimen/text14Size"/>
+            android:textSize="@dimen/text14Size"
+            app:drawableTopCompat="@drawable/ic_fiber_new_black_24dp" />
 
     <TextView
             android:id="@+id/bbs"
@@ -20,10 +21,10 @@
             android:layout_width="0dp"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/ic_view_module_black_24dp"
             android:textColor="@color/white"
             android:text="论坛"
-            android:textSize="@dimen/text14Size"/>
+            android:textSize="@dimen/text14Size"
+            app:drawableTopCompat="@drawable/ic_view_module_black_24dp" />
     <View
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -34,10 +35,10 @@
             android:layout_width="0dp"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/ic_games_black_24dp"
             android:textColor="@color/white"
             android:text="游戏"
-            android:textSize="@dimen/text14Size"/>
+            android:textSize="@dimen/text14Size"
+            app:drawableTopCompat="@drawable/ic_games_black_24dp" />
 
     <TextView
             android:id="@+id/me"
@@ -45,8 +46,8 @@
             android:layout_width="0dp"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/ic_person_black_24dp"
             android:textColor="@color/white"
             android:text="我的"
-            android:textSize="@dimen/text14Size"/>
+            android:textSize="@dimen/text14Size"
+            app:drawableTopCompat="@drawable/ic_person_black_24dp" />
 </LinearLayout>
