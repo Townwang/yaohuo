@@ -37,12 +37,12 @@ object RelativeDateFormat {
             val days = toDays(delta)
             return (if (days <= 0) 1 else days).toString() + ONE_DAY_AGO
         }
-        if (delta < 12L * 4L * ONE_WEEK) {
+        return if (delta < 12L * 4L * ONE_WEEK) {
             val months = toMonths(delta)
-            return (if (months <= 0) 1 else months).toString() + ONE_MONTH_AGO
+            (if (months <= 0) 1 else months).toString() + ONE_MONTH_AGO
         } else {
             val years = toYears(delta)
-            return (if (years <= 0) 1 else years).toString() + ONE_YEAR_AGO
+            (if (years <= 0) 1 else years).toString() + ONE_YEAR_AGO
         }
     }
 

@@ -118,9 +118,9 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         val urls = annex.select("a.urlbtn")
         annex.select(A_KEY).forEach {
             urls.forEach { i ->
-                if (it.attr("href") == i.attr("href")) {
+                if (it.attr(A_HREF) == i.attr(A_HREF)) {
                     val annexName = it.parentNode().childNodes().first().outerHtml()
-                    val annexUrl = i.attr("href")
+                    val annexUrl = i.attr(A_HREF)
                     val array = arrayListOf<String>()
                     array.add(annexName)
                     array.add(annexUrl)
@@ -132,15 +132,15 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
 
     private fun articleAuth(doc: Document) {
         val user = doc.select("div.subtitle").last()
-        val userName = user.select("a[href]").first()
+        val userName = user.select(A_KEY).first()
         _name.value = userName.ownText()
-        val handUrl = userName.attr("href")
+        val handUrl = userName.attr(A_HREF)
         touserid = getParam(handUrl, "touserid")
         getAvatar(handUrl)
         val online = user.select(IMG_GIF).after(IMG_ALT)
         _online.value = online.first().attr(IMG_ALT) == "ONLINE"
         _commentPraise.value = Regex("([()])").split(user.ownText().split(" ").last())[1]
-        url = user.select("a[href]").last().attr("href")
+        url = user.select(A_KEY).last().attr(A_HREF)
     }
 
     private fun getAvatar(handUrl: String) = launchTask {

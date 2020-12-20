@@ -55,7 +55,6 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
                 setDisplayHomeAsUpEnabled(true)
             }
         }
-
         refreshLayout.setOnRefreshListener {
             page = 1
             ot = 0
