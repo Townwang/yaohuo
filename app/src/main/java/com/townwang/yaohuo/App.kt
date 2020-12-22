@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.multidex.MultiDex
-import com.pgyersdk.crash.PgyCrashManager
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.townwang.yaohuo.di.koinModules
@@ -15,6 +14,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.tencent.bugly.Bugly
 import com.townwang.yaohuo.common.isCrack
 
 @Suppress("DEPRECATION")
@@ -29,13 +29,12 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         application = this
-        MultiDex.install(this@App)
         startKoin {
             androidContext(this@App)
             androidLogger(Level.INFO)
             modules(koinModules)
         }
-        PgyCrashManager.register()
+        Bugly.init(applicationContext, "56bf507146", false);
         try {
             val a = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
             val b = a.signatures
@@ -48,6 +47,11 @@ class App : Application() {
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this@App)
     }
 
     init {

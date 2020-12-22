@@ -160,7 +160,6 @@
  -dontwarn okio.**
 ## Retrofit2
 -dontnote retrofit2.Platform
--dontwarn retrofit2.Platform$Java8
 -keepattributes Signature
 -keepattributes Exceptions
 -dontwarn retrofit2.**
@@ -174,8 +173,8 @@
 #Jsoup
 -keeppackagenames org.jsoup.nodes
 
-#蒲公英
--dontwarn com.pgyersdk.**
--keep class com.pgyersdk.** { *; }
--keep class com.pgyersdk.**$* { *; }
+#bugly
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+-keep class android.support.**{*;}
 
