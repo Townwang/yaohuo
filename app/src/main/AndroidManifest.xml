@@ -45,10 +45,6 @@
         <activity android:name=".ui.activity.ActivityAbout"/>
         <activity android:name=".ui.activity.ActivityList"/>
         <activity android:name=".ui.activity.ActivityDetails"/>
-        <meta-data
-                android:name="PGYER_APPID"
-                android:value="73f8bbf5928c416094d79846e2f4a53a" >
-        </meta-data>
     </application>
 
 </manifest>
