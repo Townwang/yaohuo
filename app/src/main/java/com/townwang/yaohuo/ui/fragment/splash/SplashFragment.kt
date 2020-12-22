@@ -9,9 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
-import com.pgyersdk.update.PgyUpdateManager
-import com.pgyersdk.update.UpdateManagerListener
-import com.pgyersdk.update.javabean.AppBean
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.handleException
 import com.townwang.yaohuo.common.isCookieBoolean
@@ -85,12 +82,6 @@ class SplashFragment : Fragment() {
     }
 
     private fun checkUpdate() {
-        PgyUpdateManager.Builder()
-            .setForced(true)                //设置是否强制提示更新,非自定义回调更新接口此方法有用
-            .setUserCanRetry(true)         //失败后是否提示重新下载，非自定义下载 apk 回调此方法有用
-            .setDeleteHistroyApk(true)     // 检查更新前是否删除本地历史 Apk， 默认为true
-            .setUpdateManagerListener(object : UpdateManagerListener {
-                override fun onNoUpdateAvailable() {
                     if (isCookieBoolean()) {
                         startActivity(Intent(context, ActivityLogin::class.java))
                         activity?.overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
@@ -99,20 +90,6 @@ class SplashFragment : Fragment() {
                         viewModel.checkCookie()
                     }
                     Log.d("pgyer", "there is no new version")
-                }
-                override fun onUpdateAvailable(appBean: AppBean) {
-                    PgyUpdateManager.downLoadApk(appBean.downloadURL)
-                }
 
-                override fun checkUpdateFailed(e: Exception) {
-                    if (isCookieBoolean()) {
-                        startActivity(Intent(context, ActivityLogin::class.java))
-                        activity?.overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-                        activity?.finish()
-                    } else {
-                        viewModel.checkCookie()
-                    }
-                }
-            }).register()
     }
 }
