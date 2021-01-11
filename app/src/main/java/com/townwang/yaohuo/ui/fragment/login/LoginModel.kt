@@ -32,7 +32,7 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
         val resultPage = doc.body().html()
         when {
             resultPage.indexOf("登录成功") != -1 -> {
-                _loginSuccess.value = isCrack
+//                _loginSuccess.value = isCrack
                 checkId()
             }
             resultPage.indexOf("密码错误") != -1 -> _loginPsdError.value = "密码错误"

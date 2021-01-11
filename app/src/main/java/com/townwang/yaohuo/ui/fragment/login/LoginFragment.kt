@@ -1,23 +1,25 @@
 package com.townwang.yaohuo.ui.fragment.login
 
-import android.os.Bundle
-import android.util.Log
-import android.view.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
-import com.townwang.yaohuo.R
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
+import androidx.fragment.app.Fragment
 import com.android.tu.loadingdialog.LoadingDailog
+import com.google.android.material.snackbar.Snackbar
+import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.ui.activity.ActivityHome
 import kotlinx.android.synthetic.main.fragment_login.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class LoginFragment : Fragment() {
     private var loading: LoadingDailog? = null
@@ -49,7 +51,9 @@ class LoginFragment : Fragment() {
         super.onViewStateRestored(savedInstanceState)
         viewModel.loginSuccess.observe(viewLifecycleOwner, safeObserver {
             if (it) {
-                val intent = Intent(requireContext(), ActivityHome::class.java)
+                val intent = Intent(requireContext(), ActivityHome::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                }
                 val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     requireActivity(), loginBtn, "share name"
                 ).toBundle()
@@ -93,13 +97,14 @@ class LoginFragment : Fragment() {
         viewModel.neiceSuccess.observe(viewLifecycleOwner, safeObserver {
             if (it) {
                 config(TROUSER_KEY,viewModel.trouser.value)
-                val intent = Intent(requireContext(), ActivityHome::class.java)
+                val intent = Intent(requireContext(), ActivityHome::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                }
                 val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     requireActivity(), loginBtn, "share name"
                 ).toBundle()
                 ActivityCompat.startActivity(requireContext(), intent, bundle)
                 requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-                requireActivity().finish()
                 Log.d("解析", "登录成功")
                 Snackbar.make(inputGuide, "登录成功", Snackbar.LENGTH_SHORT).show()
             } else {

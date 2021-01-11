@@ -46,7 +46,7 @@ class CommentDialogFragment(private val message: String?) : DialogFragment() {
         }
         dialog_comment_bt.setOnClickListener {
             val commentStr = dialog_comment_et.text.toString()
-            mDialogListener?.invoke(this@CommentDialogFragment, "$commentStr          [forecolor=#03A9F4]  ——  来自蓝火客户端[/forecolor]℡")
+            mDialogListener?.invoke(this@CommentDialogFragment, "$commentStr      \uD83D\uDCF1")
         }
     }
 
