@@ -15,6 +15,7 @@ import com.townwang.yaohuo.common.isCookieBoolean
 import com.townwang.yaohuo.common.safeObserver
 import com.townwang.yaohuo.ui.activity.ActivityHome
 import com.townwang.yaohuo.ui.activity.ActivityLogin
+import com.townwang.yaohuo.ui.fragment.login.LoginFragment
 import kotlinx.android.synthetic.main.fragment_welcome.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -38,9 +39,10 @@ class SplashFragment : Fragment() {
         mParticleView.startAnim()
         mParticleView.mParticleAnimListener = {
             if (isCookieBoolean()) {
-                startActivity(Intent(requireContext(), ActivityLogin::class.java))
+                startActivity(Intent(requireContext(), ActivityLogin::class.java).apply {
+                   flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                })
                 requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-                requireActivity().finish()
             } else {
                 viewModel.checkCookie()
             }
@@ -51,9 +53,10 @@ class SplashFragment : Fragment() {
         super.onViewStateRestored(savedInstanceState)
         viewModel.nieceSuccess.observe(viewLifecycleOwner, safeObserver {
             if (it) {
-                startActivity(Intent(requireContext(), ActivityHome::class.java))
+                startActivity(Intent(requireContext(), ActivityHome::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                })
                 requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-                requireActivity().finish()
                 Log.d("解析", "登录成功")
             } else {
                 Snackbar.make(requireView(), "非内测成员，请关注后续更新", Snackbar.LENGTH_INDEFINITE).apply {
@@ -77,10 +80,11 @@ class SplashFragment : Fragment() {
             }
         })
         viewModel.error.observe(viewLifecycleOwner, safeObserver {
-            startActivity(Intent(requireContext(), ActivityLogin::class.java))
+            startActivity(Intent(requireContext(), ActivityLogin::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            })
             requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
             requireContext().handleException(it)
-            requireActivity().finish()
         })
     }
 }
