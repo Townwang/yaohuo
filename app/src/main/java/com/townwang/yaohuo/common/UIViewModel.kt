@@ -21,7 +21,6 @@ open class UIViewModel : ViewModel() {
         runCatching {
             task()
         }.onFailure {
-            _loading.value = false
             _error.value = it
         }
         // hide ui loading if necessary

@@ -44,7 +44,7 @@ suspend fun <T : Niece> Call<T>.getUResp() =
         suspendCoroutine<T> {
             kotlin.runCatching {
                 val result = execute()
-                if (!isVpnUsed()) {
+                if (isVpnUsed().not()) {
                     if (result.isSuccessful) {
                         val body = result.body()
                         if (body != null) {
@@ -97,13 +97,14 @@ suspend fun <T : Document> Call<T>.getResp() = withContext(networkScope.coroutin
     suspendCoroutine<Document> {
         kotlin.runCatching {
             val result = execute()
-            if (!isVpnUsed()) {
+            if (isVpnUsed().not()) {
                 if (result.isSuccessful) {
                     val body = result.body()
-                    if (checkDoc(body, it)) {
+                    val throwable = checkDoc(body, it)
+                    if (throwable == null) {
                         it.resume(Jsoup.parse(body.toString()))
                     } else {
-                        it.resumeWithException(NullResponseBodyException())
+                        it.resumeWithException(throwable)
                     }
                 } else {
                     it.resumeWithException(NetworkFailureException(result.message()))
@@ -117,35 +118,29 @@ suspend fun <T : Document> Call<T>.getResp() = withContext(networkScope.coroutin
     }
 }
 
-fun checkDoc(document: Element?, it: Continuation<Document>): Boolean {
-    document ?: return false
+fun checkDoc(document: Element?, it: Continuation<Document>): Throwable? {
+    document ?: return null
     val doc = Jsoup.parse(document.toString())
-    when (doc.title()) {
-        "Error 404 (Not Found)" -> {
-            it.resumeWithException(ApiErrorException(999, "找不到此帖了。"))
-        }
-        "访问验证" -> {
-            it.resumeWithException(ApiErrorException(1001, "访问验证"))
-        }
+    if (doc.title().contains("Error 404 (Not Found)")) {
+        return ApiErrorException(999, "找不到此贴了!")
     }
-    when (doc.html()) {
-        "身份失效了，请重新登录网站" -> {
-            it.resumeWithException(ApiErrorException(1002, "身份失效了，请重新登录"))
-        }
-        "正在审核中" -> {
-            it.resumeWithException(ApiErrorException(1003, "帖子还在审核中.."))
-        }
-        "请输入您的密码" -> {
-            it.resumeWithException(ApiErrorException(1004, "IP已经更改，需要校验密码"))
-        }
+    if (doc.title().contains("访问验证")) {
+        return ApiErrorException(1001, "访问验证")
     }
-    when (doc.text()) {
-        "请先登录网站" -> {
-            it.resumeWithException(ApiErrorException(1002, "请先登录网站"))
-        }
-        "请开启JavaScript并刷新该页" -> {
-            it.resumeWithException(ApiErrorException(1002, "Cookie过期，需要重新登录"))
-        }
+    if (doc.html().contains("身份失效了，请重新登录网站")) {
+        return ApiErrorException(1002, "身份失效了，请重新登录网站")
     }
-    return true
+    if (doc.html().contains("正在审核中")) {
+        return ApiErrorException(1003, "正在审核中...")
+    }
+    if (doc.html().contains("请输入您的密码")) {
+        return ApiErrorException(1004, "IP已经更改，需要校验密码")
+    }
+    if (doc.html().contains("请先登录网站")) {
+        return ApiErrorException(1005, "请先登录网站")
+    }
+    if (doc.html().contains("请开启JavaScript并刷新该页")) {
+        return ApiErrorException(1006, "Cookie过期，需要重新登录")
+    }
+    return null
 }
