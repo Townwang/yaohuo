@@ -1,6 +1,7 @@
 package com.townwang.yaohuo.ui.fragment.login
 
 import androidx.lifecycle.MutableLiveData
+import com.townwang.yaohuo.BuildConfig.IS_STABLE
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.Repo
 
@@ -32,12 +33,17 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
         val resultPage = doc.body().html()
         when {
             resultPage.indexOf("登录成功") != -1 -> {
-//                _loginSuccess.value = isCrack
-                checkId()
+                if (IS_STABLE) {
+                    _loginSuccess.value = isCrack
+                } else {
+                    checkId()
+                }
             }
             resultPage.indexOf("密码错误") != -1 -> _loginPsdError.value = "密码错误"
-            resultPage.indexOf("用户ID/用户名/手机号不存！") != -1 -> _loginUserError.value = "用户ID/用户名/手机号不存在！"
-            resultPage.indexOf("登录失败次数超过10次了，请明天再来!") != -1 -> _loginError.value = "登录失败次数超过10次了，请明天再来!"
+            resultPage.indexOf("用户ID/用户名/手机号不存！") != -1 -> _loginUserError.value =
+                "用户ID/用户名/手机号不存在！"
+            resultPage.indexOf("登录失败次数超过10次了，请明天再来!") != -1 -> _loginError.value =
+                "登录失败次数超过10次了，请明天再来!"
             else -> _loginError.value = "未知异常"
         }
     }
@@ -47,7 +53,7 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
             val doc = repo.checkNice()
             val a = doc.select("div.top2").select(A_KEY)[1].attr(A_HREF)
             val result = repo.neice()
-            val trouserId = getParam(a,"touserid")
+            val trouserId = getParam(a, "touserid")
             result.data.forEach {
                 if (it.phone == trouserId) {
                     _neiceSuccess.value = isCrack

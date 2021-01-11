@@ -68,9 +68,11 @@ class SplashFragment : Fragment() {
         })
         viewModel.cookieSuccess.observe(viewLifecycleOwner, safeObserver {
             if (it) {
-//                startActivity(Intent(context, ActivityHome::class.java))
-//                activity?.overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-//                activity?.finish()
+                startActivity(Intent(requireContext(), ActivityHome::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                })
+                requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
+                Log.d("解析", "登录成功")
             } else {
                 Snackbar.make(requireView(), "请勿乱破解，谢谢！", Snackbar.LENGTH_INDEFINITE).apply {
                     setAction(android.R.string.ok) {
