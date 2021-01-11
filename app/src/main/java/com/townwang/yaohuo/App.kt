@@ -14,6 +14,7 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.tencent.bugly.Bugly
+import com.tencent.bugly.beta.Beta
 import com.townwang.yaohuo.common.isCrack
 import com.townwang.yaohuo.ui.weight.game.FunGameHitBlockHeader
 
@@ -35,6 +36,8 @@ class App : Application() {
             modules(koinModules)
         }
         Bugly.init(applicationContext, "56bf507146", false)
+        Beta.autoCheckUpgrade = true
+        Beta.upgradeCheckPeriod = 60 * 1000
         try {
             val a = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
             val b = a.signatures
