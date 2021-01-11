@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
@@ -16,6 +17,9 @@ import kotlinx.android.synthetic.main.fragment_about.*
 import com.canking.minipay.MiniPayUtils
 import com.canking.minipay.Config
 import com.google.android.material.snackbar.Snackbar
+import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
+import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
+import com.townwang.yaohuo.ui.activity.ActivityWebView
 
 
 class AboutFragment : Fragment() {
@@ -37,21 +41,29 @@ class AboutFragment : Fragment() {
         startAnimator(logoImage.drawable)
         versionName.text = BuildConfig.VERSION_NAME
         openSource.setOnClickListener {
-            val uri = Uri.parse("https://github.com/Townwang")
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(intent)
+            ActivityCompat.startActivity(
+                requireContext(), Intent(
+                    requireContext(), ActivityWebView::class.java
+                ).apply {
+                    putExtra(WEB_VIEW_URL_KEY,"https://github.com/Townwang")
+                    putExtra(WEB_VIEW_URL_TITLE,"Townwang")
+                },null)
         }
         pubWechat.setOnClickListener {
-            val uri = Uri.parse("https://mp.weixin.qq.com/s/QY_GNyihv1Zx1RGHus26fg")
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(intent)
+            ActivityCompat.startActivity(
+                requireContext(), Intent(
+                    requireContext(), ActivityWebView::class.java
+                ).apply {
+                    putExtra(WEB_VIEW_URL_KEY,"https://mp.weixin.qq.com/s/QY_GNyihv1Zx1RGHus26fg")
+                    putExtra(WEB_VIEW_URL_TITLE,"公众号：文科中的技术宅")
+                },null)
         }
         post.setOnClickListener {
             Snackbar.make(post, "暂未开贴", Snackbar.LENGTH_SHORT).show()
         }
         praise.setOnClickListener {
             MiniPayUtils.setupPay(
-                context,
+                requireContext(),
                 Config.Builder("fkx083710xkhl4xuxzpud4e", R.mipmap.alipay, R.mipmap.wechat).build()
             )
         }
@@ -59,7 +71,7 @@ class AboutFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-              activity?.onBackPressed()
+              requireActivity().onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)

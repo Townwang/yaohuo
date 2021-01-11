@@ -8,7 +8,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.ui.fragment.bbs.BBSFragment
-import com.townwang.yaohuo.ui.fragment.list.NesListFragment
+import com.townwang.yaohuo.ui.fragment.new.NesListFragment
+import com.townwang.yaohuo.ui.fragment.me.MeFragment
+import com.townwang.yaohuo.ui.fragment.send.SendFragment
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.appbar.*
 import kotlinx.android.synthetic.main.bottom_nav_view.*
@@ -30,12 +32,23 @@ class ActivityHome : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
         val newsFrag = NesListFragment()
-        val bbsFrag = BBSFragment()
         supportFragmentManager.beginTransaction()
             .replace(R.id.navHost,newsFrag)
             .commit()
         addFab.setOnClickListener {
-            Snackbar.make(appbarLayout,"正在开发...", Snackbar.LENGTH_SHORT).show()
+            val magTransaction = supportFragmentManager.beginTransaction()
+            val fragment = supportFragmentManager.findFragmentByTag("send frag")
+            if (fragment != null) {
+                magTransaction.remove(fragment)
+            }
+            val dialogFragment = SendFragment("正在开发...")
+//            dialogFragment.mDialogListener = { _, message ->
+////                loading = Loading("正在提交...").create()
+////                loading?.show()
+////                viewModel.reply(message, url)
+//                dialogFragment.dismiss()
+//            }
+            dialogFragment.show(supportFragmentManager, "send frag")
         }
         news.setOnClickListener {
             supportFragmentManager.beginTransaction()
@@ -44,14 +57,16 @@ class ActivityHome : AppCompatActivity() {
         }
         bbs.setOnClickListener {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.navHost, bbsFrag)
+                .replace(R.id.navHost, BBSFragment())
                 .commit()
         }
         game.setOnClickListener {
             Snackbar.make(appbarLayout,"正在开发...", Snackbar.LENGTH_SHORT).show()
         }
         me.setOnClickListener {
-            Snackbar.make(appbarLayout,"正在开发...", Snackbar.LENGTH_SHORT).show()
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.navHost, MeFragment())
+                    .commit()
         }
     }
 

@@ -1,0 +1,54 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:text="发布帖子"
+        android:textSize="@dimen/text12Size"
+        app:layout_constraintBottom_toBottomOf="@+id/send"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/send"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/send"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/button_blue_style"
+        android:text="发布"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="12dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text12Size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/comment_et"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="12dp"
+        android:background="@drawable/comment_dialog_et_selector"
+        android:gravity="left|top"
+        android:hint="正在开发..."
+        android:paddingStart="15dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="12dp"
+        android:textColor="#808080"
+        android:textColorHint="#929292"
+        android:textSize="@dimen/text14Size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/send"
+        tools:ignore="MissingConstraints,RtlHardcoded,RtlSymmetry" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.townwang.yaohuo.ui.fragment.list
+package com.townwang.yaohuo.ui.fragment.pub
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

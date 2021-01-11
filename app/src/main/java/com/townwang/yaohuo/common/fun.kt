@@ -26,11 +26,14 @@ import kotlinx.coroutines.launch
 import org.jsoup.Connection
 import android.view.Gravity
 import android.R.attr.gravity
+import android.annotation.SuppressLint
 import android.content.Context
+import android.util.TypedValue
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.android.tu.loadingdialog.LoadingDailog
+import com.townwang.yaohuo.BuildConfig
 import kotlinx.android.synthetic.main.appbar.*
 import java.net.NetworkInterface
 import java.net.SocketTimeoutException
@@ -52,7 +55,8 @@ inline fun <T> T?.work(block: T.() -> Unit) {
 
 fun <T> MutableLiveData<T>.asLiveData(): LiveData<T> = this
 
-fun <T> safeObserver(block: (value: T) -> Unit) = Observer<T> {
+fun <T> Fragment.safeObserver(block: (value: T) -> Unit) = Observer<T> {
+    if (!isAdded) return@Observer
     it ?: return@Observer
     block(it)
 }
@@ -157,7 +161,39 @@ fun Activity.Loading(text: String? = null): LoadingDailog.Builder {
         .setCancelOutside(false)
 }
 
+fun View.widthWithoutPadding() = width - _paddingStart() - _paddingEnd()
+fun View.heightWithoutPadding() = height - paddingTop - paddingBottom
 
+@SuppressLint("ObsoleteSdkInt")
+fun View._paddingStart() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+    paddingStart
+} else {
+    paddingLeft
+}
+
+@SuppressLint("ObsoleteSdkInt")
+fun View._paddingEnd() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+    paddingEnd
+} else {
+    paddingRight
+}
+
+fun Context.px2mm(px: Float): Float {
+    return px / resources.displayMetrics.xdpi * 25.4f
+}
+
+fun Context.dp(value: Float): Float {
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.displayMetrics)
+}
+
+fun Context.mm(value: Float): Float {
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, value, resources.displayMetrics)
+}
+
+
+fun Context.sp(value: Float): Float {
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, resources.displayMetrics)
+}
 fun Context.handleException(
     t: Throwable,
     onNetworkError: (() -> Unit)? = null,
@@ -204,5 +240,10 @@ fun getParam(url: String,name:String): String {
         }
     }
     return result
+}
+
+fun getUrlString(url:String): String {
+    return  if (url.contains("https://",true) || url.contains("http://",true))
+    { url } else { BuildConfig.BASE_YAOHUO_URL + url.substring(1,url.length) }
 }
 

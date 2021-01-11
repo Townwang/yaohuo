@@ -9,12 +9,13 @@
         <item name="colorControlNormal">@color/md_blue_50</item>
         <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
         <item name="windowActionBar">false</item>
+        <item name="android:typeface">serif</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
     </style>
 
-    <style name="BlueAppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
+    <style name="BlueAppTheme" parent="DefaultAppTheme">
         <item name="colorPrimary">@color/md_blue_A700</item>
         <item name="colorPrimaryDark">@color/md_blue_A700</item>
         <item name="colorAccent">@color/md_blue_500</item>
@@ -29,7 +30,7 @@
     </style>
 
 
-    <style name="RedAppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
+    <style name="RedAppTheme" parent="DefaultAppTheme">
         <item name="colorPrimary">@color/md_red_A700</item>
         <item name="colorPrimaryDark">@color/md_red_A700</item>
         <item name="colorAccent">@color/md_red_500</item>
@@ -44,7 +45,7 @@
     </style>
 
 
-    <style name="GreenAppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
+    <style name="GreenAppTheme" parent="DefaultAppTheme">
         <item name="colorPrimary">@color/md_green_A700</item>
         <item name="colorPrimaryDark">@color/md_green_A700</item>
         <item name="colorAccent">@color/md_green_500</item>
@@ -59,7 +60,7 @@
     </style>
 
 
-    <style name="PurpleAppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
+    <style name="PurpleAppTheme" parent="DefaultAppTheme">
         <item name="colorPrimary">@color/md_purple_A700</item>
         <item name="colorPrimaryDark">@color/md_purple_A700</item>
         <item name="colorAccent">@color/md_purple_500</item>
@@ -73,7 +74,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
     </style>
 
-    <style name="TealAppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
+    <style name="TealAppTheme" parent="DefaultAppTheme">
         <item name="colorPrimary">@color/md_teal_A700</item>
         <item name="colorPrimaryDark">@color/md_teal_A700</item>
         <item name="colorAccent">@color/md_teal_500</item>
@@ -87,7 +88,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
     </style>
 
-    <style name="LimeAppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
+    <style name="LimeAppTheme" parent="DefaultAppTheme">
         <item name="colorPrimary">@color/md_lime_A700</item>
         <item name="colorPrimaryDark">@color/md_lime_A700</item>
         <item name="colorAccent">@color/md_lime_500</item>
@@ -118,6 +119,16 @@
         <item name="colorControlNormal">@color/white</item><!--默认显示下划线的颜色-->
         <item name="colorControlActivated">#F5F5F5</item><!--点击后下划线的颜色-->
         <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="button_blue_style">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">@drawable/button_blue_background</item>
+        <item name="android:minWidth">5dp</item>
+        <item name="android:minHeight">5dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:height">30dp</item>
     </style>
 
 </resources>

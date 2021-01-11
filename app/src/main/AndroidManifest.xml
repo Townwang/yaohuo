@@ -45,6 +45,7 @@
         <activity android:name=".ui.activity.ActivityAbout"/>
         <activity android:name=".ui.activity.ActivityList"/>
         <activity android:name=".ui.activity.ActivityDetails"/>
+        <activity android:name=".ui.activity.ActivityWebView"/>
     </application>
 
 </manifest>

@@ -5,14 +5,13 @@
         xmlns:pv="http://schemas.android.com/apk/res-auto"
         android:background="?colorPrimary"
         android:fitsSystemWindows="true">
-    <me.wangyuwei.particleview.ParticleView
+    <com.townwang.yaohuo.ui.weight.wlc.ParticleView
             android:id="@+id/mParticleView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             pv:pv_background_color="?colorPrimary"
             pv:pv_host_text="蓝火"
             pv:pv_host_text_size="50sp"
-            pv:pv_particle_text="1.0"
             pv:pv_particle_text_size="20sp"
             pv:pv_text_color="@color/white"
             pv:pv_text_anim_time="1000"

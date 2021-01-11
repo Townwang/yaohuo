@@ -5,9 +5,9 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface Api {
-    @Headers("url_name:town")
-    @GET("app/json/yaohuo/neice.do")
-    fun neice(): Call<Niece>
+    @Headers("url_name:cn")
+    @GET("neice.do")
+    fun niece(): Call<Niece>
     /**
      * check bbs
      */
@@ -47,7 +47,7 @@ interface Api {
         @Query("page") page: String,
         @Query("action") action: String? = "new",
         @Query("siteId") siteId: String? = "1000",
-        @Query("getTotal") getTotal: String? = "2020"
+        @Query("getTotal") getTotal: String? = "2021"
     ): Call<Document>
     /**
      * 评论 [页码,帖子ID,栏目ID]
@@ -59,6 +59,12 @@ interface Api {
         @Query("classId") classId: String,
         @Query("ot") ot: String
     ): Call<Document>
+
+    /**
+     * 我的
+     */
+    @GET("myfile.aspx")
+    fun getMe(): Call<Document>
 
 
 }

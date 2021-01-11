@@ -39,7 +39,7 @@ class ThemeFragment : Fragment() {
         themeList.adapter = adapter
         themeList.layoutManager = LinearLayoutManager(context)
         adapter.onItemClickListener = { _, data ->
-            activity?.work {
+            requireActivity().work {
                 reload(config(THEME_KEY,(data as ThemeList).id.toString()))
             }
         }
@@ -49,7 +49,7 @@ class ThemeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                activity?.onBackPressed()
+                requireActivity().onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)

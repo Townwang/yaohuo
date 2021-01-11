@@ -219,7 +219,7 @@
     >
         <TextView
                 android:id="@+id/reply"
-                android:textSize="@dimen/text16Size"
+                android:textSize="@dimen/text14Size"
                 android:paddingStart="20dp"
                 android:text="写回复"
                 android:drawablePadding="5dp"

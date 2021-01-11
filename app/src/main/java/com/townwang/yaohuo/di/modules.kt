@@ -9,8 +9,9 @@ import com.townwang.yaohuo.di.interceptor.NetCookiesInterceptor
 import com.townwang.yaohuo.di.interceptor.SaveCookiesInterceptor
 import com.townwang.yaohuo.repo.Repo
 import com.townwang.yaohuo.ui.fragment.details.DetailsModel
-import com.townwang.yaohuo.ui.fragment.list.ListModel
+import com.townwang.yaohuo.ui.fragment.pub.ListModel
 import com.townwang.yaohuo.ui.fragment.login.LoginModel
+import com.townwang.yaohuo.ui.fragment.me.MeModel
 import com.townwang.yaohuo.ui.fragment.splash.SplashModel
 import com.townwang.yaohuo.ui.fragment.theme.ThemeModel
 import okhttp3.OkHttpClient
@@ -65,6 +66,7 @@ private val viewModelModule = module {
     viewModel { ThemeModel() }
     viewModel { DetailsModel(get()) }
     viewModel { SplashModel(get()) }
+    viewModel { MeModel(get()) }
 
 }
 

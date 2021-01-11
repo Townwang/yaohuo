@@ -8,24 +8,24 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import cn.droidlover.xrichtext.XRichText
 import com.android.tu.loadingdialog.LoadingDailog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
-import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.data.CommentData
-import com.townwang.yaohuo.ui.weight.CommentDialogFragment
+import com.townwang.yaohuo.ui.activity.ActivityWebView
+import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
+import com.townwang.yaohuo.ui.weight.commit.CommentDialogFragment
 import kotlinx.android.synthetic.main.fragment_details.*
+import kotlinx.android.synthetic.main.fragment_details.refreshLayout
 import kotlinx.android.synthetic.main.view_download_style.view.*
 import kotlinx.android.synthetic.main.view_image_style.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -42,7 +42,11 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_details, container, false)
     }
 
@@ -82,7 +86,8 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
             if (fragment != null) {
                 mfragTransaction.remove(fragment)
             }
-            val dialogFragment = CommentDialogFragment.newInstance("请不要乱打字回复，以免被加黑。")
+            val dialogFragment =
+                CommentDialogFragment("请不要乱打字回复，以免被加黑。")
             dialogFragment.mDialogListener = { _, message ->
                 loading = Loading("正在提交...").create()
                 loading?.show()
@@ -116,161 +121,131 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
 
         adapter.onItemClickListener = { v, d ->
             val data = d as CommentData
-            if (getParam(d.url, "touserid") != viewModel.touserid){
-                val mfragTransaction = parentFragmentManager.beginTransaction()
-                val fragment = parentFragmentManager.findFragmentByTag("input frag")
+            if (getParam(d.url, "touserid") != config(TROUSER_KEY)) {
+                val magTransaction = childFragmentManager.beginTransaction()
+                val fragment = childFragmentManager.findFragmentByTag("input frag")
                 if (fragment != null) {
-                    mfragTransaction.remove(fragment)
+                    magTransaction.remove(fragment)
                 }
-                val dialogFragment = CommentDialogFragment.newInstance("回复：${data.auth}")
+                val dialogFragment = CommentDialogFragment("回复：${data.auth}")
                 dialogFragment.mDialogListener = { _, msg ->
                     loading = Loading("正在提交...").create()
                     loading?.show()
                     viewModel.reply(msg, d.url, d.floor.toString(), getParam(d.url, "touserid"))
                     dialogFragment.dismiss()
                 }
-                dialogFragment.show(parentFragmentManager, "input frag")
-            }else{
+                dialogFragment.show(childFragmentManager, "input frag")
+            } else {
                 context?.toast("不能给自己回复！")
             }
         }
     }
 
+    @SuppressLint("InflateParams")
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        viewModel.title.observe(requireActivity(), Observer {
-            it ?: return@Observer
+        viewModel.title.observe(viewLifecycleOwner, safeObserver {
             title.text = it
             title.visibility = View.VISIBLE
         })
-        viewModel.time.observe(requireActivity(), Observer {
-            it ?: return@Observer
+        viewModel.time.observe(viewLifecycleOwner, safeObserver {
             time.text = it
             read_num.visibility = View.VISIBLE
             read_num.text = read.split(" ").first()
         })
-        viewModel.name.observe(requireActivity(), Observer {
-            it ?: return@Observer
+        viewModel.name.observe(viewLifecycleOwner, safeObserver {
             constraintLayout.visibility = View.VISIBLE
             userName.text = it
         })
-        viewModel.online.observe(requireActivity(), Observer {
-            it ?: return@Observer
+        viewModel.online.observe(viewLifecycleOwner, safeObserver {
             constraintLayout.visibility = View.VISIBLE
             if (it) {
                 online.text = "在线"
-                online.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_blue_10)
+                online.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.background_blue_10)
             } else {
                 online.text = "离线"
-                online.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_grey_10)
+                online.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.background_grey_10)
             }
         })
-        viewModel.giftMoney.observe(requireActivity(), Observer {
-            it ?: return@Observer
+        viewModel.giftMoney.observe(viewLifecycleOwner, safeObserver {
             //肉
             linearTop.visibility = View.VISIBLE
             icon.text = "肉"
-            icon.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
+            icon.background =
+                ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
             subtitle.text = it
         })
-        viewModel.reward.observe(requireActivity(), Observer {
-            it ?: return@Observer
+        viewModel.reward.observe(viewLifecycleOwner, safeObserver {
             //悬赏
             linearTop.visibility = View.VISIBLE
             icon.text = "赏"
-            icon.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
+            icon.background =
+                ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
             subtitle.text = it
         })
-        viewModel.content.observe(requireActivity(), Observer {
-            it ?: return@Observer
-            val textView = XRichText(context)
-            val params = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            textView.layoutParams = params
-            textView.setTextIsSelectable(true)
-            textView.textSize = 18.0f
-            textView.callback(object : XRichText.BaseClickCallback() {
-                override fun onLinkClick(url: String?): Boolean {
-                    url ?: return true
-                    val uri = Uri.parse(url)
-                    val intent = Intent(Intent.ACTION_VIEW, uri)
-                    startActivity(intent)
-                    return true
-                }
-                override fun onImageClick(urlList: MutableList<String>?, position: Int) {
-                    super.onImageClick(urlList, position)
-                    context?.toast("图片而已，别瞎几把点了")
-                }
-            }).imageDownloader { url ->
-                Glide.with(requireContext())
-                    .asBitmap()
-                    .load(BuildConfig.BASE_YAOHUO_URL+url)
-                    .submit().get()
-            }.text(it)
-            list_content.addView(textView)
+        viewModel.content.observe(viewLifecycleOwner, safeObserver {
+            list_content.addView(WebViewHelper(requireContext()).apply {
+                shouldOverrideUrlLoading = true
+            }.setHtmlCode(it))
         })
-        viewModel.image.observe(requireActivity(), Observer {
-            it ?: return@Observer
-            val contentImg = LayoutInflater.from(requireContext()).inflate(R.layout.view_image_style, null)
+        viewModel.image.observe(viewLifecycleOwner, safeObserver {
+            val contentImg =
+                LayoutInflater.from(requireContext()).inflate(R.layout.view_image_style, null)
             list_content.addView(contentImg)
             Glide.with(requireContext())
-                .load(BuildConfig.BASE_YAOHUO_URL+it)
+                .load(getUrlString(it))
                 .apply(RequestOptions.noTransformation())
                 .into(contentImg.image)
         })
-        viewModel.avatar.observe(requireActivity(), Observer {
-            it ?: return@Observer
+        viewModel.avatar.observe(viewLifecycleOwner, safeObserver {
             Glide.with(requireContext())
-                .load(BuildConfig.BASE_YAOHUO_URL+it)
+                .load(getUrlString(it))
                 .apply(RequestOptions.bitmapTransform(CircleCrop()))
                 .into(userImg)
         })
-        viewModel.download.observe(requireActivity(), Observer {
-            it ?: return@Observer
-            val contentLoad = LayoutInflater.from(requireContext()).inflate(R.layout.view_download_style, null)
+        viewModel.download.observe(viewLifecycleOwner, safeObserver {
+            val contentLoad =
+                LayoutInflater.from(requireContext()).inflate(R.layout.view_download_style, null)
             contentLoad.downloadName.text = it[0].replace("\n", "")
+
             contentLoad.downloadUrl.setOnClickListener { _ ->
                 val uri = Uri.parse(Uri.encode(it[1], "-![.:/,%?&=]"))
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                startActivity(intent)
+                ActivityCompat.startActivity(
+                    requireContext(), Intent(
+                        requireContext(), ActivityWebView::class.java
+                    ).apply {
+                        putExtra(WEB_VIEW_URL_KEY,uri.toString())
+                        putExtra(WEB_VIEW_URL_TITLE,title.text.toString())
+                    },null)
             }
             list_content.addView(contentLoad)
         })
-        viewModel.commentPraise.observe(requireActivity(), Observer {
-            it ?: return@Observer
+        viewModel.commentPraise.observe(viewLifecycleOwner, safeObserver {
             praise_value.text = it
         })
-        viewModel.commentSize.observe(requireActivity(), Observer {
-            it ?: return@Observer
+        viewModel.commentSize.observe(viewLifecycleOwner, safeObserver {
             if (page == 1 && ot == 0) {
                 comment_value.text = it
             }
         })
-        viewModel.commentLists.observe(requireActivity(), Observer {
-            it ?: return@Observer
+        viewModel.commentLists.observe(viewLifecycleOwner, safeObserver {
             comment_tip.visibility = View.VISIBLE
             view_grey.visibility = View.VISIBLE
             @Suppress("UNCHECKED_CAST")
             adapter.datas = it as ArrayList<CommentData>
         })
-        viewModel.loading.observe(requireActivity(), safeObserver {
-            it ?: return@safeObserver
+        viewModel.loading.observe(viewLifecycleOwner, safeObserver {
             if (!it) {
-                if (page == 1) {
-                    refreshLayout.finishRefresh()
-                } else {
-                    refreshLayout.finishLoadMore()
-                }
+                refreshDone(true)
             }
         })
-        viewModel.error.observe(requireActivity(), safeObserver {
-            it ?: return@safeObserver
-            context?.handleException(it)
+        viewModel.error.observe(viewLifecycleOwner, safeObserver {
+            refreshDone(false)
+            requireContext().handleException(it)
         })
-        viewModel.commentSuccess.observe(requireActivity(), safeObserver {
-            it ?: return@safeObserver
+        viewModel.commentSuccess.observe(viewLifecycleOwner, safeObserver {
             loading?.dismiss()
             if (it) {
                 page = 1
@@ -284,13 +259,23 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
         })
         viewModel.getDetails(url)
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                activity?.onBackPressed()
+                requireActivity().onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun refreshDone(success: Boolean) {
+        refreshLayout?:return
+        if (page == 1) {
+            refreshLayout.finishRefresh(success)
+        } else {
+            refreshLayout.finishLoadMore(success)
         }
     }
 }
