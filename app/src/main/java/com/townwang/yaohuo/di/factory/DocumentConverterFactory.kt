@@ -1,6 +1,6 @@
 package com.townwang.yaohuo.di.factory
 
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
@@ -42,6 +42,6 @@ class DocumentConverterFactory : Converter.Factory() {
 
     companion object {
         private val MEDIA_TYPE =
-            MediaType.parse("text/html; charset=utf-8")
+            "text/html; charset=utf-8".toMediaTypeOrNull()
     }
 }
