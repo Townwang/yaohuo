@@ -4,6 +4,7 @@
     <string name="home_news">最新</string>
     <string name="list_details">帖子详情</string>
     <string name="home_bbs">论坛</string>
+    <string name="home_me">我的</string>
     <string name="login_name">登录妖火</string>
     <string name="send_cmd">下发指令</string>
     <string name="about">关于</string>
@@ -21,4 +22,21 @@
     <string name="bbs_quest_answer">悬赏问答</string>
     <string name="bbs_textured_photo">贴图晒照</string>
     <string name="massage">消息</string>
+
+    <string name="fgh_mask_top_pull">下拉开始游戏!</string>
+    <string name="fgh_mask_top_release">释放立刻开始!</string>
+    <string name="fgh_mask_bottom">上下滑动控制游戏</string>
+    <string name="fgh_text_game_over">游戏结束</string>
+    <string name="fgh_text_loading">玩个游戏解解闷</string>
+    <string name="fgh_text_loading_finish">刷新完成</string>
+    <string name="fgh_text_loading_failed">刷新失败</string>
+
+    <string name="my_id">我的ID</string>
+    <string name="my_demon_crystal">我的妖晶</string>
+    <string name="bank_savings">银行存款</string>
+    <string name="my_experience">我的经验</string>
+    <string name="rank">我的等级</string>
+    <string name="my_title">我的头衔</string>
+    <string name="my_identity">我的身份</string>
+    <string name="management_authority">管理权限</string>
 </resources>

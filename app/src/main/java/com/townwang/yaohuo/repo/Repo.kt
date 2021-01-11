@@ -12,7 +12,7 @@ class Repo constructor(
     private val api: Api
 ) {
     suspend fun neice() = withRepoContext {
-        val bbs = api.neice()
+        val bbs = api.niece()
         bbs.getUResp()
     }
 
@@ -106,8 +106,12 @@ class Repo constructor(
         }
     val con = Jsoup.connect("${BuildConfig.BASE_YAOHUO_URL}/bbs/book_re.aspx")
     con.ignoreContentType(true).method(Connection.Method.POST)
-        .data(data)
-        .execute()
+        .data(data).execute()
     con.get()
+    }
+
+    suspend fun getMe(): Document = withRepoContext {
+        val me = api.getMe()
+        me.getResp()
     }
 }

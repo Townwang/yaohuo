@@ -1,4 +1,4 @@
-package com.townwang.yaohuo.ui.fragment.list
+package com.townwang.yaohuo.ui.fragment.pub
 
 import android.content.Intent
 import android.os.Bundle
@@ -16,13 +16,13 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.data.HomeData
 import com.townwang.yaohuo.ui.activity.ActivityDetails
-import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.fragment_list_pub.*
 import kotlinx.android.synthetic.main.item_list_data.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PubListFragment(private  val classId: Int,private val bbsTitle:String) : Fragment() {
-    private val adapter = ListAdapter()
+class PubListFragment(private val classId: Int, private val bbsTitle: String) : Fragment() {
+    private val adapter = PubListAdapter()
     private val viewModel: ListModel by viewModel()
 
     private var page: Int = 1
@@ -32,7 +32,7 @@ class PubListFragment(private  val classId: Int,private val bbsTitle:String) : F
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_list, container, false)
+        return inflater.inflate(R.layout.fragment_list_pub, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,27 +40,27 @@ class PubListFragment(private  val classId: Int,private val bbsTitle:String) : F
         (activity as AppCompatActivity).work {
             supportActionBar.work {
                 title = bbsTitle
-                setDisplayHomeAsUpEnabled(true)
+                setDisplayHomeAsUpEnabled(classId != 0)
             }
         }
         homeList.adapter = adapter
         homeList.layoutManager =
-            (StaggeredGridLayoutManager(
-                config(HOME_LIST_THEME_SHOW).toInt(),
-                StaggeredGridLayoutManager.VERTICAL
-            ))
+                (StaggeredGridLayoutManager(
+                        config(HOME_LIST_THEME_SHOW).toInt(),
+                        StaggeredGridLayoutManager.VERTICAL
+                ))
         adapter.onItemClickListener = { v, data ->
             val d = data as HomeData
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                requireActivity(), v.title, "share name"
+                    requireActivity(), v.title, "share name"
             ).toBundle()
             ActivityCompat.startActivity(
-                requireContext(), Intent(
+                    requireContext(), Intent(
                     requireContext(), ActivityDetails::class.java
-                ).apply {
-                    putExtra(HOME_DETAILS_URL_KEY, d.a)
-                    putExtra(HOME_DETAILS_READ_KEY, d.read)
-                }, bundle
+            ).apply {
+                putExtra(HOME_DETAILS_URL_KEY, d.a)
+                putExtra(HOME_DETAILS_READ_KEY, d.read)
+            }, bundle
             )
         }
         refreshLayout.setOnRefreshListener {
@@ -76,33 +76,39 @@ class PubListFragment(private  val classId: Int,private val bbsTitle:String) : F
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        viewModel.listDates.observe(requireActivity(), Observer {
-            it ?: return@Observer
+        viewModel.listDates.observe(viewLifecycleOwner, safeObserver {
             if (page == 1) {
                 adapter.datas.clear()
             }
             adapter.datas = it as ArrayList<HomeData>
         })
-        viewModel.loading.observe(requireActivity(), safeObserver {
+        viewModel.loading.observe(viewLifecycleOwner, safeObserver {
             if (!it) {
-                if (page == 1) {
-                    refreshLayout.finishRefresh()
-                }else {
-                    refreshLayout.finishLoadMore()
-                }
+                refreshDone(true)
             }
         })
-        viewModel.error.observe(requireActivity(), safeObserver {
-            context?.handleException(it)
+        viewModel.error.observe(viewLifecycleOwner, safeObserver {
+            refreshDone(false)
+            requireContext().handleException(it)
         })
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                activity?.onBackPressed()
+                requireActivity().onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun refreshDone(success: Boolean) {
+        refreshLayout?:return
+        if (page == 1) {
+            refreshLayout.finishRefresh(success)
+        } else {
+            refreshLayout.finishLoadMore(success)
         }
     }
 }

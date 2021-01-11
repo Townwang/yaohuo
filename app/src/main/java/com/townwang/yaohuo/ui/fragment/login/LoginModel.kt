@@ -9,11 +9,13 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
     private val _loginError = MutableLiveData<String>()
     private val _loginUserError = MutableLiveData<String>()
     private val _loginPsdError = MutableLiveData<String>()
+    private val _trouser = MutableLiveData<String>()
 
     val loginUserError = _loginUserError.asLiveData()
     val loginPsdError = _loginPsdError.asLiveData()
     val loginSuccess = _loginSuccess.asLiveData()
     val loginError = _loginError.asLiveData()
+    val trouser = _trouser.asLiveData()
 
     private val _neiceSuccess = MutableLiveData<Boolean>()
     val neiceSuccess = _neiceSuccess.asLiveData()
@@ -45,9 +47,11 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
             val doc = repo.checkNice()
             val a = doc.select("div.top2").select(A_KEY)[1].attr(A_HREF)
             val result = repo.neice()
+            val trouserId = getParam(a,"touserid")
             result.data.forEach {
-                if (it.phone == getParam(a,"touserid")) {
+                if (it.phone == trouserId) {
                     _neiceSuccess.value = isCrack
+                    _trouser.value = trouserId
                     return@launchTask
                 }
             }

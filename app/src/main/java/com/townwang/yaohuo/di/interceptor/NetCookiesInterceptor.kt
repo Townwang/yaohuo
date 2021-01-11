@@ -20,6 +20,9 @@ class NetCookiesInterceptor : Interceptor {
                 "town" -> {
                     HttpUrl.parse(BuildConfig.BASE_URL)
                 }
+                "cn" -> {
+                    HttpUrl.parse(BuildConfig.CN_URL)
+                }
                 else -> {
                     builder.addHeader(
                         "Accept",
@@ -31,7 +34,10 @@ class NetCookiesInterceptor : Interceptor {
                     builder.addHeader("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
                     builder.addHeader("Cache-Control", "max-age=0")
                     builder.addHeader("Connection", "keep-alive")
-                    builder.addHeader("user-agent", "Opera/9.80 (Windows NT 6.0) Presto/2.12.388 Version/12.14")
+                    builder.addHeader(
+                        "user-agent",
+                        "Opera/9.80 (Windows NT 6.0) Presto/2.12.388 Version/12.14"
+                    )
                     HttpUrl.parse(BuildConfig.BASE_YAOHUO_URL)
                 }
             }

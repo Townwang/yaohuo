@@ -17,7 +17,6 @@ import java.util.regex.Pattern.DOTALL
 class DetailsModel(private val repo: Repo) : UIViewModel() {
     var url: String = ""
     var docData: Document? = null
-    var touserid = ""
     private val _content = MutableLiveData<String>()
     private val _commentLists = MutableLiveData<List<CommentData>>()
     private val _image = MutableLiveData<String>()
@@ -135,7 +134,6 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         val userName = user.select(A_KEY).first()
         _name.value = userName.ownText()
         val handUrl = userName.attr(A_HREF)
-        touserid = getParam(handUrl, "touserid")
         getAvatar(handUrl)
         val online = user.select(IMG_GIF).after(IMG_ALT)
         _online.value = online.first().attr(IMG_ALT) == "ONLINE"

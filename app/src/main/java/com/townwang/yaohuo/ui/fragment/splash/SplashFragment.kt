@@ -36,31 +36,34 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mParticleView.startAnim()
-        mParticleView.setOnParticleAnimListener {
-            checkUpdate()
+        mParticleView.mParticleAnimListener = {
+            if (isCookieBoolean()) {
+                startActivity(Intent(requireContext(), ActivityLogin::class.java))
+                requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
+                requireActivity().finish()
+            } else {
+                viewModel.checkCookie()
+            }
         }
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         viewModel.nieceSuccess.observe(viewLifecycleOwner, safeObserver {
-            it ?: return@safeObserver
             if (it) {
-//                startActivity(Intent(context, ActivityLogin::class.java))
-                startActivity(Intent(context, ActivityHome::class.java))
-                activity?.overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-                activity?.finish()
+                startActivity(Intent(requireContext(), ActivityHome::class.java))
+                requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
+                requireActivity().finish()
                 Log.d("解析", "登录成功")
             } else {
                 Snackbar.make(requireView(), "非内测成员，请关注后续更新", Snackbar.LENGTH_INDEFINITE).apply {
                     setAction(android.R.string.ok) {
-                        activity?.finish()
+                        requireActivity().finish()
                     }
                 }.show()
             }
         })
-        viewModel.cookieSuccess.observe(viewLifecycleOwner, Observer {
-            it ?: return@Observer
+        viewModel.cookieSuccess.observe(viewLifecycleOwner, safeObserver {
             if (it) {
 //                startActivity(Intent(context, ActivityHome::class.java))
 //                activity?.overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
@@ -68,28 +71,16 @@ class SplashFragment : Fragment() {
             } else {
                 Snackbar.make(requireView(), "请勿乱破解，谢谢！", Snackbar.LENGTH_INDEFINITE).apply {
                     setAction(android.R.string.ok) {
-                        activity?.finish()
+                        requireActivity().finish()
                     }
                 }.show()
             }
         })
         viewModel.error.observe(viewLifecycleOwner, safeObserver {
-            startActivity(Intent(context, ActivityLogin::class.java))
-            activity?.overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-            context?.handleException(it)
-            activity?.finish()
+            startActivity(Intent(requireContext(), ActivityLogin::class.java))
+            requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
+            requireContext().handleException(it)
+            requireActivity().finish()
         })
-    }
-
-    private fun checkUpdate() {
-                    if (isCookieBoolean()) {
-                        startActivity(Intent(context, ActivityLogin::class.java))
-                        activity?.overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-                        activity?.finish()
-                    } else {
-                        viewModel.checkCookie()
-                    }
-                    Log.d("pgyer", "there is no new version")
-
     }
 }

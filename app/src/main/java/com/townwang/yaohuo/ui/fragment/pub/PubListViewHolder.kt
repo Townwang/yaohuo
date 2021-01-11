@@ -1,4 +1,4 @@
-package com.townwang.yaohuo.ui.fragment.list
+package com.townwang.yaohuo.ui.fragment.pub
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -10,10 +10,10 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.repo.data.HomeData
 import kotlinx.android.synthetic.main.item_list_data.view.*
 
-class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class PubListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     companion object {
-        fun create(parent: ViewGroup): ListViewHolder {
-            return ListViewHolder(
+        fun create(parent: ViewGroup): PubListViewHolder {
+            return PubListViewHolder(
                 LayoutInflater.from(parent.context).inflate(R.layout.item_list_data, parent, false)
             )
         }

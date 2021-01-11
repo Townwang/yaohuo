@@ -8,13 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import cn.droidlover.xrichtext.XRichText
 import com.bumptech.glide.Glide
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.startAnimator
-import com.townwang.yaohuo.common.toast
+import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.data.CommentData
+import com.townwang.yaohuo.ui.activity.ActivityWebView
+import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.item_comment_data.view.*
 
 class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -29,35 +32,42 @@ class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     @SuppressLint("SetTextI18n")
     fun bind(data: CommentData) {
         Log.d("解析", "评论：$data")
-        itemView.auth.text(data.auth)
-        itemView.floor.text = "${data.floor}楼"
-        itemView.reward.text = data.b
-        itemView.comment_tv.callback(object : XRichText.BaseClickCallback() {
+        itemView.apply {
+            auth.text(data.auth)
+            floor.text = "${data.floor}楼"
+            reward.text = data.b
+            comment_tv.callback(object : XRichText.BaseClickCallback() {
 
-            override fun onLinkClick(url: String?): Boolean {
-                url ?: return true
-                val uri = Uri.parse(url)
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                itemView.context?.startActivity(intent)
-                return true
-            }
+                override fun onLinkClick(url: String?): Boolean {
+                    url ?: return true
+                    val uri = Uri.parse(url)
+                    ActivityCompat.startActivity(
+                        itemView.context, Intent(
+                            itemView.context, ActivityWebView::class.java
+                        ).apply {
+                            putExtra(WEB_VIEW_URL_KEY,uri.toString())
+                            putExtra(WEB_VIEW_URL_TITLE,data.auth)
+                        },null)
+                    return true
+                }
 
-            override fun onImageClick(urlList: MutableList<String>?, position: Int) {
-                super.onImageClick(urlList, position)
-                itemView.context?.toast("图片而已，别瞎几把点了")
-            }
-            override fun onFix(holder: XRichText.ImageHolder?) {
-                super.onFix(holder)
-                holder?.style = XRichText.Style.LEFT
-            }
-        }).imageDownloader { url ->
-            Glide.with(itemView.context)
-                .asBitmap()
-                .load(url)
-                .submit().get()
-        }.text(data.content + " <font color='#BDBDBD'>${data.time}</font>")
-        getAvatar(data.avatar, itemView.userImg)
-        startAnimator(itemView.userImg.drawable)
+                override fun onImageClick(urlList: MutableList<String>?, position: Int) {
+                    super.onImageClick(urlList, position)
+                    context?.toast("图片而已，别瞎几把点了")
+                }
+                override fun onFix(holder: XRichText.ImageHolder?) {
+                    super.onFix(holder)
+                    holder?.style = XRichText.Style.LEFT
+                }
+            }).imageDownloader { url ->
+                Glide.with(context)
+                    .asBitmap()
+                    .load(getUrlString(url))
+                    .submit().get()
+            }.text(data.content + " <font color='#BDBDBD'>${data.time}</font>")
+            getAvatar(data.avatar, userImg)
+            startAnimator(userImg.drawable)
+        }
     }
 
     private fun getAvatar(handUrl: String, img: ImageView) {

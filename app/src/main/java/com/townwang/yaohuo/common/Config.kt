@@ -4,6 +4,7 @@ package com.townwang.yaohuo.common
 const val THEME_KEY = "theme key"
 const val HOME_LIST_THEME_SHOW = "home list theme show"
 const val COOKIE_KEY = "cookie cache"
+const val TROUSER_KEY = "trouser id"
 
 /***********************************************异常信息*******************************************/
 class ResponseNullPointerException : Exception("服务器异常")
@@ -38,6 +39,8 @@ const val NEW_LIST_TIME = "span.right"
 
 //跳转携带参数
 const val HOME_DETAILS_URL_KEY = "home details url key"
+const val WEB_VIEW_URL_KEY = "web view url key"
+const val WEB_VIEW_URL_TITLE = "web view url title"
 const val HOME_DETAILS_READ_KEY = "home details read key"
 const val LIST_CLASS_ID_KEY = "list class id key"
 const val LIST_BBS_NAME_KEY = "list bbs name key"

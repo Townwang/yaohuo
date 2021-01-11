@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.util.Log
 import androidx.multidex.MultiDex
 import com.scwang.smart.refresh.footer.ClassicsFooter
-import com.scwang.smart.refresh.header.ClassicsHeader
 import com.townwang.yaohuo.di.koinModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -16,6 +15,7 @@ import org.koin.core.logger.Level
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.tencent.bugly.Bugly
 import com.townwang.yaohuo.common.isCrack
+import com.townwang.yaohuo.ui.weight.game.FunGameHitBlockHeader
 
 @Suppress("DEPRECATION")
 class App : Application() {
@@ -34,7 +34,7 @@ class App : Application() {
             androidLogger(Level.INFO)
             modules(koinModules)
         }
-        Bugly.init(applicationContext, "56bf507146", false);
+        Bugly.init(applicationContext, "56bf507146", false)
         try {
             val a = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
             val b = a.signatures
@@ -67,7 +67,7 @@ class App : Application() {
             layout.setEnableRefresh(true)
             layout.autoRefresh()
             layout.setEnableHeaderTranslationContent(true)
-            ClassicsHeader(context)
+            FunGameHitBlockHeader(context)
         }
         SmartRefreshLayout.setDefaultRefreshFooterCreator { context, _ ->
             ClassicsFooter(context)
