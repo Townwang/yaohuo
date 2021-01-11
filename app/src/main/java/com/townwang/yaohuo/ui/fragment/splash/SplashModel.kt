@@ -1,6 +1,7 @@
 package com.townwang.yaohuo.ui.fragment.splash
 
 import androidx.lifecycle.MutableLiveData
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.Repo
 
@@ -13,8 +14,11 @@ class SplashModel(private val repo: Repo) : UIViewModel() {
 
     fun checkCookie() = launchTask {
         repo.cookie()
-        _cookieSuccess.value = isCrack
-        checkId()
+        if (BuildConfig.IS_STABLE) {
+            _cookieSuccess.value = isCrack
+        } else {
+            checkId()
+        }
     }
     private fun checkId() = launchTask {
         try {
