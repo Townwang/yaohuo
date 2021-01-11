@@ -2,6 +2,7 @@ package com.townwang.yaohuo.di.interceptor
 
 import com.townwang.yaohuo.BuildConfig
 import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
@@ -11,17 +12,17 @@ class NetCookiesInterceptor : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        val oldUrl: HttpUrl = request.url()
+        val oldUrl: HttpUrl = request.url
         val builder = request.newBuilder()
         val headerValues = request.headers("url_name")
         return if (headerValues.isNotEmpty()) {
             builder.removeHeader("url_name")
             val newBaseUrl = when (headerValues[0]) {
                 "town" -> {
-                    HttpUrl.parse(BuildConfig.BASE_URL)
+                    BuildConfig.BASE_URL.toHttpUrlOrNull()
                 }
                 "cn" -> {
-                    HttpUrl.parse(BuildConfig.CN_URL)
+                    BuildConfig.CN_URL.toHttpUrlOrNull()
                 }
                 else -> {
                     builder.addHeader(
@@ -38,16 +39,16 @@ class NetCookiesInterceptor : Interceptor {
                         "user-agent",
                         "Opera/9.80 (Windows NT 6.0) Presto/2.12.388 Version/12.14"
                     )
-                    HttpUrl.parse(BuildConfig.BASE_YAOHUO_URL)
+                    BuildConfig.BASE_YAOHUO_URL.toHttpUrlOrNull()
                 }
             }
-            val newUrl = newBaseUrl?.port()?.let {
-                oldUrl.newBuilder().scheme(newBaseUrl.scheme())
-                    .host(newBaseUrl.host())
+            val newUrl = newBaseUrl?.port?.let {
+                oldUrl.newBuilder().scheme(newBaseUrl.scheme)
+                    .host(newBaseUrl.host)
                     .port(it)
                     .build()
             }
-            chain.proceed(builder.url(newUrl).build())
+            chain.proceed(builder.url(newUrl!!).build())
         } else {
             chain.proceed(request)
         }

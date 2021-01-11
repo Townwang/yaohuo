@@ -206,8 +206,8 @@ fun Context.handleException(
             toast("未能请求到数据，请稍后再试～")
         }
         is ApiErrorException -> {
-            toast(t.message!!)
-            onApiError?.invoke(t.code, t.message!!)
+            toast(t.message?:"")
+            onApiError?.invoke(t.code, t.message?:"")
         }
         is UnknownHostException,
         is NetworkFailureException,

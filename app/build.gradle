@@ -25,7 +25,7 @@ android {
         minSdkVersion 22
         targetSdkVersion 30
         versionCode getVersionCodeTimestamp()
-        versionName "1.0.3-bata"
+        versionName "1.0.5-bata"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         applicationVariants.all { variant ->
@@ -70,6 +70,9 @@ android {
         buildConfigField("String", "CN_URL", '"http://cdn.townwang.cn/"')
         buildConfigField("String", "BASE_YAOHUO_URL", '"https://yaohuo.me/"')
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 dependencies {
@@ -106,7 +109,7 @@ dependencies {
     // Retrofit 2
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.13.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     //recyclerview

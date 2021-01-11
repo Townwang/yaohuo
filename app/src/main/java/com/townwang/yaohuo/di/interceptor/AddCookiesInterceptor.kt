@@ -12,7 +12,7 @@ class AddCookiesInterceptor(private val mContext: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val builder = request.newBuilder()
-        val cookie = getCookie(request.url().toString(), request.url().host())
+        val cookie = getCookie(request.url.toString(), request.url.host)
         cookie?.let {
             builder.addHeader("cookie", cookie)
         }

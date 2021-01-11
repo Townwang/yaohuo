@@ -19,7 +19,7 @@ class SaveCookiesInterceptor(private val mContext: Context) : Interceptor {
                 if (response.headers("set-cookie").isNotEmpty()) {
                     val cookies = response.headers("set-cookie")
                     val cookie = encodeCookie(cookies)
-                    saveCookie(request.url().toString(), request.url().host(), cookie)
+                    saveCookie(request.url.toString(), request.url.host, cookie)
                 }
             }
         }
