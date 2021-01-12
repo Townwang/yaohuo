@@ -5,6 +5,7 @@ import android.os.SystemClock
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.tencent.bugly.beta.Beta
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.ui.fragment.bbs.BBSFragment
@@ -72,6 +73,7 @@ class ActivityHome : AppCompatActivity() {
                     .replace(R.id.navHost, MeFragment())
                     .commit()
         }
+        Beta.checkUpgrade(false, true)
     }
 
     override fun onBackPressed() {

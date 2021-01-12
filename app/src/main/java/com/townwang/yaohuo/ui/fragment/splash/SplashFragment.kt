@@ -15,7 +15,6 @@ import com.townwang.yaohuo.common.isCookieBoolean
 import com.townwang.yaohuo.common.safeObserver
 import com.townwang.yaohuo.ui.activity.ActivityHome
 import com.townwang.yaohuo.ui.activity.ActivityLogin
-import com.townwang.yaohuo.ui.fragment.login.LoginFragment
 import kotlinx.android.synthetic.main.fragment_welcome.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
