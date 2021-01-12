@@ -15,6 +15,7 @@ import org.koin.core.logger.Level
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.beta.Beta
+import com.tencent.bugly.crashreport.CrashReport
 import com.townwang.yaohuo.common.isCrack
 import com.townwang.yaohuo.ui.weight.game.FunGameHitBlockHeader
 
@@ -39,6 +40,7 @@ class App : Application() {
         Beta.autoInit = true
         Beta.autoCheckUpgrade = true
         Beta.upgradeCheckPeriod = 60 * 1000
+        CrashReport.setIsDevelopmentDevice(applicationContext, BuildConfig.DEBUG)
         try {
             val a = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
             val b = a.signatures
