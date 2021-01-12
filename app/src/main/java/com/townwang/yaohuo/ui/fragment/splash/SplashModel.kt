@@ -19,7 +19,7 @@ class SplashModel(private val repo: Repo) : UIViewModel() {
         val a = doc.select("div.top2").select(A_KEY)[1].attr(A_HREF)
         val trouserId = getParam(a, "touserid")
         CrashReport.setUserId(trouserId)
-        if (BuildConfig.IS_STABLE) {
+        if (BuildConfig.IS_ALPHA.not()) {
             _cookieSuccess.value = isCrack
         } else {
             try {

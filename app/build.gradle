@@ -49,15 +49,15 @@ android {
     productFlavors {
         stableOfficial {
             dimension 'version'
-            buildConfigField 'boolean', 'IS_STABLE', "true"
+            buildConfigField 'boolean', 'IS_ALPHA', "false"
         }
         betaOfficial {
             dimension 'version'
-            buildConfigField 'boolean', 'IS_STABLE', "false"
+            buildConfigField 'boolean', 'IS_ALPHA', "false"
         }
         alphaOfficial {
             dimension 'version'
-            buildConfigField 'boolean', 'IS_STABLE', "true"
+            buildConfigField 'boolean', 'IS_ALPHA', "true"
         }
     }
     buildTypes.all {

@@ -2,7 +2,7 @@ package com.townwang.yaohuo.ui.fragment.login
 
 import androidx.lifecycle.MutableLiveData
 import com.tencent.bugly.crashreport.CrashReport
-import com.townwang.yaohuo.BuildConfig.IS_STABLE
+import com.townwang.yaohuo.BuildConfig.IS_ALPHA
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.Repo
 
@@ -50,7 +50,7 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
         val a = doc.select("div.top2").select(A_KEY)[1].attr(A_HREF)
         val trouserId = getParam(a, "touserid")
         CrashReport.setUserId(trouserId)
-        if (IS_STABLE) {
+        if (IS_ALPHA.not()) {
             _loginSuccess.value = isCrack
         } else {
             try {
