@@ -2,44 +2,36 @@
 
 package com.townwang.yaohuo.common
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.SharedElementCallback
+import android.content.Context
 import android.content.Intent
 import android.graphics.Matrix
 import android.graphics.RectF
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
+import android.os.Build
+import android.os.Handler
+import android.os.Parcelable
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import android.os.Build
-import android.os.Handler
-import android.os.Parcelable
-import android.util.Log
+import com.android.tu.loadingdialog.LoadingDailog
 import com.google.gson.Gson
 import com.townwang.yaohuo.App
-import com.townwang.yaohuo.R
-import kotlinx.coroutines.launch
-import org.jsoup.Connection
-import android.view.Gravity
-import android.R.attr.gravity
-import android.annotation.SuppressLint
-import android.content.Context
-import android.util.TypedValue
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
-import com.android.tu.loadingdialog.LoadingDailog
 import com.townwang.yaohuo.BuildConfig
-import kotlinx.android.synthetic.main.appbar.*
-import java.net.NetworkInterface
+import com.townwang.yaohuo.R
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import java.util.*
-import kotlin.collections.HashMap
 
 
 typealias OnItemClickListener = (view: View, data: T) -> Unit
@@ -75,7 +67,7 @@ fun <T> LiveData<T>.observeOnce(owner: LifecycleOwner, observer: Observer<T>) {
  */
 fun startAnimator(drawable: Drawable) {
     if (drawable is Animatable) {
-        (drawable as Animatable).start()
+        drawable.start()
     }
 }
 

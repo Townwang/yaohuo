@@ -1,10 +1,10 @@
 package com.townwang.yaohuo.ui.fragment.new
 
-import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
@@ -15,15 +15,21 @@ import com.townwang.yaohuo.ui.activity.ActivityAbout
 import com.townwang.yaohuo.ui.activity.ActivityTheme
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.fragment.pub.PubListFragment
-import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.fragment_list_new.*
 
 
 class NesListFragment : Fragment() {
+    lateinit var request: ActivityResultLauncher<Intent>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        request = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            requireActivity().work {
+                reload(config(THEME_KEY))
+            }
+        }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,13 +41,13 @@ class NesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         childFragmentManager.beginTransaction()
-                .replace( R.id.navHost, PubListFragment().apply {
-                    arguments = Bundle().also {
-                        it.putInt(LIST_CLASS_ID_KEY,0)
-                        it.putString(LIST_BBS_NAME_KEY,"最新")
-                    }
+            .replace(R.id.navHost, PubListFragment().apply {
+                arguments = Bundle().also {
+                    it.putInt(LIST_CLASS_ID_KEY, 0)
+                    it.putString(LIST_BBS_NAME_KEY, "最新")
                 }
-                ).commitNow()
+            }
+            ).commitNow()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -66,10 +72,7 @@ class NesListFragment : Fragment() {
                 true
             }
             R.id.toolbar_r_theme -> {
-                startActivityForResult(
-                    Intent(context, ActivityTheme::class.java)
-                    , Activity.RESULT_CANCELED
-                )
+                request.launch(Intent(context, ActivityTheme::class.java))
                 true
             }
             R.id.toolbar_r_about -> {
@@ -88,19 +91,13 @@ class NesListFragment : Fragment() {
                     requireContext(), Intent(
                         requireContext(), ActivityWebView::class.java
                     ).apply {
-                        putExtra(WEB_VIEW_URL_KEY,"https://yaohuo.me/bbs/messagelist.aspx")
-                        putExtra(WEB_VIEW_URL_TITLE,"消息")
-                    },null)
+                        putExtra(WEB_VIEW_URL_KEY, "https://yaohuo.me/bbs/messagelist.aspx")
+                        putExtra(WEB_VIEW_URL_TITLE, "消息")
+                    }, null
+                )
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        requireActivity().work {
-            reload(config(THEME_KEY))
         }
     }
 }
