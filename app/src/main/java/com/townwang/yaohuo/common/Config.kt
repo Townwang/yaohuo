@@ -44,3 +44,5 @@ const val WEB_VIEW_URL_TITLE = "web view url title"
 const val HOME_DETAILS_READ_KEY = "home details read key"
 const val LIST_CLASS_ID_KEY = "list class id key"
 const val LIST_BBS_NAME_KEY = "list bbs name key"
+
+const val SEND_CONTENT_KEY = "send content key"

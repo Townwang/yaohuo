@@ -35,7 +35,12 @@ class NesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         childFragmentManager.beginTransaction()
-                .replace( R.id.navHost, PubListFragment(0, "最新")
+                .replace( R.id.navHost, PubListFragment().apply {
+                    arguments = Bundle().also {
+                        it.putInt(LIST_CLASS_ID_KEY,0)
+                        it.putString(LIST_BBS_NAME_KEY,"最新")
+                    }
+                }
                 ).commitNow()
     }
 

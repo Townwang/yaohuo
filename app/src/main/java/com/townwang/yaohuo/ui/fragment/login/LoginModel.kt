@@ -1,6 +1,7 @@
 package com.townwang.yaohuo.ui.fragment.login
 
 import androidx.lifecycle.MutableLiveData
+import com.tencent.bugly.crashreport.CrashReport
 import com.townwang.yaohuo.BuildConfig.IS_STABLE
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.Repo
@@ -54,6 +55,7 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
             val a = doc.select("div.top2").select(A_KEY)[1].attr(A_HREF)
             val result = repo.neice()
             val trouserId = getParam(a, "touserid")
+            CrashReport.setUserId(trouserId)
             result.data.forEach {
                 if (it.phone == trouserId) {
                     _neiceSuccess.value = isCrack

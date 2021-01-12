@@ -15,12 +15,14 @@ import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.townwang.yaohuo.R
+import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
+import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
 import com.townwang.yaohuo.common.getUrlString
 import com.townwang.yaohuo.common.work
 import kotlinx.android.synthetic.main.fragment_webview.*
 
 
-class WebViewFragment(private  val url: String?, private val titleString:String?) : Fragment() {
+class WebViewFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -38,7 +40,7 @@ class WebViewFragment(private  val url: String?, private val titleString:String?
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).work {
             supportActionBar.work {
-                title = titleString?:""
+                title = requireArguments().getString(WEB_VIEW_URL_TITLE,"")
                 setDisplayHomeAsUpEnabled(true)
             }
         }
@@ -48,7 +50,7 @@ class WebViewFragment(private  val url: String?, private val titleString:String?
         web.onDownloadListener = {url,contentDisposition,mimeType ->
             downloadBySystem(url,contentDisposition,mimeType)
         }
-        content.addView( web.setUrl(getUrlString(url?:"")))
+        content.addView( web.setUrl(getUrlString(requireArguments().getString(WEB_VIEW_URL_KEY,""))))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -74,7 +76,7 @@ class WebViewFragment(private  val url: String?, private val titleString:String?
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         // 设置通知栏的标题，如果不设置，默认使用文件名
         // 设置通知栏的描述
-        request.setDescription(titleString)
+        request.setDescription(requireArguments().getString(WEB_VIEW_URL_TITLE,""))
         // 允许在计费流量下下载
         request.setAllowedOverMetered(true)
         // 允许该记录在下载管理界面可见

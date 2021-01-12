@@ -1,6 +1,8 @@
 package com.townwang.yaohuo.ui.activity
+
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.BundleCompat
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.ui.fragment.about.AboutFragment
@@ -23,10 +25,12 @@ class ActivityWebView : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
         supportFragmentManager.beginTransaction()
-            .replace(R.id.navHost, WebViewFragment(
-                intent.getStringExtra(WEB_VIEW_URL_KEY),
-                intent.getStringExtra(WEB_VIEW_URL_TITLE)
-            ))
+            .replace(R.id.navHost, WebViewFragment().apply {
+                arguments = Bundle().also {
+                    it.putString(WEB_VIEW_URL_KEY, intent.getStringExtra(WEB_VIEW_URL_KEY))
+                    it.putString(WEB_VIEW_URL_TITLE, intent.getStringExtra(WEB_VIEW_URL_TITLE))
+                }
+            })
             .commit()
     }
 

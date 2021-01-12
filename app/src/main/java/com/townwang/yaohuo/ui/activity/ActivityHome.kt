@@ -41,7 +41,11 @@ class ActivityHome : AppCompatActivity() {
             if (fragment != null) {
                 magTransaction.remove(fragment)
             }
-            val dialogFragment = SendFragment("正在开发...")
+            val dialogFragment = SendFragment().apply {
+                arguments = Bundle().also {
+                    it.putString(SEND_CONTENT_KEY,"正在开发...")
+                }
+            }
 //            dialogFragment.mDialogListener = { _, message ->
 ////                loading = Loading("正在提交...").create()
 ////                loading?.show()

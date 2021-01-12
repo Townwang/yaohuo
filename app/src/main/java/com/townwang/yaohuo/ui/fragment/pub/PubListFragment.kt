@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.item_list_data.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PubListFragment(private val classId: Int, private val bbsTitle: String) : Fragment() {
+class PubListFragment: Fragment() {
     private val adapter = PubListAdapter()
     private val viewModel: ListModel by viewModel()
 
@@ -39,8 +39,8 @@ class PubListFragment(private val classId: Int, private val bbsTitle: String) : 
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).work {
             supportActionBar.work {
-                title = bbsTitle
-                setDisplayHomeAsUpEnabled(classId != 0)
+                title = requireArguments().getString(LIST_BBS_NAME_KEY,"")
+                setDisplayHomeAsUpEnabled(requireArguments().getInt(LIST_CLASS_ID_KEY,0) != 0)
             }
         }
         homeList.adapter = adapter
@@ -65,11 +65,11 @@ class PubListFragment(private val classId: Int, private val bbsTitle: String) : 
         }
         refreshLayout.setOnRefreshListener {
             page = 1
-            viewModel.loadList(classId, page)
+            viewModel.loadList(requireArguments().getInt(LIST_CLASS_ID_KEY), page)
         }
         refreshLayout.setOnLoadMoreListener {
             page++
-            viewModel.loadList(classId, page)
+            viewModel.loadList(requireArguments().getInt(LIST_CLASS_ID_KEY), page)
         }
         refreshLayout.autoRefresh()
     }

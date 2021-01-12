@@ -10,12 +10,13 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
 import com.townwang.yaohuo.R
+import com.townwang.yaohuo.common.SEND_CONTENT_KEY
 import kotlinx.android.synthetic.main.fragment_send.*
 
 
 typealias SendListener = (fragment: SendFragment, message: String) -> Unit
 
-class SendFragment(private val message: String?) : DialogFragment() {
+class SendFragment : DialogFragment() {
      var mDialogListener: SendListener? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
       requireDialog().window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -27,7 +28,7 @@ class SendFragment(private val message: String?) : DialogFragment() {
     @SuppressLint("InlinedApi", "WrongConstant")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        comment_et.hint = HtmlCompat.fromHtml(message?:"",Html.FROM_HTML_MODE_LEGACY)
+        comment_et.hint = HtmlCompat.fromHtml(requireArguments().getString(SEND_CONTENT_KEY,""),Html.FROM_HTML_MODE_LEGACY)
         comment_et.requestFocus()
         comment_et.post {
             (requireActivity().getSystemService(

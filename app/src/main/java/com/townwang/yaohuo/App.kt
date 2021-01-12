@@ -36,6 +36,7 @@ class App : Application() {
             modules(koinModules)
         }
         Bugly.init(applicationContext, "56bf507146", false)
+        Beta.autoInit = true
         Beta.autoCheckUpgrade = true
         Beta.upgradeCheckPeriod = 60 * 1000
         try {
