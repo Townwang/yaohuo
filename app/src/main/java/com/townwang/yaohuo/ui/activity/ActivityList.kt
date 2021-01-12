@@ -22,8 +22,12 @@ class ActivityList : AppCompatActivity() {
         }
         supportFragmentManager.beginTransaction()
             .replace(
-                R.id.navHost, PubListFragment(intent.getIntExtra(LIST_CLASS_ID_KEY, 0), intent.getStringExtra(LIST_BBS_NAME_KEY)
-                    ?: "")
+                R.id.navHost, PubListFragment().apply {
+                    arguments = Bundle().also {
+                        it.putInt(LIST_CLASS_ID_KEY, intent.getIntExtra(LIST_CLASS_ID_KEY, 0))
+                        it.putString(LIST_BBS_NAME_KEY, intent.getStringExtra(LIST_BBS_NAME_KEY))
+                    }
+                }
             ).commit()
     }
 }

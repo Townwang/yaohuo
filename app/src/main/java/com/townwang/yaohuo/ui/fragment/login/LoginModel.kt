@@ -1,7 +1,8 @@
 package com.townwang.yaohuo.ui.fragment.login
 
 import androidx.lifecycle.MutableLiveData
-import com.townwang.yaohuo.BuildConfig.IS_STABLE
+import com.tencent.bugly.crashreport.CrashReport
+import com.townwang.yaohuo.BuildConfig.IS_ALPHA
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.Repo
 
@@ -18,8 +19,8 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
     val loginError = _loginError.asLiveData()
     val trouser = _trouser.asLiveData()
 
-    private val _neiceSuccess = MutableLiveData<Boolean>()
-    val neiceSuccess = _neiceSuccess.asLiveData()
+    private val _nieceSuccess = MutableLiveData<Boolean>()
+    val nieceSuccess = _nieceSuccess.asLiveData()
     fun login(loginName: String, password: String) = launchTask {
         if (loginName.isEmpty()) {
             _loginUserError.value = "用户名不能为空"
@@ -33,11 +34,7 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
         val resultPage = doc.body().html()
         when {
             resultPage.indexOf("登录成功") != -1 -> {
-                if (IS_STABLE) {
-                    _loginSuccess.value = isCrack
-                } else {
-                    checkId()
-                }
+                getAccountInformation()
             }
             resultPage.indexOf("密码错误") != -1 -> _loginPsdError.value = "密码错误"
             resultPage.indexOf("用户ID/用户名/手机号不存！") != -1 -> _loginUserError.value =
@@ -48,23 +45,27 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
         }
     }
 
-    private fun checkId() = launchTask {
+    private fun getAccountInformation() = launchTask {
+        val doc = repo.checkNice()
         try {
-            val doc = repo.checkNice()
             val a = doc.select("div.top2").select(A_KEY)[1].attr(A_HREF)
-            val result = repo.neice()
             val trouserId = getParam(a, "touserid")
-            result.data.forEach {
-                if (it.phone == trouserId) {
-                    _neiceSuccess.value = isCrack
-                    _trouser.value = trouserId
-                    return@launchTask
+            CrashReport.setUserId(trouserId)
+            if (IS_ALPHA.not()) {
+                _loginSuccess.value = isCrack
+            } else {
+                val result = repo.neice()
+                result.data.forEach {
+                    if (it.phone == trouserId) {
+                        _nieceSuccess.value = isCrack
+                        _trouser.value = trouserId
+                        return@launchTask
+                    }
                 }
+                _nieceSuccess.value = false
             }
-            _neiceSuccess.value = false
         } catch (e: Exception) {
-            _neiceSuccess.value = false
+            _nieceSuccess.value = false
         }
-
     }
 }

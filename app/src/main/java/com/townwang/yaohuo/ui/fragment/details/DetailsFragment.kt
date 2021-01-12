@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.view_image_style.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class DetailsFragment(private val url: String, private val read: String) : Fragment() {
+class DetailsFragment : Fragment() {
     private var page: Int = 1
     private var ot: Int = 0
     private var loading: LoadingDailog? = null
@@ -87,11 +87,15 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
                 mfragTransaction.remove(fragment)
             }
             val dialogFragment =
-                CommentDialogFragment("请不要乱打字回复，以免被加黑。")
+                CommentDialogFragment().apply {
+                    arguments = Bundle().also {
+                        it.putString(SEND_CONTENT_KEY, "请不要乱打字回复，以免被加黑。")
+                    }
+                }
             dialogFragment.mDialogListener = { _, message ->
                 loading = Loading("正在提交...").create()
                 loading?.show()
-                viewModel.reply(message, url)
+                viewModel.reply(message, requireArguments().getString(HOME_DETAILS_URL_KEY, ""))
                 dialogFragment.dismiss()
             }
             dialogFragment.show(parentFragmentManager, "input frag")
@@ -127,7 +131,11 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
                 if (fragment != null) {
                     magTransaction.remove(fragment)
                 }
-                val dialogFragment = CommentDialogFragment("回复：${data.auth}")
+                val dialogFragment = CommentDialogFragment().apply {
+                    arguments = Bundle().also {
+                        it.putString(SEND_CONTENT_KEY, "回复：${data.auth}")
+                    }
+                }
                 dialogFragment.mDialogListener = { _, msg ->
                     loading = Loading("正在提交...").create()
                     loading?.show()
@@ -151,7 +159,8 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
         viewModel.time.observe(viewLifecycleOwner, safeObserver {
             time.text = it
             read_num.visibility = View.VISIBLE
-            read_num.text = read.split(" ").first()
+            read_num.text =
+                requireArguments().getString(HOME_DETAILS_READ_KEY, "").split(" ").first()
         })
         viewModel.name.observe(viewLifecycleOwner, safeObserver {
             constraintLayout.visibility = View.VISIBLE
@@ -160,11 +169,9 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
         viewModel.online.observe(viewLifecycleOwner, safeObserver {
             constraintLayout.visibility = View.VISIBLE
             if (it) {
-                online.text = "在线"
                 online.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.background_blue_10)
+                    ContextCompat.getDrawable(requireContext(), R.drawable.background_green_10)
             } else {
-                online.text = "离线"
                 online.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_grey_10)
             }
@@ -216,9 +223,10 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
                     requireContext(), Intent(
                         requireContext(), ActivityWebView::class.java
                     ).apply {
-                        putExtra(WEB_VIEW_URL_KEY,uri.toString())
-                        putExtra(WEB_VIEW_URL_TITLE,title.text.toString())
-                    },null)
+                        putExtra(WEB_VIEW_URL_KEY, uri.toString())
+                        putExtra(WEB_VIEW_URL_TITLE, title.text.toString())
+                    }, null
+                )
             }
             list_content.addView(contentLoad)
         })
@@ -257,7 +265,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
                 Snackbar.make(requireView(), "评论失败", Snackbar.LENGTH_SHORT).show()
             }
         })
-        viewModel.getDetails(url)
+        viewModel.getDetails(requireArguments().getString(HOME_DETAILS_URL_KEY, ""))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -271,7 +279,7 @@ class DetailsFragment(private val url: String, private val read: String) : Fragm
     }
 
     private fun refreshDone(success: Boolean) {
-        refreshLayout?:return
+        refreshLayout ?: return
         if (page == 1) {
             refreshLayout.finishRefresh(success)
         } else {

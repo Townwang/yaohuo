@@ -21,19 +21,28 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-            android:id="@+id/versionName"
-            tools:text="v1.0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:background="@drawable/background_fillet"
-            android:textColor="?actionMenuTextColor"
-            app:layout_constraintStart_toEndOf="@+id/logoImage"
-            app:layout_constraintTop_toTopOf="@+id/logoImage"/>
+        android:id="@+id/versionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_fillet"
+        android:paddingStart="5dp"
+        android:paddingTop="1dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="1dp"
+        android:textColor="?actionMenuTextColor"
+        app:layout_constraintStart_toEndOf="@+id/logoImage"
+        app:layout_constraintTop_toTopOf="@+id/logoImage"
+        tools:text="v1.0" />
 
+    <View
+        android:id="@+id/redDot"
+        android:visibility="invisible"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:background="@drawable/background_red_50"
+        app:layout_constraintStart_toEndOf="@id/versionName"
+        app:layout_constraintTop_toTopOf="@+id/versionName"
+        tools:ignore="MissingConstraints" />
     <TextView
             android:text="@string/app_name"
             android:layout_marginTop="5dp"

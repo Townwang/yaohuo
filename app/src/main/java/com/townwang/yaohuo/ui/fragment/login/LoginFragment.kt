@@ -83,7 +83,7 @@ class LoginFragment : Fragment() {
                 if (loading == null) {
                     loading = Loading("登录中...").create()
                 }
-                if (!loading!!.isShowing) {
+                if (loading?.isShowing?.not() == true) {
                     loading?.show()
                 }
             } else {
@@ -94,7 +94,7 @@ class LoginFragment : Fragment() {
             context?.handleException(it)
         })
 
-        viewModel.neiceSuccess.observe(viewLifecycleOwner, safeObserver {
+        viewModel.nieceSuccess.observe(viewLifecycleOwner, safeObserver {
             if (it) {
                 config(TROUSER_KEY,viewModel.trouser.value)
                 val intent = Intent(requireContext(), ActivityHome::class.java).apply {
