@@ -22,10 +22,13 @@ import com.townwang.yaohuo.common.COOKIE_KEY
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
+import java.net.URL
 
 
-typealias OnDownloadListener = ( url:String,contentDisposition: String,
-                                 mimeType: String) -> Unit
+typealias OnDownloadListener = (
+    url: String, contentDisposition: String,
+    mimeType: String
+) -> Unit
 
 @SuppressLint("SetJavaScriptEnabled")
 class WebViewHelper(context: Context) {
@@ -39,15 +42,15 @@ class WebViewHelper(context: Context) {
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
         it.layoutParams = params
-        it.setBackgroundColor(ContextCompat.getColor(context,R.color.transparent))
+        it.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
     }
 
     init {
         webView.settings.apply {
-            displayZoomControls = true //隐藏webview缩放按钮
-            javaScriptEnabled = true //支持js
-            builtInZoomControls = false // 显示放大缩小
-            setSupportZoom(false) // 可以缩放
+            displayZoomControls = true
+            javaScriptEnabled = true
+            builtInZoomControls = false
+            setSupportZoom(false)
             domStorageEnabled = true
             mixedContentMode = MIXED_CONTENT_ALWAYS_ALLOW
         }
@@ -57,7 +60,6 @@ class WebViewHelper(context: Context) {
             }
         }
     }
-
 
 
     private fun getNewContent(halters: String): String {
@@ -74,17 +76,18 @@ class WebViewHelper(context: Context) {
         return webView
     }
 
-    fun setUrl(urlService:String): WebView {
+    fun setUrl(urlService: String): WebView {
+        val url = URL(urlService)
         val cookieMaps = App.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE)
-       val cookie = cookieMaps.getString("yaohuo.me","")
-        Log.d("哈哈哈哈哈","ssss====${cookie}  url=$urlService")
-        syncCookie( "yaohuo.me", cookie )
+        val cookie = cookieMaps.getString(url.host, "")
+        syncCookie(url.host, cookie)
         webView.loadUrl(urlService)
-        webView.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength ->
-            onDownloadListener?.invoke(url,contentDisposition,mimetype)
+        webView.setDownloadListener { urlLink, _, contentDisposition, mistype, _ ->
+            onDownloadListener?.invoke(urlLink, contentDisposition, mistype)
         }
         return webView
     }
+
     /**
      * 将cookie同步到WebView
      * @param url WebView要加载的url

@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -244,6 +245,7 @@ abstract class FunGameView<T>(
         when (newState) {
             RefreshState.PullDownToRefresh -> mMaskViewTop.text = mMaskTextTopPull
             RefreshState.ReleaseToRefresh -> mMaskViewTop.text = mMaskTextTopRelease
+            else -> Log.d(FunGameView.toString(),newState.name)
         }
     }
 

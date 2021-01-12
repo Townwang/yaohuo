@@ -47,13 +47,13 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
 
     private fun getAccountInformation() = launchTask {
         val doc = repo.checkNice()
-        val a = doc.select("div.top2").select(A_KEY)[1].attr(A_HREF)
-        val trouserId = getParam(a, "touserid")
-        CrashReport.setUserId(trouserId)
-        if (IS_ALPHA.not()) {
-            _loginSuccess.value = isCrack
-        } else {
-            try {
+        try {
+            val a = doc.select("div.top2").select(A_KEY)[1].attr(A_HREF)
+            val trouserId = getParam(a, "touserid")
+            CrashReport.setUserId(trouserId)
+            if (IS_ALPHA.not()) {
+                _loginSuccess.value = isCrack
+            } else {
                 val result = repo.neice()
                 result.data.forEach {
                     if (it.phone == trouserId) {
@@ -63,10 +63,9 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
                     }
                 }
                 _nieceSuccess.value = false
-            } catch (e: Exception) {
-                _nieceSuccess.value = false
             }
+        } catch (e: Exception) {
+            _nieceSuccess.value = false
         }
-
     }
 }

@@ -21,6 +21,7 @@ class SaveCookiesInterceptor(private val mContext: Context) : Interceptor {
                     val cookie = encodeCookie(cookies)
                     saveCookie(request.url.toString(), request.url.host, cookie)
                 }
+                response.close()
             }
         }
         return chain.proceed(builder.build())

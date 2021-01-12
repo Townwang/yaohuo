@@ -16,13 +16,13 @@ class SplashModel(private val repo: Repo) : UIViewModel() {
     fun checkCookie() = launchTask {
         repo.cookie()
         val doc = repo.checkNice()
-        val a = doc.select("div.top2").select(A_KEY)[1].attr(A_HREF)
-        val trouserId = getParam(a, "touserid")
-        CrashReport.setUserId(trouserId)
-        if (BuildConfig.IS_ALPHA.not()) {
-            _cookieSuccess.value = isCrack
-        } else {
-            try {
+        try {
+            val a = doc.select("div.top2").select(A_KEY)[1].attr(A_HREF)
+            val trouserId = getParam(a, "touserid")
+            CrashReport.setUserId(trouserId)
+            if (BuildConfig.IS_ALPHA.not()) {
+                _cookieSuccess.value = isCrack
+            } else {
                 val result = repo.neice()
                 result.data.forEach {
                     if (it.phone == trouserId) {
@@ -31,10 +31,9 @@ class SplashModel(private val repo: Repo) : UIViewModel() {
                     }
                 }
                 _nieceSuccess.value = false
-            } catch (e: Exception) {
-                _nieceSuccess.value = false
             }
+        } catch (e: Exception) {
+            _nieceSuccess.value = false
         }
-
     }
 }
