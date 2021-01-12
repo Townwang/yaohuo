@@ -169,11 +169,9 @@ class DetailsFragment : Fragment() {
         viewModel.online.observe(viewLifecycleOwner, safeObserver {
             constraintLayout.visibility = View.VISIBLE
             if (it) {
-                online.text = "在线"
                 online.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.background_blue_10)
+                    ContextCompat.getDrawable(requireContext(), R.drawable.background_green_10)
             } else {
-                online.text = "离线"
                 online.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_grey_10)
             }

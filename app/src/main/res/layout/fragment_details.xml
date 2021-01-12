@@ -70,21 +70,17 @@
                             app:layout_constraintTop_toTopOf="@+id/userImg"
                             app:layout_constraintBottom_toBottomOf="@+id/userImg"/>
 
-                    <TextView
-                            tools:text="在线"
-                            android:id="@+id/online"
-                            android:textSize="@dimen/text12Size"
-                            android:paddingStart="2dp"
-                            android:paddingEnd="2dp"
-                            android:layout_margin="1dp"
-                            android:textColor="@color/white"
-                            android:background="@drawable/background_blue_10"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@+id/userName"
-                            app:layout_constraintTop_toTopOf="@+id/userName"
-                            app:layout_constraintBottom_toBottomOf="@+id/userName"/>
-
+                    <View
+                        android:id="@+id/online"
+                        android:paddingStart="2dp"
+                        android:paddingEnd="2dp"
+                        android:layout_margin="1dp"
+                        android:background="@drawable/background_grey_10"
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"
+                        app:layout_constraintStart_toEndOf="@+id/userName"
+                        app:layout_constraintTop_toTopOf="@+id/userName"
+                        />
                     <androidx.appcompat.widget.LinearLayoutCompat
                             android:id="@+id/linearTop"
                             android:layout_width="0dp"

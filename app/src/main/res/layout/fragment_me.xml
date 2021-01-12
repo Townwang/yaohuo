@@ -113,8 +113,7 @@
                         app:keySize="@dimen/text14Size"
                         app:value="@string/_0"
                         app:valueColor="@color/cardview_dark_background"
-                        app:valueSize="@dimen/text12Size"
-                        tools:layout_editor_absoluteX="5dp" />
+                        app:valueSize="@dimen/text12Size" />
                     <com.townwang.yaohuo.ui.weight.view.YaoItemView
                         android:id="@+id/money"
                         android:layout_width="match_parent"
@@ -126,7 +125,7 @@
                         app:valueColor="@color/cardview_dark_background"
                         app:valueSize="@dimen/text12Size"
                         app:layout_constraintTop_toBottomOf="@id/accountNumber"
-                        tools:layout_editor_absoluteX="5dp" />
+                        />
                     <com.townwang.yaohuo.ui.weight.view.YaoItemView
                         android:id="@+id/bankSavings"
                         android:layout_width="match_parent"
@@ -138,7 +137,7 @@
                         app:valueColor="@color/cardview_dark_background"
                         app:valueSize="@dimen/text12Size"
                         app:layout_constraintTop_toBottomOf="@id/money"
-                        tools:layout_editor_absoluteX="5dp" />
+                         />
                     <com.townwang.yaohuo.ui.weight.view.YaoItemView
                         android:id="@+id/experience"
                         android:layout_width="match_parent"
@@ -150,7 +149,7 @@
                         app:valueColor="@color/cardview_dark_background"
                         app:valueSize="@dimen/text12Size"
                         app:layout_constraintTop_toBottomOf="@id/bankSavings"
-                        tools:layout_editor_absoluteX="5dp" />
+                         />
 
                     <com.townwang.yaohuo.ui.weight.view.YaoItemView
                         android:id="@+id/rank"
@@ -163,7 +162,7 @@
                         app:valueColor="@color/cardview_dark_background"
                         app:valueSize="@dimen/text12Size"
                         app:layout_constraintTop_toBottomOf="@id/experience"
-                        tools:layout_editor_absoluteX="5dp" />
+                         />
 
                     <com.townwang.yaohuo.ui.weight.view.YaoItemView
                         android:id="@+id/title"
@@ -176,7 +175,7 @@
                         app:valueColor="@color/cardview_dark_background"
                         app:valueSize="@dimen/text12Size"
                         app:layout_constraintTop_toBottomOf="@id/rank"
-                        tools:layout_editor_absoluteX="5dp" />
+                         />
                     <com.townwang.yaohuo.ui.weight.view.YaoItemView
                         android:id="@+id/identity"
                         android:layout_width="match_parent"
@@ -188,7 +187,7 @@
                         app:valueColor="@color/cardview_dark_background"
                         app:valueSize="@dimen/text12Size"
                         app:layout_constraintTop_toBottomOf="@id/title"
-                        tools:layout_editor_absoluteX="5dp" />
+                         />
                     <com.townwang.yaohuo.ui.weight.view.YaoItemView
                         android:id="@+id/managementAuthority"
                         android:layout_width="match_parent"
@@ -200,7 +199,7 @@
                         app:valueColor="@color/cardview_dark_background"
                         app:valueSize="@dimen/text12Size"
                         app:layout_constraintTop_toBottomOf="@id/identity"
-                        tools:layout_editor_absoluteX="5dp" />
+                         />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
