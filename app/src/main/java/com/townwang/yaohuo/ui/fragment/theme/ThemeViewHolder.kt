@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.townwang.yaohuo.R
+import com.townwang.yaohuo.common.options
 import com.townwang.yaohuo.common.startAnimator
 import com.townwang.yaohuo.repo.data.ThemeList
 import kotlinx.android.synthetic.main.item_theme_data.view.*
@@ -24,6 +25,7 @@ class ThemeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         Glide.with(itemView)
             .load(data.icon)
+            .apply(options)
             .apply(RequestOptions().placeholder(R.drawable.anim_vector_theme_icon))
             .into(itemView.icon)
         startAnimator(itemView.icon.drawable)

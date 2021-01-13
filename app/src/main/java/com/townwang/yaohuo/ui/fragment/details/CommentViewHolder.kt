@@ -84,6 +84,7 @@ class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private fun getAvatar(handUrl: String, img: ImageView) {
         Glide.with(itemView)
             .load(R.drawable.avatar)
+            .apply(options)
             .apply(RequestOptions.bitmapTransform(CircleCrop())).into(img)
 
 //        GlobalScope.launch(Dispatchers.IO) {
