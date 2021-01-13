@@ -93,7 +93,7 @@ class WebViewFragment : Fragment() {
 //        request.setDestinationInExternalFilesDir()
         val downloadManager = requireActivity().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         // 添加一个下载任务
-        val downloadId = downloadManager.enqueue(request)
+        downloadManager.enqueue(request)
         requireActivity().onBackPressed()
     }
 
