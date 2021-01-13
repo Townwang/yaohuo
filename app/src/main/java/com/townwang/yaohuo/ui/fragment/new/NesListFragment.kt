@@ -82,7 +82,9 @@ class NesListFragment : Fragment() {
                 ActivityCompat.startActivity(
                     requireContext(), Intent(
                         requireContext(), ActivityAbout::class.java
-                    ), bundle
+                    ).apply {
+                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                    }, bundle
                 )
                 true
             }
@@ -91,6 +93,7 @@ class NesListFragment : Fragment() {
                     requireContext(), Intent(
                         requireContext(), ActivityWebView::class.java
                     ).apply {
+                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                         putExtra(WEB_VIEW_URL_KEY, "https://yaohuo.me/bbs/messagelist.aspx")
                         putExtra(WEB_VIEW_URL_TITLE, "消息")
                     }, null

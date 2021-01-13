@@ -42,7 +42,7 @@ class LoginFragment : Fragment() {
                 setDisplayHomeAsUpEnabled(false)
             }
         }
-        loginBtn.setOnClickListener {
+        loginBtn.onClickListener {
             viewModel.login(user_name.editText?.text.toString(), user_password.editText?.text.toString())
         }
     }

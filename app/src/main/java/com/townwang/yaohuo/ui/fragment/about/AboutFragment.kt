@@ -12,16 +12,13 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.startAnimator
-import com.townwang.yaohuo.common.work
 import kotlinx.android.synthetic.main.fragment_about.*
 import com.canking.minipay.MiniPayUtils
 import com.canking.minipay.Config
 import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.beta.Beta
-import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
-import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
+import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 
 
@@ -49,7 +46,7 @@ class AboutFragment : Fragment() {
         }
         startAnimator(logoImage.drawable)
         versionName.text = BuildConfig.VERSION_NAME
-        versionName.setOnClickListener {
+        versionName.onClickListener {
             Beta.checkUpgrade()
         }
         val upgradeInfo = Beta.getUpgradeInfo()
@@ -58,30 +55,32 @@ class AboutFragment : Fragment() {
         } else {
             redDot.visibility = View.VISIBLE
         }
-        openSource.setOnClickListener {
+        openSource.onClickListener {
             ActivityCompat.startActivity(
                 requireContext(), Intent(
                     requireContext(), ActivityWebView::class.java
                 ).apply {
+                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     putExtra(WEB_VIEW_URL_KEY, "https://github.com/Townwang")
                     putExtra(WEB_VIEW_URL_TITLE, "Townwang")
                 }, null
             )
         }
-        pubWechat.setOnClickListener {
+        pubWechat.onClickListener {
             ActivityCompat.startActivity(
                 requireContext(), Intent(
                     requireContext(), ActivityWebView::class.java
                 ).apply {
+                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     putExtra(WEB_VIEW_URL_KEY, "https://mp.weixin.qq.com/s/QY_GNyihv1Zx1RGHus26fg")
                     putExtra(WEB_VIEW_URL_TITLE, "公众号：文科中的技术宅")
                 }, null
             )
         }
-        post.setOnClickListener {
+        post.onClickListener {
             Snackbar.make(post, "暂未开贴", Snackbar.LENGTH_SHORT).show()
         }
-        praise.setOnClickListener {
+        praise.onClickListener {
             MiniPayUtils.setupPay(
                 requireContext(),
                 Config.Builder("fkx083710xkhl4xuxzpud4e", R.mipmap.alipay, R.mipmap.wechat).build()

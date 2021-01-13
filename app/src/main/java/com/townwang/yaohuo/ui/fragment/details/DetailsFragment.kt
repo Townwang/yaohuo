@@ -1,6 +1,9 @@
 package com.townwang.yaohuo.ui.fragment.details
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +14,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.android.tu.loadingdialog.LoadingDailog
@@ -22,10 +26,12 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.data.CommentData
 import com.townwang.yaohuo.ui.activity.ActivityWebView
-import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
 import com.townwang.yaohuo.ui.weight.commit.CommentDialogFragment
+import com.townwang.yaohuo.ui.weight.htmltext.GlideHtmlImageLoader
+import com.townwang.yaohuo.ui.weight.htmltext.HtmlText
+import com.townwang.yaohuo.ui.weight.htmltext.OnTagClickListener
+import com.townwang.yaohuo.ui.weight.htmltext.TextViewFixTouchConsume
 import kotlinx.android.synthetic.main.fragment_details.*
-import kotlinx.android.synthetic.main.fragment_details.refreshLayout
 import kotlinx.android.synthetic.main.view_download_style.view.*
 import kotlinx.android.synthetic.main.view_image_style.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -77,14 +83,14 @@ class DetailsFragment : Fragment() {
             page++
             viewModel.commentDetails(page, ot)
         }
-        attention.setOnClickListener {
+        attention.onClickListener {
             Snackbar.make(requireView(), "正在开发...", Snackbar.LENGTH_SHORT).show()
         }
-        reply.setOnClickListener {
-            val mfragTransaction = parentFragmentManager.beginTransaction()
+        reply.onClickListener {
+            val magTransaction = parentFragmentManager.beginTransaction()
             val fragment = parentFragmentManager.findFragmentByTag("input frag")
             if (fragment != null) {
-                mfragTransaction.remove(fragment)
+                magTransaction.remove(fragment)
             }
             val dialogFragment =
                 CommentDialogFragment().apply {
@@ -100,12 +106,12 @@ class DetailsFragment : Fragment() {
             }
             dialogFragment.show(parentFragmentManager, "input frag")
         }
-        comment.setOnClickListener {
+        comment.onClickListener {
             nesScroll.post {
                 nesScroll.scrollTo(0, commentLists.top)
             }
         }
-        praise.setOnClickListener {
+        praise.onClickListener {
             praise_value.setCompoundDrawablesWithIntrinsicBounds(
                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_praise_grey),
                 null,
@@ -123,30 +129,44 @@ class DetailsFragment : Fragment() {
                 StaggeredGridLayoutManager.VERTICAL
             ))
 
-        adapter.onItemClickListener = { v, d ->
-            val data = d as CommentData
-            if (getParam(d.url, "touserid") != config(TROUSER_KEY)) {
-                val magTransaction = childFragmentManager.beginTransaction()
-                val fragment = childFragmentManager.findFragmentByTag("input frag")
-                if (fragment != null) {
-                    magTransaction.remove(fragment)
-                }
-                val dialogFragment = CommentDialogFragment().apply {
-                    arguments = Bundle().also {
-                        it.putString(SEND_CONTENT_KEY, "回复：${data.auth}")
+        adapter.onItemClickListener = { _, data ->
+            if (data is CommentData) {
+                if (getParam(data.url, "touserid") != config(TROUSER_KEY)) {
+                    val magTransaction = childFragmentManager.beginTransaction()
+                    val fragment = childFragmentManager.findFragmentByTag("input frag")
+                    if (fragment != null) {
+                        magTransaction.remove(fragment)
                     }
+                    val dialogFragment = CommentDialogFragment().apply {
+                        arguments = Bundle().also {
+                            it.putString(SEND_CONTENT_KEY, "回复：${data.auth}")
+                        }
+                    }
+                    dialogFragment.mDialogListener = { _, msg ->
+                        loading = Loading("正在提交...").create()
+                        loading?.show()
+                        viewModel.reply(
+                            msg,
+                            data.url,
+                            data.floor.toString(),
+                            getParam(data.url, "touserid")
+                        )
+                        dialogFragment.dismiss()
+                    }
+                    dialogFragment.show(childFragmentManager, "input frag")
+                } else {
+                    context?.toast("不能给自己回复！")
                 }
-                dialogFragment.mDialogListener = { _, msg ->
-                    loading = Loading("正在提交...").create()
-                    loading?.show()
-                    viewModel.reply(msg, d.url, d.floor.toString(), getParam(d.url, "touserid"))
-                    dialogFragment.dismiss()
-                }
-                dialogFragment.show(childFragmentManager, "input frag")
-            } else {
-                context?.toast("不能给自己回复！")
             }
         }
+//        adapter.onItemLongClickListener = { v, data ->
+//            if (data is CommentData) {
+//                val clipboard =
+//                    requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+//                clipboard.text = data.content
+//                Snackbar.make(v, "已复制 ${data.content}", Snackbar.LENGTH_SHORT).show()
+//            }
+//        }
     }
 
     @SuppressLint("InflateParams")
@@ -193,9 +213,42 @@ class DetailsFragment : Fragment() {
             subtitle.text = it
         })
         viewModel.content.observe(viewLifecycleOwner, safeObserver {
-            list_content.addView(WebViewHelper(requireContext()).apply {
-                shouldOverrideUrlLoading = true
-            }.setHtmlCode(it))
+            val textView = TextViewFixTouchConsume(requireContext())
+            textView.setTextColor(ContextCompat.getColor(requireContext(),R.color.md_black_1000))
+            textView.movementMethod = TextViewFixTouchConsume.LocalLinkMovementMethod.instance
+            HtmlText.from(it)
+                .setImageLoader(GlideHtmlImageLoader(requireContext(), resources, textView))
+                .setOnTagClickListener(object : OnTagClickListener {
+                    override fun onImageClick(
+                        context: Context,
+                        imageUrlList: List<String>,
+                        position: Int
+                    ) {
+                        ActivityCompat.startActivity(
+                            requireContext(), Intent(
+                                requireContext(), ActivityWebView::class.java
+                            ).apply {
+                                flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                                putExtra(WEB_VIEW_URL_KEY, imageUrlList[position])
+                                putExtra(WEB_VIEW_URL_TITLE, title.text.toString())
+                            }, null
+                        )
+                    }
+
+                    override fun onLinkClick(context: Context, url: String) {
+                        ActivityCompat.startActivity(
+                            requireContext(), Intent(
+                                requireContext(), ActivityWebView::class.java
+                            ).apply {
+                                flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                                putExtra(WEB_VIEW_URL_KEY, url)
+                                putExtra(WEB_VIEW_URL_TITLE, title.text.toString())
+                            }, null
+                        )
+                    }
+                })
+                .into(textView)
+            list_content.addView(textView)
         })
         viewModel.image.observe(viewLifecycleOwner, safeObserver {
             val contentImg =
@@ -217,12 +270,13 @@ class DetailsFragment : Fragment() {
                 LayoutInflater.from(requireContext()).inflate(R.layout.view_download_style, null)
             contentLoad.downloadName.text = it[0].replace("\n", "")
 
-            contentLoad.downloadUrl.setOnClickListener { _ ->
+            contentLoad.downloadUrl.onClickListener { _ ->
                 val uri = Uri.parse(Uri.encode(it[1], "-![.:/,%?&=]"))
                 ActivityCompat.startActivity(
                     requireContext(), Intent(
                         requireContext(), ActivityWebView::class.java
                     ).apply {
+                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                         putExtra(WEB_VIEW_URL_KEY, uri.toString())
                         putExtra(WEB_VIEW_URL_TITLE, title.text.toString())
                     }, null

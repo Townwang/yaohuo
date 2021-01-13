@@ -11,6 +11,7 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.SEND_CONTENT_KEY
+import com.townwang.yaohuo.common.onClickListener
 import kotlinx.android.synthetic.main.fragment_send.*
 
 
@@ -36,7 +37,7 @@ class SendFragment : DialogFragment() {
                     .INPUT_METHOD_SERVICE
             ) as InputMethodManager).showSoftInput(comment_et, 0)
         }
-        send.setOnClickListener {
+        send.onClickListener {
             val commentStr = comment_et.text.toString()
             mDialogListener?.invoke(this, commentStr)
         }

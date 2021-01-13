@@ -4,19 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Html
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.SEND_CONTENT_KEY
+import com.townwang.yaohuo.common.onClickListener
 import kotlinx.android.synthetic.main.fragment_comment_dialog.*
 
 /**
@@ -45,7 +40,7 @@ class CommentDialogFragment: DialogFragment() {
                     .INPUT_METHOD_SERVICE
             ) as InputMethodManager).showSoftInput(dialog_comment_et, 0)
         }
-        dialog_comment_bt.setOnClickListener {
+        dialog_comment_bt.onClickListener {
             val commentStr = dialog_comment_et.text.toString()
             mDialogListener?.invoke(this@CommentDialogFragment, "$commentStr      \uD83D\uDCF1")
         }

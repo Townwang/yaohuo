@@ -35,6 +35,7 @@ import java.net.UnknownHostException
 
 
 typealias OnItemClickListener = (view: View, data: T) -> Unit
+typealias OnItemLongClickListener = (view: View, data: T) -> Unit
 
 var gson = Gson()
 
@@ -44,6 +45,18 @@ val handler = Handler()
 inline fun <T> T?.work(block: T.() -> Unit) {
     if (this != null) block.invoke(this)
 }
+
+private var lastClickTime: Long = 0
+fun <T : View> T.onClickListener(delay: Long = 500, block: (T) -> Unit) {
+        setOnClickListener {
+            val currentTime: Long = System.currentTimeMillis()
+            if (currentTime - lastClickTime > delay) {
+                lastClickTime = currentTime
+                block(this)
+            }
+        }
+}
+
 
 fun <T> MutableLiveData<T>.asLiveData(): LiveData<T> = this
 
@@ -112,10 +125,15 @@ fun Activity.setSharedElement() {
             screenBounds: RectF?
         ): Parcelable {
             sharedElement?.alpha = 1f
-            return super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds)
+            return super.onCaptureSharedElementSnapshot(
+                sharedElement,
+                viewToGlobalMatrix,
+                screenBounds
+            )
         }
     })
 }
+
 fun isCookieBoolean(): Boolean {
     val cookieMaps = App.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE).all
     return cookieMaps.isNullOrEmpty()
@@ -130,7 +148,10 @@ fun setTitleCenter(toolbar: Toolbar) {
         if (view is TextView) {
             if (title == view.text) {
                 view.gravity = Gravity.CENTER
-                val params = Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.MATCH_PARENT)
+                val params = Toolbar.LayoutParams(
+                    Toolbar.LayoutParams.WRAP_CONTENT,
+                    Toolbar.LayoutParams.MATCH_PARENT
+                )
                 params.gravity = Gravity.CENTER
                 view.layoutParams = params
             }
@@ -186,6 +207,7 @@ fun Context.mm(value: Float): Float {
 fun Context.sp(value: Float): Float {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, resources.displayMetrics)
 }
+
 fun Context.handleException(
     t: Throwable,
     onNetworkError: (() -> Unit)? = null,
@@ -198,8 +220,8 @@ fun Context.handleException(
             toast("未能请求到数据，请稍后再试～")
         }
         is ApiErrorException -> {
-            toast(t.message?:"")
-            onApiError?.invoke(t.code, t.message?:"")
+            toast(t.message ?: "")
+            onApiError?.invoke(t.code, t.message ?: "")
         }
         is UnknownHostException,
         is NetworkFailureException,
@@ -221,7 +243,7 @@ fun Context.toast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
 
-fun getParam(url: String,name:String): String {
+fun getParam(url: String, name: String): String {
     var result = ""
     val index = url.indexOf("?")
     val temp = url.substring(index + 1)
@@ -234,8 +256,11 @@ fun getParam(url: String,name:String): String {
     return result
 }
 
-fun getUrlString(url:String): String {
-    return  if (url.contains("https://",true) || url.contains("http://",true))
-    { url } else { BuildConfig.BASE_YAOHUO_URL + url.substring(1,url.length) }
+fun getUrlString(url: String): String {
+    return if (url.contains("https://", true) || url.contains("http://", true)) {
+        url
+    } else {
+        BuildConfig.BASE_YAOHUO_URL + url.substring(1, url.length)
+    }
 }
 

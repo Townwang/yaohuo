@@ -68,23 +68,26 @@ class Repo constructor(
         bbs.getResp()
     }
 
-    suspend fun comment(page: Int,
-                        id: String,
-                        classId: Int,
-                        ot: Int) = withRepoContext {
+    suspend fun comment(
+        page: Int,
+        id: String,
+        classId: Int,
+        ot: Int
+    ) = withRepoContext {
         val bbs = api.commentLists(
             page.toString(),
             id,
             classId.toString(),
-            ot.toString())
+            ot.toString()
+        )
         bbs.getResp()
     }
 
     suspend fun reply(
-    url: String,
-    content: String,
-    floor: String? = null,
-    touserid: String? = null
+        url: String,
+        content: String,
+        floor: String? = null,
+        touserid: String? = null
     ): Document = withRepoContext {
         val bbs = api.urlPenetrate(url)
         val rs = bbs.getResp()
@@ -93,6 +96,9 @@ class Repo constructor(
         ets.first().allElements.forEach {
             if (it.attr(AK_NAME) == "content") {
                 it.attr(AK_VALUE, content)
+            }
+            if (it.attr(AK_NAME) == "sendmsg") {
+                it.attr(AK_VALUE, "1")
             }
             if (it.attr(AK_NAME) == "reply") {
                 it.attr(AK_VALUE, floor)
@@ -104,10 +110,8 @@ class Repo constructor(
                 data[it.attr(AK_NAME)] = it.attr(AK_VALUE)
             }
         }
-    val con = Jsoup.connect("${BuildConfig.BASE_YAOHUO_URL}/bbs/book_re.aspx")
-    con.ignoreContentType(true).method(Connection.Method.POST)
-        .data(data).execute()
-    con.get()
+        val rep = api.reply(data)
+        rep.getResp()
     }
 
     suspend fun getMe(): Document = withRepoContext {
