@@ -2,6 +2,7 @@ package com.townwang.yaohuo.di.factory
 
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -32,10 +33,8 @@ class DocumentConverterFactory : Converter.Factory() {
     ): Converter<*, RequestBody?>? {
         return if (Document::class.java == type) {
             Converter { value: Document ->
-                RequestBody.create(
-                    MEDIA_TYPE,
-                    value.toString()
-                )
+                value.toString()
+                    .toRequestBody(MEDIA_TYPE)
             }
         } else null
     }

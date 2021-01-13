@@ -73,9 +73,12 @@ class ActivityHome : AppCompatActivity() {
                     .replace(R.id.navHost, MeFragment())
                     .commit()
         }
-        Beta.checkUpgrade(false, true)
     }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        Beta.checkUpgrade(false, true)
+    }
     override fun onBackPressed() {
         //disable the super here
     }

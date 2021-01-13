@@ -31,22 +31,23 @@ typealias OnDownloadListener = (
 ) -> Unit
 
 @SuppressLint("SetJavaScriptEnabled")
-class WebViewHelper(context: Context) {
+class WebViewHelper(context: Context,var webView: WebView? = null) {
     var onDownloadListener: OnDownloadListener? = null
 
     var shouldOverrideUrlLoading = false
 
-    private val webView = WebView(context).also {
-        val params = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        it.layoutParams = params
-        it.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
-    }
-
     init {
-        webView.settings.apply {
+        if (webView ==null){
+            webView =  WebView(context).also {
+                val params = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+                )
+                it.layoutParams = params
+                it.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+            }
+        }
+        webView?.settings?.apply {
             displayZoomControls = true
             javaScriptEnabled = true
             builtInZoomControls = false
@@ -54,7 +55,7 @@ class WebViewHelper(context: Context) {
             domStorageEnabled = true
             mixedContentMode = MIXED_CONTENT_ALWAYS_ALLOW
         }
-        webView.webViewClient = object : WebViewClient() {
+        webView?.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 return shouldOverrideUrlLoading
             }
@@ -76,11 +77,15 @@ class WebViewHelper(context: Context) {
         val cookieMaps = App.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE)
         val cookie = cookieMaps.getString(url.host, "")
         syncCookie(url.host, cookie)
-        webView.loadUrl(urlService)
-        webView.setDownloadListener { urlLink, _, contentDisposition, mistype, _ ->
+        webView?.loadUrl(urlService)
+        webView?.setDownloadListener { urlLink, _, contentDisposition, mistype, _ ->
             onDownloadListener?.invoke(urlLink, contentDisposition, mistype)
         }
-        return webView
+        return webView!!
+    }
+    fun setHtmlCode(htmlCode: String): WebView {
+        webView?.loadDataWithBaseURL(null, getNewContent(htmlCode), "text/html", "UTF-8", null)
+        return webView!!
     }
 
     /**

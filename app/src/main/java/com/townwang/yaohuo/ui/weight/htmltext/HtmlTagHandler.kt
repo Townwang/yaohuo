@@ -381,13 +381,13 @@ internal class HtmlTagHandler : TagHandler {
          * Get last marked position of a specific tag kind (private class)
          */
         private fun <T> getLast(text: Editable, kind: Class<T>): T? {
-            val objs = text.getSpans<T>(0, text.length, kind)
-            return if (objs.isEmpty()) {
+            val obj = text.getSpans<T>(0, text.length, kind)
+            return if (obj.isEmpty()) {
                 null
             } else {
-                for (i in objs.size downTo 1) {
-                    if (text.getSpanFlags(objs[i - 1]) == Spannable.SPAN_MARK_MARK) {
-                        return objs[i - 1]
+                for (i in obj.size downTo 1) {
+                    if (text.getSpanFlags(obj[i - 1]) == Spannable.SPAN_MARK_MARK) {
+                        return obj[i - 1]
                     }
                 }
                 null

@@ -100,7 +100,7 @@ suspend fun <T : Document> Call<T>.getResp() = withContext(networkScope.coroutin
             if (isVpnUsed().not()) {
                 if (result.isSuccessful) {
                     val body = result.body()
-                    val throwable = checkDoc(body, it)
+                    val throwable = checkDoc(body)
                     if (throwable == null) {
                         it.resume(Jsoup.parse(body.toString()))
                     } else {
@@ -118,7 +118,7 @@ suspend fun <T : Document> Call<T>.getResp() = withContext(networkScope.coroutin
     }
 }
 
-fun checkDoc(document: Element?, it: Continuation<Document>): Throwable? {
+fun checkDoc(document: Element?): Throwable? {
     document ?: return null
     val doc = Jsoup.parse(document.toString())
     if (doc.title().contains("Error 404 (Not Found)")) {

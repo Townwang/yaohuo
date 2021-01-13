@@ -2,6 +2,7 @@ package com.townwang.yaohuo.ui.weight.htmltext
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Canvas
 import android.text.Selection
 import android.text.Spannable
 import android.text.method.LinkMovementMethod
@@ -14,13 +15,23 @@ import android.widget.TextView
 @SuppressLint("AppCompatCustomView")
 class TextViewFixTouchConsume : TextView {
     private var dontConsumeNonUrlClicks = true
+//    private var calculatedLines = false
     var linkHit = false
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(
-        context: Context?, attrs: AttributeSet?, defStyle: Int
-    ) : super(context, attrs, defStyle) {
-    }
+    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(
+        context,
+        attrs,
+        defStyle
+    )
+
+//    override fun onDraw(canvas: Canvas?) {
+//        if (!calculatedLines) {
+//            setLines(measuredHeight/lineHeight)
+//            calculatedLines = true
+//        }
+//        super.onDraw(canvas)
+//    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -28,6 +39,7 @@ class TextViewFixTouchConsume : TextView {
         val res = super.onTouchEvent(event)
         return if (dontConsumeNonUrlClicks) linkHit else res
     }
+
     class LocalLinkMovementMethod : LinkMovementMethod() {
         override fun onTouchEvent(
             widget: TextView,
@@ -73,13 +85,7 @@ class TextViewFixTouchConsume : TextView {
         }
 
         companion object {
-            var sInstance: LocalLinkMovementMethod? = null
-            val instance: LocalLinkMovementMethod?
-                get() {
-                    if (sInstance == null) sInstance =
-                        LocalLinkMovementMethod()
-                    return sInstance
-                }
+            val instance = LocalLinkMovementMethod()
         }
     }
 
@@ -88,6 +94,6 @@ class TextViewFixTouchConsume : TextView {
     }
 
     override fun performLongClick(): Boolean {
-        return true
+        return false
     }
 }

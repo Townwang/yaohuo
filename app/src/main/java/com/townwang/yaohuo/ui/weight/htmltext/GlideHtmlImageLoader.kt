@@ -23,7 +23,6 @@ class GlideHtmlImageLoader(
             try {
                 val requestBuilder =
                     Glide.with(context)
-                        .asDrawable()
                         .load(url)
                         .apply(options)
                         .submit()
