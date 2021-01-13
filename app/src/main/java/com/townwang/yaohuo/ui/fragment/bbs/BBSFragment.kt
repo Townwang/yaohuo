@@ -34,7 +34,7 @@ class BBSFragment : Fragment() {
             setTitleCenter(toolbar)
         }
         startAnim()
-        resourceSharing.setOnClickListener {
+        resourceSharing.onClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 requireActivity(), resourceSharing, "share name"
             ).toBundle()
@@ -42,13 +42,14 @@ class BBSFragment : Fragment() {
                 requireContext(), Intent(
                     requireContext(), ActivityList::class.java
                 ).apply {
+                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     putExtra(LIST_CLASS_ID_KEY, 201)
                     putExtra(LIST_BBS_NAME_KEY, getString(R.string.bbs_res_share))
                 }, bundle
             )
         }
 
-        integratedTechnology.setOnClickListener {
+        integratedTechnology.onClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 requireActivity(), resourceSharing, "share name"
             ).toBundle()
@@ -56,13 +57,14 @@ class BBSFragment : Fragment() {
                 requireContext(), Intent(
                     requireContext(), ActivityList::class.java
                 ).apply {
+                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     putExtra(LIST_CLASS_ID_KEY, 197)
                     putExtra(LIST_BBS_NAME_KEY,  getString(R.string.bbs_integrated_technology))
 
                 }, bundle
             )
         }
-        mlTalkOver.setOnClickListener {
+        mlTalkOver.onClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 requireActivity(), resourceSharing, "share name"
             ).toBundle()
@@ -70,12 +72,13 @@ class BBSFragment : Fragment() {
                 requireContext(), Intent(
                     requireContext(), ActivityList::class.java
                 ).apply {
+                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     putExtra(LIST_CLASS_ID_KEY, 203)
                     putExtra(LIST_BBS_NAME_KEY,  getString(R.string.bbs_ml_talk_over))
                 }, bundle
             )
         }
-        reward.setOnClickListener {
+        reward.onClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 requireActivity(), resourceSharing, "share name"
             ).toBundle()
@@ -83,12 +86,13 @@ class BBSFragment : Fragment() {
                 requireContext(), Intent(
                     requireContext(), ActivityList::class.java
                 ).apply {
+                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     putExtra(LIST_CLASS_ID_KEY, 204)
                     putExtra(LIST_BBS_NAME_KEY,  getString(R.string.bbs_reward))
                 }, bundle
             )
         }
-        teahouse.setOnClickListener {
+        teahouse.onClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 requireActivity(), resourceSharing, "share name"
             ).toBundle()
@@ -96,12 +100,13 @@ class BBSFragment : Fragment() {
                 requireContext(), Intent(
                     requireContext(), ActivityList::class.java
                 ).apply {
+                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     putExtra(LIST_CLASS_ID_KEY, 177)
                     putExtra(LIST_BBS_NAME_KEY,  getString(R.string.bbs_tea_house))
                 }, bundle
             )
         }
-        rewardQuestionAndAnswer.setOnClickListener {
+        rewardQuestionAndAnswer.onClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 requireActivity(), resourceSharing, "share name"
             ).toBundle()
@@ -109,12 +114,13 @@ class BBSFragment : Fragment() {
                 requireContext(), Intent(
                     requireContext(), ActivityList::class.java
                 ).apply {
+                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     putExtra(LIST_CLASS_ID_KEY, 213)
                     putExtra(LIST_BBS_NAME_KEY,  getString(R.string.bbs_quest_answer))
                 }, bundle
             )
         }
-        texturedPhoto.setOnClickListener {
+        texturedPhoto.onClickListener {
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 requireActivity(), resourceSharing, "share name"
             ).toBundle()
@@ -122,6 +128,7 @@ class BBSFragment : Fragment() {
                 requireContext(), Intent(
                     requireContext(), ActivityList::class.java
                 ).apply {
+                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     putExtra(LIST_CLASS_ID_KEY, 240)
                     putExtra(LIST_BBS_NAME_KEY, getString(R.string.bbs_textured_photo))
                 }, bundle

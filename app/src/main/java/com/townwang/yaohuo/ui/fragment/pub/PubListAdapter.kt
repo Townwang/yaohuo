@@ -3,6 +3,7 @@ package com.townwang.yaohuo.ui.fragment.pub
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.townwang.yaohuo.common.OnItemClickListener
+import com.townwang.yaohuo.common.onClickListener
 import com.townwang.yaohuo.repo.data.HomeData
 
 class PubListAdapter : RecyclerView.Adapter<PubListViewHolder>() {
@@ -28,7 +29,7 @@ class PubListAdapter : RecyclerView.Adapter<PubListViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: PubListViewHolder, position: Int) {
-        holder.itemView.setOnClickListener {
+        holder.itemView.onClickListener {
             onItemClickListener?.invoke(holder.itemView,datas[position])
         }
         return holder.bind(datas[position])

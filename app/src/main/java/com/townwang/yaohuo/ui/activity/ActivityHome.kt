@@ -36,7 +36,7 @@ class ActivityHome : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.navHost,newsFrag)
             .commit()
-        addFab.setOnClickListener {
+        addFab.onClickListener {
             val magTransaction = supportFragmentManager.beginTransaction()
             val fragment = supportFragmentManager.findFragmentByTag("send frag")
             if (fragment != null) {
@@ -55,20 +55,20 @@ class ActivityHome : AppCompatActivity() {
 //            }
             dialogFragment.show(supportFragmentManager, "send frag")
         }
-        news.setOnClickListener {
+        news.onClickListener {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.navHost, newsFrag)
                 .commit()
         }
-        bbs.setOnClickListener {
+        bbs.onClickListener {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.navHost, BBSFragment())
                 .commit()
         }
-        game.setOnClickListener {
+        game.onClickListener {
             Snackbar.make(appbarLayout,"正在开发...", Snackbar.LENGTH_SHORT).show()
         }
-        me.setOnClickListener {
+        me.onClickListener {
             supportFragmentManager.beginTransaction()
                     .replace(R.id.navHost, MeFragment())
                     .commit()

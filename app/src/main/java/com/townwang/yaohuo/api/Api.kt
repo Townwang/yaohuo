@@ -66,5 +66,12 @@ interface Api {
     @GET("myfile.aspx")
     fun getMe(): Call<Document>
 
+    /**
+     * 回帖
+     */
+    @FormUrlEncoded
+    @POST("bbs/book_re.aspx")
+    fun reply(@FieldMap map: HashMap<String, String>): Call<Document>
+
 
 }

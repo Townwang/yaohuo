@@ -71,11 +71,6 @@ class WebViewHelper(context: Context) {
         return doc.toString()
     }
 
-    fun setHtmlCode(htmlCode: String): WebView {
-        webView.loadDataWithBaseURL(null, getNewContent(htmlCode), "text/html", "UTF-8", null)
-        return webView
-    }
-
     fun setUrl(urlService: String): WebView {
         val url = URL(urlService)
         val cookieMaps = App.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE)

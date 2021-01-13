@@ -25,19 +25,18 @@ class NetCookiesInterceptor : Interceptor {
                     BuildConfig.CN_URL.toHttpUrlOrNull()
                 }
                 else -> {
-                    builder.addHeader(
-                        "Accept",
-                        "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"
-                    )
-                    builder.addHeader(":authority", "yaohuo.me")
-                    builder.addHeader(":scheme", "https")
-                    builder.addHeader("Accept-Encoding", "gzip, deflate, br")
-                    builder.addHeader("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
-                    builder.addHeader("Cache-Control", "max-age=0")
-                    builder.addHeader("Connection", "keep-alive")
+                    builder.addHeader("accept", "*/*")
+                    builder.addHeader("accept-encoding", "gzip, deflate, br")
+                    builder.addHeader("accept-encoding", "gzip, deflate, br")
+                    builder.addHeader("accept-language", "zh-CN,zh;q=0.9,en;q=0.8")
+                    builder.addHeader("origin", "https://yaohuo.me")
+                    builder.addHeader("sec-fetch-dest", "empty")
+                    builder.addHeader("sec-fetch-mode", "cors")
+                    builder.addHeader("sec-fetch-site", "cross-site")
+                    builder.addHeader("content-type", "application/x-www-form-urlencoded")
                     builder.addHeader(
                         "user-agent",
-                        "Opera/9.80 (Windows NT 6.0) Presto/2.12.388 Version/12.14"
+                        "Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Mobile Safari/537.36"
                     )
                     BuildConfig.BASE_YAOHUO_URL.toHttpUrlOrNull()
                 }

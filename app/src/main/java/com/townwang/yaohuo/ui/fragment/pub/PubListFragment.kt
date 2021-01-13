@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.item_list_data.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PubListFragment: Fragment() {
+class PubListFragment : Fragment() {
     private val adapter = PubListAdapter()
     private val viewModel: ListModel by viewModel()
 
@@ -31,7 +31,11 @@ class PubListFragment: Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_list_pub, container, false)
     }
 
@@ -39,28 +43,29 @@ class PubListFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).work {
             supportActionBar.work {
-                title = requireArguments().getString(LIST_BBS_NAME_KEY,"")
-                setDisplayHomeAsUpEnabled(requireArguments().getInt(LIST_CLASS_ID_KEY,0) != 0)
+                title = requireArguments().getString(LIST_BBS_NAME_KEY, "")
+                setDisplayHomeAsUpEnabled(requireArguments().getInt(LIST_CLASS_ID_KEY, 0) != 0)
             }
         }
         homeList.adapter = adapter
         homeList.layoutManager =
-                (StaggeredGridLayoutManager(
-                        config(HOME_LIST_THEME_SHOW).toInt(),
-                        StaggeredGridLayoutManager.VERTICAL
-                ))
+            (StaggeredGridLayoutManager(
+                config(HOME_LIST_THEME_SHOW).toInt(),
+                StaggeredGridLayoutManager.VERTICAL
+            ))
         adapter.onItemClickListener = { v, data ->
             val d = data as HomeData
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    requireActivity(), v.title, "share name"
+                requireActivity(), v.title, "share name"
             ).toBundle()
             ActivityCompat.startActivity(
-                    requireContext(), Intent(
+                requireContext(), Intent(
                     requireContext(), ActivityDetails::class.java
-            ).apply {
-                putExtra(HOME_DETAILS_URL_KEY, d.a)
-                putExtra(HOME_DETAILS_READ_KEY, d.read)
-            }, bundle
+                ).apply {
+                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                    putExtra(HOME_DETAILS_URL_KEY, d.a)
+                    putExtra(HOME_DETAILS_READ_KEY, d.read)
+                }, bundle
             )
         }
         refreshLayout.setOnRefreshListener {
@@ -104,7 +109,7 @@ class PubListFragment: Fragment() {
     }
 
     private fun refreshDone(success: Boolean) {
-        refreshLayout?:return
+        refreshLayout ?: return
         if (page == 1) {
             refreshLayout.finishRefresh(success)
         } else {
