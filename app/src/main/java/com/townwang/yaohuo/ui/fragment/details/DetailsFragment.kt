@@ -222,7 +222,9 @@ class DetailsFragment : Fragment() {
             subtitle?.text = it
         })
         viewModel.content.observe(viewLifecycleOwner, safeObserver {
-            WebViewHelper(requireContext(),webView).setHtmlCode(it)
+            WebViewHelper(requireContext(),webView).apply {
+                shouldOverrideUrlLoading = true
+            }.setHtmlCode(it)
             webView?.webChromeClient = object : WebChromeClient() {
                 override fun onProgressChanged(view: WebView, newProgress: Int) {
                     super.onProgressChanged(view, newProgress)

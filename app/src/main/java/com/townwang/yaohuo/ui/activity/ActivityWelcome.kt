@@ -25,6 +25,6 @@ class ActivityWelcome : AppCompatActivity() {
         appbarLayout.visibility = View.GONE
         supportFragmentManager.beginTransaction()
             .replace(R.id.navHost, SplashFragment())
-            .commitAllowingStateLoss()
+            .commit()
     }
 }

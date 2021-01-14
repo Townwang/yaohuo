@@ -288,7 +288,10 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
         parentHeightMeasureSpec: Int,
         heightUsed: Int
     ) {
-        invalidTopAndBottomMargin(child.layoutParams as LayoutParams)
+        val layoutParams = child.layoutParams
+        if (layoutParams is LayoutParams) {
+            invalidTopAndBottomMargin(layoutParams)
+        }
         super.measureChildWithMargins(
             child,
             parentWidthMeasureSpec,
@@ -775,7 +778,7 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
     }
 
     private val scrollRange: Int
-         get() {
+        get() {
             var scrollRange = 0
             if (childCount > 0) {
                 val childSize = computeVerticalScrollRange()
@@ -1307,7 +1310,7 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
     }
 
     private val bottomView: View?
-         get() {
+        get() {
             val views = effectiveChildren
             return if (views.isNotEmpty()) {
                 views[views.size - 1]
@@ -1320,7 +1323,7 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
      * @return
      */
     private val nonGoneChildren: List<View>
-         get() {
+        get() {
             val children: MutableList<View> = ArrayList()
             val count = childCount
             for (i in 0 until count) {
@@ -1336,7 +1339,7 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
      * 返回所有高度不为0的view
      */
     private val effectiveChildren: List<View>
-         get() {
+        get() {
             val children: MutableList<View> = ArrayList()
             val count = childCount
             for (i in 0 until count) {
@@ -1354,7 +1357,7 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
      * @return
      */
     private val stickyChildren: List<View>
-         get() {
+        get() {
             val children: MutableList<View> = ArrayList()
             val count = childCount
             for (i in 0 until count) {
@@ -1489,7 +1492,7 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
      * @return
      */
     private val stickyY: Int
-         get() = scrollY + paddingTop + mStickyOffset
+        get() = scrollY + paddingTop + mStickyOffset
 
     /**
      * 子View吸顶常驻
@@ -1530,7 +1533,7 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
     }
 
     private val isListEqual: Boolean
-         get() {
+        get() {
             if (mTempStickyViews.size == mCurrentStickyViews.size) {
                 val size = mTempStickyViews.size
                 for (i in 0 until size) {

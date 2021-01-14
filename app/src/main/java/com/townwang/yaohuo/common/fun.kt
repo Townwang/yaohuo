@@ -243,7 +243,6 @@ fun Context.handleException(
 fun Context.toast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
-
 fun getParam(url: String, name: String): String {
     var result = ""
     val index = url.indexOf("?")
