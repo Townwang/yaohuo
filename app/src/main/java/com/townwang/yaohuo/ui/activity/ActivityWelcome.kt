@@ -23,8 +23,10 @@ class ActivityWelcome : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(false)
         }
         appbarLayout.visibility = View.GONE
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.navHost, SplashFragment())
-            .commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.navHost, SplashFragment())
+                .commit()
+        }
     }
 }

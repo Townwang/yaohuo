@@ -21,8 +21,10 @@ class ActivityTheme : AppCompatActivity() {
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)
         }
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.navHost, ThemeFragment())
-            .commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.navHost, ThemeFragment())
+                .commit()
+        }
     }
 }

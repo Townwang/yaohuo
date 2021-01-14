@@ -20,15 +20,23 @@ class ActivityDetails : AppCompatActivity() {
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)
         }
-        supportFragmentManager.beginTransaction()
-            .replace(
-                R.id.navHost,
-                DetailsFragment().apply {
-                    arguments = Bundle().also {
-                        it.putString(HOME_DETAILS_URL_KEY,intent.getStringExtra(HOME_DETAILS_URL_KEY))
-                        it.putString(HOME_DETAILS_READ_KEY,intent.getStringExtra(HOME_DETAILS_READ_KEY))
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(
+                    R.id.navHost,
+                    DetailsFragment().apply {
+                        arguments = Bundle().also {
+                            it.putString(
+                                HOME_DETAILS_URL_KEY,
+                                intent.getStringExtra(HOME_DETAILS_URL_KEY)
+                            )
+                            it.putString(
+                                HOME_DETAILS_READ_KEY,
+                                intent.getStringExtra(HOME_DETAILS_READ_KEY)
+                            )
+                        }
                     }
-                }
-            ).commit()
+                ).commit()
+        }
     }
 }

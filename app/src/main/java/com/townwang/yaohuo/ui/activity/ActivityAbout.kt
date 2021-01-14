@@ -1,4 +1,5 @@
 package com.townwang.yaohuo.ui.activity
+
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.townwang.yaohuo.common.setActTheme
@@ -22,9 +23,11 @@ class ActivityAbout : AppCompatActivity() {
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)
         }
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.navHost, AboutFragment())
-            .commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.navHost, AboutFragment())
+                .commit()
+        }
     }
 
 

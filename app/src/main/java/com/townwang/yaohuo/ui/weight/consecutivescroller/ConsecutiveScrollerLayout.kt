@@ -425,7 +425,7 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
                 mEventY = ev.getY(actionIndex).toInt()
                 mEventX = ev.getX(actionIndex).toInt()
                 initOrResetAdjustVelocityTracker()
-                mAdjustVelocityTracker!!.addMovement(vtev)
+                mAdjustVelocityTracker?.addMovement(vtev)
                 startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_TOUCH)
                 mDownLocation[0] = getRawX(this, ev, actionIndex)
                 mDownLocation[1] = getRawY(this, ev, actionIndex)
@@ -449,7 +449,7 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
                     mDownLocation[1]
                 )
                 initAdjustVelocityTrackerIfNotExists()
-                mAdjustVelocityTracker!!.addMovement(vtev)
+                mAdjustVelocityTracker?.addMovement(vtev)
             }
             MotionEvent.ACTION_MOVE -> {
                 val pointerIndex = ev.findPointerIndex(mActivePointerId)
@@ -457,7 +457,7 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
                     return false
                 }
                 initAdjustVelocityTrackerIfNotExists()
-                mAdjustVelocityTracker!!.addMovement(vtev)
+                mAdjustVelocityTracker?.addMovement(vtev)
                 val offsetY = ev.getY(pointerIndex).toInt() - mEventY
                 val offsetX = ev.getX(pointerIndex).toInt() - mEventX
                 if (SCROLL_ORIENTATION == SCROLL_NONE
@@ -503,38 +503,36 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
                     )
                 }
                 initAdjustVelocityTrackerIfNotExists()
-                mAdjustVelocityTracker!!.addMovement(vtev)
+                mAdjustVelocityTracker?.addMovement(vtev)
             }
             MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
                 if (mAdjustVelocityTracker != null) {
-                    mAdjustVelocityTracker!!.addMovement(vtev)
-                    mAdjustVelocityTracker!!.computeCurrentVelocity(
+                    mAdjustVelocityTracker?.addMovement(vtev)
+                    mAdjustVelocityTracker?.computeCurrentVelocity(
                         1000,
                         mMaximumVelocity.toFloat()
                     )
-                    val yVelocity = mAdjustVelocityTracker!!.yVelocity.toInt()
+                    val yVelocity = mAdjustVelocityTracker?.yVelocity?.toInt()
                     recycleAdjustVelocityTracker()
                     val touchX = getRawX(this, ev, actionIndex)
                     val touchY = getRawY(this, ev, actionIndex)
-                    val canScrollVerticallyChild =
-                        canScrollVertically(getTouchTarget(touchX, touchY)!!)
-                    if (SCROLL_ORIENTATION != SCROLL_VERTICAL && canScrollVerticallyChild
-                        && Math.abs(yVelocity) >= mMinimumVelocity && !isHorizontalScroll(
-                            this,
-                            touchX,
-                            touchY
-                        )
-                    ) {
-                        //如果当前是横向滑动，但是触摸的控件可以垂直滑动，并且产生垂直滑动的fling事件，
-                        // 为了不让这个控件垂直fling，把事件设置为MotionEvent.ACTION_CANCEL。
-                        ev.action = MotionEvent.ACTION_CANCEL
+                    getTouchTarget(touchX, touchY)?.apply {
+                        val canScrollVerticallyChild = canScrollVertically(this)
+                        if (SCROLL_ORIENTATION != SCROLL_VERTICAL
+                            && canScrollVerticallyChild
+                            && abs(yVelocity ?: 0) >= mMinimumVelocity
+                            && !isHorizontalScroll(this, touchX, touchY)
+                        ) {
+                            //如果当前是横向滑动，但是触摸的控件可以垂直滑动，并且产生垂直滑动的fling事件，
+                            // 为了不让这个控件垂直fling，把事件设置为MotionEvent.ACTION_CANCEL。
+                            ev.action = MotionEvent.ACTION_CANCEL
+                        }
                     }
-                    if (SCROLL_ORIENTATION == SCROLL_NONE && !isConsecutiveScrollParent(
-                            this
-                        )
-                        && isIntercept(ev) && abs(yVelocity) >= mMinimumVelocity
+                    if (SCROLL_ORIENTATION == SCROLL_NONE
+                        && !isConsecutiveScrollParent(this)
+                        && isIntercept(ev) && abs(yVelocity ?: 0) >= mMinimumVelocity
                     ) {
-                        fling(-yVelocity)
+                        fling(-yVelocity!!)
                     }
                 }
                 mEventY = 0
@@ -1272,10 +1270,8 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
      * 初始化VelocityTracker
      */
     private fun initOrResetAdjustVelocityTracker() {
-        if (mAdjustVelocityTracker == null) {
+        mAdjustVelocityTracker?.clear()?.run {
             mAdjustVelocityTracker = VelocityTracker.obtain()
-        } else {
-            mAdjustVelocityTracker!!.clear()
         }
     }
 
@@ -1292,10 +1288,8 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
      * 回收VelocityTracker
      */
     private fun recycleAdjustVelocityTracker() {
-        if (mAdjustVelocityTracker != null) {
-            mAdjustVelocityTracker!!.recycle()
-            mAdjustVelocityTracker = null
-        }
+        mAdjustVelocityTracker?.recycle()
+        mAdjustVelocityTracker = null
     }
 
     /**
@@ -1746,16 +1740,14 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
 
     //根据坐标返回触摸到的View
     private fun getTouchTarget(touchX: Int, touchY: Int): View? {
-        var targetView: View? = null
         // 获取可触摸的View
         val touchableViews = nonGoneChildren
         for (touchableView in touchableViews) {
             if (isTouchPointInView(touchableView, touchX, touchY)) {
-                targetView = touchableView
-                break
+                return touchableView
             }
         }
-        return targetView
+        return null
     }
 
     /**
