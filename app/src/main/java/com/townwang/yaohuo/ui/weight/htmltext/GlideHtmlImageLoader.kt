@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.townwang.yaohuo.R
+import com.townwang.yaohuo.common.options
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -22,8 +23,8 @@ class GlideHtmlImageLoader(
             try {
                 val requestBuilder =
                     Glide.with(context)
-                        .asDrawable()
                         .load(url)
+                        .apply(options)
                         .submit()
                         .get()
                 callback?.onLoadComplete(requestBuilder)

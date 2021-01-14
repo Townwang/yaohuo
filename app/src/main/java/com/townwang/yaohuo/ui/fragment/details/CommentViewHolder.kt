@@ -74,16 +74,17 @@ class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                         )
                     }
                 }).into(comment_tv)
-            getAvatar(data.avatar, userImg)
+            getAvatar(userImg)
             if (userImg.drawable != null) {
                 startAnimator(userImg.drawable)
             }
         }
     }
 
-    private fun getAvatar(handUrl: String, img: ImageView) {
+    private fun getAvatar(img: ImageView) {
         Glide.with(itemView)
             .load(R.drawable.avatar)
+            .apply(options)
             .apply(RequestOptions.bitmapTransform(CircleCrop())).into(img)
 
 //        GlobalScope.launch(Dispatchers.IO) {

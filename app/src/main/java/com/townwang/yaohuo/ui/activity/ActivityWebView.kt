@@ -24,14 +24,15 @@ class ActivityWebView : AppCompatActivity() {
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)
         }
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.navHost, WebViewFragment().apply {
-                arguments = Bundle().also {
-                    it.putString(WEB_VIEW_URL_KEY, intent.getStringExtra(WEB_VIEW_URL_KEY))
-                    it.putString(WEB_VIEW_URL_TITLE, intent.getStringExtra(WEB_VIEW_URL_TITLE))
-                }
-            })
-            .commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.navHost, WebViewFragment().apply {
+                    arguments = Bundle().also {
+                        it.putString(WEB_VIEW_URL_KEY, intent.getStringExtra(WEB_VIEW_URL_KEY))
+                        it.putString(WEB_VIEW_URL_TITLE, intent.getStringExtra(WEB_VIEW_URL_TITLE))
+                    }
+                }).commit()
+        }
     }
 
 

@@ -26,6 +26,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.android.tu.loadingdialog.LoadingDailog
+import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.townwang.yaohuo.App
 import com.townwang.yaohuo.BuildConfig
@@ -242,7 +243,6 @@ fun Context.handleException(
 fun Context.toast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
-
 fun getParam(url: String, name: String): String {
     var result = ""
     val index = url.indexOf("?")
@@ -263,4 +263,11 @@ fun getUrlString(url: String): String {
         BuildConfig.BASE_YAOHUO_URL + url.substring(1, url.length)
     }
 }
+
+
+val options = RequestOptions()
+    .error(R.drawable.ic_picture_error)
+    .placeholder(R.drawable.loading_anim)
+
+
 

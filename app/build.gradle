@@ -25,7 +25,7 @@ android {
         minSdkVersion 22
         targetSdkVersion 30
         versionCode getVersionCodeTimestamp()
-        versionName "1.0.7-alpha"
+        versionName "1.0.8-alpha"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         applicationVariants.all { variant ->

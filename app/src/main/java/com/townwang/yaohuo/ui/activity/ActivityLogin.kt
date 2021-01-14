@@ -23,8 +23,10 @@ class ActivityLogin : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
         Beta.checkUpgrade(false, true)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.navHost, LoginFragment())
-            .commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.navHost, LoginFragment())
+                .commit()
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.text.*
 import android.text.style.ClickableSpan
 import android.text.style.ImageSpan
 import android.text.style.URLSpan
+import android.util.Log
 import android.widget.TextView
 import com.townwang.yaohuo.ui.weight.htmltext.span.ImageClickSpan
 import com.townwang.yaohuo.ui.weight.htmltext.span.LinkClickSpan
@@ -59,7 +60,8 @@ class HtmlText private constructor(private var source: String) {
         }
         imageGetter.getImageSize(source)
         tagHandler.setTextView(textView)
-        source = tagHandler.overrideTags(source)?:""
+        source = tagHandler.overrideTags(source) ?: ""
+        Log.d("htmlsss","修改前$source")
         val spanned = Html.fromHtml(source, imageGetter, tagHandler)
         val ssb: SpannableStringBuilder
         ssb = if (spanned is SpannableStringBuilder) {
@@ -110,6 +112,7 @@ class HtmlText private constructor(private var source: String) {
         if (after != null) {
             charSequence = after!!.after(ssb)
         }
+        Log.d("htmlsss","修改后$ssb")
         textView.text = charSequence
     }
 
@@ -118,7 +121,15 @@ class HtmlText private constructor(private var source: String) {
          * 设置源文本
          */
         fun from(source: String): HtmlText {
-            return HtmlText(source)
+            var data = source
+            val imgIndex = source.indexOf("<img")
+            if (imgIndex != -1) {
+                val s = source.substring(0, imgIndex)
+                if (s.isNotEmpty()) {
+                    data = s + "<br/>" + source.substring(imgIndex, source.lastIndex)
+                }
+            }
+            return HtmlText(data)
         }
     }
 }

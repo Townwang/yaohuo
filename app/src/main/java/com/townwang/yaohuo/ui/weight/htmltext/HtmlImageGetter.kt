@@ -1,10 +1,13 @@
 package com.townwang.yaohuo.ui.weight.htmltext
 
+import android.R.attr.resource
 import android.graphics.Canvas
 import android.graphics.ColorFilter
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.text.Html.ImageGetter
 import android.widget.TextView
+import com.bumptech.glide.load.resource.gif.GifDrawable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

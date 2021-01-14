@@ -33,9 +33,11 @@ class ActivityHome : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
         val newsFrag = NesListFragment()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.navHost,newsFrag)
-            .commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.navHost, newsFrag)
+                .commit()
+        }
         addFab.onClickListener {
             val magTransaction = supportFragmentManager.beginTransaction()
             val fragment = supportFragmentManager.findFragmentByTag("send frag")
@@ -73,9 +75,12 @@ class ActivityHome : AppCompatActivity() {
                     .replace(R.id.navHost, MeFragment())
                     .commit()
         }
-        Beta.checkUpgrade(false, true)
     }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        Beta.checkUpgrade(false, true)
+    }
     override fun onBackPressed() {
         //disable the super here
     }

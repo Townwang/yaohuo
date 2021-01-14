@@ -1,9 +1,6 @@
 package com.townwang.yaohuo.ui.fragment.details
 
 import android.annotation.SuppressLint
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,10 +8,11 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
+import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.android.tu.loadingdialog.LoadingDailog
@@ -22,15 +20,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
+import com.scwang.smart.refresh.layout.api.RefreshFooter
+import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.data.CommentData
 import com.townwang.yaohuo.ui.activity.ActivityWebView
+import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
 import com.townwang.yaohuo.ui.weight.commit.CommentDialogFragment
-import com.townwang.yaohuo.ui.weight.htmltext.GlideHtmlImageLoader
-import com.townwang.yaohuo.ui.weight.htmltext.HtmlText
-import com.townwang.yaohuo.ui.weight.htmltext.OnTagClickListener
-import com.townwang.yaohuo.ui.weight.htmltext.TextViewFixTouchConsume
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.view_download_style.view.*
 import kotlinx.android.synthetic.main.view_image_style.view.*
@@ -73,11 +70,11 @@ class DetailsFragment : Fragment() {
         }
         refreshLayout.setOnLoadMoreListener {
             if (adapter.datas.isNullOrEmpty()) {
-                refreshLayout.finishLoadMoreWithNoMoreData()
+                refreshLayout?.finishLoadMoreWithNoMoreData()
                 return@setOnLoadMoreListener
             }
             if (adapter.datas.last().floor == 1) {
-                refreshLayout.finishLoadMoreWithNoMoreData()
+                refreshLayout?.finishLoadMoreWithNoMoreData()
                 return@setOnLoadMoreListener
             }
             page++
@@ -107,8 +104,8 @@ class DetailsFragment : Fragment() {
             dialogFragment.show(parentFragmentManager, "input frag")
         }
         comment.onClickListener {
-            nesScroll.post {
-                nesScroll.scrollTo(0, commentLists.top)
+            refreshLayout?.post {
+                refreshLayout?.scrollTo(0, commentLists.top)
             }
         }
         praise.onClickListener {
@@ -159,6 +156,18 @@ class DetailsFragment : Fragment() {
                 }
             }
         }
+        refreshLayout.setOnMultiListener(object : SimpleMultiListener() {
+            override fun onFooterMoving(
+                footer: RefreshFooter?,
+                isDragging: Boolean,
+                percent: Float,
+                offset: Int,
+                footerHeight: Int,
+                maxDragHeight: Int
+            ) {
+                scrollerLayout?.stickyOffset = offset
+            }
+        })
 //        adapter.onItemLongClickListener = { v, data ->
 //            if (data is CommentData) {
 //                val clipboard =
@@ -173,95 +182,70 @@ class DetailsFragment : Fragment() {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         viewModel.title.observe(viewLifecycleOwner, safeObserver {
-            title.text = it
-            title.visibility = View.VISIBLE
+            title?.text = it
+            title?.visibility = View.VISIBLE
         })
         viewModel.time.observe(viewLifecycleOwner, safeObserver {
-            time.text = it
-            read_num.visibility = View.VISIBLE
-            read_num.text =
+            time?.text = it
+            read_num?.visibility = View.VISIBLE
+            read_num?.text =
                 requireArguments().getString(HOME_DETAILS_READ_KEY, "").split(" ").first()
         })
         viewModel.name.observe(viewLifecycleOwner, safeObserver {
-            constraintLayout.visibility = View.VISIBLE
-            userName.text = it
+            constraintLayout?.visibility = View.VISIBLE
+            userName?.text = it
         })
         viewModel.online.observe(viewLifecycleOwner, safeObserver {
-            constraintLayout.visibility = View.VISIBLE
+            constraintLayout?.visibility = View.VISIBLE
             if (it) {
-                online.background =
+                online?.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_green_10)
             } else {
-                online.background =
+                online?.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_grey_10)
             }
         })
         viewModel.giftMoney.observe(viewLifecycleOwner, safeObserver {
             //肉
-            linearTop.visibility = View.VISIBLE
-            icon.text = "肉"
-            icon.background =
+            linearTop?.visibility = View.VISIBLE
+            icon?.text = "肉"
+            icon?.background =
                 ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
-            subtitle.text = it
+            subtitle?.text = it
         })
         viewModel.reward.observe(viewLifecycleOwner, safeObserver {
             //悬赏
-            linearTop.visibility = View.VISIBLE
-            icon.text = "赏"
-            icon.background =
+            linearTop?.visibility = View.VISIBLE
+            icon?.text = "赏"
+            icon?.background =
                 ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
-            subtitle.text = it
+            subtitle?.text = it
         })
         viewModel.content.observe(viewLifecycleOwner, safeObserver {
-            val textView = TextViewFixTouchConsume(requireContext())
-            textView.setTextColor(ContextCompat.getColor(requireContext(),R.color.md_black_1000))
-            textView.movementMethod = TextViewFixTouchConsume.LocalLinkMovementMethod.instance
-            HtmlText.from(it)
-                .setImageLoader(GlideHtmlImageLoader(requireContext(), resources, textView))
-                .setOnTagClickListener(object : OnTagClickListener {
-                    override fun onImageClick(
-                        context: Context,
-                        imageUrlList: List<String>,
-                        position: Int
-                    ) {
-                        ActivityCompat.startActivity(
-                            requireContext(), Intent(
-                                requireContext(), ActivityWebView::class.java
-                            ).apply {
-                                flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                                putExtra(WEB_VIEW_URL_KEY, imageUrlList[position])
-                                putExtra(WEB_VIEW_URL_TITLE, title.text.toString())
-                            }, null
-                        )
-                    }
-
-                    override fun onLinkClick(context: Context, url: String) {
-                        ActivityCompat.startActivity(
-                            requireContext(), Intent(
-                                requireContext(), ActivityWebView::class.java
-                            ).apply {
-                                flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                                putExtra(WEB_VIEW_URL_KEY, url)
-                                putExtra(WEB_VIEW_URL_TITLE, title.text.toString())
-                            }, null
-                        )
-                    }
-                })
-                .into(textView)
-            list_content.addView(textView)
+            WebViewHelper(requireContext(),webView).apply {
+                shouldOverrideUrlLoading = true
+            }.setHtmlCode(it)
+            webView?.webChromeClient = object : WebChromeClient() {
+                override fun onProgressChanged(view: WebView, newProgress: Int) {
+                    super.onProgressChanged(view, newProgress)
+                    scrollerLayout?.checkLayoutChange()
+                }
+            }
         })
         viewModel.image.observe(viewLifecycleOwner, safeObserver {
             val contentImg =
                 LayoutInflater.from(requireContext()).inflate(R.layout.view_image_style, null)
-            list_content.addView(contentImg)
+            list_content?.addView(contentImg)
             Glide.with(requireContext())
                 .load(getUrlString(it))
+                .apply(options)
                 .apply(RequestOptions.noTransformation())
                 .into(contentImg.image)
         })
         viewModel.avatar.observe(viewLifecycleOwner, safeObserver {
             Glide.with(requireContext())
                 .load(getUrlString(it))
+                .apply(options)
                 .apply(RequestOptions.bitmapTransform(CircleCrop()))
                 .into(userImg)
         })
@@ -282,21 +266,21 @@ class DetailsFragment : Fragment() {
                     }, null
                 )
             }
-            list_content.addView(contentLoad)
+            list_content?.addView(contentLoad)
         })
         viewModel.commentPraise.observe(viewLifecycleOwner, safeObserver {
-            praise_value.text = it
+            praise_value?.text = it
         })
         viewModel.commentSize.observe(viewLifecycleOwner, safeObserver {
             if (page == 1 && ot == 0) {
-                comment_value.text = it
+                comment_value?.text = it
             }
         })
         viewModel.commentLists.observe(viewLifecycleOwner, safeObserver {
-            comment_tip.visibility = View.VISIBLE
-            view_grey.visibility = View.VISIBLE
-            @Suppress("UNCHECKED_CAST")
-            adapter.datas = it as ArrayList<CommentData>
+            comment_tip?.visibility = View.VISIBLE
+            if (it is ArrayList<CommentData>) {
+                adapter.datas = it
+            }
         })
         viewModel.loading.observe(viewLifecycleOwner, safeObserver {
             if (!it) {
@@ -333,7 +317,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun refreshDone(success: Boolean) {
-        refreshLayout ?: return
+        refreshLayout?: return
         if (page == 1) {
             refreshLayout.finishRefresh(success)
         } else {

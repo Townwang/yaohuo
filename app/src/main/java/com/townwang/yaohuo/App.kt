@@ -36,11 +36,6 @@ class App : Application() {
             androidLogger(Level.INFO)
             modules(koinModules)
         }
-        Bugly.init(applicationContext, "56bf507146", false)
-        Beta.autoInit = true
-        Beta.autoCheckUpgrade = true
-        Beta.upgradeCheckPeriod = 60 * 1000
-        CrashReport.setIsDevelopmentDevice(applicationContext, BuildConfig.DEBUG)
         try {
             val a = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
             val b = a.signatures
@@ -58,6 +53,11 @@ class App : Application() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this@App)
+        Bugly.init(applicationContext, "56bf507146", false)
+        Beta.autoInit = true
+        Beta.autoCheckUpgrade = true
+        Beta.upgradeCheckPeriod = 60 * 1000
+        CrashReport.setIsDevelopmentDevice(applicationContext, BuildConfig.DEBUG)
     }
 
     init {
