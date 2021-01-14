@@ -208,10 +208,10 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         _commentLists.value = array
     }
 
-    fun reply(content: String, url: String, floor: String? = null, touserid: String? = null) =
+    fun reply(content: String, url: String, floor: String? = null, touserid: String? = null,sendmsg:String?="1") =
         launchTask {
             try {
-                val doc = repo.reply(url, content, floor, touserid)
+                val doc = repo.reply(url, content, floor, touserid,sendmsg=sendmsg)
                 doc.body()
                 _commentSuccess.value = true
             } catch (e: Exception) {

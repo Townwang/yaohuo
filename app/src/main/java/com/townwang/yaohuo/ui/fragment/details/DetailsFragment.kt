@@ -98,7 +98,11 @@ class DetailsFragment : Fragment() {
             dialogFragment.mDialogListener = { _, message ->
                 loading = Loading("正在提交...").create()
                 loading?.show()
-                viewModel.reply(message, requireArguments().getString(HOME_DETAILS_URL_KEY, ""))
+                viewModel.reply(
+                    message,
+                    requireArguments().getString(HOME_DETAILS_URL_KEY, ""),
+                    sendmsg = "1"
+                )
                 dialogFragment.dismiss()
             }
             dialogFragment.show(parentFragmentManager, "input frag")
@@ -146,7 +150,8 @@ class DetailsFragment : Fragment() {
                             msg,
                             data.url,
                             data.floor.toString(),
-                            getParam(data.url, "touserid")
+                            getParam(data.url, "touserid"),
+                            "0"
                         )
                         dialogFragment.dismiss()
                     }
@@ -222,7 +227,7 @@ class DetailsFragment : Fragment() {
             subtitle?.text = it
         })
         viewModel.content.observe(viewLifecycleOwner, safeObserver {
-            WebViewHelper(requireContext(),webView).apply {
+            WebViewHelper(requireContext(), webView).apply {
                 shouldOverrideUrlLoading = true
             }.setHtmlCode(it)
             webView?.webChromeClient = object : WebChromeClient() {
@@ -317,7 +322,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun refreshDone(success: Boolean) {
-        refreshLayout?: return
+        refreshLayout ?: return
         if (page == 1) {
             refreshLayout.finishRefresh(success)
         } else {

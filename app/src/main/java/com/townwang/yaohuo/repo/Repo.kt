@@ -87,7 +87,8 @@ class Repo constructor(
         url: String,
         content: String,
         floor: String? = null,
-        touserid: String? = null
+        touserid: String? = null,
+        sendmsg:String? = "1"
     ): Document = withRepoContext {
         val bbs = api.urlPenetrate(url)
         val rs = bbs.getResp()
@@ -98,7 +99,7 @@ class Repo constructor(
                 it.attr(AK_VALUE, content)
             }
             if (it.attr(AK_NAME) == "sendmsg") {
-                it.attr(AK_VALUE, "1")
+                it.attr(AK_VALUE, sendmsg)
             }
             if (it.attr(AK_NAME) == "reply") {
                 it.attr(AK_VALUE, floor)

@@ -47,8 +47,8 @@ class PubListFragment : Fragment() {
                 setDisplayHomeAsUpEnabled(requireArguments().getInt(LIST_CLASS_ID_KEY, 0) != 0)
             }
         }
-        homeList.adapter = adapter
-        homeList.layoutManager =
+        homeList?.adapter = adapter
+        homeList?.layoutManager =
             (StaggeredGridLayoutManager(
                 config(HOME_LIST_THEME_SHOW).toInt(),
                 StaggeredGridLayoutManager.VERTICAL
@@ -68,15 +68,15 @@ class PubListFragment : Fragment() {
                 }, bundle
             )
         }
-        refreshLayout.setOnRefreshListener {
+        refreshLayout?.setOnRefreshListener {
             page = 1
             viewModel.loadList(requireArguments().getInt(LIST_CLASS_ID_KEY), page)
         }
-        refreshLayout.setOnLoadMoreListener {
+        refreshLayout?.setOnLoadMoreListener {
             page++
             viewModel.loadList(requireArguments().getInt(LIST_CLASS_ID_KEY), page)
         }
-        refreshLayout.autoRefresh()
+        refreshLayout?.autoRefresh()
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -90,6 +90,11 @@ class PubListFragment : Fragment() {
         viewModel.loading.observe(viewLifecycleOwner, safeObserver {
             if (!it) {
                 refreshDone(true)
+            }
+        })
+        viewModel.isMessage.observe(viewLifecycleOwner,safeObserver {
+            if (it) {
+                sendNotification(requireContext())
             }
         })
         viewModel.error.observe(viewLifecycleOwner, safeObserver {
