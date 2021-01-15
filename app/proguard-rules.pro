@@ -127,7 +127,7 @@
     public void *(android.webkit.webView, jav.lang.String);
 }
 
-# 自定义类(JavaBean)
+# 自定义类(Bean)
 -keep class com.townwang.yaohuo.repo.data.**{*;}
 #############################################
 #
@@ -172,7 +172,6 @@
 -keepattributes EnclosingMethod
 #Jsoup
 -keeppackagenames org.jsoup.nodes
-
 #bugly
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}

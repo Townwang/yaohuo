@@ -1,4 +1,4 @@
-package com.townwang.yaohuo.common
+package com.townwang.yaohuo.common.helper
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -11,6 +11,8 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import com.townwang.yaohuo.R
+import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
+import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 
 

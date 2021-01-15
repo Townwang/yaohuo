@@ -251,6 +251,7 @@ fun getParam(url: String, name: String): String {
     keyValue.forEach {
         if (it.contains(name)) {
             result = it.split("=").last()
+            return@forEach
         }
     }
     return result
@@ -260,7 +261,7 @@ fun getUrlString(url: String): String {
     return if (url.contains("https://", true) || url.contains("http://", true)) {
         url
     } else {
-        BuildConfig.BASE_YAOHUO_URL + url.substring(1, url.length)
+        BuildConfig.BASE_YAOHUO_URL + url
     }
 }
 

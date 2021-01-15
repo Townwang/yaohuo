@@ -5,12 +5,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.townwang.yaohuo.common.OnItemClickListener
 import com.townwang.yaohuo.common.OnItemLongClickListener
 import com.townwang.yaohuo.common.onClickListener
-import com.townwang.yaohuo.repo.data.CommentData
+import com.townwang.yaohuo.repo.data.details.CommitListBean
 
 class CommentAdapter : RecyclerView.Adapter<CommentViewHolder>() {
     var onItemClickListener: OnItemClickListener? = null
     var onItemLongClickListener: OnItemLongClickListener? = null
-    var datas = arrayListOf<CommentData>()
+    var datas = arrayListOf<CommitListBean>()
         set(value) {
             if (field.isNotEmpty()) {
                 if (field.last().content != value.last().content) {

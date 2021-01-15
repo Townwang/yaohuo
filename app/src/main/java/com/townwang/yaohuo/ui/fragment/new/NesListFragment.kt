@@ -45,6 +45,7 @@ class NesListFragment : Fragment() {
                 arguments = Bundle().also {
                     it.putInt(LIST_CLASS_ID_KEY, 0)
                     it.putString(LIST_BBS_NAME_KEY, "最新")
+                    it.putString(LIST_ACTION_KEY, "new")
                 }
             }
             ).commitNow()

@@ -1,6 +1,9 @@
 package com.townwang.yaohuo.ui.fragment.details
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -13,6 +16,7 @@ import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.android.tu.loadingdialog.LoadingDailog
@@ -24,13 +28,12 @@ import com.scwang.smart.refresh.layout.api.RefreshFooter
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.repo.data.CommentData
+import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
 import com.townwang.yaohuo.ui.weight.commit.CommentDialogFragment
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.view_download_style.view.*
-import kotlinx.android.synthetic.main.view_image_style.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -62,13 +65,13 @@ class DetailsFragment : Fragment() {
                 setDisplayHomeAsUpEnabled(true)
             }
         }
-        refreshLayout.setOnRefreshListener {
+        refreshLayout?.setOnRefreshListener {
             page = 1
             ot = 0
             adapter.datas.clear()
             viewModel.commentDetails(page, ot)
         }
-        refreshLayout.setOnLoadMoreListener {
+        refreshLayout?.setOnLoadMoreListener {
             if (adapter.datas.isNullOrEmpty()) {
                 refreshLayout?.finishLoadMoreWithNoMoreData()
                 return@setOnLoadMoreListener
@@ -80,10 +83,10 @@ class DetailsFragment : Fragment() {
             page++
             viewModel.commentDetails(page, ot)
         }
-        attention.onClickListener {
+        attention?.onClickListener {
             Snackbar.make(requireView(), "正在开发...", Snackbar.LENGTH_SHORT).show()
         }
-        reply.onClickListener {
+        reply?.onClickListener {
             val magTransaction = parentFragmentManager.beginTransaction()
             val fragment = parentFragmentManager.findFragmentByTag("input frag")
             if (fragment != null) {
@@ -107,12 +110,12 @@ class DetailsFragment : Fragment() {
             }
             dialogFragment.show(parentFragmentManager, "input frag")
         }
-        comment.onClickListener {
+        comment?.onClickListener {
             refreshLayout?.post {
                 refreshLayout?.scrollTo(0, commentLists.top)
             }
         }
-        praise.onClickListener {
+        praise?.onClickListener {
             praise_value.setCompoundDrawablesWithIntrinsicBounds(
                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_praise_grey),
                 null,
@@ -123,15 +126,15 @@ class DetailsFragment : Fragment() {
             praise_value.text = (praise_value.text.toString().toInt() + 1).toString()
             viewModel.praise()
         }
-        commentLists.adapter = adapter
-        commentLists.layoutManager =
+        commentLists?.adapter = adapter
+        commentLists?.layoutManager =
             (StaggeredGridLayoutManager(
                 1,
                 StaggeredGridLayoutManager.VERTICAL
             ))
 
         adapter.onItemClickListener = { _, data ->
-            if (data is CommentData) {
+            if (data is CommitListBean) {
                 if (getParam(data.url, "touserid") != config(TROUSER_KEY)) {
                     val magTransaction = childFragmentManager.beginTransaction()
                     val fragment = childFragmentManager.findFragmentByTag("input frag")
@@ -161,7 +164,7 @@ class DetailsFragment : Fragment() {
                 }
             }
         }
-        refreshLayout.setOnMultiListener(object : SimpleMultiListener() {
+        refreshLayout?.setOnMultiListener(object : SimpleMultiListener() {
             override fun onFooterMoving(
                 footer: RefreshFooter?,
                 isDragging: Boolean,
@@ -173,14 +176,15 @@ class DetailsFragment : Fragment() {
                 scrollerLayout?.stickyOffset = offset
             }
         })
-//        adapter.onItemLongClickListener = { v, data ->
-//            if (data is CommentData) {
-//                val clipboard =
-//                    requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-//                clipboard.text = data.content
-//                Snackbar.make(v, "已复制 ${data.content}", Snackbar.LENGTH_SHORT).show()
-//            }
-//        }
+        adapter.onItemLongClickListener = { v, data ->
+            if (data is CommitListBean) {
+                val clipboard = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE)
+                if (clipboard is ClipboardManager) {
+                    clipboard.setPrimaryClip(ClipData.newPlainText("townwang", data.content))
+                    Snackbar.make(v, "已复制 ${data.content}", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     @SuppressLint("InflateParams")
@@ -216,7 +220,7 @@ class DetailsFragment : Fragment() {
             icon?.text = "肉"
             icon?.background =
                 ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
-            subtitle?.text = it
+            subtitle?.text = HtmlCompat.fromHtml(it,HtmlCompat.FROM_HTML_MODE_LEGACY)
         })
         viewModel.reward.observe(viewLifecycleOwner, safeObserver {
             //悬赏
@@ -236,16 +240,6 @@ class DetailsFragment : Fragment() {
                     scrollerLayout?.checkLayoutChange()
                 }
             }
-        })
-        viewModel.image.observe(viewLifecycleOwner, safeObserver {
-            val contentImg =
-                LayoutInflater.from(requireContext()).inflate(R.layout.view_image_style, null)
-            list_content?.addView(contentImg)
-            Glide.with(requireContext())
-                .load(getUrlString(it))
-                .apply(options)
-                .apply(RequestOptions.noTransformation())
-                .into(contentImg.image)
         })
         viewModel.avatar.observe(viewLifecycleOwner, safeObserver {
             Glide.with(requireContext())
@@ -271,6 +265,13 @@ class DetailsFragment : Fragment() {
                     }, null
                 )
             }
+            if (it[2].isNullOrEmpty()) {
+                contentLoad.description.visibility = View.GONE
+            } else {
+                contentLoad.description.text = it[2]
+                contentLoad.description.visibility = View.VISIBLE
+
+            }
             list_content?.addView(contentLoad)
         })
         viewModel.commentPraise.observe(viewLifecycleOwner, safeObserver {
@@ -283,7 +284,7 @@ class DetailsFragment : Fragment() {
         })
         viewModel.commentLists.observe(viewLifecycleOwner, safeObserver {
             comment_tip?.visibility = View.VISIBLE
-            if (it is ArrayList<CommentData>) {
+            if (it is ArrayList<CommitListBean>) {
                 adapter.datas = it
             }
         })

@@ -24,7 +24,7 @@
         android:id="@+id/versionName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_fillet"
+        android:background="@drawable/background_primary"
         android:paddingStart="5dp"
         android:paddingTop="1dp"
         android:paddingEnd="5dp"

@@ -39,13 +39,13 @@ interface Api {
     fun login(@QueryMap map:HashMap<String,String>):Call<Document>
 
     /**
-     * 获取最新列表
+     * 获取帖子列表
      */
     @GET("bbs/book_list.aspx")
     fun getNewList(
         @Query("classId") classId: String,
         @Query("page") page: String,
-        @Query("action") action: String? = "new",
+        @Query("action") action: String,
         @Query("siteId") siteId: String? = "1000",
         @Query("getTotal") getTotal: String? = "2021"
     ): Call<Document>

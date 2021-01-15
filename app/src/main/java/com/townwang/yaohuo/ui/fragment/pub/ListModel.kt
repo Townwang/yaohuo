@@ -13,8 +13,8 @@ class ListModel(private val repo: Repo) : UIViewModel() {
     private val _isMessage = MutableLiveData<Boolean>()
     val isMessage = _isMessage.asLiveData()
 
-    fun loadList(classId: Int, page: Int) = launchTask {
-        val doc = repo.getNewList(classId, page)
+    fun loadList(classId: Int, page: Int,action:String) = launchTask {
+        val doc = repo.getNewList(classId, page,action)
         _isMessage.value = isMsg(doc)
         val list = doc.select(NEW_LIST)
         val lists = arrayListOf<HomeData>()

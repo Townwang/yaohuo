@@ -48,13 +48,12 @@ class Repo constructor(
                 data[it.attr(AK_NAME)] = it.attr(AK_VALUE)
             }
         }
-
         val con = api.login(data)
         con.getResp()
     }
 
-    suspend fun getNewList(classId: Int, page: Int): Document = withRepoContext {
-        val bbs = api.getNewList(classId.toString(), page.toString())
+    suspend fun getNewList(classId: Int, page: Int,action:String): Document = withRepoContext {
+        val bbs = api.getNewList(classId.toString(), page.toString(),action)
         bbs.getResp()
     }
 
