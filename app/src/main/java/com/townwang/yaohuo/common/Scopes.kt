@@ -1,5 +1,6 @@
 package com.townwang.yaohuo.common
 
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.helper.isHaveMsg
 import com.townwang.yaohuo.repo.data.Niece
 import kotlinx.coroutines.*
@@ -121,25 +122,25 @@ suspend fun <T : Document> Call<T>.getResp() = withContext(networkScope.coroutin
 fun checkDoc(document: Element?): Throwable? {
     document ?: return null
     val doc = Jsoup.parse(document.toString())
-    if (doc.title().contains("Error 404 (Not Found)")) {
+    if (doc.title().contains(BuildConfig.YH_MATCH_404)) {
         return ApiErrorException(999, "找不到此贴了!")
     }
-    if (doc.title().contains("访问验证")) {
+    if (doc.title().contains(BuildConfig.YH_MATCH_VERIFY)) {
         return ApiErrorException(1001, "访问验证")
     }
-    if (doc.html().contains("身份失效了，请重新登录网站")) {
+    if (doc.html().contains(BuildConfig.YH_MATCH_IDENTITY)) {
         return ApiErrorException(1002, "身份失效了，请重新登录网站")
     }
-    if (doc.html().contains("正在审核中")) {
+    if (doc.html().contains(BuildConfig.YH_MATCH_CHECK)) {
         return ApiErrorException(1003, "正在审核中...")
     }
-    if (doc.html().contains("请输入您的密码")) {
+    if (doc.html().contains(BuildConfig.YH_MATCH_INPUT_PSD)) {
         return ApiErrorException(1004, "IP已经更改，需要校验密码")
     }
-    if (doc.html().contains("请先登录网站")) {
+    if (doc.html().contains(BuildConfig.YH_MATCH_LOGIN)) {
         return ApiErrorException(1005, "请先登录网站")
     }
-    if (doc.html().contains("请开启JavaScript并刷新该页")) {
+    if (doc.html().contains(BuildConfig.YH_MATCH_COOKIE_OLD)) {
         return ApiErrorException(1006, "Cookie过期，需要重新登录")
     }
     return null

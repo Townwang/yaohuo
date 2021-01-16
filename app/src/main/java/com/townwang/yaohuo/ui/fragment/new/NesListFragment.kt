@@ -9,6 +9,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.helper.isHaveMessage
@@ -45,7 +46,7 @@ class NesListFragment : Fragment() {
                 arguments = Bundle().also {
                     it.putInt(LIST_CLASS_ID_KEY, 0)
                     it.putString(LIST_BBS_NAME_KEY, "最新")
-                    it.putString(LIST_ACTION_KEY, "new")
+                    it.putString(LIST_ACTION_KEY, BuildConfig.YH_BBS_ACTION_NEW)
                 }
             }
             ).commitNow()

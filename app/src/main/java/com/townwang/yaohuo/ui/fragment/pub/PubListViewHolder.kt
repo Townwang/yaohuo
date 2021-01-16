@@ -1,12 +1,11 @@
 package com.townwang.yaohuo.ui.fragment.pub
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.repo.data.HomeData
 import kotlinx.android.synthetic.main.item_list_data.view.*
@@ -21,7 +20,6 @@ class PubListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
     @SuppressLint("SetTextI18n", "ResourceAsColor")
     fun bind(data: HomeData) {
-        Log.d("解析", "结果：${data}")
         itemView.title.text = data.title
         itemView.auth.text = "楼主：${data.auth}"
         itemView.reply.text = data.reply
@@ -36,31 +34,31 @@ class PubListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         if (data.smailIng.isNotEmpty()) {
             data.smailIng.forEach {
                 when (it) {
-                    "附" -> {
+                    BuildConfig.YH_MATCH_LIST_FILE -> {
                         itemView.annex.visibility = View.VISIBLE
                         itemView.annex.text = it
                     }
-                    "赏" -> {
+                    BuildConfig.YH_MATCH_LIST_GIVE -> {
                         itemView.reward.visibility = View.VISIBLE
                         itemView.reward.text = it
                     }
-                    "肉" -> {
+                    BuildConfig.YH_MATCH_LIST_MEAT -> {
                         itemView.meat.visibility = View.VISIBLE
                         itemView.meat.text = it
                     }
-                    "结" -> {
+                    BuildConfig.YH_MATCH_LIST_BEAR -> {
                         itemView.bear.visibility = View.VISIBLE
                         itemView.bear.text = it
                     }
-                    "礼" -> {
+                    BuildConfig.YH_MATCH_LIST_LI -> {
                         itemView.ceremony.visibility = View.VISIBLE
                         itemView.ceremony.text = it
                     }
-                    "精" -> {
+                    BuildConfig.YH_MATCH_LIST_FIME -> {
                         itemView.fine.visibility = View.VISIBLE
                         itemView.fine.text = it
                     }
-                    "总顶" ->{
+                    BuildConfig.YH_MATCH_LIST_HOT ->{
                         itemView.headline.visibility = View.VISIBLE
                         itemView.headline.text = "头条"
                     }

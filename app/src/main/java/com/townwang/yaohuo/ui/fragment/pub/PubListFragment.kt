@@ -11,6 +11,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.helper.sendNotification
@@ -54,19 +55,28 @@ class PubListFragment : Fragment() {
                 StaggeredGridLayoutManager.VERTICAL
             ))
         adapter.onItemClickListener = { v, data ->
-            val d = data as HomeData
-            val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                requireActivity(), v.title, "share name"
-            ).toBundle()
-            ActivityCompat.startActivity(
-                requireContext(), Intent(
-                    requireContext(), ActivityDetails::class.java
-                ).apply {
-                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    putExtra(HOME_DETAILS_URL_KEY, d.a)
-                    putExtra(HOME_DETAILS_READ_KEY, d.read)
-                }, bundle
-            )
+            if (data is HomeData) {
+                val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    requireActivity(), v.title, "share name"
+                ).toBundle()
+                var isBear = true
+                data.smailIng.forEach {
+                    if (it == BuildConfig.YH_MATCH_LIST_BEAR){
+                        isBear = false
+                        return@forEach
+                    }
+                }
+                ActivityCompat.startActivity(
+                    requireContext(), Intent(
+                        requireContext(), ActivityDetails::class.java
+                    ).apply {
+                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                        putExtra(HOME_DETAILS_URL_KEY, data.a)
+                        putExtra(HOME_DETAILS_READ_KEY, data.read)
+                        putExtra(HOME_DETAILS_BEAR_KEY, isBear)
+                    }, bundle
+                )
+            }
         }
         refreshLayout?.setOnRefreshListener {
             page = 1

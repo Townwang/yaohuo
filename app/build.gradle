@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
-
+apply from: 'YaoHuo.gradle'
 static def getVersionCodeTimestamp() {
     def date = new Date()
     def formattedDate = date.format('yyMMddHHmm')
@@ -66,9 +66,6 @@ android {
         zipAlignEnabled true
         signingConfig signingConfigs.sings
         proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        buildConfigField("String", "BASE_URL", '"https://townwang.com/"')
-        buildConfigField("String", "CN_URL", '"http://cdn.townwang.cn/"')
-        buildConfigField("String", "BASE_YAOHUO_URL", '"https://yaohuo.me/"')
     }
     kotlinOptions {
         jvmTarget = '1.8'

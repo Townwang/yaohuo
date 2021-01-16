@@ -49,9 +49,6 @@ class SaveCookiesInterceptor(private val mContext: Context) : Interceptor {
         }
         return sb.toString()
     }
-
-    //保存cookie到本地，这里我们分别为该url和host设置相同的cookie，其中host可选
-    //这样能使得该cookie的应用范围更广
     private fun saveCookie(
         url: String,
         domain: String,

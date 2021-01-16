@@ -85,46 +85,5 @@ class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .load(R.drawable.avatar)
             .apply(options)
             .apply(RequestOptions.bitmapTransform(CircleCrop())).into(img)
-
-//        GlobalScope.launch(Dispatchers.IO) {
-//            var doc: Document? = null
-//            try {
-//                @Suppress("UNCHECKED_CAST") val bbs =
-//                    Jsoup.connect(
-//                        BuildConfig.BASE_YAOHUO_URL + handUrl.substring(
-//                            1,
-//                            handUrl.length
-//                        )
-//                    ).timeout(30000).cookies(
-//                        App.getContext().getSharedPreferences(
-//                            COOKIE_KEY,
-//                            Context.MODE_PRIVATE
-//                        ).all as MutableMap<String, String>?
-//                    )
-//                val response = bbs.execute()
-//                doc = if (response.statusCode() == 200) {
-//                    bbs.get()
-//                } else {
-//                    null
-//                }
-//            } catch (e: IOException) {
-//                Log.e("头像请求", "出现异常  ${e.message}")
-//            }
-//            val url = doc?.select("div.content")?.select(IMG_JPG)?.first()
-//            handler.post {
-//                if (url != null) {
-//                    Glide.with(itemView)
-//                        .load(
-//                            BuildConfig.BASE_YAOHUO_URL + url.attr("src")
-//                                .substring(1, url.attr("src").length)
-//                        )
-//                        .apply(
-//                            RequestOptions.bitmapTransform(CircleCrop())
-//                                .error(R.drawable.anim_vector_android_blue_senior)
-//                        )
-//                        .into(img)
-//                }
-//            }
-//        }
     }
 }

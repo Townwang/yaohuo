@@ -1,19 +1,19 @@
 package com.townwang.yaohuo.ui.fragment.web
 
-import android.R
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.http.SslError
 import android.view.View
-import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import android.webkit.*
 import android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-import android.widget.AbsoluteLayout
 import android.widget.ProgressBar
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.tencent.bugly.proguard.t
 import com.townwang.yaohuo.App
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.COOKIE_KEY
@@ -32,14 +32,21 @@ typealias OnDownloadListener = (
     mimeType: String
 ) -> Unit
 
-typealias OnFinishedListener = () -> Unit
+typealias OnFinishedListener = (newProgress: Int) -> Unit
+typealias OnLoadingListener = (newProgress: Int) -> Unit
+typealias OnStartListener = (title: String?) -> Unit
 
 @SuppressLint("SetJavaScriptEnabled", "UseCompatLoadingForDrawables")
 class WebViewHelper(context: Context, var webView: WebView) {
     var onDownloadListener: OnDownloadListener? = null
+    var onLoadingListener: OnLoadingListener? = null
     var onFinishedListener: OnFinishedListener? = null
+    var onStartListener: OnStartListener? = null
 
     var shouldOverrideUrlLoading = false
+
+    var isAnimStart = false
+    var currentProgress = 0
 
     init {
         webView.settings.apply {
@@ -53,16 +60,27 @@ class WebViewHelper(context: Context, var webView: WebView) {
             domStorageEnabled = true
             mixedContentMode = MIXED_CONTENT_ALWAYS_ALLOW
             userAgentString = USER_AGENT
+            blockNetworkImage = true
+            setRenderPriority(WebSettings.RenderPriority.HIGH)
         }
         webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                if (newProgress == 100) {
-                    onFinishedListener?.invoke()
+                currentProgress = newProgress
+                if (newProgress >= 100 && !isAnimStart) {
+                    // 防止调用多次动画
+                    isAnimStart = true
+                    onFinishedListener?.invoke(newProgress)
+                } else {
+                    onLoadingListener?.invoke(newProgress)
                 }
-                super.onProgressChanged(view, newProgress)
             }
         }
         webView.webViewClient = object : WebViewClient() {
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                view?.title
+                onStartListener?.invoke(view?.title)
+            }
+
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 if (shouldOverrideUrlLoading) {
                     ActivityCompat.startActivity(
@@ -105,6 +123,7 @@ class WebViewHelper(context: Context, var webView: WebView) {
         val cookieMaps = App.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE)
         val cookie = cookieMaps.getString(url.host, "")
         syncCookie(url.host, cookie)
+        webView.loadUrl("file://android_asset/loading.html")
         webView.loadUrl(urlService)
         webView.setDownloadListener { urlLink, _, contentDisposition, mistype, _ ->
             onDownloadListener?.invoke(urlLink, contentDisposition, mistype)
@@ -136,5 +155,43 @@ class WebViewHelper(context: Context, var webView: WebView) {
             CookieManager.getInstance()
                 .setCookie(url, it) // 设置 Cookie
         }
+    }
+
+
+    /**
+     * progressBar递增动画
+     */
+    fun startProgressAnimation(mProgressBar: ProgressBar?, newProgress: Int) {
+        mProgressBar ?: return
+        val animator =
+            ObjectAnimator.ofInt(mProgressBar, "progress", currentProgress, newProgress)
+        animator.duration = 300
+        animator.interpolator = DecelerateInterpolator()
+        animator.start()
+    }
+
+    /**
+     * progressBar消失动画
+     */
+    fun startDismissAnimation(mProgressBar: ProgressBar?, progress: Int) {
+        mProgressBar ?: return
+        val anim = ObjectAnimator.ofFloat(mProgressBar, "alpha", 1.0f, 0.0f)
+        anim.duration = 1500 // 动画时长
+        anim.interpolator = DecelerateInterpolator() // 减速
+        // 关键, 添加动画进度监听器
+        anim.addUpdateListener { valueAnimator ->
+            val fraction = valueAnimator.animatedFraction // 0.0f ~ 1.0f
+            val offset = 100 - progress
+            mProgressBar.progress = (progress + offset * fraction).toInt()
+        }
+        anim.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?) {
+                // 动画结束
+                mProgressBar.progress = 0
+                mProgressBar.visibility = View.GONE
+                isAnimStart = false
+            }
+        })
+        anim.start()
     }
 }

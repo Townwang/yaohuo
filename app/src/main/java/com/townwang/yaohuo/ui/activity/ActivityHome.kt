@@ -1,5 +1,6 @@
 package com.townwang.yaohuo.ui.activity
 
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.KeyEvent
@@ -60,20 +61,33 @@ class ActivityHome : AppCompatActivity() {
 //            }
             dialogFragment.show(supportFragmentManager, "send frag")
         }
-        news.onClickListener {
+        home.onClickListener {
+         val anim =   it.drawable
+            if (anim is AnimationDrawable){
+                anim.start()
+            }
             supportFragmentManager.beginTransaction()
                 .replace(R.id.navHost, newsFrag)
                 .commit()
         }
-        bbs.onClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.navHost, BBSFragment())
-                .commit()
-        }
-        game.onClickListener {
-            Snackbar.make(appbarLayout,"正在开发...", Snackbar.LENGTH_SHORT).show()
-        }
+//        news.onClickListener {
+//            supportFragmentManager.beginTransaction()
+//                .replace(R.id.navHost, newsFrag)
+//                .commit()
+//        }
+//        bbs.onClickListener {
+//            supportFragmentManager.beginTransaction()
+//                .replace(R.id.navHost, BBSFragment())
+//                .commit()
+//        }
+//        game.onClickListener {
+//            Snackbar.make(appbarLayout,"正在开发...", Snackbar.LENGTH_SHORT).show()
+//        }
         me.onClickListener {
+            val anim =   it.drawable
+            if (anim is AnimationDrawable){
+                anim.start()
+            }
             supportFragmentManager.beginTransaction()
                     .replace(R.id.navHost, MeFragment())
                     .commit()

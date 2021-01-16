@@ -112,7 +112,7 @@
                         android:textSize="@dimen/text10Size"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="我只是一个副标题而已" />
+                         />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <TextView
@@ -181,6 +181,7 @@
                 android:textColor="@color/md_black_1000"
                 android:textSize="@dimen/text16Size"
                 android:visibility="gone"
+                app:layout_isSticky="true"
                 tools:ignore="MissingConstraints" />
 
             <androidx.recyclerview.widget.RecyclerView
