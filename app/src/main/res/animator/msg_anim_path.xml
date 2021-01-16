@@ -3,7 +3,7 @@
     android:interpolator="@android:anim/accelerate_interpolator"
     android:shareInterpolator="true">
     <objectAnimator
-        android:propertyName="rotation"
+        android:propertyName="RotateDrawable"
         android:duration="200"
         android:fromDegrees="0"
         android:pivotX="50%"

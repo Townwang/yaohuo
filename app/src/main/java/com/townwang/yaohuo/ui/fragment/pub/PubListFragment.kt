@@ -92,11 +92,6 @@ class PubListFragment : Fragment() {
                 refreshDone(true)
             }
         })
-        viewModel.isMessage.observe(viewLifecycleOwner,safeObserver {
-            if (it) {
-                sendNotification(requireContext())
-            }
-        })
         viewModel.error.observe(viewLifecycleOwner, safeObserver {
             refreshDone(false)
             requireContext().handleException(it)

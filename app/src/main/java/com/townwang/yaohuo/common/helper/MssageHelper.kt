@@ -10,13 +10,33 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
+import com.tencent.bugly.crashreport.BuglyLog
+import com.townwang.yaohuo.App
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
+import com.townwang.yaohuo.common.IMG_GIF
 import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
 import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
 import com.townwang.yaohuo.ui.activity.ActivityWebView
+import org.jsoup.nodes.Document
 
 
 const val NOTIFY_ID = 0x123
+
+var isHaveMessage = false
+fun isHaveMsg(doc: Document): Document {
+    val image = doc.select(IMG_GIF)
+    isHaveMessage = if (image.first().attr("src") == "/tupian/news.gif") {
+        BuglyLog.i(BuildConfig.FLAVOR, "有新消息")
+        sendNotification(App.getContext())
+        true
+    } else {
+        BuglyLog.i(BuildConfig.FLAVOR, "无消息")
+        false
+    }
+    return doc
+}
+
 fun sendNotification(context: Context) {
     val notificationManager = context.getSystemService(NOTIFICATION_SERVICE)
     if (notificationManager is NotificationManager) {

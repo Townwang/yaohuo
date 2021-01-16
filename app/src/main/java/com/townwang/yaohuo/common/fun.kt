@@ -31,6 +31,7 @@ import com.google.gson.Gson
 import com.townwang.yaohuo.App
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
+import org.jsoup.nodes.Document
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -41,7 +42,6 @@ typealias OnItemLongClickListener = (view: View, data: T) -> Unit
 var gson = Gson()
 
 val handler = Handler()
-
 
 inline fun <T> T?.work(block: T.() -> Unit) {
     if (this != null) block.invoke(this)
