@@ -59,7 +59,6 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
                 _commentLists.value = it.getCommitListData(doc)
             } else {
                 _noMore.value = true
-                Log.d("list", "没有更多了")
             }
         }
     }

@@ -34,6 +34,10 @@ class ActivityDetails : AppCompatActivity() {
                                 HOME_DETAILS_READ_KEY,
                                 intent.getStringExtra(HOME_DETAILS_READ_KEY)
                             )
+                            it.putBoolean(
+                                HOME_DETAILS_BEAR_KEY,
+                                intent.getBooleanExtra(HOME_DETAILS_BEAR_KEY,true)
+                            )
                         }
                     }
                 ).commit()

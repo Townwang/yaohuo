@@ -181,6 +181,7 @@
                 android:textColor="@color/md_black_1000"
                 android:textSize="@dimen/text16Size"
                 android:visibility="gone"
+                app:layout_isSticky="true"
                 tools:ignore="MissingConstraints" />
 
             <androidx.recyclerview.widget.RecyclerView

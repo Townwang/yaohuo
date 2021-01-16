@@ -2,6 +2,7 @@ package com.townwang.yaohuo.ui.fragment.login
 
 import androidx.lifecycle.MutableLiveData
 import com.tencent.bugly.crashreport.CrashReport
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.BuildConfig.IS_ALPHA
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.Repo
@@ -33,13 +34,13 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
         val doc = repo.login(loginName, password)
         val resultPage = doc.body().html()
         when {
-            resultPage.indexOf("登录成功") != -1 -> {
+            resultPage.indexOf(BuildConfig.YH_MATCH_LOGIN_SUCCESS) != -1 -> {
                 getAccountInformation()
             }
-            resultPage.indexOf("密码错误") != -1 -> _loginPsdError.value = "密码错误"
-            resultPage.indexOf("用户ID/用户名/手机号不存！") != -1 -> _loginUserError.value =
+            resultPage.indexOf(BuildConfig.YH_MATCH_LOGIN_PASS_ERROR) != -1 -> _loginPsdError.value = "密码错误"
+            resultPage.indexOf(BuildConfig.YH_MATCH_LOGIN_USER_ERROR) != -1 -> _loginUserError.value =
                 "用户ID/用户名/手机号不存在！"
-            resultPage.indexOf("登录失败次数超过10次了，请明天再来!") != -1 -> _loginError.value =
+            resultPage.indexOf(BuildConfig.YH_MATCH_LOGIN_MAX_ERROR) != -1 -> _loginError.value =
                 "登录失败次数超过10次了，请明天再来!"
             else -> _loginError.value = "未知异常"
         }
@@ -49,7 +50,7 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
         val doc = repo.checkNice()
         try {
             val a = doc.select("div.top2").select(A_KEY)[1].attr(A_HREF)
-            val trouserId = getParam(a, "touserid")
+            val trouserId = getParam(a, BuildConfig.YH_REPLY_TOUSERID)
             CrashReport.setUserId(trouserId)
             if (IS_ALPHA.not()) {
                 _loginSuccess.value = isCrack

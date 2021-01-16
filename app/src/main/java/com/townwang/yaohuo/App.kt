@@ -49,7 +49,6 @@ class App : Application() {
             val b = a.signatures
             val c = b[0]
             val d = c.hashCode()
-            Log.d("解析", "当前hashCode:$d")
             if (d == -508714960 || d == 1375692864) {
                 isCrack = true
             }

@@ -3,6 +3,7 @@ package com.townwang.yaohuo.ui.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.data.TabBean
@@ -36,7 +37,7 @@ class ActivityList : AppCompatActivity() {
                    )
                    it.putString(
                        LIST_ACTION_KEY,
-                       "class"
+                       BuildConfig.YH_BBS_ACTION_CLASS
                    )
                }
            }))
@@ -49,7 +50,7 @@ class ActivityList : AppCompatActivity() {
                    )
                    it.putString(
                        LIST_ACTION_KEY,
-                       "new"
+                       BuildConfig.YH_BBS_ACTION_NEW
                    )
                }
            }))
@@ -62,7 +63,7 @@ class ActivityList : AppCompatActivity() {
                    )
                    it.putString(
                        LIST_ACTION_KEY,
-                       "good"
+                      BuildConfig.YH_BBS_ACTION_GOOD
                    )
                }
            }))

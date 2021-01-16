@@ -1,25 +1,27 @@
 package com.townwang.yaohuo.ui.fragment.web
 
+import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.CookieManager
 import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
+import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
+import com.townwang.yaohuo.common.getUrlString
 import com.townwang.yaohuo.common.helper.clearNotificaion
-import kotlinx.android.synthetic.main.fragment_details.*
+import com.townwang.yaohuo.common.work
 import kotlinx.android.synthetic.main.fragment_webview.*
-import kotlinx.android.synthetic.main.fragment_webview.refreshLayout
+import kotlinx.android.synthetic.main.item_theme_data.*
 
 
 class WebViewFragment : Fragment() {
@@ -38,36 +40,37 @@ class WebViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).work {
-            supportActionBar.work {
-                title = requireArguments().getString(WEB_VIEW_URL_TITLE, "")
-                setDisplayHomeAsUpEnabled(true)
-            }
-        }
         val web = WebViewHelper(requireContext(), content).apply {
             shouldOverrideUrlLoading = false
+        }
+        web.onStartListener = {
+            (activity as AppCompatActivity).work {
+                supportActionBar.work {
+                    title = it ?: requireArguments().getString(WEB_VIEW_URL_TITLE, "")
+                    setDisplayHomeAsUpEnabled(true)
+                }
+            }
+            progressBar?.visibility = View.VISIBLE
+            progressBar?.alpha = 1.0f
+        }
+        web.onLoadingListener = {
+            web.startProgressAnimation(progressBar, it)
+        }
+        web.onFinishedListener = {
+            progressBar?.progress = it
+            web.startDismissAnimation(progressBar, it)
         }
         web.onDownloadListener = { url, contentDisposition, mimeType ->
             downloadBySystem(url, contentDisposition, mimeType)
         }
 
-        val loading = Loading("正在加载网址...").create()
-        if (loading.isShowing.not()) {
-            loading.show()
-        }
-        web.onFinishedListener = {
-            if (loading.isShowing) {
-                loading.dismiss()
-            }
-            refreshLayout?.finishRefresh()
-        }
         refreshLayout?.setOnRefreshListener {
+            refreshLayout?.finishRefresh()
             web.setUrl(getUrlString(requireArguments().getString(WEB_VIEW_URL_KEY, "")))
         }
         refreshLayout?.setEnableLoadMore(false)
         refreshLayout?.autoRefresh()
-
-        if ("消息" == requireArguments().getString(WEB_VIEW_URL_TITLE, "")){
+        if ("消息" == requireArguments().getString(WEB_VIEW_URL_TITLE, "")) {
             clearNotificaion()
         }
     }

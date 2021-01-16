@@ -11,10 +11,22 @@
     app:srlPrimaryColor="?colorPrimary"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:ignore="UnusedAttribute,WebViewLayout">
-    <WebView
-        android:id="@+id/content"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/transparent"
-        />
+        android:layout_height="match_parent">
+        <WebView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_alignParentTop="true"
+            android:progressDrawable="@drawable/web_progress_bar_states"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            />
+    </RelativeLayout>
 </com.scwang.smart.refresh.layout.SmartRefreshLayout>

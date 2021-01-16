@@ -26,6 +26,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.scwang.smart.refresh.layout.api.RefreshFooter
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.data.details.CommitListBean
@@ -87,6 +88,10 @@ class DetailsFragment : Fragment() {
             Snackbar.make(requireView(), "正在开发...", Snackbar.LENGTH_SHORT).show()
         }
         reply?.onClickListener {
+            if (requireArguments().getBoolean(HOME_DETAILS_BEAR_KEY).not()) {
+                Snackbar.make(requireView(), "已经结贴，无法参与评论！", Snackbar.LENGTH_SHORT).show()
+                return@onClickListener
+            }
             val magTransaction = parentFragmentManager.beginTransaction()
             val fragment = parentFragmentManager.findFragmentByTag("input frag")
             if (fragment != null) {
@@ -111,8 +116,8 @@ class DetailsFragment : Fragment() {
             dialogFragment.show(parentFragmentManager, "input frag")
         }
         comment?.onClickListener {
-            refreshLayout?.post {
-                refreshLayout?.scrollTo(0, commentLists.top)
+            scrollerLayout?.post {
+                scrollerLayout?.scrollTo(0, comment_tip.bottom)
             }
         }
         praise?.onClickListener {
@@ -134,33 +139,37 @@ class DetailsFragment : Fragment() {
             ))
 
         adapter.onItemClickListener = { _, data ->
-            if (data is CommitListBean) {
-                if (getParam(data.url, "touserid") != config(TROUSER_KEY)) {
-                    val magTransaction = childFragmentManager.beginTransaction()
-                    val fragment = childFragmentManager.findFragmentByTag("input frag")
-                    if (fragment != null) {
-                        magTransaction.remove(fragment)
-                    }
-                    val dialogFragment = CommentDialogFragment().apply {
-                        arguments = Bundle().also {
-                            it.putString(SEND_CONTENT_KEY, "回复：${data.auth}")
+            if (requireArguments().getBoolean(HOME_DETAILS_BEAR_KEY).not()) {
+                Snackbar.make(requireView(), "已经结贴，无法参与评论！", Snackbar.LENGTH_SHORT).show()
+            } else {
+                if (data is CommitListBean) {
+                    if (getParam(data.url, BuildConfig.YH_REPLY_TOUSERID) != config(TROUSER_KEY)) {
+                        val magTransaction = childFragmentManager.beginTransaction()
+                        val fragment = childFragmentManager.findFragmentByTag("input frag")
+                        if (fragment != null) {
+                            magTransaction.remove(fragment)
                         }
+                        val dialogFragment = CommentDialogFragment().apply {
+                            arguments = Bundle().also {
+                                it.putString(SEND_CONTENT_KEY, "回复：${data.auth}")
+                            }
+                        }
+                        dialogFragment.mDialogListener = { _, msg ->
+                            loading = Loading("正在回复妖友...").create()
+                            loading?.show()
+                            viewModel.reply(
+                                msg,
+                                data.url,
+                                data.floor.toString(),
+                                getParam(data.url, BuildConfig.YH_REPLY_TOUSERID),
+                                "0"
+                            )
+                            dialogFragment.dismiss()
+                        }
+                        dialogFragment.show(childFragmentManager, "input frag")
+                    } else {
+                        context?.toast("不能给自己回复！")
                     }
-                    dialogFragment.mDialogListener = { _, msg ->
-                        loading = Loading("正在回复妖友...").create()
-                        loading?.show()
-                        viewModel.reply(
-                            msg,
-                            data.url,
-                            data.floor.toString(),
-                            getParam(data.url, "touserid"),
-                            "0"
-                        )
-                        dialogFragment.dismiss()
-                    }
-                    dialogFragment.show(childFragmentManager, "input frag")
-                } else {
-                    context?.toast("不能给自己回复！")
                 }
             }
         }
@@ -207,16 +216,16 @@ class DetailsFragment : Fragment() {
                 online?.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_grey_10)
             }
-            if (it.giftMoney.isNotEmpty()){
+            if (it.giftMoney.isNotEmpty()) {
                 linearTop?.visibility = View.VISIBLE
-                icon?.text = "肉"
+                icon?.text = BuildConfig.YH_MATCH_LIST_MEAT
                 icon?.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
                 subtitle?.text = HtmlCompat.fromHtml(it.giftMoney, HtmlCompat.FROM_HTML_MODE_LEGACY)
             }
             if (it.reward.isNotEmpty()) {
                 linearTop?.visibility = View.VISIBLE
-                icon?.text = "赏"
+                icon?.text = BuildConfig.YH_MATCH_LIST_GIVE
                 icon?.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
                 subtitle?.text = it.reward

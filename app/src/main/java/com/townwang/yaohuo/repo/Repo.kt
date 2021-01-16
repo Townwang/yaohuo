@@ -1,11 +1,7 @@
 package com.townwang.yaohuo.repo
-
-import android.util.Log
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.api.Api
 import com.townwang.yaohuo.common.*
-import org.jsoup.Connection
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
 class Repo constructor(
@@ -30,18 +26,16 @@ class Repo constructor(
     suspend fun login(loginName: String, password: String): Document = withRepoContext {
         val rs = api.getLoginParameter()
         val doc = rs.getResp()
-        Log.d("登录数据", doc.html())
         val ets = doc.select(AK_FORM)
-        Log.d("登录数据", ets.html())
         val data = HashMap<String, String>()
         ets.first().allElements.forEach {
-            if (it.attr(AK_NAME) == YH_USERNAME) {
+            if (it.attr(AK_NAME) == BuildConfig.YH_LOGIN_USER_NAME) {
                 it.attr(AK_VALUE, loginName)
             }
-            if (it.attr(AK_NAME) == YH_PASSWORD) {
+            if (it.attr(AK_NAME) == BuildConfig.YH_LOGIN_PASSWORD) {
                 it.attr(AK_VALUE, password)
             }
-            if (it.attr(AK_NAME) == YH_SACESID) {
+            if (it.attr(AK_NAME) == BuildConfig.YH_LOGIN_SACESID) {
                 it.attr(AK_VALUE, "1")
             }
             if (it.attr(AK_NAME).isNotEmpty()) {
@@ -94,16 +88,16 @@ class Repo constructor(
         val ets = rs.select(AK_FORM)
         val data = HashMap<String, String>()
         ets.first().allElements.forEach {
-            if (it.attr(AK_NAME) == "content") {
+            if (it.attr(AK_NAME) == BuildConfig.YH_REPLY_CONTENT) {
                 it.attr(AK_VALUE, content)
             }
-            if (it.attr(AK_NAME) == "sendmsg") {
+            if (it.attr(AK_NAME) == BuildConfig.YH_REPLY_SEND_MSG) {
                 it.attr(AK_VALUE, sendmsg)
             }
-            if (it.attr(AK_NAME) == "reply") {
+            if (it.attr(AK_NAME) ==BuildConfig.YH_REPLY_REPLY) {
                 it.attr(AK_VALUE, floor)
             }
-            if (it.attr(AK_NAME) == "touserid") {
+            if (it.attr(AK_NAME) == BuildConfig.YH_REPLY_TOUSERID) {
                 it.attr(AK_VALUE, touserid)
             }
             if (it.attr(AK_NAME).isNotEmpty()) {

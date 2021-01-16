@@ -1,6 +1,7 @@
 package com.townwang.yaohuo.ui.fragment.me
 
 import androidx.lifecycle.MutableLiveData
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.helper.ResolveDetailsHelper
 import com.townwang.yaohuo.repo.Repo
@@ -28,29 +29,29 @@ class MeModel(private val repo: Repo) : UIViewModel() {
         var managementAuthority: String = ""
         content.forEach {
             when (it.text().substringBefore(":")) {
-                "我的ID" -> {
+                BuildConfig.YH_MATCH_MY_ID -> {
                     accountNumber = it.text().substringAfterLast(":")
                 }
-                "我的妖晶" -> {
+                BuildConfig.YH_MATCH_MY_MONEY  -> {
                     money = it.text().substringAfterLast(":")
                 }
-                "银行存款" -> {
+                BuildConfig.YH_MATCH_MY_BACK  -> {
                     bankSavings = it.text().substringAfterLast(":")
-                        .removeSuffix("管理")
+                        .removeSuffix( BuildConfig.YH_MATCH_MY_MANAGER )
                 }
-                "我的经验" -> {
+                BuildConfig.YH_MATCH_MY_EX  -> {
                     experience = it.text().substringAfterLast(":")
                 }
-                "我的等级" -> {
+                BuildConfig.YH_MATCH_MY_RANK  -> {
                     rank = it.text().substringAfterLast(":")
                 }
-                "我的头衔" -> {
+                BuildConfig.YH_MATCH_MY_TITLE  -> {
                     title = it.text().substringAfterLast(":")
                 }
-                "我的身份" -> {
+                BuildConfig.YH_MATCH_MY_IDENTITY  -> {
                     identity = it.text().substringAfter(":")
                 }
-                "管理权限" -> {
+                BuildConfig.YH_MATCH_MY_MANAGEMENT  -> {
                     managementAuthority = it.text().substringAfterLast(":")
                 }
             }
@@ -67,7 +68,7 @@ class MeModel(private val repo: Repo) : UIViewModel() {
             managementAuthority
         )
 
-        val headUrl = doc.getElementsContainingOwnText("我的空间").first().attr(A_HREF)
+        val headUrl = doc.getElementsContainingOwnText( BuildConfig.YH_MATCH_MY_ROOM).first().attr(A_HREF)
         getAvatar(getUrlString(headUrl))
     }
 
