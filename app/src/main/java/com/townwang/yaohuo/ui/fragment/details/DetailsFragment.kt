@@ -207,17 +207,20 @@ class DetailsFragment : Fragment() {
                 online?.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_grey_10)
             }
-            linearTop?.visibility = View.VISIBLE
-            icon?.text = "肉"
-            icon?.background =
-                ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
-            subtitle?.text = HtmlCompat.fromHtml(it.giftMoney, HtmlCompat.FROM_HTML_MODE_LEGACY)
-
-            linearTop?.visibility = View.VISIBLE
-            icon?.text = "赏"
-            icon?.background =
-                ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
-            subtitle?.text = it.reward
+            if (it.giftMoney.isEmpty()){
+                linearTop?.visibility = View.VISIBLE
+                icon?.text = "肉"
+                icon?.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
+                subtitle?.text = HtmlCompat.fromHtml(it.giftMoney, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            }
+            if (it.reward.isEmpty()) {
+                linearTop?.visibility = View.VISIBLE
+                icon?.text = "赏"
+                icon?.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
+                subtitle?.text = it.reward
+            }
             WebViewHelper(requireContext(), webView).apply {
                 shouldOverrideUrlLoading = true
             }.setHtmlCode(it.content)

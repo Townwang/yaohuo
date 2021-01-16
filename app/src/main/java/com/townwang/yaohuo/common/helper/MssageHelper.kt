@@ -25,12 +25,17 @@ const val NOTIFY_ID = 0x123
 
 var isHaveMessage = false
 fun isHaveMsg(doc: Document): Document {
-    val image = doc.select(IMG_GIF)
-    isHaveMessage = if (image.first().attr("src") == "/tupian/news.gif") {
-        BuglyLog.i(BuildConfig.FLAVOR, "有新消息")
-        sendNotification(App.getContext())
-        true
-    } else {
+    isHaveMessage =  try {
+        val image = doc.select(IMG_GIF)
+        if (image.first().attr("src") == "/tupian/news.gif") {
+            BuglyLog.i(BuildConfig.FLAVOR, "有新消息")
+            sendNotification(App.getContext())
+            true
+        } else {
+            BuglyLog.i(BuildConfig.FLAVOR, "无消息")
+            false
+        }
+    }catch (e:Exception){
         BuglyLog.i(BuildConfig.FLAVOR, "无消息")
         false
     }

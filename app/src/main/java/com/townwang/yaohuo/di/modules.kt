@@ -1,6 +1,7 @@
 package com.townwang.yaohuo.di
 
 import com.google.gson.GsonBuilder
+import com.tencent.bugly.beta.Beta
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.api.Api
 import com.townwang.yaohuo.di.factory.DocumentConverterFactory
@@ -43,16 +44,22 @@ private val netModule = module {
                     )
                 }
                 .addInterceptor(NetCookiesInterceptor())
-                .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+                .addInterceptor(HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                })
                 .addInterceptor(AddCookiesInterceptor(get()))
                 .addInterceptor(SaveCookiesInterceptor(get()))
-                .build())
+                .build()
+            )
             .addConverterFactory(DocumentConverterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
     single {
         get<Retrofit>().create(Api::class.java)
+    }
+    single {
+        Beta.init(get(), false)
     }
 }
 

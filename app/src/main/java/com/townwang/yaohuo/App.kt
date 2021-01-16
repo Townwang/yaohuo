@@ -29,6 +29,7 @@ class App : Application() {
             return application!!
         }
     }
+
     @SuppressLint("PackageManagerGetSignatures")
     override fun onCreate() {
         super.onCreate()
@@ -38,6 +39,11 @@ class App : Application() {
             androidLogger(Level.INFO)
             modules(koinModules)
         }
+        initApp()
+        initBugFly()
+    }
+
+    private fun initApp() {
         try {
             val a = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
             val b = a.signatures
@@ -52,20 +58,25 @@ class App : Application() {
         }
     }
 
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-        MultiDex.install(this@App)
+
+    private fun initBugFly() {
         Bugly.init(applicationContext, "56bf507146", false)
         Beta.autoInit = true
         Beta.autoCheckUpgrade = true
         Beta.upgradeCheckPeriod = 60 * 1000
-        val strategy = UserStrategy(base)
+        val strategy = UserStrategy(applicationContext)
         strategy.appChannel = BuildConfig.FLAVOR
         strategy.appVersion = BuildConfig.VERSION_NAME
         strategy.appPackageName = BuildConfig.APPLICATION_ID
         strategy.appReportDelay = 20000
-        CrashReport.setIsDevelopmentDevice(base, BuildConfig.DEBUG)
+        CrashReport.setIsDevelopmentDevice(applicationContext, BuildConfig.DEBUG)
     }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this@App)
+    }
+
 
     init {
         SmartRefreshLayout.setDefaultRefreshInitializer { _, layout ->
