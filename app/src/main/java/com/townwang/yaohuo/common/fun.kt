@@ -28,6 +28,7 @@ import androidx.lifecycle.Observer
 import com.android.tu.loadingdialog.LoadingDailog
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
+import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.App
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
@@ -49,13 +50,13 @@ inline fun <T> T?.work(block: T.() -> Unit) {
 
 private var lastClickTime: Long = 0
 fun <T : View> T.onClickListener(delay: Long = 500, block: (T) -> Unit) {
-        setOnClickListener {
-            val currentTime: Long = System.currentTimeMillis()
-            if (currentTime - lastClickTime > delay) {
-                lastClickTime = currentTime
-                block(this)
-            }
+    setOnClickListener {
+        val currentTime: Long = System.currentTimeMillis()
+        if (currentTime - lastClickTime > delay) {
+            lastClickTime = currentTime
+            block(this)
         }
+    }
 }
 
 
@@ -221,8 +222,8 @@ fun Context.handleException(
             toast("未能请求到数据，请稍后再试～")
         }
         is ApiErrorException -> {
-            toast(t.message ?: "")
-            onApiError?.invoke(t.code, t.message ?: "")
+            toast(t.message.orEmpty())
+            onApiError?.invoke(t.code, t.message.orEmpty())
         }
         is UnknownHostException,
         is NetworkFailureException,
@@ -238,11 +239,13 @@ fun Context.handleException(
             onUnknownError?.invoke(t)
         }
     }
+    BuglyLog.e(BuildConfig.FLAVOR, t.message)
 }
 
 fun Context.toast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
+
 fun getParam(url: String, name: String): String {
     var result = ""
     val index = url.indexOf("?")

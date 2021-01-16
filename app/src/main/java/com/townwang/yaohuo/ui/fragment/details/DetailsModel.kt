@@ -2,61 +2,46 @@ package com.townwang.yaohuo.ui.fragment.details
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.tencent.bugly.crashreport.BuglyLog
+import com.tencent.bugly.crashreport.CrashReport
+import com.townwang.yaohuo.App
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.UIViewModel
 import com.townwang.yaohuo.common.asLiveData
 import com.townwang.yaohuo.common.helper.ResolveDetailsHelper
 import com.townwang.yaohuo.repo.Repo
 import com.townwang.yaohuo.repo.data.details.CommitListBean
+import com.townwang.yaohuo.repo.data.details.DetailsContentBean
 
 class DetailsModel(private val repo: Repo) : UIViewModel() {
     var helper: ResolveDetailsHelper? = null
-    private val _content = MutableLiveData<String>()
+    private val _data = MutableLiveData<DetailsContentBean>()
+    val data = _data.asLiveData()
     private val _commentLists = MutableLiveData<List<CommitListBean>>()
-    private val _image = MutableLiveData<List<String>>()
-    private val _download = MutableLiveData<List<String>>()
-    private val _title = MutableLiveData<String>()
-    private val _online = MutableLiveData<Boolean>()
-    private val _time = MutableLiveData<String>()
-    private val _name = MutableLiveData<String>()
-    private val _giftMoney = MutableLiveData<String>()
-    private val _reward = MutableLiveData<String>()
-    private val _commentPraise = MutableLiveData<String>()
     private val _commentSize = MutableLiveData<String>()
     private val _avatar = MutableLiveData<String>()
     private val _commentSuccess = MutableLiveData<Boolean>()
+    private val _noMore = MutableLiveData<Boolean>()
     val commentSuccess = _commentSuccess.asLiveData()
-    val title = _title.asLiveData()
     val avatar = _avatar.asLiveData()
     val commentLists = _commentLists.asLiveData()
-    val commentPraise = _commentPraise.asLiveData()
     val commentSize = _commentSize.asLiveData()
-    val download = _download.asLiveData()
-    val online = _online.asLiveData()
-    val giftMoney = _giftMoney.asLiveData()
-    val reward = _reward.asLiveData()
-    val time = _time.asLiveData()
-    val name = _name.asLiveData()
-    val content = _content.asLiveData()
-    val image = _image.asLiveData()
+    val noMore = _noMore.asLiveData()
     fun getDetails(url: String) = launchTask {
         val doc = repo.getNewListDetails(url)
         helper = ResolveDetailsHelper(doc)
-        _title.value = helper?.title
-        _reward.value = helper?.reward
-        _giftMoney.value = helper?.giftMoney
-        _time.value = helper?.time
-        _commentPraise.value = helper?.praiseSize
-        _name.value = helper?.userName
-        _online.value = helper?.onLineState
-        getAvatar(helper?.getHandUrl ?: "")
-        _content.value = helper?.content
-        helper?.downLoad?.forEach {
-            val array = arrayListOf<String>()
-            array.add(it.fileName)
-            array.add(it.url)
-            array.add(it.description ?: "")
-            _download.value = array
-        }
+        _data.value = DetailsContentBean(
+            helper?.title.orEmpty(),
+            helper?.reward.orEmpty(),
+            helper?.giftMoney.orEmpty(),
+            helper?.time.orEmpty(),
+            helper?.praiseSize.orEmpty(),
+            helper?.userName.orEmpty(),
+            helper?.onLineState ?: false,
+            helper?.getHandUrl.orEmpty(),
+            helper?.content.orEmpty(),
+            helper?.downLoad
+        )
         commentDetails(1, 0)
     }
 
@@ -72,13 +57,14 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
                 _commentSize.value = it.getCommitLastFloor(doc)
                 _commentLists.value = it.getCommitListData(doc)
             } else {
+                _noMore.value = true
                 Log.d("list", "没有更多了")
             }
         }
     }
 
     fun praise() = launchTask {
-        repo.praise(helper?.getPraiseUrl ?: "")
+        repo.praise(helper?.getPraiseUrl.orEmpty())
     }
 
     private fun getAvatar(handUrl: String) = launchTask {
@@ -100,6 +86,7 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
                 _commentSuccess.value = true
             } catch (e: Exception) {
                 _commentSuccess.value = false
+                BuglyLog.e(BuildConfig.FLAVOR, e.message)
             }
         }
 }

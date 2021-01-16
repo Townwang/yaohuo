@@ -181,7 +181,6 @@
                 android:textColor="@color/md_black_1000"
                 android:textSize="@dimen/text16Size"
                 android:visibility="gone"
-                app:layout_isSticky="true"
                 tools:ignore="MissingConstraints" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -192,6 +191,19 @@
                 android:paddingBottom="50dp"
                 tools:ignore="MissingConstraints,UnusedAttribute"
                 tools:listitem="@layout/item_comment_data" />
+            <TextView
+                android:id="@+id/noMore"
+                android:gravity="center"
+                android:background="@color/md_grey_50"
+                android:text="暂时木有回复，快抢沙发哦！"
+                android:layout_margin="3dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:layout_width="match_parent"
+                android:textColor="@color/md_grey_500"
+                android:textSize="@dimen/text16Size"
+                android:visibility="gone"
+                android:layout_height="wrap_content"/>
         </com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

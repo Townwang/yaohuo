@@ -30,7 +30,7 @@ class GlideHtmlImageLoader(
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 Glide.with(context)
-                    .load(getUrlString(url ?: ""))
+                    .load(getUrlString(url.orEmpty()))
                     .apply(options)
                     .into(object : SimpleTarget<Drawable>() {
                         override fun onResourceReady(

@@ -99,7 +99,7 @@ class DetailsFragment : Fragment() {
                     }
                 }
             dialogFragment.mDialogListener = { _, message ->
-                loading = Loading("正在提交...").create()
+                loading = Loading("正在发送评论...").create()
                 loading?.show()
                 viewModel.reply(
                     message,
@@ -147,7 +147,7 @@ class DetailsFragment : Fragment() {
                         }
                     }
                     dialogFragment.mDialogListener = { _, msg ->
-                        loading = Loading("正在提交...").create()
+                        loading = Loading("正在回复妖友...").create()
                         loading?.show()
                         viewModel.reply(
                             msg,
@@ -190,57 +190,73 @@ class DetailsFragment : Fragment() {
     @SuppressLint("InflateParams")
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        viewModel.title.observe(viewLifecycleOwner, safeObserver {
-            title?.text = it
+        viewModel.data.observe(viewLifecycleOwner, safeObserver {
+            title?.text = it.title
             title?.visibility = View.VISIBLE
-        })
-        viewModel.time.observe(viewLifecycleOwner, safeObserver {
-            time?.text = it
+            time?.text = it.time
             read_num?.visibility = View.VISIBLE
             read_num?.text =
                 requireArguments().getString(HOME_DETAILS_READ_KEY, "").split(" ").first()
-        })
-        viewModel.name.observe(viewLifecycleOwner, safeObserver {
             constraintLayout?.visibility = View.VISIBLE
-            userName?.text = it
-        })
-        viewModel.online.observe(viewLifecycleOwner, safeObserver {
+            userName?.text = it.userName
             constraintLayout?.visibility = View.VISIBLE
-            if (it) {
+            if (it.onLineState) {
                 online?.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_green_10)
             } else {
                 online?.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_grey_10)
             }
-        })
-        viewModel.giftMoney.observe(viewLifecycleOwner, safeObserver {
-            //肉
             linearTop?.visibility = View.VISIBLE
             icon?.text = "肉"
             icon?.background =
                 ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
-            subtitle?.text = HtmlCompat.fromHtml(it,HtmlCompat.FROM_HTML_MODE_LEGACY)
-        })
-        viewModel.reward.observe(viewLifecycleOwner, safeObserver {
-            //悬赏
+            subtitle?.text = HtmlCompat.fromHtml(it.giftMoney, HtmlCompat.FROM_HTML_MODE_LEGACY)
+
             linearTop?.visibility = View.VISIBLE
             icon?.text = "赏"
             icon?.background =
                 ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
-            subtitle?.text = it
-        })
-        viewModel.content.observe(viewLifecycleOwner, safeObserver {
+            subtitle?.text = it.reward
             WebViewHelper(requireContext(), webView).apply {
                 shouldOverrideUrlLoading = true
-            }.setHtmlCode(it)
+            }.setHtmlCode(it.content)
             webView?.webChromeClient = object : WebChromeClient() {
                 override fun onProgressChanged(view: WebView, newProgress: Int) {
                     super.onProgressChanged(view, newProgress)
                     scrollerLayout?.checkLayoutChange()
                 }
             }
+            praise_value?.text = it.praiseSize
+            it.downloadList?.forEach { download ->
+                val contentLoad =
+                    LayoutInflater.from(requireContext())
+                        .inflate(R.layout.view_download_style, null)
+                contentLoad.downloadName.text = download.fileName
+
+                contentLoad.downloadUrl.onClickListener { _ ->
+                    val uri = Uri.parse(Uri.encode(download.url, "-![.:/,%?&=]"))
+                    ActivityCompat.startActivity(
+                        requireContext(), Intent(
+                            requireContext(), ActivityWebView::class.java
+                        ).apply {
+                            flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                            putExtra(WEB_VIEW_URL_KEY, uri.toString())
+                            putExtra(WEB_VIEW_URL_TITLE, title.text.toString())
+                        }, null
+                    )
+                }
+                if (download.description.isNullOrEmpty()) {
+                    contentLoad.description.visibility = View.GONE
+                } else {
+                    contentLoad.description.text = download.description
+                    contentLoad.description.visibility = View.VISIBLE
+
+                }
+                list_content?.addView(contentLoad)
+            }
         })
+
         viewModel.avatar.observe(viewLifecycleOwner, safeObserver {
             Glide.with(requireContext())
                 .load(getUrlString(it))
@@ -248,44 +264,24 @@ class DetailsFragment : Fragment() {
                 .apply(RequestOptions.bitmapTransform(CircleCrop()))
                 .into(userImg)
         })
-        viewModel.download.observe(viewLifecycleOwner, safeObserver {
-            val contentLoad =
-                LayoutInflater.from(requireContext()).inflate(R.layout.view_download_style, null)
-            contentLoad.downloadName.text = it[0].replace("\n", "")
-
-            contentLoad.downloadUrl.onClickListener { _ ->
-                val uri = Uri.parse(Uri.encode(it[1], "-![.:/,%?&=]"))
-                ActivityCompat.startActivity(
-                    requireContext(), Intent(
-                        requireContext(), ActivityWebView::class.java
-                    ).apply {
-                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                        putExtra(WEB_VIEW_URL_KEY, uri.toString())
-                        putExtra(WEB_VIEW_URL_TITLE, title.text.toString())
-                    }, null
-                )
-            }
-            if (it[2].isNullOrEmpty()) {
-                contentLoad.description.visibility = View.GONE
-            } else {
-                contentLoad.description.text = it[2]
-                contentLoad.description.visibility = View.VISIBLE
-
-            }
-            list_content?.addView(contentLoad)
-        })
-        viewModel.commentPraise.observe(viewLifecycleOwner, safeObserver {
-            praise_value?.text = it
-        })
         viewModel.commentSize.observe(viewLifecycleOwner, safeObserver {
             if (page == 1 && ot == 0) {
                 comment_value?.text = it
             }
         })
         viewModel.commentLists.observe(viewLifecycleOwner, safeObserver {
-            comment_tip?.visibility = View.VISIBLE
+            commentLists?.visibility = View.VISIBLE
+            noMore?.visibility = View.GONE
+            refreshLayout?.setEnableLoadMore(true)
             if (it is ArrayList<CommitListBean>) {
                 adapter.datas = it
+            }
+        })
+        viewModel.noMore.observe(viewLifecycleOwner, safeObserver {
+            noMore?.visibility = View.VISIBLE
+            if (it) {
+                commentLists?.visibility = View.GONE
+                refreshLayout?.setEnableLoadMore(false)
             }
         })
         viewModel.loading.observe(viewLifecycleOwner, safeObserver {
@@ -324,6 +320,7 @@ class DetailsFragment : Fragment() {
 
     private fun refreshDone(success: Boolean) {
         refreshLayout ?: return
+        comment_tip?.visibility = View.VISIBLE
         if (page == 1) {
             refreshLayout.finishRefresh(success)
         } else {

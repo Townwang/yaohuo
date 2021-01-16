@@ -100,7 +100,7 @@ class YaoItemView : LinearLayout {
                 setTextColor(Color.BLACK)
             }
             with(valueTextView) {
-                text = SpannableStringBuilder(ta.getString(R.styleable.YaoItemView_value) ?: "")
+                text = SpannableStringBuilder(ta.getString(R.styleable.YaoItemView_value).orEmpty())
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, ta.getDimension(R.styleable.YaoItemView_valueSize, context.sp(14f)))
                 setTextColor(ta.getColor(R.styleable.YaoItemView_valueColor, Color.BLACK))
                 isValueClickable = ta.getBoolean(R.styleable.YaoItemView_isValueClickable, false)
