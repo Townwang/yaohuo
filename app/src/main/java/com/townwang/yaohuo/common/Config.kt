@@ -13,7 +13,6 @@ class ApiErrorException(val code: Int, error: String) : Exception(error)
 class NetworkFailureException(failure: String) : Exception(failure)
 class UseVPNException(failure: String) : Exception(failure)
 
-
 /**********************************************校验*********************************************/
 
 var isCrack = false

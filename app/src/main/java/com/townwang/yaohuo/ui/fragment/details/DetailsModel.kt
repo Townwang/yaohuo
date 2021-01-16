@@ -42,6 +42,7 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
             helper?.content.orEmpty(),
             helper?.downLoad
         )
+        getAvatar(helper?.getHandUrl.orEmpty())
         commentDetails(1, 0)
     }
 

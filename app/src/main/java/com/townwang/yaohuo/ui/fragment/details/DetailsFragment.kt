@@ -207,14 +207,14 @@ class DetailsFragment : Fragment() {
                 online?.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_grey_10)
             }
-            if (it.giftMoney.isEmpty()){
+            if (it.giftMoney.isNotEmpty()){
                 linearTop?.visibility = View.VISIBLE
                 icon?.text = "肉"
                 icon?.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
                 subtitle?.text = HtmlCompat.fromHtml(it.giftMoney, HtmlCompat.FROM_HTML_MODE_LEGACY)
             }
-            if (it.reward.isEmpty()) {
+            if (it.reward.isNotEmpty()) {
                 linearTop?.visibility = View.VISIBLE
                 icon?.text = "赏"
                 icon?.background =

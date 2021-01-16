@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.snackbar.Snackbar
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.SEND_CONTENT_KEY
 import com.townwang.yaohuo.common.onClickListener
@@ -20,10 +21,14 @@ import kotlinx.android.synthetic.main.fragment_comment_dialog.*
 
 typealias CommentDialogSendListener = (fragment: CommentDialogFragment, message: String) -> Unit
 
-class CommentDialogFragment: DialogFragment() {
-     var mDialogListener: CommentDialogSendListener? = null
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-      requireDialog().window?.requestFeature(Window.FEATURE_NO_TITLE)
+class CommentDialogFragment : DialogFragment() {
+    var mDialogListener: CommentDialogSendListener? = null
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        requireDialog().window?.requestFeature(Window.FEATURE_NO_TITLE)
         requireDialog().setCancelable(true)
         requireDialog().setCanceledOnTouchOutside(true)
         return inflater.inflate(R.layout.fragment_comment_dialog, container, false)
@@ -32,7 +37,10 @@ class CommentDialogFragment: DialogFragment() {
     @SuppressLint("InlinedApi", "WrongConstant")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dialog_comment_et.hint = HtmlCompat.fromHtml(requireArguments().getString(SEND_CONTENT_KEY,""),Html.FROM_HTML_MODE_LEGACY)
+        dialog_comment_et.hint = HtmlCompat.fromHtml(
+            requireArguments().getString(SEND_CONTENT_KEY, ""),
+            Html.FROM_HTML_MODE_LEGACY
+        )
         dialog_comment_et.requestFocus()
         dialog_comment_et.post {
             (requireActivity().getSystemService(
@@ -42,7 +50,11 @@ class CommentDialogFragment: DialogFragment() {
         }
         dialog_comment_bt.onClickListener {
             val commentStr = dialog_comment_et.text.toString()
-            mDialogListener?.invoke(this@CommentDialogFragment, "$commentStr      \uD83D\uDCF1")
+            if (commentStr.isEmpty()) {
+                Snackbar.make(requireView(), "请输入内容", Snackbar.LENGTH_SHORT).show()
+            } else {
+                mDialogListener?.invoke(this@CommentDialogFragment, "$commentStr      \uD83D\uDCF1")
+            }
         }
     }
 
@@ -56,7 +68,13 @@ class CommentDialogFragment: DialogFragment() {
         val titleDividerId = resources.getIdentifier("titleDivider", "id", "android")
         if (titleDividerId > 0) {
             val titleDivider = requireDialog().findViewById<View>(titleDividerId)
-            titleDivider?.setBackgroundColor(ResourcesCompat.getColor(resources,android.R.color.transparent,null))
+            titleDivider?.setBackgroundColor(
+                ResourcesCompat.getColor(
+                    resources,
+                    android.R.color.transparent,
+                    null
+                )
+            )
         }
     }
 

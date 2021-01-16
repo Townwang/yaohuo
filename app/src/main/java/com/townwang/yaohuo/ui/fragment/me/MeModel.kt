@@ -1,55 +1,79 @@
 package com.townwang.yaohuo.ui.fragment.me
+
 import androidx.lifecycle.MutableLiveData
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.common.helper.ResolveDetailsHelper
 import com.townwang.yaohuo.repo.Repo
+import com.townwang.yaohuo.repo.data.details.MeBean
 
 class MeModel(private val repo: Repo) : UIViewModel() {
-
-    private val _nikeName = MutableLiveData<String>()
-    val nikeName = _nikeName.asLiveData()
-
-    private val _accountNumber = MutableLiveData<String>()
-    val accountNumber = _accountNumber.asLiveData()
-
-    private val _money = MutableLiveData<String>()
-    val money = _money.asLiveData()
-
-    private val _bankSavings = MutableLiveData<String>()
-    val bankSavings = _bankSavings.asLiveData()
-
-    private val _experience = MutableLiveData<String>()
-    val experience = _experience.asLiveData()
-
-    private val _rank = MutableLiveData<String>()
-    val rank = _rank.asLiveData()
-
-    private val _title = MutableLiveData<String>()
-    val title = _title.asLiveData()
-
-    private val _identity = MutableLiveData<String>()
-    val identity = _identity.asLiveData()
-
-    private val _managementAuthority = MutableLiveData<String>()
-    val managementAuthority = _managementAuthority.asLiveData()
-
+    var helper: ResolveDetailsHelper? = null
+    private val _data = MutableLiveData<MeBean>()
+    val data = _data.asLiveData()
+    private val _avatar = MutableLiveData<String>()
+    val avatar = _avatar.asLiveData()
     fun getMeData() = launchTask {
-        val doc =  repo.getMe()
-        _nikeName.value =   doc.select("div.welcome").text().substringAfterLast(":")
-
-            val content = doc.select("div.content")
-
-            content.forEach {
-                when(it.text().substringBefore(":")){
-                    "我的ID" ->{_accountNumber.value = it.text().substringAfterLast(":")}
-                    "我的妖晶" ->{_money.value = it.text().substringAfterLast(":")}
-                    "银行存款" ->{_bankSavings.value = it.text().substringAfterLast(":").removeSuffix("管理")}
-                    "我的经验" ->{_experience.value = it.text().substringAfterLast(":")}
-                    "我的等级" ->{_rank.value = it.text().substringAfterLast(":")}
-                    "我的头衔" ->{_title.value = it.text().substringAfterLast(":")}
-                    "我的身份" ->{_identity.value = it.text().substringAfter(":")}
-                    "管理权限" ->{_managementAuthority.value = it.text().substringAfterLast(":")}
+        val doc = repo.getMe()
+        helper = ResolveDetailsHelper(doc)
+        val nikeName = doc.select("div.welcome").text()
+            .substringAfterLast(":")
+        val content = doc.select("div.content")
+        var accountNumber: String = ""
+        var money: String = ""
+        var bankSavings: String = ""
+        var experience: String = ""
+        var rank: String = ""
+        var title: String = ""
+        var identity: String = ""
+        var managementAuthority: String = ""
+        content.forEach {
+            when (it.text().substringBefore(":")) {
+                "我的ID" -> {
+                    accountNumber = it.text().substringAfterLast(":")
+                }
+                "我的妖晶" -> {
+                    money = it.text().substringAfterLast(":")
+                }
+                "银行存款" -> {
+                    bankSavings = it.text().substringAfterLast(":")
+                        .removeSuffix("管理")
+                }
+                "我的经验" -> {
+                    experience = it.text().substringAfterLast(":")
+                }
+                "我的等级" -> {
+                    rank = it.text().substringAfterLast(":")
+                }
+                "我的头衔" -> {
+                    title = it.text().substringAfterLast(":")
+                }
+                "我的身份" -> {
+                    identity = it.text().substringAfter(":")
+                }
+                "管理权限" -> {
+                    managementAuthority = it.text().substringAfterLast(":")
                 }
             }
+        }
+        _data.value = MeBean(
+            nikeName,
+            accountNumber,
+            money,
+            bankSavings,
+            experience,
+            rank,
+            title,
+            identity,
+            managementAuthority
+        )
+
+        val headUrl = doc.getElementsContainingOwnText("我的空间").first().attr(A_HREF)
+        getAvatar(getUrlString(headUrl))
+    }
+
+    private fun getAvatar(handUrl: String) = launchTask {
+        val doc = repo.praise(handUrl)
+        _avatar.value = helper?.getHandImage(doc)
     }
 
 }

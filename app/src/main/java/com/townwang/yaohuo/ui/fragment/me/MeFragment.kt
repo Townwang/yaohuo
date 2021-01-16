@@ -6,13 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.safeObserver
-import com.townwang.yaohuo.common.setTitleCenter
-import com.townwang.yaohuo.common.work
+import com.townwang.yaohuo.common.*
 import kotlinx.android.synthetic.main.appbar.*
 import kotlinx.android.synthetic.main.fragment_me.*
+import kotlinx.android.synthetic.main.fragment_me.refreshLayout
+import kotlinx.android.synthetic.main.fragment_me.title
 import org.koin.androidx.viewmodel.ext.android.viewModel
 class MeFragment : Fragment() {
     private val viewModel: MeModel by viewModel()
@@ -23,7 +25,6 @@ class MeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_me, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).work {
@@ -33,47 +34,41 @@ class MeFragment : Fragment() {
             }
             setTitleCenter(toolbar)
         }
-        refreshLayout.setOnRefreshListener {
+        refreshLayout?.setOnRefreshListener {
             viewModel.getMeData()
+            nesScroll.visibility = View.GONE
         }
-        refreshLayout.autoRefresh()
-        refreshLayout.setEnableLoadMore(false)
-        refreshLayout.setEnableNestedScroll(true)
+        refreshLayout?.autoRefresh()
+        refreshLayout?.setEnableLoadMore(false)
+        refreshLayout?.setEnableNestedScroll(true)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         viewModel.loading.observe(viewLifecycleOwner, safeObserver {
             if (!it) {
-                refreshLayout.finishRefresh(true)
+                refreshLayout?.finishRefresh(true)
+                nesScroll.visibility = View.VISIBLE
             }
         })
-        viewModel.nikeName.observe(viewLifecycleOwner, safeObserver {
-            nikeName.text = it
+        viewModel.data.observe(viewLifecycleOwner, safeObserver {
+            nikeName?.text = it.nikeName
+            accountNumber?.value = it.accountNumber
+            money?.value = it.money
+            bankSavings?.value = it.bankSavings
+            experience?.value = it.experience
+            rank?.value = it.rank
+            title?.value = it.title
+            identity?.value = it.identity
+            managementAuthority?.value = it.managementAuthority
         })
-        viewModel.accountNumber.observe(viewLifecycleOwner, safeObserver {
-            accountNumber.value = it
+        viewModel.avatar.observe(viewLifecycleOwner, safeObserver {
+            Glide.with(requireContext())
+                .load(getUrlString(it))
+                .apply(options)
+                .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                .into(avatar)
         })
-        viewModel.money.observe(viewLifecycleOwner, safeObserver {
-            money.value = it
-        })
-        viewModel.bankSavings.observe(viewLifecycleOwner, safeObserver {
-            bankSavings.value = it
-        })
-        viewModel.experience.observe(viewLifecycleOwner, safeObserver {
-            experience.value = it
-        })
-        viewModel.rank.observe(viewLifecycleOwner, safeObserver {
-            rank.value = it
-        })
-        viewModel.title.observe(viewLifecycleOwner, safeObserver {
-            title.value = it
-        })
-        viewModel.identity.observe(viewLifecycleOwner, safeObserver {
-            identity.value = it
-        })
-        viewModel.managementAuthority.observe(viewLifecycleOwner, safeObserver {
-            managementAuthority.value = it
-        })
+
     }
 }

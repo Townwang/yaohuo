@@ -16,7 +16,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.common.helper.clearNotificaion
+import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.fragment_webview.*
+import kotlinx.android.synthetic.main.fragment_webview.refreshLayout
 
 
 class WebViewFragment : Fragment() {
@@ -63,6 +66,10 @@ class WebViewFragment : Fragment() {
         }
         refreshLayout?.setEnableLoadMore(false)
         refreshLayout?.autoRefresh()
+
+        if ("消息" == requireArguments().getString(WEB_VIEW_URL_TITLE, "")){
+            clearNotificaion()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
