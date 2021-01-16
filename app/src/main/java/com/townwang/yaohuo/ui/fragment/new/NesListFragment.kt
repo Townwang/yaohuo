@@ -13,6 +13,7 @@ import com.townwang.yaohuo.App
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.helper.isHaveMessage
+import com.townwang.yaohuo.common.helper.isHaveMsg
 import com.townwang.yaohuo.common.helper.sendNotification
 import com.townwang.yaohuo.ui.activity.ActivityAbout
 import com.townwang.yaohuo.ui.activity.ActivityTheme
@@ -55,7 +56,9 @@ class NesListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        sendNotification(requireContext())
+        if (isHaveMessage) {
+            sendNotification(requireContext())
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
