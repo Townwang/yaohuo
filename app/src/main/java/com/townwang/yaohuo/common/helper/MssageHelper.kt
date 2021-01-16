@@ -29,7 +29,6 @@ fun isHaveMsg(doc: Document): Document {
         val image = doc.select(IMG_GIF)
         if (image.first().attr("src") == "/tupian/news.gif") {
             BuglyLog.i(BuildConfig.FLAVOR, "有新消息")
-            sendNotification(App.getContext())
             true
         } else {
             BuglyLog.i(BuildConfig.FLAVOR, "无消息")

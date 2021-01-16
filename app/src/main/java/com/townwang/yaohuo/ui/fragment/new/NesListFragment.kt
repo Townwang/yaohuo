@@ -9,9 +9,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import com.townwang.yaohuo.App
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.helper.isHaveMessage
+import com.townwang.yaohuo.common.helper.sendNotification
 import com.townwang.yaohuo.ui.activity.ActivityAbout
 import com.townwang.yaohuo.ui.activity.ActivityTheme
 import com.townwang.yaohuo.ui.activity.ActivityWebView
@@ -49,6 +51,11 @@ class NesListFragment : Fragment() {
                 }
             }
             ).commitNow()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sendNotification(requireContext())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
