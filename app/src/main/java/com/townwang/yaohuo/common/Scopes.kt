@@ -1,5 +1,6 @@
 package com.townwang.yaohuo.common
 
+import com.townwang.yaohuo.common.helper.isHaveMsg
 import com.townwang.yaohuo.repo.data.Niece
 import kotlinx.coroutines.*
 import org.jsoup.Jsoup
@@ -9,7 +10,6 @@ import retrofit2.Call
 import java.net.NetworkInterface
 import java.util.*
 import java.util.concurrent.Executors
-import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -102,7 +102,7 @@ suspend fun <T : Document> Call<T>.getResp() = withContext(networkScope.coroutin
                     val body = result.body()
                     val throwable = checkDoc(body)
                     if (throwable == null) {
-                        it.resume(Jsoup.parse(body.toString()))
+                        it.resume(isHaveMsg(Jsoup.parse(body.toString())))
                     } else {
                         it.resumeWithException(throwable)
                     }

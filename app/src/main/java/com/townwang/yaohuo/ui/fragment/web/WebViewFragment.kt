@@ -15,10 +15,7 @@ import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
-import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
-import com.townwang.yaohuo.common.getUrlString
-import com.townwang.yaohuo.common.work
+import com.townwang.yaohuo.common.*
 import kotlinx.android.synthetic.main.fragment_webview.*
 
 
@@ -40,17 +37,32 @@ class WebViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).work {
             supportActionBar.work {
-                title = requireArguments().getString(WEB_VIEW_URL_TITLE,"")
+                title = requireArguments().getString(WEB_VIEW_URL_TITLE, "")
                 setDisplayHomeAsUpEnabled(true)
             }
         }
-        val web = WebViewHelper(requireContext()).apply {
+        val web = WebViewHelper(requireContext(), content).apply {
             shouldOverrideUrlLoading = false
         }
-        web.onDownloadListener = {url,contentDisposition,mimeType ->
-            downloadBySystem(url,contentDisposition,mimeType)
+        web.onDownloadListener = { url, contentDisposition, mimeType ->
+            downloadBySystem(url, contentDisposition, mimeType)
         }
-        content.addView( web.setUrl(getUrlString(requireArguments().getString(WEB_VIEW_URL_KEY,""))))
+
+        val loading = Loading("正在加载网址...").create()
+        if (loading.isShowing.not()) {
+            loading.show()
+        }
+        web.onFinishedListener = {
+            if (loading.isShowing) {
+                loading.dismiss()
+            }
+            refreshLayout?.finishRefresh()
+        }
+        refreshLayout?.setOnRefreshListener {
+            web.setUrl(getUrlString(requireArguments().getString(WEB_VIEW_URL_KEY, "")))
+        }
+        refreshLayout?.setEnableLoadMore(false)
+        refreshLayout?.autoRefresh()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -76,7 +88,7 @@ class WebViewFragment : Fragment() {
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         // 设置通知栏的标题，如果不设置，默认使用文件名
         // 设置通知栏的描述
-        request.setDescription(requireArguments().getString(WEB_VIEW_URL_TITLE,""))
+        request.setDescription(requireArguments().getString(WEB_VIEW_URL_TITLE, ""))
         // 允许在计费流量下下载
         request.setAllowedOverMetered(true)
         // 允许该记录在下载管理界面可见
@@ -91,7 +103,8 @@ class WebViewFragment : Fragment() {
         //        另外可选一下方法，自定义下载路径
 //        request.setDestinationUri()
 //        request.setDestinationInExternalFilesDir()
-        val downloadManager = requireActivity().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val downloadManager =
+            requireActivity().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         // 添加一个下载任务
         downloadManager.enqueue(request)
         requireActivity().onBackPressed()

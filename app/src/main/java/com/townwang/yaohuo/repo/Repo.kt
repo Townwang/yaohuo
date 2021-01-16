@@ -48,13 +48,12 @@ class Repo constructor(
                 data[it.attr(AK_NAME)] = it.attr(AK_VALUE)
             }
         }
-
         val con = api.login(data)
         con.getResp()
     }
 
-    suspend fun getNewList(classId: Int, page: Int): Document = withRepoContext {
-        val bbs = api.getNewList(classId.toString(), page.toString())
+    suspend fun getNewList(classId: Int, page: Int,action:String): Document = withRepoContext {
+        val bbs = api.getNewList(classId.toString(), page.toString(),action)
         bbs.getResp()
     }
 
@@ -87,7 +86,8 @@ class Repo constructor(
         url: String,
         content: String,
         floor: String? = null,
-        touserid: String? = null
+        touserid: String? = null,
+        sendmsg:String? = "1"
     ): Document = withRepoContext {
         val bbs = api.urlPenetrate(url)
         val rs = bbs.getResp()
@@ -98,7 +98,7 @@ class Repo constructor(
                 it.attr(AK_VALUE, content)
             }
             if (it.attr(AK_NAME) == "sendmsg") {
-                it.attr(AK_VALUE, "1")
+                it.attr(AK_VALUE, sendmsg)
             }
             if (it.attr(AK_NAME) == "reply") {
                 it.attr(AK_VALUE, floor)

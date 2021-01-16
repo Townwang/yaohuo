@@ -11,12 +11,12 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.common.helper.isHaveMessage
 import com.townwang.yaohuo.ui.activity.ActivityAbout
 import com.townwang.yaohuo.ui.activity.ActivityTheme
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.fragment.pub.PubListFragment
 import kotlinx.android.synthetic.main.fragment_list_new.*
-
 
 class NesListFragment : Fragment() {
     lateinit var request: ActivityResultLauncher<Intent>
@@ -45,6 +45,7 @@ class NesListFragment : Fragment() {
                 arguments = Bundle().also {
                     it.putInt(LIST_CLASS_ID_KEY, 0)
                     it.putString(LIST_BBS_NAME_KEY, "最新")
+                    it.putString(LIST_ACTION_KEY, "new")
                 }
             }
             ).commitNow()
@@ -53,6 +54,11 @@ class NesListFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.settings_home, menu)
+        if (isHaveMessage) {
+            menu.findItem(R.id.toolbar_r_msg).setIcon(R.drawable.anim_vector_new_msg)
+        } else {
+            menu.findItem(R.id.toolbar_r_msg).setIcon(R.drawable.anim_vector_msg)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

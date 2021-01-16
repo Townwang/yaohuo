@@ -41,6 +41,32 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/linearLayoutCompat">
             <TextView
+                tools:text="头条"
+                android:id="@+id/headline"
+                android:visibility="gone"
+                android:textSize="@dimen/text14Size"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:layout_margin="1dp"
+                android:textColor="@color/white"
+                android:background="@drawable/background_pink_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                tools:text="精"
+                android:id="@+id/fine"
+                android:textSize="@dimen/text14Size"
+                android:visibility="gone"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:layout_margin="1dp"
+                android:textColor="@color/white"
+                android:background="@drawable/background_green_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <TextView
                     tools:text="附"
                     android:id="@+id/annex"
                     android:textSize="@dimen/text14Size"
@@ -131,8 +157,7 @@
                 android:id="@+id/reply"
                 app:layout_constraintEnd_toStartOf="@+id/read"
                 app:layout_constraintBottom_toBottomOf="@+id/read"
-                app:layout_constraintTop_toTopOf="@+id/read"
-                android:layout_marginRight="10dp"/>
+                app:layout_constraintTop_toTopOf="@+id/read" />
 
         <TextView
                 tools:text="阅"

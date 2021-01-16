@@ -17,8 +17,8 @@ class UseVPNException(failure: String) : Exception(failure)
 /**********************************************校验*********************************************/
 
 var isCrack = false
-
-
+//浏览器参数配置
+const val USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0.1; Moto G (4)) Gecko/20100101 Firefox/54.0"
 //解析所用字段
 const val AK_FORM = "form"
 const val AK_NAME = "name"
@@ -43,6 +43,7 @@ const val WEB_VIEW_URL_KEY = "web view url key"
 const val WEB_VIEW_URL_TITLE = "web view url title"
 const val HOME_DETAILS_READ_KEY = "home details read key"
 const val LIST_CLASS_ID_KEY = "list class id key"
+const val LIST_ACTION_KEY = "list action key"
 const val LIST_BBS_NAME_KEY = "list bbs name key"
 
 const val SEND_CONTENT_KEY = "send content key"

@@ -10,10 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.common.helper.sendNotification
 import com.townwang.yaohuo.repo.data.HomeData
 import com.townwang.yaohuo.ui.activity.ActivityDetails
 import kotlinx.android.synthetic.main.fragment_list_pub.*
@@ -47,8 +47,8 @@ class PubListFragment : Fragment() {
                 setDisplayHomeAsUpEnabled(requireArguments().getInt(LIST_CLASS_ID_KEY, 0) != 0)
             }
         }
-        homeList.adapter = adapter
-        homeList.layoutManager =
+        homeList?.adapter = adapter
+        homeList?.layoutManager =
             (StaggeredGridLayoutManager(
                 config(HOME_LIST_THEME_SHOW).toInt(),
                 StaggeredGridLayoutManager.VERTICAL
@@ -68,15 +68,15 @@ class PubListFragment : Fragment() {
                 }, bundle
             )
         }
-        refreshLayout.setOnRefreshListener {
+        refreshLayout?.setOnRefreshListener {
             page = 1
-            viewModel.loadList(requireArguments().getInt(LIST_CLASS_ID_KEY), page)
+            viewModel.loadList(requireArguments().getInt(LIST_CLASS_ID_KEY), page,requireArguments().getString(LIST_ACTION_KEY,"new"))
         }
-        refreshLayout.setOnLoadMoreListener {
+        refreshLayout?.setOnLoadMoreListener {
             page++
-            viewModel.loadList(requireArguments().getInt(LIST_CLASS_ID_KEY), page)
+            viewModel.loadList(requireArguments().getInt(LIST_CLASS_ID_KEY), page,requireArguments().getString(LIST_ACTION_KEY,"new"))
         }
-        refreshLayout.autoRefresh()
+        refreshLayout?.autoRefresh()
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

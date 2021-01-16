@@ -23,41 +23,61 @@
             tools:ignore="RtlSymmetry"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_marginTop="10dp"
-            android:background="@drawable/background_translucent_2"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            app:layout_constraintStart_toStartOf="@+id/title"
-            android:layout_width="match_parent"
-            android:padding="10dp"
-            android:layout_height="wrap_content">
-        <TextView
-                tools:text="我是软件名字"
-                android:id="@+id/downloadName"
-                android:textSize="@dimen/text12Size"
-                android:textIsSelectable="true"
-                android:layout_width="0dp"
-                android:textColor="@color/md_grey_900"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/downloadUrl" />
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/background_translucent_2"
+        android:padding="10dp"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title">
 
         <TextView
-                android:id="@+id/downloadUrl"
-                android:text="点击下载"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text12Size"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:layout_margin="20dp"
-                android:background="@drawable/background_blue_10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/downloadName"
-                app:layout_constraintTop_toTopOf="@+id/downloadName"/>
+            android:id="@+id/downloadName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/md_grey_900"
+            android:textIsSelectable="true"
+            android:textSize="@dimen/text12Size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/downloadUrl"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="我是软件名字" />
+
+        <TextView
+            android:id="@+id/downloadUrl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/background_primary"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp"
+            android:text="点击下载"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text12Size"
+            app:layout_constraintBottom_toBottomOf="@+id/downloadName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/downloadName" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/description"
+        android:padding="10dp"
+        android:background="@color/semitransparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/text12Size"
+        android:enabled="true"
+        android:textIsSelectable="true"
+        android:focusable="true"
+        android:longClickable="true"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
+        app:layout_constraintTop_toBottomOf="@id/constraintLayout2"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

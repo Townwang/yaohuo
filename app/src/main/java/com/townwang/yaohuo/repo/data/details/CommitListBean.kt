@@ -1,6 +1,6 @@
-package com.townwang.yaohuo.repo.data
+package com.townwang.yaohuo.repo.data.details
 
-data class CommentData(
+data class CommitListBean(
     val floor:Int,
     val url:String,
     val auth:String,

@@ -22,10 +22,8 @@ class ThemeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
     fun bind(data: ThemeList) {
         itemView.layout.setBackgroundColor(ContextCompat.getColor(itemView.context,data.color))
-
         Glide.with(itemView)
             .load(data.icon)
-            .apply(options)
             .apply(RequestOptions().placeholder(R.drawable.anim_vector_theme_icon))
             .into(itemView.icon)
         startAnimator(itemView.icon.drawable)

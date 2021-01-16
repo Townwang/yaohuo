@@ -145,7 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
-                    android:background="@drawable/background_fillet"
+                    android:background="@drawable/background_primary"
                     android:paddingStart="10dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="10dp"
@@ -160,13 +160,14 @@
             <WebView
                 android:id="@+id/webView"
                 android:background="@color/transparent"
+                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/list_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:gravity="center"
                 android:orientation="vertical" />
             <TextView
@@ -180,7 +181,6 @@
                 android:textColor="@color/md_black_1000"
                 android:textSize="@dimen/text16Size"
                 android:visibility="gone"
-                app:layout_isSticky="true"
                 tools:ignore="MissingConstraints" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -191,6 +191,19 @@
                 android:paddingBottom="50dp"
                 tools:ignore="MissingConstraints,UnusedAttribute"
                 tools:listitem="@layout/item_comment_data" />
+            <TextView
+                android:id="@+id/noMore"
+                android:gravity="center"
+                android:background="@color/md_grey_50"
+                android:text="暂时木有回复，快抢沙发哦！"
+                android:layout_margin="3dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:layout_width="match_parent"
+                android:textColor="@color/md_grey_500"
+                android:textSize="@dimen/text16Size"
+                android:visibility="gone"
+                android:layout_height="wrap_content"/>
         </com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

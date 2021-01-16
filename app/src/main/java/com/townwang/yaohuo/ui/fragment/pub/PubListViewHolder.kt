@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.repo.data.HomeData
@@ -18,7 +19,7 @@ class PubListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             )
         }
     }
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ResourceAsColor")
     fun bind(data: HomeData) {
         Log.d("解析", "结果：${data}")
         itemView.title.text = data.title
@@ -30,6 +31,8 @@ class PubListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.meat.visibility = View.GONE
         itemView.bear.visibility = View.GONE
         itemView.ceremony.visibility = View.GONE
+        itemView.fine.visibility = View.GONE
+        itemView.headline.visibility = View.GONE
         if (data.smailIng.isNotEmpty()) {
             data.smailIng.forEach {
                 when (it) {
@@ -52,6 +55,14 @@ class PubListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     "礼" -> {
                         itemView.ceremony.visibility = View.VISIBLE
                         itemView.ceremony.text = it
+                    }
+                    "精" -> {
+                        itemView.fine.visibility = View.VISIBLE
+                        itemView.fine.text = it
+                    }
+                    "总顶" ->{
+                        itemView.headline.visibility = View.VISIBLE
+                        itemView.headline.text = "头条"
                     }
                 }
             }

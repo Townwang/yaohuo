@@ -28,9 +28,11 @@ import androidx.lifecycle.Observer
 import com.android.tu.loadingdialog.LoadingDailog
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
+import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.App
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
+import org.jsoup.nodes.Document
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -42,20 +44,19 @@ var gson = Gson()
 
 val handler = Handler()
 
-
 inline fun <T> T?.work(block: T.() -> Unit) {
     if (this != null) block.invoke(this)
 }
 
 private var lastClickTime: Long = 0
 fun <T : View> T.onClickListener(delay: Long = 500, block: (T) -> Unit) {
-        setOnClickListener {
-            val currentTime: Long = System.currentTimeMillis()
-            if (currentTime - lastClickTime > delay) {
-                lastClickTime = currentTime
-                block(this)
-            }
+    setOnClickListener {
+        val currentTime: Long = System.currentTimeMillis()
+        if (currentTime - lastClickTime > delay) {
+            lastClickTime = currentTime
+            block(this)
         }
+    }
 }
 
 
@@ -221,8 +222,8 @@ fun Context.handleException(
             toast("未能请求到数据，请稍后再试～")
         }
         is ApiErrorException -> {
-            toast(t.message ?: "")
-            onApiError?.invoke(t.code, t.message ?: "")
+            toast(t.message.orEmpty())
+            onApiError?.invoke(t.code, t.message.orEmpty())
         }
         is UnknownHostException,
         is NetworkFailureException,
@@ -238,11 +239,13 @@ fun Context.handleException(
             onUnknownError?.invoke(t)
         }
     }
+    BuglyLog.e(BuildConfig.FLAVOR, t.message)
 }
 
 fun Context.toast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
+
 fun getParam(url: String, name: String): String {
     var result = ""
     val index = url.indexOf("?")
@@ -251,6 +254,7 @@ fun getParam(url: String, name: String): String {
     keyValue.forEach {
         if (it.contains(name)) {
             result = it.split("=").last()
+            return@forEach
         }
     }
     return result
@@ -260,7 +264,7 @@ fun getUrlString(url: String): String {
     return if (url.contains("https://", true) || url.contains("http://", true)) {
         url
     } else {
-        BuildConfig.BASE_YAOHUO_URL + url.substring(1, url.length)
+        BuildConfig.BASE_YAOHUO_URL + url
     }
 }
 

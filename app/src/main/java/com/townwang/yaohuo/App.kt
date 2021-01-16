@@ -7,17 +7,19 @@ import android.content.pm.PackageManager
 import android.util.Log
 import androidx.multidex.MultiDex
 import com.scwang.smart.refresh.footer.ClassicsFooter
-import com.townwang.yaohuo.di.koinModules
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.beta.Beta
 import com.tencent.bugly.crashreport.CrashReport
+import com.tencent.bugly.crashreport.CrashReport.UserStrategy
 import com.townwang.yaohuo.common.isCrack
-import com.townwang.yaohuo.ui.weight.game.FunGameHitBlockHeader
+import com.townwang.yaohuo.di.koinModules
+import com.townwang.yaohuo.ui.weight.header.TaurusHeader
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
+
 
 @Suppress("DEPRECATION")
 class App : Application() {
@@ -57,7 +59,12 @@ class App : Application() {
         Beta.autoInit = true
         Beta.autoCheckUpgrade = true
         Beta.upgradeCheckPeriod = 60 * 1000
-        CrashReport.setIsDevelopmentDevice(applicationContext, BuildConfig.DEBUG)
+        val strategy = UserStrategy(base)
+        strategy.appChannel = BuildConfig.FLAVOR
+        strategy.appVersion = BuildConfig.VERSION_NAME
+        strategy.appPackageName = BuildConfig.APPLICATION_ID
+        strategy.appReportDelay = 20000
+        CrashReport.setIsDevelopmentDevice(base, BuildConfig.DEBUG)
     }
 
     init {
@@ -73,7 +80,7 @@ class App : Application() {
             layout.setEnableRefresh(true)
             layout.autoRefresh()
             layout.setEnableHeaderTranslationContent(true)
-            FunGameHitBlockHeader(context)
+            TaurusHeader(context)
         }
         SmartRefreshLayout.setDefaultRefreshFooterCreator { context, _ ->
             ClassicsFooter(context)

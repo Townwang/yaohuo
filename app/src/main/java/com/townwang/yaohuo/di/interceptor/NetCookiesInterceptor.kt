@@ -1,6 +1,7 @@
 package com.townwang.yaohuo.di.interceptor
 
 import com.townwang.yaohuo.BuildConfig
+import com.townwang.yaohuo.common.USER_AGENT
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
@@ -29,15 +30,12 @@ class NetCookiesInterceptor : Interceptor {
                     builder.addHeader("accept-encoding", "gzip, deflate, br")
                     builder.addHeader("accept-encoding", "gzip, deflate, br")
                     builder.addHeader("accept-language", "zh-CN,zh;q=0.9,en;q=0.8")
-                    builder.addHeader("origin", "https://yaohuo.me")
+                    builder.addHeader("origin", BuildConfig.BASE_YAOHUO_URL)
                     builder.addHeader("sec-fetch-dest", "empty")
                     builder.addHeader("sec-fetch-mode", "cors")
                     builder.addHeader("sec-fetch-site", "cross-site")
                     builder.addHeader("content-type", "application/x-www-form-urlencoded")
-                    builder.addHeader(
-                        "user-agent",
-                        "Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Mobile Safari/537.36"
-                    )
+                    builder.addHeader("user-agent", USER_AGENT)
                     BuildConfig.BASE_YAOHUO_URL.toHttpUrlOrNull()
                 }
             }

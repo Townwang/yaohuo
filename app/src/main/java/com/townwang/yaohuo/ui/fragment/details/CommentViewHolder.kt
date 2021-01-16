@@ -3,7 +3,6 @@ package com.townwang.yaohuo.ui.fragment.details
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.repo.data.CommentData
+import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.weight.htmltext.GlideHtmlImageLoader
 import com.townwang.yaohuo.ui.weight.htmltext.HtmlText
@@ -35,7 +34,7 @@ class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     @SuppressLint("SetTextI18n")
-    fun bind(data: CommentData) {
+    fun bind(data: CommitListBean) {
         Log.d("解析", "评论：$data")
         itemView.apply {
             auth.movementMethod = TextViewFixTouchConsume.LocalLinkMovementMethod.instance
