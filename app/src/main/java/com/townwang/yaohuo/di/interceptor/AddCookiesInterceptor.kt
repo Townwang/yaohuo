@@ -12,15 +12,14 @@ class AddCookiesInterceptor(private val mContext: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val builder = request.newBuilder()
-        val cookie = getCookie(request.url.toString(), request.url.host)
+        val cookie = getCookie(mContext,request.url.toString(), request.url.host)
         cookie?.let {
             builder.addHeader("cookie", cookie)
         }
         return chain.proceed(builder.build())
     }
-
-    private fun getCookie(url: String, domain: String): String? {
-        val sp = mContext.getSharedPreferences(
+   private fun getCookie(context: Context,url: String, domain: String): String? {
+        val sp = context.getSharedPreferences(
             COOKIE_KEY,
             Context.MODE_PRIVATE
         )
@@ -43,5 +42,4 @@ class AddCookiesInterceptor(private val mContext: Context) : Interceptor {
             sp.getString(domain, "")
         } else ""
     }
-
 }

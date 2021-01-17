@@ -29,7 +29,8 @@ import java.net.URL
 
 typealias OnDownloadListener = (
     url: String, contentDisposition: String,
-    mimeType: String
+    mimeType: String,
+    cookie:String?
 ) -> Unit
 
 typealias OnFinishedListener = (newProgress: Int) -> Unit
@@ -126,7 +127,7 @@ class WebViewHelper(context: Context, var webView: WebView) {
         webView.loadUrl("file://android_asset/loading.html")
         webView.loadUrl(urlService)
         webView.setDownloadListener { urlLink, _, contentDisposition, mistype, _ ->
-            onDownloadListener?.invoke(urlLink, contentDisposition, mistype)
+            onDownloadListener?.invoke(urlLink, contentDisposition, mistype,cookie)
         }
         return webView
     }

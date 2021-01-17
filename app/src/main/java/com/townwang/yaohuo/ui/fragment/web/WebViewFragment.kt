@@ -1,6 +1,4 @@
 package com.townwang.yaohuo.ui.fragment.web
-
-import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
@@ -12,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
 import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
@@ -21,9 +19,6 @@ import com.townwang.yaohuo.common.getUrlString
 import com.townwang.yaohuo.common.helper.clearNotificaion
 import com.townwang.yaohuo.common.work
 import kotlinx.android.synthetic.main.fragment_webview.*
-import kotlinx.android.synthetic.main.item_theme_data.*
-
-
 class WebViewFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,8 +55,9 @@ class WebViewFragment : Fragment() {
             progressBar?.progress = it
             web.startDismissAnimation(progressBar, it)
         }
-        web.onDownloadListener = { url, contentDisposition, mimeType ->
-            downloadBySystem(url, contentDisposition, mimeType)
+        web.onDownloadListener = { url, contentDisposition, mimeType,cookie ->
+            Snackbar.make(requireView(),"正在下载文件...",Snackbar.LENGTH_SHORT).show()
+            downloadBySystem(url, contentDisposition, mimeType,cookie)
         }
 
         refreshLayout?.setOnRefreshListener {
@@ -88,34 +84,24 @@ class WebViewFragment : Fragment() {
     private fun downloadBySystem(
         url: String,
         contentDisposition: String,
-        mimeType: String
+        mimeType: String,
+        cookie:String?
     ) {
-        // 指定下载地址
         val request = DownloadManager.Request(Uri.parse(url))
-        // 允许媒体扫描，根据下载的文件类型被加入相册、音乐等媒体库
         request.allowScanningByMediaScanner()
-        // 设置通知的显示类型，下载进行时和完成后显示通知
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-        // 设置通知栏的标题，如果不设置，默认使用文件名
-        // 设置通知栏的描述
         request.setDescription(requireArguments().getString(WEB_VIEW_URL_TITLE, ""))
-        // 允许在计费流量下下载
         request.setAllowedOverMetered(true)
-        // 允许该记录在下载管理界面可见
         request.setVisibleInDownloadsUi(true)
-        // 允许漫游时下载
         request.setAllowedOverRoaming(true)
-        // 允许下载的网路类型
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
-        // 设置下载文件保存的路径和文件名
         val fileName = URLUtil.guessFileName(url, contentDisposition, mimeType)
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
-        //        另外可选一下方法，自定义下载路径
-//        request.setDestinationUri()
-//        request.setDestinationInExternalFilesDir()
+        cookie?.let {
+            request.addRequestHeader("cookie", cookie)
+        }
         val downloadManager =
             requireActivity().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        // 添加一个下载任务
         downloadManager.enqueue(request)
         requireActivity().onBackPressed()
     }
