@@ -14,7 +14,7 @@
             pv:pv_host_text_size="50sp"
             pv:pv_particle_text_size="20sp"
             pv:pv_text_color="@color/white"
-            pv:pv_text_anim_time="1000"
-            pv:pv_spread_anim_time="1000"
-            pv:pv_host_text_anim_time="1000" />
+            pv:pv_text_anim_time="700"
+            pv:pv_spread_anim_time="700"
+            pv:pv_host_text_anim_time="700" />
 </androidx.constraintlayout.widget.ConstraintLayout>

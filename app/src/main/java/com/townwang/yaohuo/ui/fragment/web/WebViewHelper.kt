@@ -14,7 +14,7 @@ import android.webkit.*
 import android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 import android.widget.ProgressBar
 import androidx.core.app.ActivityCompat
-import com.townwang.yaohuo.App
+import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.COOKIE_KEY
 import com.townwang.yaohuo.common.USER_AGENT
@@ -117,7 +117,7 @@ class WebViewHelper(context: Context, var webView: WebView) {
 
     fun setUrl(urlService: String): WebView {
         val url = URL(urlService)
-        val cookieMaps = App.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE)
+        val cookieMaps = YaoApplication.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE)
         val cookie = cookieMaps.getString(url.host, "")
         syncCookie(url.host, cookie)
         webView.loadUrl(urlService)

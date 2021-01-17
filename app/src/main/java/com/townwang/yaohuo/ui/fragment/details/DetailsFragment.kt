@@ -143,7 +143,11 @@ class DetailsFragment : Fragment() {
                 Snackbar.make(requireView(), "已经结贴，无法参与评论！", Snackbar.LENGTH_SHORT).show()
             } else {
                 if (data is CommitListBean) {
-                    if (getParam(data.url, BuildConfig.YH_REPLY_TOUSERID) != config(TROUSER_KEY)) {
+                    if (getParam(
+                            data.url,
+                            BuildConfig.YH_REPLY_TOUSERID
+                        ) != requireContext().config(TROUSER_KEY)
+                    ) {
                         val magTransaction = childFragmentManager.beginTransaction()
                         val fragment = childFragmentManager.findFragmentByTag("input frag")
                         if (fragment != null) {

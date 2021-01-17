@@ -7,18 +7,12 @@ import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.Repo
 
 class SplashModel(private val repo: Repo) : UIViewModel() {
-
     private val _nieceSuccess = MutableLiveData<Boolean>()
     val nieceSuccess = _nieceSuccess.asLiveData()
     private val _cookieSuccess = MutableLiveData<Boolean>()
     val cookieSuccess = _cookieSuccess.asLiveData()
-
-    fun checkCookie() = launchTask {
-        repo.cookie()
-        val doc = repo.checkNice()
+    fun checkCookie(trouserId:String) = launchTask {
         try {
-            val a = doc.select("div.top2").select(A_KEY)[1].attr(A_HREF)
-            val trouserId = getParam(a, BuildConfig.YH_REPLY_TOUSERID)
             CrashReport.setUserId(trouserId)
             if (BuildConfig.IS_ALPHA.not()) {
                 _cookieSuccess.value = isCrack

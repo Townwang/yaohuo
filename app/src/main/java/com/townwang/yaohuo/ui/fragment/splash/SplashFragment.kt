@@ -2,17 +2,15 @@ package com.townwang.yaohuo.ui.fragment.splash
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
+import com.tencent.bugly.crashreport.BuglyLog
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.handleException
-import com.townwang.yaohuo.common.isCookieBoolean
-import com.townwang.yaohuo.common.safeObserver
+import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.ui.activity.ActivityHome
 import com.townwang.yaohuo.ui.activity.ActivityLogin
 import kotlinx.android.synthetic.main.fragment_welcome.*
@@ -43,7 +41,7 @@ class SplashFragment : Fragment() {
                 })
                 requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
             } else {
-                viewModel.checkCookie()
+                viewModel.checkCookie(requireContext().config(TROUSER_KEY))
             }
         }
     }
@@ -56,7 +54,7 @@ class SplashFragment : Fragment() {
                     flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 })
                 requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-                Log.d("解析", "登录成功")
+                BuglyLog.d(BuildConfig.FLAVOR,"login == true")
             } else {
                 Snackbar.make(requireView(), "非内测成员，请关注后续更新", Snackbar.LENGTH_INDEFINITE).apply {
                     setAction(android.R.string.ok) {
@@ -71,7 +69,7 @@ class SplashFragment : Fragment() {
                     flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 })
                 requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-                Log.d("解析", "登录成功")
+                BuglyLog.d(BuildConfig.FLAVOR,"login == true")
             } else {
                 Snackbar.make(requireView(), "请勿乱破解，谢谢！", Snackbar.LENGTH_INDEFINITE).apply {
                     setAction(android.R.string.ok) {

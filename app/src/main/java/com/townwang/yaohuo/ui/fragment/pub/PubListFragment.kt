@@ -51,7 +51,7 @@ class PubListFragment : Fragment() {
         homeList?.adapter = adapter
         homeList?.layoutManager =
             (StaggeredGridLayoutManager(
-                config(HOME_LIST_THEME_SHOW).toInt(),
+               requireContext().config(HOME_LIST_THEME_SHOW).toInt(),
                 StaggeredGridLayoutManager.VERTICAL
             ))
         adapter.onItemClickListener = { v, data ->

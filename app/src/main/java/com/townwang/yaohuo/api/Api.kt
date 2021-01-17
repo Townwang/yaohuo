@@ -18,11 +18,6 @@ interface Api {
      */
     @GET
     fun urlPenetrate(@Url url:String): Call<Document>
-    /**
-     * 检查cookie
-     */
-    @GET("wapindex.aspx")
-    fun checkCookie(): Call<Document>
 
     /**
      * 获取登录参数

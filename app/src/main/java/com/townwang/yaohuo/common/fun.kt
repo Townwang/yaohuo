@@ -29,10 +29,11 @@ import com.android.tu.loadingdialog.LoadingDailog
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.tencent.bugly.crashreport.BuglyLog
-import com.townwang.yaohuo.App
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
-import org.jsoup.nodes.Document
+import com.townwang.yaohuo.YaoApplication
+import com.townwang.yaohuo.common.helper.LoginHelper
+import com.townwang.yaohuo.repo.enum.ErrorCode
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -86,8 +87,8 @@ fun startAnimator(drawable: Drawable) {
     }
 }
 
-fun Fragment.config(key: String, value: String? = null): String {
-    var config: String by Preference(requireContext(), key, default = "1")
+fun Context.config(key: String, value: String? = null): String {
+    var config: String by Preference(this, key, default = "1")
     return if (value.isNullOrEmpty()) {
         config
     } else {
@@ -96,13 +97,13 @@ fun Fragment.config(key: String, value: String? = null): String {
     }
 }
 
-fun Activity.config(key: String, value: String? = null): String {
-    var config: String by Preference(this, key, default = "1")
-    return if (value.isNullOrEmpty()) {
-        config
-    } else {
-        config = value
-        config
+fun Context.clearConfig(vararg key: String) {
+    key.forEach {
+        val sp = getSharedPreferences(
+            it,
+            Context.MODE_PRIVATE
+        )
+        sp.all.clear()
     }
 }
 
@@ -137,7 +138,8 @@ fun Activity.setSharedElement() {
 }
 
 fun isCookieBoolean(): Boolean {
-    val cookieMaps = App.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE).all
+    val cookieMaps =
+        YaoApplication.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE).all
     return cookieMaps.isNullOrEmpty()
 }
 
@@ -223,6 +225,24 @@ fun Context.handleException(
         }
         is ApiErrorException -> {
             toast(t.message.orEmpty())
+            when (t.code) {
+                ErrorCode.E_1001.hashCode(),
+                ErrorCode.E_1004.hashCode() -> {
+                    // TODO: 2021/1/17/017 找不到帖子 和 审核 无需处理
+                }
+                ErrorCode.E_1002.hashCode() -> {
+                    // TODO: 2021/1/17/017 访问验证
+                }
+                ErrorCode.E_1003.hashCode(),
+                ErrorCode.E_1006.hashCode(),
+                ErrorCode.E_1007.hashCode() -> {
+                    clearConfig(THEME_KEY,TROUSER_KEY,COOKIE_KEY,HOME_LIST_THEME_SHOW)
+                    LoginHelper.instance.restartLogin(this)
+                }
+                ErrorCode.E_1005.hashCode() -> {
+                    // TODO: 2021/1/17/017 校验密码
+                }
+            }
             onApiError?.invoke(t.code, t.message.orEmpty())
         }
         is UnknownHostException,

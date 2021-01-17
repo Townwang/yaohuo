@@ -10,7 +10,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import com.tencent.bugly.crashreport.BuglyLog
-import com.townwang.yaohuo.App
+import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.IMG_GIF
@@ -44,19 +44,19 @@ fun isHaveMsg(doc: Document): Document {
 }
 
 private val notificationManager by lazy {
-    val manager = App.getContext().getSystemService(NOTIFICATION_SERVICE)
+    val manager = YaoApplication.getContext().getSystemService(NOTIFICATION_SERVICE)
     (manager as NotificationManager)
 }
 
 
 val notificationBuilder: Notification.Builder
     get() {
-            val builder = Notification.Builder(App.getContext())
+            val builder = Notification.Builder(YaoApplication.getContext())
             builder.setContentText("点击查看消息")
                 .setContentTitle("新消息")
                 .setLargeIcon(
                     BitmapFactory.decodeResource(
-                        App.getContext().resources,
+                        YaoApplication.getContext().resources,
                         R.mipmap.ic_launcher
                     )
                 )
@@ -79,13 +79,13 @@ fun clearNotificaion() {
 }
 
 private val startMsgActivity by lazy {
-    val intent = Intent(App.getContext(), ActivityWebView::class.java).apply {
+    val intent = Intent(YaoApplication.getContext(), ActivityWebView::class.java).apply {
         flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         putExtra(WEB_VIEW_URL_KEY, "https://yaohuo.me/bbs/messagelist.aspx")
         putExtra(WEB_VIEW_URL_TITLE, "消息")
     }
     return@lazy PendingIntent.getActivity(
-        App.getContext(), 0, intent, 0
+        YaoApplication.getContext(), 0, intent, 0
     )
 }
 

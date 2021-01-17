@@ -37,20 +37,22 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
             resultPage.indexOf(BuildConfig.YH_MATCH_LOGIN_SUCCESS) != -1 -> {
                 getAccountInformation()
             }
-            resultPage.indexOf(BuildConfig.YH_MATCH_LOGIN_PASS_ERROR) != -1 -> _loginPsdError.value = "密码错误"
-            resultPage.indexOf(BuildConfig.YH_MATCH_LOGIN_USER_ERROR) != -1 -> _loginUserError.value =
-                "用户ID/用户名/手机号不存在！"
-            resultPage.indexOf(BuildConfig.YH_MATCH_LOGIN_MAX_ERROR) != -1 -> _loginError.value =
-                "登录失败次数超过10次了，请明天再来!"
+            resultPage.indexOf(BuildConfig.YH_MATCH_LOGIN_PASS_ERROR) != -1 ->
+                _loginPsdError.value = BuildConfig.YH_MATCH_LOGIN_PASS_ERROR
+            resultPage.indexOf(BuildConfig.YH_MATCH_LOGIN_USER_ERROR) != -1 ->
+                _loginUserError.value = BuildConfig.YH_MATCH_LOGIN_USER_ERROR
+            resultPage.indexOf(BuildConfig.YH_MATCH_LOGIN_MAX_ERROR) != -1 ->
+                _loginError.value = BuildConfig.YH_MATCH_LOGIN_MAX_ERROR
             else -> _loginError.value = "未知异常"
         }
     }
 
     private fun getAccountInformation() = launchTask {
-        val doc = repo.checkNice()
         try {
+            val doc = repo.checkNice()
             val a = doc.select("div.top2").select(A_KEY)[1].attr(A_HREF)
             val trouserId = getParam(a, BuildConfig.YH_REPLY_TOUSERID)
+            _trouser.value = trouserId
             CrashReport.setUserId(trouserId)
             if (IS_ALPHA.not()) {
                 _loginSuccess.value = isCrack

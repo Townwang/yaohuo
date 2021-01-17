@@ -1,10 +1,7 @@
 package com.townwang.yaohuo.ui.fragment.details
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tencent.bugly.crashreport.BuglyLog
-import com.tencent.bugly.crashreport.CrashReport
-import com.townwang.yaohuo.App
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.UIViewModel
 import com.townwang.yaohuo.common.asLiveData

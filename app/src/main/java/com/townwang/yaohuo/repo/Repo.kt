@@ -17,12 +17,6 @@ class Repo constructor(
         doc.getResp()
     }
 
-
-    suspend fun cookie() = withRepoContext {
-        val bbs = api.checkCookie()
-        bbs.getResp()
-    }
-
     suspend fun login(loginName: String, password: String): Document = withRepoContext {
         val rs = api.getLoginParameter()
         val doc = rs.getResp()
