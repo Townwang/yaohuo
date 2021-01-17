@@ -61,33 +61,20 @@ class ActivityHome : AppCompatActivity() {
 //            }
             dialogFragment.show(supportFragmentManager, "send frag")
         }
-        home.onClickListener {
-         val anim =   it.drawable
-            if (anim is AnimationDrawable){
-                anim.start()
-            }
+        news.onClickListener {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.navHost, newsFrag)
                 .commit()
         }
-//        news.onClickListener {
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.navHost, newsFrag)
-//                .commit()
-//        }
-//        bbs.onClickListener {
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.navHost, BBSFragment())
-//                .commit()
-//        }
-//        game.onClickListener {
-//            Snackbar.make(appbarLayout,"正在开发...", Snackbar.LENGTH_SHORT).show()
-//        }
+        bbs.onClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.navHost, BBSFragment())
+                .commit()
+        }
+        game.onClickListener {
+            Snackbar.make(appbarLayout,"正在开发...", Snackbar.LENGTH_SHORT).show()
+        }
         me.onClickListener {
-            val anim =   it.drawable
-            if (anim is AnimationDrawable){
-                anim.start()
-            }
             supportFragmentManager.beginTransaction()
                     .replace(R.id.navHost, MeFragment())
                     .commit()
