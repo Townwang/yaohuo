@@ -61,8 +61,6 @@ class WebViewHelper(context: Context, var webView: WebView) {
             domStorageEnabled = true
             mixedContentMode = MIXED_CONTENT_ALWAYS_ALLOW
             userAgentString = USER_AGENT
-            blockNetworkImage = true
-            setRenderPriority(WebSettings.RenderPriority.HIGH)
         }
         webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
@@ -108,8 +106,6 @@ class WebViewHelper(context: Context, var webView: WebView) {
 
         }
     }
-
-
     private fun getNewContent(halters: String): String {
         val doc: Document = Jsoup.parse(halters)
         val elements: Elements = doc.getElementsByTag("img")
@@ -124,7 +120,6 @@ class WebViewHelper(context: Context, var webView: WebView) {
         val cookieMaps = App.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE)
         val cookie = cookieMaps.getString(url.host, "")
         syncCookie(url.host, cookie)
-        webView.loadUrl("file://android_asset/loading.html")
         webView.loadUrl(urlService)
         webView.setDownloadListener { urlLink, _, contentDisposition, mistype, _ ->
             onDownloadListener?.invoke(urlLink, contentDisposition, mistype,cookie)

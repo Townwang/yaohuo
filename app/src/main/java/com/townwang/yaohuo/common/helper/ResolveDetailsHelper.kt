@@ -83,9 +83,9 @@ class ResolveDetailsHelper(val document: Document) {
             val annex = content.select("div.line")
             val img = annex.select(IMG_JPG).after("src")
             img.forEach { i ->
-                str += "<br/>$i"
+                str += "<br/>$i</img>"
             }
-            return str
+            return Jsoup.parse(str).body().toString()
         }
 
     val downLoad: List<DownloadBean>
