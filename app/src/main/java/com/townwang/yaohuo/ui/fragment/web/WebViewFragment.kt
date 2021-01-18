@@ -16,7 +16,7 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
 import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
 import com.townwang.yaohuo.common.getUrlString
-import com.townwang.yaohuo.common.helper.clearNotificaion
+import com.townwang.yaohuo.common.utils.clearNotificaion
 import com.townwang.yaohuo.common.work
 import kotlinx.android.synthetic.main.fragment_webview.*
 class WebViewFragment : Fragment() {

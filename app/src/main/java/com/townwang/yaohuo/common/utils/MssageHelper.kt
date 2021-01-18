@@ -1,4 +1,4 @@
-package com.townwang.yaohuo.common.helper
+package com.townwang.yaohuo.common.utils
 
 import android.app.Notification
 import android.app.NotificationChannel

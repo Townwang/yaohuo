@@ -68,5 +68,10 @@ interface Api {
     @POST("bbs/book_re.aspx")
     fun reply(@FieldMap map: HashMap<String, String>): Call<Document>
 
+    /**
+     * 获取用户信息
+     */
+    @GET("bbs/userinfomore.aspx")
+    fun getUserInfo(@Query("touserid") touserid:String): Call<Document>
 
 }

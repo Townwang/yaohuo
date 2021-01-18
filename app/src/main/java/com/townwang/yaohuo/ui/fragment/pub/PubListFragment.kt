@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.common.helper.sendNotification
 import com.townwang.yaohuo.repo.data.HomeData
 import com.townwang.yaohuo.ui.activity.ActivityDetails
 import kotlinx.android.synthetic.main.fragment_list_pub.*
@@ -74,6 +73,7 @@ class PubListFragment : Fragment() {
                         putExtra(HOME_DETAILS_URL_KEY, data.a)
                         putExtra(HOME_DETAILS_READ_KEY, data.read)
                         putExtra(HOME_DETAILS_BEAR_KEY, isBear)
+                        putExtra(HOME_DETAILS_TITLE_KEY, data.title)
                     }, bundle
                 )
             }

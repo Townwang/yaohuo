@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -21,51 +21,58 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical">
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border_left_color"
-                android:padding="10dp"
-                android:textColor="@color/md_grey_900"
-                android:textSize="@dimen/text16Size"
-                android:textStyle="bold"
-                android:transitionName="share name"
-                android:visibility="gone"
-                app:layout_isSticky="true"
-                tools:text="我只是一个标题而已" />
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:layout_isConsecutive="false"
-                android:background="@drawable/background_translucent_2"
-                android:visibility="gone"
+                android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_isConsecutive="false"
+                android:visibility="gone"
+                tools:ignore="MissingConstraints">
 
-                <ImageView
+                <com.townwang.yaohuo.ui.weight.view.NiceImageView
                     android:id="@+id/userImg"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_margin="8dp"
-                    android:src="@drawable/anim_vector_android_blue_senior"
+                    android:layout_centerInParent="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/avatar"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:border_color="?colorPrimary"
+                    app:border_width="1dp"
+                    app:is_circle="true" />
+
+                <TextView
+                    android:id="@+id/leval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="@string/_0"
+                    android:textColor="?colorPrimary"
+                    android:textSize="@dimen/text10Size"
+                    app:drawableStartCompat="@drawable/ic_level_icon_15"
+                    app:layout_constraintStart_toEndOf="@+id/userImg"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="MissingConstraints"
+                    tools:text="1" />
 
                 <TextView
                     android:id="@+id/userName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:maxEms="10"
+                    android:ellipsize="marquee"
+                    android:maxLength="20"
+                    android:singleLine="true"
                     android:textColor="@color/md_black_1000"
                     android:textSize="@dimen/text14Size"
                     app:layout_constraintBottom_toBottomOf="@+id/userImg"
-                    app:layout_constraintStart_toEndOf="@+id/userImg"
+                    app:layout_constraintStart_toEndOf="@+id/leval"
                     app:layout_constraintTop_toTopOf="@+id/userImg"
-                    tools:text="妖火" />
+                    tools:text="文科中的技术宅" />
 
                 <View
                     android:id="@+id/online"
@@ -79,22 +86,40 @@
                     app:layout_constraintTop_toTopOf="@+id/userName" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/linearTop"
+                    android:id="@+id/honor"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="8dp"
-                    android:paddingBottom="10dp"
                     android:visibility="gone"
-                    app:layout_constraintEnd_toStartOf="@+id/read_num"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="@+id/attention"
                     app:layout_constraintStart_toStartOf="@+id/userImg"
                     app:layout_constraintTop_toBottomOf="@+id/userImg">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textSize="@dimen/text14Size"
+                        android:text="荣誉："
+                        android:textColor="@color/cardview_dark_background"
+                        android:layout_height="wrap_content"
+                        tools:ignore="HardcodedText" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/linearTop"
+                    android:layout_width="0dp"
+                    android:visibility="invisible"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@+id/userImg"
+                    app:layout_constraintTop_toBottomOf="@+id/honor">
 
                     <TextView
                         android:id="@+id/icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="5dp"
                         android:background="@drawable/background_yellow_10"
                         android:paddingStart="2dp"
                         android:paddingEnd="2dp"
@@ -106,38 +131,38 @@
                         android:id="@+id/subtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:autoSizeTextType="none"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:maxEms="15"
                         android:textColor="@color/md_amber_800"
                         android:textSize="@dimen/text10Size"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                         />
+                        tools:text="礼金：20000 已派：11600(余8400)" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <TextView
                     android:id="@+id/read_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:autoSizeTextType="none"
-                    android:paddingBottom="10dp"
                     android:textColor="@color/md_grey_500"
                     android:textSize="@dimen/text10Size"
+                    android:layout_margin="10dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/linearTop"
                     app:layout_constraintEnd_toStartOf="@+id/time"
-                    app:layout_constraintTop_toTopOf="@+id/time"
+                    app:layout_constraintTop_toTopOf="@+id/linearTop"
                     tools:text="阅读(21)" />
 
                 <TextView
                     android:id="@+id/time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:paddingBottom="10dp"
+                    android:layout_margin="16dp"
                     android:textColor="@color/md_grey_500"
                     android:textSize="@dimen/text10Size"
-                    app:layout_constraintEnd_toEndOf="@+id/attention"
-                    app:layout_constraintTop_toBottomOf="@+id/userImg"
+                    app:layout_constraintBottom_toBottomOf="@+id/read_num"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/read_num"
                     tools:text="2019/12/02 12:25:00" />
 
                 <TextView
@@ -159,10 +184,11 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
             <WebView
                 android:id="@+id/webView"
-                android:background="@color/transparent"
-                android:layout_margin="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@color/transparent" />
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/list_content"
                 android:layout_width="match_parent"
@@ -170,12 +196,13 @@
                 android:layout_margin="10dp"
                 android:gravity="center"
                 android:orientation="vertical" />
+
             <TextView
                 android:id="@+id/comment_tip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_left_color"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/border_left_color"
                 android:padding="10dp"
                 android:text="全部评论"
                 android:textColor="@color/md_black_1000"
@@ -190,85 +217,117 @@
                 android:layout_height="wrap_content"
                 android:layoutAnimation="@anim/layout_animation_fall_down"
                 android:paddingBottom="50dp"
+                app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
                 tools:ignore="MissingConstraints,UnusedAttribute"
                 tools:listitem="@layout/item_comment_data" />
+
             <TextView
                 android:id="@+id/noMore"
-                android:gravity="center"
-                android:background="@color/md_grey_50"
-                android:text="暂时木有回复，快抢沙发哦！"
-                android:layout_margin="3dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:paddingBottom="70dp"
+                android:text="暂时木有回复，快抢沙发哦！"
                 android:textColor="@color/md_grey_500"
                 android:textSize="@dimen/text16Size"
-                android:visibility="gone"
-                android:layout_height="wrap_content"/>
+                android:visibility="gone" />
         </com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottom_app_bar"
+        style="@style/Widget.MaterialComponents.BottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/border_top_color"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/refreshLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/reply"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawablePadding="5dp"
-            android:gravity="center_vertical"
-            android:paddingStart="20dp"
-            android:text="写回复"
-            android:textColor="@color/md_grey_700"
-            android:textSize="@dimen/text14Size"
-            app:drawableStartCompat="@drawable/ic_mode_edit_black_24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="RtlSymmetry" />
+        android:layout_gravity="bottom"
+        app:backgroundTint="@color/white"
+        app:fabAlignmentMode="center"
+        app:hideOnScroll="true"
+        tools:ignore="BottomAppBar,MissingConstraints">
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/comment"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:gravity="center">
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/refreshLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <TextView
-                android:id="@+id/comment_value"
-                android:layout_width="wrap_content"
+                android:id="@+id/reply"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="0.9"
                 android:drawablePadding="5dp"
-                android:padding="7dp"
-                android:text="@string/_0"
-                android:textSize="@dimen/text10Size"
-                app:drawableStartCompat="@drawable/ic_comment_24_dp" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                android:gravity="center_vertical"
+                android:text="写回复"
+                android:textColor="@color/md_grey_500"
+                android:textSize="@dimen/text14Size"
+                app:drawableStartCompat="@drawable/ic_bottom_mode_edit_10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="RtlSymmetry" />
 
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/praise"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/praise_value"
-                android:layout_width="wrap_content"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/comment"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:drawablePadding="5dp"
-                android:padding="7dp"
-                android:text="@string/_0"
-                android:textSize="@dimen/text10Size"
-                app:drawableStartCompat="@drawable/ic_praise" />
+                android:layout_weight="0.3"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/comment_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawablePadding="5dp"
+                    android:padding="7dp"
+                    android:text="@string/_0"
+                    android:textColor="@color/md_grey_500"
+                    android:textSize="@dimen/text10Size"
+                    app:drawableStartCompat="@drawable/ic_bottom_comment_15_dp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/praise"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/praise_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawablePadding="5dp"
+                    android:padding="7dp"
+                    android:text="@string/_0"
+                    android:textColor="@color/md_grey_500"
+                    android:textSize="@dimen/text10Size"
+                    app:drawableStartCompat="@drawable/ic_bottom_praise_unselected" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/favorite"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/favorite_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawablePadding="5dp"
+                    android:padding="7dp"
+                    android:textColor="@color/md_grey_500"
+                    android:textSize="@dimen/text8Size"
+                    app:drawableStartCompat="@drawable/ic_bottom_favorite_unselected" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.bottomappbar.BottomAppBar>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

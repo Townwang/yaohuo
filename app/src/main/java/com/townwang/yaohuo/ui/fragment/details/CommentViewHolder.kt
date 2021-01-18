@@ -7,14 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.bumptech.glide.request.RequestOptions
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
+import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
+import com.townwang.yaohuo.common.startAnimator
 import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.weight.htmltext.GlideHtmlImageLoader
@@ -73,17 +71,9 @@ class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                         )
                     }
                 }).into(comment_tv)
-            getAvatar(userImg)
             if (userImg.drawable != null) {
                 startAnimator(userImg.drawable)
             }
         }
-    }
-
-    private fun getAvatar(img: ImageView) {
-        Glide.with(itemView)
-            .load(R.drawable.avatar)
-            .apply(options)
-            .apply(RequestOptions.bitmapTransform(CircleCrop())).into(img)
     }
 }

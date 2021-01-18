@@ -1,7 +1,7 @@
 package com.townwang.yaohuo.common
 
 import com.townwang.yaohuo.BuildConfig
-import com.townwang.yaohuo.common.helper.isHaveMsg
+import com.townwang.yaohuo.common.utils.isHaveMsg
 import com.townwang.yaohuo.repo.data.Niece
 import com.townwang.yaohuo.repo.enum.ErrorCode
 import kotlinx.coroutines.*

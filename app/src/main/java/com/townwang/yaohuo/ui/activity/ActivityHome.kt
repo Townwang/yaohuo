@@ -1,6 +1,5 @@
 package com.townwang.yaohuo.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.KeyEvent
@@ -10,7 +9,6 @@ import com.tencent.bugly.beta.Beta
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.common.helper.LoginHelper
 import com.townwang.yaohuo.ui.fragment.bbs.BBSFragment
 import com.townwang.yaohuo.ui.fragment.me.MeFragment
 import com.townwang.yaohuo.ui.fragment.new.NesListFragment

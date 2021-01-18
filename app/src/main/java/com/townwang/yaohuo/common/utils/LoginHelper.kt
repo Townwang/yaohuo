@@ -1,4 +1,4 @@
-package com.townwang.yaohuo.common.helper
+package com.townwang.yaohuo.common.utils
 
 import android.content.Context
 import android.content.Intent
@@ -12,7 +12,6 @@ class LoginHelper {
     companion object{
         val instance = LoginHelper()
     }
-
     fun restartLogin(context:Context) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("温馨提示")

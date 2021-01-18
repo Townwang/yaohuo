@@ -2,6 +2,7 @@ package com.townwang.yaohuo.repo
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.api.Api
 import com.townwang.yaohuo.common.*
+import okhttp3.internal.wait
 import org.jsoup.nodes.Document
 
 class Repo constructor(
@@ -52,6 +53,11 @@ class Repo constructor(
 
     suspend fun praise(url: String): Document = withRepoContext {
         val bbs = api.urlPenetrate(url)
+        bbs.getResp()
+    }
+
+    suspend fun getUserInfo(touserid: String): Document = withRepoContext {
+        val bbs = api.getUserInfo(touserid)
         bbs.getResp()
     }
 

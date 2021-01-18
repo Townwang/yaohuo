@@ -1,7 +1,8 @@
-package com.townwang.yaohuo.common.helper
+package com.townwang.yaohuo.common.resolve
 
 import android.annotation.SuppressLint
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.common.utils.matchValue
 import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.repo.data.details.DownloadBean
 import org.jsoup.Jsoup
@@ -9,8 +10,7 @@ import org.jsoup.nodes.Document
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ResolveDetailsHelper(val document: Document) {
-
+class ResolveDetailsHelper(private val document: Document) {
     val userName: String
         get() = document.select("div.subtitle").last().select(A_KEY).first().ownText()
 
@@ -24,25 +24,27 @@ class ResolveDetailsHelper(val document: Document) {
     val getPraiseUrl: String
         get() = document.select("div.subtitle").last().select(A_KEY).last().attr(A_HREF)
 
+    val getFavoriteUrl: String
+        get() = document.getElementsContainingOwnText("收藏").last().attr(A_HREF)
+
+    val getShareUrl: String
+        get() = document.getElementsContainingOwnText("分享").last().attr(A_HREF)
 
     val praiseSize: String
         get() = Regex("([()])").split(
             document.select("div.subtitle").last().ownText().split(" ").last()
         )[1]
-
-    val title: String
-        get() {
-            val operatingData = document.select("div.content").first().toString()
-            return matchValue(operatingData, "[标题]", "(阅", true)
-                .removePrefix("[标题]")
-                .removeSuffix("(阅")
-        }
     val reward: String?
         get() {
             val operatingData = document.select("div.content").first().toString()
             return if (operatingData.contains("[悬赏]")) {
                 Jsoup.parse(
-                    matchValue(operatingData, "[悬赏]", "[标题]", true)
+                    matchValue(
+                        operatingData,
+                        "[悬赏]",
+                        "[标题]",
+                        true
+                    )
                         .removeSuffix("[标题]")
                 ).body().text()
             } else {
@@ -68,7 +70,12 @@ class ResolveDetailsHelper(val document: Document) {
             val operatingData = document.select("div.content").first().toString()
             return if (operatingData.contains("[时间]")) {
                 return Jsoup.parse(
-                    "发布时间：${matchValue(operatingData, "[时间]", "<!--listS-->", true)
+                    "发布时间：${matchValue(
+                        operatingData,
+                        "[时间]",
+                        "<!--listS-->",
+                        true
+                    )
                         .removePrefix("[时间]")
                         .removeSuffix("<!--listS-->")}</div>"
                 ).body().text()
@@ -79,7 +86,12 @@ class ResolveDetailsHelper(val document: Document) {
     val content: String
         get() {
             val content = document.select("div.bbscontent")
-            var str = matchValue(content.toString(), "<!--listS-->", "<!--listE-->", false)
+            var str = matchValue(
+                content.toString(),
+                "<!--listS-->",
+                "<!--listE-->",
+                false
+            )
             val annex = content.select("div.line")
             val img = annex.select(IMG_JPG).after("src")
             img.forEach { i ->
@@ -128,7 +140,12 @@ class ResolveDetailsHelper(val document: Document) {
 
     fun getCommitLastFloor(doc: Document): String? {
         val commitList =
-            matchValue(doc.body().toString(), "<!--listS-->", "<!--listE-->", false)
+            matchValue(
+                doc.body().toString(),
+                "<!--listS-->",
+                "<!--listE-->",
+                false
+            )
         val select = Jsoup.parse(commitList).select("div.line1,div.line2")
         return if (select.size > 0) {
             val value = select.first()

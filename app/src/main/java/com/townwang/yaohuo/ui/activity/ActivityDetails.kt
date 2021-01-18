@@ -14,11 +14,12 @@ class ActivityDetails : AppCompatActivity() {
         }
         setActTheme()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_detals)
         setSupportActionBar(toolbar)
         setSharedElement()
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)
+            title = intent.getStringExtra(HOME_DETAILS_TITLE_KEY)
         }
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()

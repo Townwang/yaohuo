@@ -1,4 +1,5 @@
 package com.townwang.yaohuo
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.Context
@@ -6,6 +7,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.multidex.MultiDex
+import com.bumptech.glide.request.target.ViewTarget
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.tencent.bugly.Bugly
@@ -48,8 +50,10 @@ class YaoApplication : Application() {
         initApp()
         initBugFly()
         registerActivityListener()
+        ViewTarget.setTagId(R.id.glideIndexTag)
     }
 
+    @SuppressLint("PackageManagerGetSignatures")
     private fun initApp() {
         try {
             val a = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)

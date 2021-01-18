@@ -12,7 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.common.helper.isHaveMessage
+import com.townwang.yaohuo.common.utils.isHaveMessage
 import com.townwang.yaohuo.ui.activity.ActivityAbout
 import com.townwang.yaohuo.ui.activity.ActivityTheme
 import com.townwang.yaohuo.ui.activity.ActivityWebView

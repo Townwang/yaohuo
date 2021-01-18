@@ -26,13 +26,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.android.tu.loadingdialog.LoadingDailog
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.YaoApplication
-import com.townwang.yaohuo.common.helper.LoginHelper
+import com.townwang.yaohuo.common.utils.LoginHelper
 import com.townwang.yaohuo.repo.enum.ErrorCode
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -40,6 +41,7 @@ import java.net.UnknownHostException
 
 typealias OnItemClickListener = (view: View, data: T) -> Unit
 typealias OnItemLongClickListener = (view: View, data: T) -> Unit
+typealias OnItemListener = (view: View, data: T) -> Unit
 
 var gson = Gson()
 
@@ -198,7 +200,10 @@ fun View._paddingEnd() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_
 fun Context.px2mm(px: Float): Float {
     return px / resources.displayMetrics.xdpi * 25.4f
 }
-
+fun Context.dp2px(dipValue: Int): Int {
+    val scale = resources.displayMetrics.density
+    return (dipValue * scale + 0.5f).toInt()
+}
 fun Context.dp(value: Float): Float {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.displayMetrics)
 }
@@ -287,7 +292,6 @@ fun getUrlString(url: String): String {
         BuildConfig.BASE_YAOHUO_URL + url
     }
 }
-
 
 val options = RequestOptions()
     .error(R.drawable.ic_picture_error)

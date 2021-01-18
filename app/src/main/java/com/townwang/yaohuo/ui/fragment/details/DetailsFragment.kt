@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebView
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -33,7 +34,13 @@ import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
 import com.townwang.yaohuo.ui.weight.commit.CommentDialogFragment
+import com.townwang.yaohuo.ui.weight.htmltext.GlideHtmlImageLoader
+import com.townwang.yaohuo.ui.weight.htmltext.HtmlText
+import com.townwang.yaohuo.ui.weight.htmltext.OnTagClickListener
+import com.townwang.yaohuo.ui.weight.htmltext.TextViewFixTouchConsume
+import kotlinx.android.synthetic.main.badge_red.*
 import kotlinx.android.synthetic.main.fragment_details.*
+import kotlinx.android.synthetic.main.item_comment_data.view.*
 import kotlinx.android.synthetic.main.view_download_style.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -60,12 +67,6 @@ class DetailsFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).work {
-            supportActionBar.work {
-                title = getString(R.string.list_details)
-                setDisplayHomeAsUpEnabled(true)
-            }
-        }
         refreshLayout?.setOnRefreshListener {
             page = 1
             ot = 0
@@ -122,7 +123,7 @@ class DetailsFragment : Fragment() {
         }
         praise?.onClickListener {
             praise_value.setCompoundDrawablesWithIntrinsicBounds(
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_praise_grey),
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_bottom_praise_selected),
                 null,
                 null,
                 null
@@ -131,6 +132,16 @@ class DetailsFragment : Fragment() {
             praise_value.text = (praise_value.text.toString().toInt() + 1).toString()
             viewModel.praise()
         }
+        favorite?.onClickListener {
+            favorite_value.setCompoundDrawablesWithIntrinsicBounds(
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_bottom_favorite_selected),
+                null,
+                null,
+                null
+            )
+            favorite.isClickable = false
+            viewModel.favorite()
+        }
         commentLists?.adapter = adapter
         commentLists?.layoutManager =
             (StaggeredGridLayoutManager(
@@ -138,44 +149,85 @@ class DetailsFragment : Fragment() {
                 StaggeredGridLayoutManager.VERTICAL
             ))
 
-        adapter.onItemClickListener = { _, data ->
-            if (requireArguments().getBoolean(HOME_DETAILS_BEAR_KEY).not()) {
-                Snackbar.make(requireView(), "已经结贴，无法参与评论！", Snackbar.LENGTH_SHORT).show()
-            } else {
-                if (data is CommitListBean) {
-                    if (getParam(
-                            data.url,
-                            BuildConfig.YH_REPLY_TOUSERID
-                        ) != requireContext().config(TROUSER_KEY)
-                    ) {
-                        val magTransaction = childFragmentManager.beginTransaction()
-                        val fragment = childFragmentManager.findFragmentByTag("input frag")
-                        if (fragment != null) {
-                            magTransaction.remove(fragment)
-                        }
-                        val dialogFragment = CommentDialogFragment().apply {
-                            arguments = Bundle().also {
-                                it.putString(SEND_CONTENT_KEY, "回复：${data.auth}")
-                            }
-                        }
-                        dialogFragment.mDialogListener = { _, msg ->
-                            loading = Loading("正在回复妖友...").create()
-                            loading?.show()
-                            viewModel.reply(
-                                msg,
-                                data.url,
-                                data.floor.toString(),
-                                getParam(data.url, BuildConfig.YH_REPLY_TOUSERID),
-                                "0"
+        adapter.onItemListener = { item, data ->
+            if (data is CommitListBean) {
+                item.apply {
+                    viewModel.getUserInfo(
+                        this,
+                        getParam(data.avatar, BuildConfig.YH_REPLY_TOUSERID)
+                    )
+                    auth.movementMethod = TextViewFixTouchConsume.LocalLinkMovementMethod.instance
+                    HtmlText.from(data.auth.replace("<br>", "")).into(auth)
+                    floor.text = "${data.floor}楼"
+                    reward.text = data.b
+                    comment_tv.movementMethod =
+                        TextViewFixTouchConsume.LocalLinkMovementMethod.instance
+                    time.text = data.time
+                    HtmlText.from(data.content.replace("<br>", ""))
+                        .setImageLoader(
+                            GlideHtmlImageLoader(
+                                item.context,
+                                resources,
+                                comment_tv
                             )
-                            dialogFragment.dismiss()
-                        }
-                        dialogFragment.show(childFragmentManager, "input frag")
-                    } else {
-                        context?.toast("不能给自己回复！")
+                        )
+                        .setOnTagClickListener(object : OnTagClickListener {
+                            override fun onImageClick(
+                                context: Context,
+                                imageUrlList: List<String>,
+                                position: Int
+                            ) {
+                                ActivityCompat.startActivity(
+                                    context, Intent(
+                                        context, ActivityWebView::class.java
+                                    ).apply {
+                                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                                        putExtra(WEB_VIEW_URL_KEY, imageUrlList[position])
+                                        putExtra(WEB_VIEW_URL_TITLE, data.auth)
+                                    }, null
+                                )
+                            }
+
+                            override fun onLinkClick(context: Context, url: String) {
+                                ActivityCompat.startActivity(
+                                    context, Intent(
+                                        context, ActivityWebView::class.java
+                                    ).apply {
+                                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                                        putExtra(WEB_VIEW_URL_KEY, url)
+                                        putExtra(WEB_VIEW_URL_TITLE, data.auth)
+                                    }, null
+                                )
+                            }
+                        }).into(comment_tv)
+                    if (userImg.drawable != null) {
+                        startAnimator(userImg.drawable)
                     }
+                    onClickListener {
+                        sendCommit(data)
+                    }
+                    setOnLongClickListener {
+                        val clipboard =
+                            requireActivity().getSystemService(Context.CLIPBOARD_SERVICE)
+                        if (clipboard is ClipboardManager) {
+                            clipboard.setPrimaryClip(
+                                ClipData.newPlainText(
+                                    "townwang",
+                                    data.content
+                                )
+                            )
+                            Snackbar.make(
+                                requireView(),
+                                "已复制 ${data.content}",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
+                        return@setOnLongClickListener true
+                    }
+
                 }
             }
+
         }
         refreshLayout?.setOnMultiListener(object : SimpleMultiListener() {
             override fun onFooterMoving(
@@ -189,23 +241,13 @@ class DetailsFragment : Fragment() {
                 scrollerLayout?.stickyOffset = offset
             }
         })
-        adapter.onItemLongClickListener = { v, data ->
-            if (data is CommitListBean) {
-                val clipboard = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE)
-                if (clipboard is ClipboardManager) {
-                    clipboard.setPrimaryClip(ClipData.newPlainText("townwang", data.content))
-                    Snackbar.make(v, "已复制 ${data.content}", Snackbar.LENGTH_SHORT).show()
-                }
-            }
-        }
     }
 
     @SuppressLint("InflateParams")
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         viewModel.data.observe(viewLifecycleOwner, safeObserver {
-            title?.text = it.title
-            title?.visibility = View.VISIBLE
+            viewModel.getAvatar(getParam(it.headUrl, BuildConfig.YH_REPLY_TOUSERID))
             time?.text = it.time
             read_num?.visibility = View.VISIBLE
             read_num?.text =
@@ -258,7 +300,7 @@ class DetailsFragment : Fragment() {
                         ).apply {
                             flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                             putExtra(WEB_VIEW_URL_KEY, uri.toString())
-                            putExtra(WEB_VIEW_URL_TITLE, title.text.toString())
+                            putExtra(WEB_VIEW_URL_TITLE, "地址加载...")
                         }, null
                     )
                 }
@@ -279,6 +321,10 @@ class DetailsFragment : Fragment() {
                 .apply(options)
                 .apply(RequestOptions.bitmapTransform(CircleCrop()))
                 .into(userImg)
+        })
+        viewModel.grade.observe(viewLifecycleOwner, safeObserver {
+            it ?: return@safeObserver
+            leval?.text = it
         })
         viewModel.commentSize.observe(viewLifecycleOwner, safeObserver {
             if (page == 1 && ot == 0) {
@@ -321,13 +367,39 @@ class DetailsFragment : Fragment() {
                 Snackbar.make(requireView(), "评论失败", Snackbar.LENGTH_SHORT).show()
             }
         })
+        viewModel.medal.observe(viewLifecycleOwner, safeObserver {
+            it ?: return@safeObserver
+            if (isVisible) {
+                val image = ImageView(requireContext())
+                Glide.with(requireContext())
+                    .load(getUrlString(it))
+                    .apply(options)
+                    .into(image)
+                honor.visibility = View.VISIBLE
+                honor.addView(image)
+            }
+        })
+        viewModel.itemAvatar.observe(viewLifecycleOwner, safeObserver {
+            it ?: return@safeObserver
+            if (isVisible) {
+                val imgView = it.item.findViewWithTag<ImageView>(it.touserid)
+                if (imgView !=null) {
+                    Glide.with(requireContext())
+                        .load(getUrlString(it.avatarUrl))
+                        .apply(options)
+                        .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                        .into(it.item.userImg)
+                    it.item.leval.text = it.level.toString()
+                }
+            }
+        })
         viewModel.getDetails(requireArguments().getString(HOME_DETAILS_URL_KEY, ""))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                requireActivity().onBackPressed()
+                requireActivity().finish()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -341,6 +413,44 @@ class DetailsFragment : Fragment() {
             refreshLayout.finishRefresh(success)
         } else {
             refreshLayout.finishLoadMore(success)
+        }
+    }
+
+    private fun sendCommit(data: CommitListBean) {
+        if (requireArguments().getBoolean(HOME_DETAILS_BEAR_KEY).not()) {
+            Snackbar.make(requireView(), "已经结贴，无法参与评论！", Snackbar.LENGTH_SHORT).show()
+        } else {
+            if (getParam(
+                    data.url,
+                    BuildConfig.YH_REPLY_TOUSERID
+                ) != requireContext().config(TROUSER_KEY)
+            ) {
+                val magTransaction = childFragmentManager.beginTransaction()
+                val fragment = childFragmentManager.findFragmentByTag("input frag")
+                if (fragment != null) {
+                    magTransaction.remove(fragment)
+                }
+                val dialogFragment = CommentDialogFragment().apply {
+                    arguments = Bundle().also {
+                        it.putString(SEND_CONTENT_KEY, "回复：${data.auth}")
+                    }
+                }
+                dialogFragment.mDialogListener = { _, msg ->
+                    loading = Loading("正在回复妖友...").create()
+                    loading?.show()
+                    viewModel.reply(
+                        msg,
+                        data.url,
+                        data.floor.toString(),
+                        getParam(data.url, BuildConfig.YH_REPLY_TOUSERID),
+                        "0"
+                    )
+                    dialogFragment.dismiss()
+                }
+                dialogFragment.show(childFragmentManager, "input frag")
+            } else {
+                context?.toast("不能给自己回复！")
+            }
         }
     }
 }
