@@ -13,15 +13,16 @@
         android:id="@+id/userImg"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_margin="8dp"
         android:layout_centerInParent="true"
+        android:layout_margin="8dp"
         android:scaleType="fitCenter"
         android:src="@drawable/avatar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:border_color="?colorPrimary"
         app:border_width="1dp"
-        app:is_circle="true" />
+        app:is_circle="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/leval"
         android:layout_width="wrap_content"
@@ -39,20 +40,20 @@
         android:id="@+id/auth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:enabled="true"
         android:focusable="true"
-        android:layout_marginStart="8dp"
         android:lines="1"
+        android:longClickable="true"
         android:maxLength="20"
         android:singleLine="true"
-        android:longClickable="true"
         android:textColor="@color/md_grey_800"
         android:textIsSelectable="true"
         android:textSize="@dimen/text14Size"
         app:layout_constraintStart_toEndOf="@+id/leval"
         app:layout_constraintTop_toTopOf="@+id/userImg"
-        tools:text="妖火"
-        tools:ignore="RtlSymmetry" />
+        tools:ignore="RtlSymmetry"
+        tools:text="妖火" />
 
     <TextView
         android:id="@+id/floor"
@@ -75,16 +76,32 @@
         app:layout_constraintEnd_toStartOf="@+id/reward"
         app:layout_constraintStart_toEndOf="@+id/floor"
         app:layout_constraintTop_toTopOf="@+id/floor">
-
-        <com.townwang.yaohuo.ui.weight.htmltext.TextViewFixTouchConsume
-            android:id="@+id/comment_tv"
-            android:layout_width="wrap_content"
+        <!--        <com.ns.yc.yccustomtextlib.edit.view.HyperTextView-->
+        <!--            android:id="@+id/htv_content"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="8dp"-->
+        <!--            app:ht_view_text_line_space="6dp"-->
+        <!--            app:ht_view_image_height="0"-->
+        <!--            app:ht_view_image_bottom="10"-->
+        <!--            app:ht_view_text_size="@dimen/text14Size"-->
+        <!--            app:ht_view_text_color="@android:color/black"/>-->
+        <WebView
+            android:id="@+id/htv_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:textColor="@color/md_black_1000"
-            android:textSize="@dimen/text14Size"
-            tools:text="回复4楼：
-            我只是评论55555555555555555555555555555555" />
+            android:background="@color/transparent"
+            tools:ignore="WebViewLayout" />
+        <!--        <com.townwang.yaohuo.ui.weight.htmltext.TextViewFixTouchConsume-->
+        <!--            android:id="@+id/comment_tv"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="8dp"-->
+        <!--            android:textColor="@color/md_black_1000"-->
+        <!--            android:textSize="@dimen/text14Size"-->
+        <!--            tools:text="回复4楼：-->
+        <!--            我只是评论55555555555555555555555555555555" />-->
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView
@@ -103,10 +120,10 @@
         android:id="@+id/time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/md_grey_500"
-        android:textSize="@dimen/text8Size"
         android:layout_marginStart="8dp"
         android:layout_marginTop="2dp"
+        android:textColor="@color/md_grey_500"
+        android:textSize="@dimen/text8Size"
         app:layout_constraintEnd_toEndOf="@+id/linearLayoutCompat2"
         app:layout_constraintStart_toStartOf="@+id/linearLayoutCompat2"
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat2"
@@ -120,9 +137,9 @@
         android:layout_marginEnd="8dp"
         android:paddingStart="10dp"
         android:textColor="?colorPrimary"
+        app:drawableBottomCompat="@drawable/ic_bottom_comment_15_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:drawableBottomCompat="@drawable/ic_bottom_comment_15_dp"
         tools:ignore="RtlSymmetry" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

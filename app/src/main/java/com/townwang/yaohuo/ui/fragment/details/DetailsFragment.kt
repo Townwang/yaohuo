@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
@@ -34,11 +33,8 @@ import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
 import com.townwang.yaohuo.ui.weight.commit.CommentDialogFragment
-import com.townwang.yaohuo.ui.weight.htmltext.GlideHtmlImageLoader
 import com.townwang.yaohuo.ui.weight.htmltext.HtmlText
-import com.townwang.yaohuo.ui.weight.htmltext.OnTagClickListener
 import com.townwang.yaohuo.ui.weight.htmltext.TextViewFixTouchConsume
-import kotlinx.android.synthetic.main.badge_red.*
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.item_comment_data.view.*
 import kotlinx.android.synthetic.main.view_download_style.view.*
@@ -117,9 +113,7 @@ class DetailsFragment : Fragment() {
             dialogFragment.show(parentFragmentManager, "input frag")
         }
         comment?.onClickListener {
-            scrollerLayout?.post {
-                scrollerLayout?.scrollTo(0, comment_tip.bottom)
-            }
+                scrollerLayout?.smoothScrollToChild(comment_tip)
         }
         praise?.onClickListener {
             praise_value.setCompoundDrawablesWithIntrinsicBounds(
@@ -160,71 +154,18 @@ class DetailsFragment : Fragment() {
                     HtmlText.from(data.auth.replace("<br>", "")).into(auth)
                     floor.text = "${data.floor}楼"
                     reward.text = data.b
-                    comment_tv.movementMethod =
-                        TextViewFixTouchConsume.LocalLinkMovementMethod.instance
                     time.text = data.time
-                    HtmlText.from(data.content.replace("<br>", ""))
-                        .setImageLoader(
-                            GlideHtmlImageLoader(
-                                item.context,
-                                resources,
-                                comment_tv
-                            )
-                        )
-                        .setOnTagClickListener(object : OnTagClickListener {
-                            override fun onImageClick(
-                                context: Context,
-                                imageUrlList: List<String>,
-                                position: Int
-                            ) {
-                                ActivityCompat.startActivity(
-                                    context, Intent(
-                                        context, ActivityWebView::class.java
-                                    ).apply {
-                                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                                        putExtra(WEB_VIEW_URL_KEY, imageUrlList[position])
-                                        putExtra(WEB_VIEW_URL_TITLE, data.auth)
-                                    }, null
-                                )
-                            }
 
-                            override fun onLinkClick(context: Context, url: String) {
-                                ActivityCompat.startActivity(
-                                    context, Intent(
-                                        context, ActivityWebView::class.java
-                                    ).apply {
-                                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                                        putExtra(WEB_VIEW_URL_KEY, url)
-                                        putExtra(WEB_VIEW_URL_TITLE, data.auth)
-                                    }, null
-                                )
-                            }
-                        }).into(comment_tv)
+                    WebViewHelper(requireContext(), htv_content).apply {
+                        shouldOverrideUrlLoading = true
+                    }.setHtmlCode(data.content.replace("<br>", ""))
+
                     if (userImg.drawable != null) {
                         startAnimator(userImg.drawable)
                     }
                     onClickListener {
                         sendCommit(data)
                     }
-                    setOnLongClickListener {
-                        val clipboard =
-                            requireActivity().getSystemService(Context.CLIPBOARD_SERVICE)
-                        if (clipboard is ClipboardManager) {
-                            clipboard.setPrimaryClip(
-                                ClipData.newPlainText(
-                                    "townwang",
-                                    data.content
-                                )
-                            )
-                            Snackbar.make(
-                                requireView(),
-                                "已复制 ${data.content}",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }
-                        return@setOnLongClickListener true
-                    }
-
                 }
             }
 
@@ -276,6 +217,7 @@ class DetailsFragment : Fragment() {
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
                 subtitle?.text = it.reward
             }
+
             WebViewHelper(requireContext(), webView).apply {
                 shouldOverrideUrlLoading = true
             }.setHtmlCode(it.content)
@@ -383,7 +325,7 @@ class DetailsFragment : Fragment() {
             it ?: return@safeObserver
             if (isVisible) {
                 val imgView = it.item.findViewWithTag<ImageView>(it.touserid)
-                if (imgView !=null) {
+                if (imgView != null) {
                     Glide.with(requireContext())
                         .load(getUrlString(it.avatarUrl))
                         .apply(options)
