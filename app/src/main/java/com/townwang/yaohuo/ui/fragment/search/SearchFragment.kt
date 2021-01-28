@@ -1,4 +1,4 @@
-package com.townwang.yaohuo.ui.fragment.pub
+package com.townwang.yaohuo.ui.fragment.search
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,17 +15,16 @@ import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.data.HomeData
+import com.townwang.yaohuo.repo.enum.ErrorCode
 import com.townwang.yaohuo.ui.activity.ActivityDetails
-import com.townwang.yaohuo.ui.weight.consecutivescroller.IConsecutiveScroller
-import kotlinx.android.synthetic.main.fragment_list_pub.*
+import com.townwang.yaohuo.ui.fragment.pub.PubListAdapter
+import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.item_list_data.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
-class PubListFragment : Fragment() {
-
+class SearchFragment : Fragment() {
     private val adapter = PubListAdapter()
-    private val viewModel: ListModel by viewModel()
+    private val viewModel: SearchModel by viewModel()
 
     private var page: Int = 1
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,15 +37,12 @@ class PubListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_list_pub, container, false)
+        return inflater.inflate(R.layout.fragment_search, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).work {
             supportActionBar.work {
-                title = requireArguments().getString(LIST_BBS_NAME_KEY, "主页")
-                setDisplayHomeAsUpEnabled(requireArguments().getInt(LIST_CLASS_ID_KEY, 0) != 0)
+                title =  requireArguments().getString(HOME_SEARCH_URL_KEY, "")
             }
         }
         homeList?.adapter = adapter
@@ -62,7 +58,7 @@ class PubListFragment : Fragment() {
                 ).toBundle()
                 var isBear = true
                 data.smailIng.forEach {
-                    if (it == BuildConfig.YH_MATCH_LIST_BEAR) {
+                    if (it == BuildConfig.YH_MATCH_LIST_BEAR){
                         isBear = false
                         return@forEach
                     }
@@ -81,24 +77,17 @@ class PubListFragment : Fragment() {
             }
         }
         refreshLayout?.setOnRefreshListener {
+            noMore.visibility = View.GONE
+            homeList.visibility = View.VISIBLE
             page = 1
-            viewModel.loadList(
-                requireArguments().getInt(LIST_CLASS_ID_KEY, 0),
-                page,
-                requireArguments().getString(LIST_ACTION_KEY, "new")
-            )
+            viewModel.loadList(requireArguments().getString(HOME_SEARCH_URL_KEY, ""), page)
         }
         refreshLayout?.setOnLoadMoreListener {
             page++
-            viewModel.loadList(
-                requireArguments().getInt(LIST_CLASS_ID_KEY, 0),
-                page,
-                requireArguments().getString(LIST_ACTION_KEY, "new")
-            )
+            viewModel.loadList(requireArguments().getString(HOME_SEARCH_URL_KEY, ""), page)
         }
         refreshLayout?.autoRefresh()
     }
-
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         viewModel.listDates.observe(viewLifecycleOwner, safeObserver {
@@ -113,11 +102,16 @@ class PubListFragment : Fragment() {
             }
         })
         viewModel.error.observe(viewLifecycleOwner, safeObserver {
+            if (it is ApiErrorException){
+                if (it.code == ErrorCode.E_1008.hashCode()){
+                    noMore.visibility = View.VISIBLE
+                    homeList.visibility = View.GONE
+                }
+            }
             refreshDone(false)
             requireContext().handleException(it)
         })
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {

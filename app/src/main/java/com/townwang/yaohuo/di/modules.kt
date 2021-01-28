@@ -16,9 +16,11 @@ import com.townwang.yaohuo.di.interceptor.SaveCookiesInterceptor
 import com.townwang.yaohuo.repo.Repo
 import com.townwang.yaohuo.repo.db.ApiCacheDB
 import com.townwang.yaohuo.ui.fragment.details.DetailsModel
+import com.townwang.yaohuo.ui.fragment.home.HomeModel
 import com.townwang.yaohuo.ui.fragment.login.LoginModel
 import com.townwang.yaohuo.ui.fragment.me.MeModel
 import com.townwang.yaohuo.ui.fragment.pub.ListModel
+import com.townwang.yaohuo.ui.fragment.search.SearchModel
 import com.townwang.yaohuo.ui.fragment.splash.SplashModel
 import com.townwang.yaohuo.ui.fragment.theme.ThemeModel
 import okhttp3.OkHttpClient
@@ -99,12 +101,14 @@ private val storageModule = module {
     }
     private val viewModelModule = module {
         viewModel { ListModel(get()) }
+        viewModel { SearchModel(get()) }
         viewModel { LoginModel(get()) }
         viewModel { ThemeModel() }
         viewModel { DetailsModel(get()) }
         viewModel { SplashModel(get()) }
         viewModel { MeModel(get()) }
+        viewModel { HomeModel(get()) }
 
     }
 
-    val koinModules = viewModelModule + repoModule + netModule+storageModule
+    val koinModules = viewModelModule + repoModule + netModule

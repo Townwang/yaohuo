@@ -1,7 +1,13 @@
 package com.townwang.yaohuo.ui.fragment.web
 import android.app.DownloadManager
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -13,10 +19,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.townwang.yaohuo.R
+import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
 import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
 import com.townwang.yaohuo.common.getUrlString
-import com.townwang.yaohuo.common.utils.clearNotificaion
+import com.townwang.yaohuo.common.utils.*
 import com.townwang.yaohuo.common.work
 import kotlinx.android.synthetic.main.fragment_webview.*
 class WebViewFragment : Fragment() {
@@ -56,8 +63,10 @@ class WebViewFragment : Fragment() {
             web.startDismissAnimation(progressBar, it)
         }
         web.onDownloadListener = { url, contentDisposition, mimeType,cookie ->
-            Snackbar.make(requireView(),"正在下载文件...",Snackbar.LENGTH_SHORT).show()
-            downloadBySystem(url, contentDisposition, mimeType,cookie)
+            Snackbar.make(requireView(), "检测到一个文件需要下载", Snackbar.LENGTH_INDEFINITE)
+                .setAction("下载") {
+                    downloadBySystem(url, contentDisposition, mimeType,cookie)
+                }.show()
         }
 
         refreshLayout?.setOnRefreshListener {
@@ -90,11 +99,10 @@ class WebViewFragment : Fragment() {
         val request = DownloadManager.Request(Uri.parse(url))
         request.allowScanningByMediaScanner()
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-        request.setDescription(requireArguments().getString(WEB_VIEW_URL_TITLE, ""))
+        request.setDescription(contentDisposition)
         request.setAllowedOverMetered(true)
         request.setVisibleInDownloadsUi(true)
         request.setAllowedOverRoaming(true)
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
         val fileName = URLUtil.guessFileName(url, contentDisposition, mimeType)
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
         cookie?.let {
@@ -103,7 +111,6 @@ class WebViewFragment : Fragment() {
         val downloadManager =
             requireActivity().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         downloadManager.enqueue(request)
-        requireActivity().onBackPressed()
     }
 
 }

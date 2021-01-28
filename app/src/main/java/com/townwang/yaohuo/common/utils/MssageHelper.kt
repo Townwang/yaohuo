@@ -43,7 +43,7 @@ fun isHaveMsg(doc: Document): Document {
     return doc
 }
 
-private val notificationManager by lazy {
+val notificationManager by lazy {
     val manager = YaoApplication.getContext().getSystemService(NOTIFICATION_SERVICE)
     (manager as NotificationManager)
 }

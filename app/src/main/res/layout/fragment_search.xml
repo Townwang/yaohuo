@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    app:srlAccentColor="@android:color/white"
+    app:srlEnablePreviewInEditMode="true"
+    app:srlPrimaryColor="?colorPrimary">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homeList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutAnimation="@anim/layout_animation_fall_down"
+            android:transitionName="share name"
+            tools:ignore="UnusedAttribute"
+            tools:listitem="@layout/item_list_data" />
+
+        <TextView
+            android:id="@+id/noMore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:paddingBottom="70dp"
+            android:text="木有搜索到内容！"
+            android:textColor="@color/md_grey_500"
+            android:textSize="@dimen/text16Size"
+            android:visibility="gone" />
+    </FrameLayout>
+</com.scwang.smart.refresh.layout.SmartRefreshLayout>

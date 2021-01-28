@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
-    android:background="@color/white"
-    android:padding="5dp"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="5dp"
-    app:cardPreventCornerOverlap="true">
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:transitionName="share name"
-            android:id="@+id/layout"
-            android:padding="5dp"
-            android:layout_height="wrap_content"
-            tools:ignore="UnusedAttribute">
+    android:background="@drawable/background_translucent_bg"
+    android:padding="5dp">
         <TextView
                 android:id="@+id/title"
                 android:layout_width="0dp"
@@ -25,7 +15,6 @@
                 android:layout_centerInParent="true"
                 tools:text="标题"
                 android:maxLength="20"
-                android:transitionName="share name"
                 android:textSize="@dimen/text16Size"
                 android:layout_margin="10dp"
                 android:textColor="@color/md_black_1000"
@@ -171,4 +160,3 @@
                 app:layout_constraintTop_toBottomOf="@+id/title"
                 android:id="@+id/read"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</com.google.android.material.card.MaterialCardView>

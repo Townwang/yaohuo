@@ -34,6 +34,7 @@ const val NEW_LIST_TIME = "span.right"
 
 //跳转携带参数
 const val HOME_DETAILS_URL_KEY = "home details url key"
+const val HOME_SEARCH_URL_KEY = "home search url key"
 const val WEB_VIEW_URL_KEY = "web view url key"
 const val WEB_VIEW_URL_TITLE = "web view url title"
 const val HOME_DETAILS_READ_KEY = "home details read key"

@@ -30,7 +30,6 @@ open class UIViewModel : ViewModel() {
         }
     }
     override fun onCleared() {
-        super.onCleared()
         job.cancel()
     }
 }

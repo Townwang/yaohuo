@@ -20,6 +20,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -35,12 +36,12 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.common.utils.LoginHelper
 import com.townwang.yaohuo.repo.enum.ErrorCode
+import com.townwang.yaohuo.ui.activity.ActivityList
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 
 typealias OnItemClickListener = (view: View, data: T) -> Unit
-typealias OnItemLongClickListener = (view: View, data: T) -> Unit
 typealias OnItemListener = (view: View, data: T) -> Unit
 
 var gson = Gson()
@@ -229,14 +230,15 @@ fun Context.handleException(
             toast("未能请求到数据，请稍后再试～")
         }
         is ApiErrorException -> {
-            toast(t.message.orEmpty())
             when (t.code) {
                 ErrorCode.E_1001.hashCode(),
                 ErrorCode.E_1004.hashCode() -> {
-                    // TODO: 2021/1/17/017 找不到帖子 和 审核 无需处理
+                    //2021/1/17/017 找不到帖子 和 审核 无需处理 提示即可
+                    toast(t.message.orEmpty())
                 }
                 ErrorCode.E_1002.hashCode() -> {
                     // TODO: 2021/1/17/017 访问验证
+                    toast(t.message.orEmpty())
                 }
                 ErrorCode.E_1003.hashCode(),
                 ErrorCode.E_1006.hashCode(),
@@ -246,6 +248,7 @@ fun Context.handleException(
                 }
                 ErrorCode.E_1005.hashCode() -> {
                     // TODO: 2021/1/17/017 校验密码
+                    toast(t.message.orEmpty())
                 }
             }
             onApiError?.invoke(t.code, t.message.orEmpty())

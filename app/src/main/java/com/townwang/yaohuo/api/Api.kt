@@ -25,7 +25,6 @@ interface Api {
     @GET("waplogin.aspx")
     fun getLoginParameter():Call<Document>
 
-
     /**
      * 登录
      */
@@ -44,6 +43,7 @@ interface Api {
         @Query("siteId") siteId: String? = "1000",
         @Query("getTotal") getTotal: String? = "2021"
     ): Call<Document>
+
     /**
      * 评论 [页码,帖子ID,栏目ID]
      */
@@ -73,5 +73,19 @@ interface Api {
      */
     @GET("bbs/userinfomore.aspx")
     fun getUserInfo(@Query("touserid") touserid:String): Call<Document>
+
+    /**
+     * 搜索?type=title&key=妖火客户端
+     */
+    @GET("bbs/book_list.aspx")
+    fun queryListBBS(
+        @Query("key") key:String,
+        @Query("page") page: String,
+        @Query("classId") classId:String?="0",
+        @Query("action") action:String?="search",
+        @Query("type") type:String?="title",
+        @Query("siteId") siteId: String? = "1000",
+        @Query("getTotal") getTotal: String? = "2021"
+    ): Call<Document>
 
 }

@@ -44,12 +44,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.ActivityLogin" />
-        <activity android:name=".ui.activity.ActivityHome" />
+        <activity android:name=".ui.activity.ActivityHome"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".ui.activity.ActivityTheme" />
         <activity android:name=".ui.activity.ActivityAbout" />
         <activity android:name=".ui.activity.ActivityList" />
         <activity android:name=".ui.activity.ActivityDetails" />
         <activity android:name=".ui.activity.ActivityWebView" />
+        <activity android:name=".ui.activity.ActivitySearch" />
     </application>
 
 </manifest>

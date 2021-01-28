@@ -1,16 +1,17 @@
-package com.townwang.yaohuo.ui.fragment.pub
+package com.townwang.yaohuo.ui.fragment.search
 
 import androidx.lifecycle.MutableLiveData
+import androidx.room.PrimaryKey
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.resolve.ResolveListHelper
 import com.townwang.yaohuo.repo.Repo
 import com.townwang.yaohuo.repo.data.HomeData
 
-class ListModel(private val repo: Repo) : UIViewModel() {
+class SearchModel(private val repo: Repo) : UIViewModel() {
     private val _listDates = MutableLiveData<List<HomeData>>()
     val listDates = _listDates.asLiveData()
-    fun loadList(classId: Int, page: Int, action: String) = launchTask {
-        val doc = repo.getNewList(classId, page, action)
+    fun loadList(key: String, page: Int) = launchTask {
+        val doc = repo.queryList(key, page)
         val helper = ResolveListHelper(doc)
         _listDates.value = helper.homeListData
     }

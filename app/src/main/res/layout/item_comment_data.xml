@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
-    android:background="@drawable/background_frame_1"
+    android:background="@drawable/background_translucent_bg"
     android:padding="5dp">
 
     <com.townwang.yaohuo.ui.weight.view.NiceImageView
@@ -36,8 +36,8 @@
         tools:ignore="MissingConstraints"
         tools:text="11" />
 
-    <com.townwang.yaohuo.ui.weight.htmltext.TextViewFixTouchConsume
-        android:id="@+id/auth"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/auth_layut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -53,7 +53,15 @@
         app:layout_constraintStart_toEndOf="@+id/leval"
         app:layout_constraintTop_toTopOf="@+id/userImg"
         tools:ignore="RtlSymmetry"
-        tools:text="妖火" />
+        tools:text="妖火" >
+        <WebView
+            android:id="@+id/auth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            tools:ignore="WebViewLayout" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView
         android:id="@+id/floor"
@@ -64,44 +72,25 @@
         android:textSize="@dimen/text14Size"
         app:layout_constraintBottom_toBottomOf="@+id/userImg"
         app:layout_constraintStart_toEndOf="@+id/userImg"
-        app:layout_constraintTop_toBottomOf="@+id/auth"
+        app:layout_constraintTop_toBottomOf="@+id/auth_layut"
         tools:text="1楼" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linearLayoutCompat2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/reward"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/reply"
         app:layout_constraintStart_toEndOf="@+id/floor"
         app:layout_constraintTop_toTopOf="@+id/floor">
-        <!--        <com.ns.yc.yccustomtextlib.edit.view.HyperTextView-->
-        <!--            android:id="@+id/htv_content"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="8dp"-->
-        <!--            app:ht_view_text_line_space="6dp"-->
-        <!--            app:ht_view_image_height="0"-->
-        <!--            app:ht_view_image_bottom="10"-->
-        <!--            app:ht_view_text_size="@dimen/text14Size"-->
-        <!--            app:ht_view_text_color="@android:color/black"/>-->
         <WebView
             android:id="@+id/htv_content"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="@color/transparent"
+            android:background="@color/white"
             tools:ignore="WebViewLayout" />
-        <!--        <com.townwang.yaohuo.ui.weight.htmltext.TextViewFixTouchConsume-->
-        <!--            android:id="@+id/comment_tv"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="8dp"-->
-        <!--            android:textColor="@color/md_black_1000"-->
-        <!--            android:textSize="@dimen/text14Size"-->
-        <!--            tools:text="回复4楼：-->
-        <!--            我只是评论55555555555555555555555555555555" />-->
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView
@@ -120,10 +109,9 @@
         android:id="@+id/time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="2dp"
         android:textColor="@color/md_grey_500"
-        android:textSize="@dimen/text8Size"
+        android:textSize="@dimen/text10Size"
         app:layout_constraintEnd_toEndOf="@+id/linearLayoutCompat2"
         app:layout_constraintStart_toStartOf="@+id/linearLayoutCompat2"
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat2"
@@ -134,7 +122,7 @@
         android:id="@+id/reply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:paddingEnd="8dp"
         android:paddingStart="10dp"
         android:textColor="?colorPrimary"
         app:drawableBottomCompat="@drawable/ic_bottom_comment_15_dp"

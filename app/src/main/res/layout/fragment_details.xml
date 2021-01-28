@@ -182,23 +182,13 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/userImg" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--            <com.ns.yc.yccustomtextlib.edit.view.HyperTextView-->
-<!--                android:id="@+id/htv_content"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_margin="10dp"-->
-<!--                app:ht_view_text_line_space="6dp"-->
-<!--                app:ht_view_image_height="0"-->
-<!--                app:ht_view_image_bottom="10"-->
-<!--                app:ht_view_text_size="@dimen/text14Size"-->
-<!--                app:ht_view_text_color="@android:color/black"/>-->
             <WebView
                 android:id="@+id/webView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@color/transparent" />
+                style="@style/web_view_style"
+                android:background="@color/white" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/list_content"

@@ -1,238 +1,298 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/nesScroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="UnusedAttribute"
-        android:orientation="vertical"
-        android:scrollbars="none">
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nesScroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:scrollbars="none"
+    tools:ignore="UnusedAttribute">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_white"
-        android:fitsSystemWindows="true">
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/resourceSharing"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_margin="10dp"
-            android:background="@drawable/background_primary"
             android:layout_height="wrap_content"
-            android:transitionName="share name"
-            android:padding="10dp"
-            tools:ignore="MissingConstraints"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
 
-        <ImageView
-                android:id="@+id/resourceSharing_img"
-                android:src="@drawable/anim_vector_res"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:text="@string/bbs_res_share"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/resourceSharing"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textColor="@color/white"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_primary"
+                android:orientation="horizontal"
+                android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/resourceSharing"
-                app:layout_constraintBottom_toBottomOf="@+id/resourceSharing"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bbs_res_share"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text14Size"
+                    app:layout_constraintBottom_toBottomOf="@+id/resourceSharing"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/resourceSharing" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/integratedTechnology"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/integratedTechnology"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_primary"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/resourceSharing"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bbs_integrated_technology"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text14Size"
+                    app:layout_constraintBottom_toBottomOf="@+id/integratedTechnology"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/integratedTechnology" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mlTalkOver"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_primary"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/integratedTechnology"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bbs_ml_talk_over"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text14Size"
+                    app:layout_constraintBottom_toBottomOf="@+id/mlTalkOver"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/mlTalkOver" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_margin="10dp"
-            android:transitionName="share name"
-            android:background="@drawable/background_primary"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            tools:ignore="MissingConstraints"
-            app:layout_constraintTop_toBottomOf="@id/resourceSharing"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
 
-        <ImageView
-                android:id="@+id/integratedTechnology_img"
-                android:src="@drawable/anim_vector_technology"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:text="@string/bbs_integrated_technology"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/reward"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textColor="@color/white"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_primary"
+                android:orientation="horizontal"
+                android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/integratedTechnology"
-                app:layout_constraintBottom_toBottomOf="@+id/integratedTechnology"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mlTalkOver"
+                tools:ignore="MissingConstraints">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/mlTalkOver"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bbs_reward"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text14Size"
+                    app:layout_constraintBottom_toBottomOf="@+id/reward"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/reward" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_margin="10dp"
-            android:transitionName="share name"
-            android:background="@drawable/background_primary"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            tools:ignore="MissingConstraints"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/integratedTechnology"
-            app:layout_constraintStart_toStartOf="parent">
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
 
-        <ImageView
-                android:id="@+id/mlTalkOver_img"
-                android:src="@drawable/anim_vector_bbs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:text="@string/bbs_ml_talk_over"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/teahouse"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textColor="@color/white"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_primary"
+                android:orientation="horizontal"
+                android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/mlTalkOver"
-                app:layout_constraintBottom_toBottomOf="@+id/mlTalkOver"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/reward"
+                tools:ignore="MissingConstraints">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/reward"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bbs_tea_house"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text14Size"
+                    app:layout_constraintBottom_toBottomOf="@+id/teahouse"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/teahouse" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rewardQuestionAndAnswer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_primary"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/teahouse"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bbs_quest_answer"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text14Size"
+                    app:layout_constraintBottom_toBottomOf="@+id/rewardQuestionAndAnswer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/rewardQuestionAndAnswer" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/texturedPhoto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_primary"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bbs_textured_photo"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text14Size"
+                    app:layout_constraintBottom_toBottomOf="@+id/texturedPhoto"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/texturedPhoto" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_margin="10dp"
-            android:transitionName="share name"
-            android:background="@drawable/background_primary"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            tools:ignore="MissingConstraints"
-            app:layout_constraintTop_toBottomOf="@id/mlTalkOver"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-                android:id="@+id/reward_img"
-                android:src="@drawable/anim_vector_reward"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:text="@string/bbs_reward"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/reward"
-                app:layout_constraintBottom_toBottomOf="@+id/reward"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/teahouse"
-            android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:transitionName="share name"
-            android:layout_margin="10dp"
-            android:background="@drawable/background_primary"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            tools:ignore="MissingConstraints"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/reward"
-            app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-                android:id="@+id/teahouse_img"
-                android:src="@drawable/anim_vector_tea"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:text="@string/bbs_tea_house"
+            tools:ignore="MissingConstraints">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/stationService"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/teahouse"
-                app:layout_constraintBottom_toBottomOf="@+id/teahouse"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_primary"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                tools:ignore="MissingConstraints">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bbs_stationService"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text14Size"
+                    app:layout_constraintBottom_toBottomOf="@+id/stationService"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/stationService" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/rewardQuestionAndAnswer"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_margin="10dp"
-            android:transitionName="share name"
-            android:background="@drawable/background_primary"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            tools:ignore="MissingConstraints"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/teahouse"
-            app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-                android:id="@+id/rewardQuestionAndAnswer_img"
-                android:src="@drawable/anim_vector_que_and_ans"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:text="@string/bbs_quest_answer"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/complaint"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/rewardQuestionAndAnswer"
-                app:layout_constraintBottom_toBottomOf="@+id/rewardQuestionAndAnswer"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_primary"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                tools:ignore="MissingConstraints">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/texturedPhoto"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_margin="10dp"
-            android:transitionName="share name"
-            android:background="@drawable/background_primary"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            tools:ignore="MissingConstraints"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rewardQuestionAndAnswer"
-            app:layout_constraintStart_toStartOf="parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bbs_complaint"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text14Size"
+                    app:layout_constraintBottom_toBottomOf="@+id/complaint"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/complaint" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-                android:id="@+id/texturedPhoto_img"
-                android:src="@drawable/anim_vector_photo_pub"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:text="@string/bbs_textured_photo"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/announcement"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/texturedPhoto"
-                app:layout_constraintBottom_toBottomOf="@+id/texturedPhoto"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_primary"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                tools:ignore="MissingConstraints">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bbs_announcement"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text14Size"
+                    app:layout_constraintBottom_toBottomOf="@+id/announcement"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/announcement" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -33,8 +33,6 @@ import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
 import com.townwang.yaohuo.ui.weight.commit.CommentDialogFragment
-import com.townwang.yaohuo.ui.weight.htmltext.HtmlText
-import com.townwang.yaohuo.ui.weight.htmltext.TextViewFixTouchConsume
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.item_comment_data.view.*
 import kotlinx.android.synthetic.main.view_download_style.view.*
@@ -150,8 +148,9 @@ class DetailsFragment : Fragment() {
                         this,
                         getParam(data.avatar, BuildConfig.YH_REPLY_TOUSERID)
                     )
-                    auth.movementMethod = TextViewFixTouchConsume.LocalLinkMovementMethod.instance
-                    HtmlText.from(data.auth.replace("<br>", "")).into(auth)
+                    WebViewHelper(requireContext(), auth).apply {
+                        shouldOverrideUrlLoading = true
+                    }.setHtmlCode(data.auth.replace("<br>", ""))
                     floor.text = "${data.floor}楼"
                     reward.text = data.b
                     time.text = data.time
@@ -163,7 +162,7 @@ class DetailsFragment : Fragment() {
                     if (userImg.drawable != null) {
                         startAnimator(userImg.drawable)
                     }
-                    onClickListener {
+                    reply.onClickListener {
                         sendCommit(data)
                     }
                 }
