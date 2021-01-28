@@ -1,25 +1,23 @@
 package com.townwang.yaohuo.ui.activity
 
-import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.beta.Beta
 import com.townwang.yaohuo.R
+import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.ui.fragment.bbs.BBSFragment
-import com.townwang.yaohuo.ui.fragment.new.NesListFragment
+import com.townwang.yaohuo.ui.fragment.home.HomeFragment
 import com.townwang.yaohuo.ui.fragment.me.MeFragment
-import com.townwang.yaohuo.ui.fragment.pub.ListModel
 import com.townwang.yaohuo.ui.fragment.send.SendFragment
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.appbar.*
 import kotlinx.android.synthetic.main.bottom_nav_view.*
 import kotlinx.android.synthetic.main.include_home_bottom_btn.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class ActivityHome : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +34,7 @@ class ActivityHome : AppCompatActivity() {
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)
         }
-        val newsFrag = NesListFragment()
+        val newsFrag = HomeFragment()
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.navHost, newsFrag)
@@ -50,7 +48,7 @@ class ActivityHome : AppCompatActivity() {
             }
             val dialogFragment = SendFragment().apply {
                 arguments = Bundle().also {
-                    it.putString(SEND_CONTENT_KEY,"正在开发...")
+                    it.putString(SEND_CONTENT_KEY, "正在开发...")
                 }
             }
 //            dialogFragment.mDialogListener = { _, message ->
@@ -66,18 +64,10 @@ class ActivityHome : AppCompatActivity() {
                 .replace(R.id.navHost, newsFrag)
                 .commit()
         }
-        bbs.onClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.navHost, BBSFragment())
-                .commit()
-        }
-        game.onClickListener {
-            Snackbar.make(appbarLayout,"正在开发...", Snackbar.LENGTH_SHORT).show()
-        }
         me.onClickListener {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.navHost, MeFragment())
-                    .commit()
+                .replace(R.id.navHost, MeFragment())
+                .commit()
         }
     }
 
@@ -85,6 +75,7 @@ class ActivityHome : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         Beta.checkUpgrade(false, true)
     }
+
     override fun onBackPressed() {
         //disable the super here
     }
@@ -93,10 +84,17 @@ class ActivityHome : AppCompatActivity() {
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (SystemClock.uptimeMillis() - prePressTime < 2500) {
-                this@ActivityHome.finish()
+                val app = application
+                if (app is YaoApplication) {
+                    app.appExit()
+                }
             } else {
                 prePressTime = SystemClock.uptimeMillis()
-                Snackbar.make(appbarLayout, getString(R.string.exit_app_hint), Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(
+                    appbarLayout,
+                    getString(R.string.exit_app_hint),
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         }
         return super.onKeyDown(keyCode, event)

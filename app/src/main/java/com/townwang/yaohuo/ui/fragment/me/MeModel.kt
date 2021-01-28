@@ -3,7 +3,7 @@ package com.townwang.yaohuo.ui.fragment.me
 import androidx.lifecycle.MutableLiveData
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.common.helper.ResolveDetailsHelper
+import com.townwang.yaohuo.common.resolve.ResolveDetailsHelper
 import com.townwang.yaohuo.repo.Repo
 import com.townwang.yaohuo.repo.data.details.MeBean
 

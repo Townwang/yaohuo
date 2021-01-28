@@ -41,6 +41,7 @@ android{
         buildConfigField("String", "YH_MATCH_LOGIN_PASS_ERROR", '"密码错误"')
         buildConfigField("String", "YH_MATCH_LOGIN_USER_ERROR", '"用户ID/用户名/手机号不存！"')
         buildConfigField("String", "YH_MATCH_LOGIN_MAX_ERROR", '"登录失败次数超过10次了，请明天再来!"')
+        buildConfigField("String", "YH_MATCH_SEARCH_NO_DATA", '"暂无记录"')
 
         buildConfigField("String", "YH_MATCH_MY_ID", '"我的ID"')
         buildConfigField("String", "YH_MATCH_MY_MONEY", '"我的妖晶"')

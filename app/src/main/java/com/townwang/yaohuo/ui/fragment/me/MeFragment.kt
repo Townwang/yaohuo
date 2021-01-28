@@ -36,7 +36,6 @@ class MeFragment : Fragment() {
         }
         refreshLayout?.setOnRefreshListener {
             viewModel.getMeData()
-            nesScroll.visibility = View.GONE
         }
         refreshLayout?.autoRefresh()
         refreshLayout?.setEnableLoadMore(false)

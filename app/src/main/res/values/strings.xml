@@ -2,9 +2,10 @@
     <string name="app_name">蓝火</string>
     <string name="home_name">文科中的技术宅</string>
     <string name="home_news">最新</string>
+    <string name="home_page">主页</string>
     <string name="list_details">帖子详情</string>
     <string name="home_bbs">论坛</string>
-    <string name="home_me">我的</string>
+    <string name="home_me">个人中心</string>
     <string name="login_name">登录妖火</string>
     <string name="send_cmd">下发指令</string>
     <string name="about">关于</string>
@@ -21,6 +22,9 @@
     <string name="bbs_tea_house">妖火茶馆</string>
     <string name="bbs_quest_answer">悬赏问答</string>
     <string name="bbs_textured_photo">贴图晒照</string>
+    <string name="bbs_stationService">站务处理</string>
+    <string name="bbs_complaint">投诉建议</string>
+    <string name="bbs_announcement">网站公告</string>
     <string name="massage">消息</string>
 
     <string name="my_id">我的ID</string>

@@ -31,6 +31,7 @@ import com.townwang.yaohuo.ui.weight.consecutivescroller.ScrollUtils.startInterc
 import com.townwang.yaohuo.ui.weight.consecutivescroller.ScrollUtils.stopInterceptRequestLayout
 import java.util.*
 import kotlin.math.abs
+import kotlin.math.min
 
 class ConsecutiveScrollerLayout @JvmOverloads constructor(
     context: Context,
@@ -1133,7 +1134,7 @@ class ConsecutiveScrollerLayout @JvmOverloads constructor(
             val bottomOffset = getScrollBottomOffset(target)
             val scrollTopOffset = target.top - scrollY
             if (bottomOffset > 0 && scrollTopOffset < 0) {
-                val offset = Math.min(bottomOffset, -scrollTopOffset)
+                val offset = min(bottomOffset, -scrollTopOffset)
                 scrollSelf(scrollY - offset)
                 scrollChild(target, offset)
             }

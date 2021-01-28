@@ -14,15 +14,16 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.common.helper.sendNotification
 import com.townwang.yaohuo.repo.data.HomeData
 import com.townwang.yaohuo.ui.activity.ActivityDetails
+import com.townwang.yaohuo.ui.weight.consecutivescroller.IConsecutiveScroller
 import kotlinx.android.synthetic.main.fragment_list_pub.*
 import kotlinx.android.synthetic.main.item_list_data.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class PubListFragment : Fragment() {
+
     private val adapter = PubListAdapter()
     private val viewModel: ListModel by viewModel()
 
@@ -44,14 +45,14 @@ class PubListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).work {
             supportActionBar.work {
-                title = requireArguments().getString(LIST_BBS_NAME_KEY, "")
+                title = requireArguments().getString(LIST_BBS_NAME_KEY, "主页")
                 setDisplayHomeAsUpEnabled(requireArguments().getInt(LIST_CLASS_ID_KEY, 0) != 0)
             }
         }
         homeList?.adapter = adapter
         homeList?.layoutManager =
             (StaggeredGridLayoutManager(
-                config(HOME_LIST_THEME_SHOW).toInt(),
+                requireContext().config(HOME_LIST_THEME_SHOW).toInt(),
                 StaggeredGridLayoutManager.VERTICAL
             ))
         adapter.onItemClickListener = { v, data ->
@@ -61,7 +62,7 @@ class PubListFragment : Fragment() {
                 ).toBundle()
                 var isBear = true
                 data.smailIng.forEach {
-                    if (it == BuildConfig.YH_MATCH_LIST_BEAR){
+                    if (it == BuildConfig.YH_MATCH_LIST_BEAR) {
                         isBear = false
                         return@forEach
                     }
@@ -74,17 +75,26 @@ class PubListFragment : Fragment() {
                         putExtra(HOME_DETAILS_URL_KEY, data.a)
                         putExtra(HOME_DETAILS_READ_KEY, data.read)
                         putExtra(HOME_DETAILS_BEAR_KEY, isBear)
+                        putExtra(HOME_DETAILS_TITLE_KEY, data.title)
                     }, bundle
                 )
             }
         }
         refreshLayout?.setOnRefreshListener {
             page = 1
-            viewModel.loadList(requireArguments().getInt(LIST_CLASS_ID_KEY), page,requireArguments().getString(LIST_ACTION_KEY,"new"))
+            viewModel.loadList(
+                requireArguments().getInt(LIST_CLASS_ID_KEY, 0),
+                page,
+                requireArguments().getString(LIST_ACTION_KEY, "new")
+            )
         }
         refreshLayout?.setOnLoadMoreListener {
             page++
-            viewModel.loadList(requireArguments().getInt(LIST_CLASS_ID_KEY), page,requireArguments().getString(LIST_ACTION_KEY,"new"))
+            viewModel.loadList(
+                requireArguments().getInt(LIST_CLASS_ID_KEY, 0),
+                page,
+                requireArguments().getString(LIST_ACTION_KEY, "new")
+            )
         }
         refreshLayout?.autoRefresh()
     }

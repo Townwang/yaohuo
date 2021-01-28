@@ -1,7 +1,6 @@
 package com.townwang.yaohuo.repo.data.details
 
 data class DetailsContentBean(
-    val title:String,
     val reward:String,
     val giftMoney:String,
     val time:String,

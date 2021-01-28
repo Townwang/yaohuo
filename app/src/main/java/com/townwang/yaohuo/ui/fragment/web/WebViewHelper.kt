@@ -14,23 +14,18 @@ import android.webkit.*
 import android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 import android.widget.ProgressBar
 import androidx.core.app.ActivityCompat
-import com.townwang.yaohuo.App
+import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.BuildConfig
-import com.townwang.yaohuo.common.COOKIE_KEY
-import com.townwang.yaohuo.common.USER_AGENT
-import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
-import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
+import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
 import java.net.URL
 
 
 typealias OnDownloadListener = (
     url: String, contentDisposition: String,
     mimeType: String,
-    cookie:String?
+    cookie: String?
 ) -> Unit
 
 typealias OnFinishedListener = (newProgress: Int) -> Unit
@@ -61,8 +56,8 @@ class WebViewHelper(context: Context, var webView: WebView) {
             domStorageEnabled = true
             mixedContentMode = MIXED_CONTENT_ALWAYS_ALLOW
             userAgentString = USER_AGENT
-            blockNetworkImage = true
-            setRenderPriority(WebSettings.RenderPriority.HIGH)
+            blockNetworkImage = false
+            textZoom = 100
         }
         webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
@@ -78,7 +73,6 @@ class WebViewHelper(context: Context, var webView: WebView) {
         }
         webView.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                view?.title
                 onStartListener?.invoke(view?.title)
             }
 
@@ -109,37 +103,44 @@ class WebViewHelper(context: Context, var webView: WebView) {
         }
     }
 
-
     private fun getNewContent(halters: String): String {
-        val doc: Document = Jsoup.parse(halters)
-        val elements: Elements = doc.getElementsByTag("img")
-        for (element in elements) {
-            element.attr("width", "100%").attr("height", "auto")
+        val css ="""
+            <style type="text/css">*{font-size: 14px;max-width: 100%;margin: 0;padding: 0;outline: none;cursor: pointer;}.main{width: 90%;margin:0 auto;}p:empty{line-height:0;}p{margin:10px 0;}"</style>
+        """.trimIndent()
+        val html ="""
+            <html><head><meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>$css</head><body>${halters}</body></html>
+        """.trimIndent()
+        val doc = Jsoup.parse(html)
+        val elements = doc.getElementsByTag("img")
+        elements.forEach { img ->
+            if (img.`is`(IMG_GIF) && img.attr("src").contains("face/")) {
+                img.attr("width", "10%")
+            } else {
+                img.attr("width", "100%").attr("height", "auto")
+            }
         }
-        return doc.toString()
+        return doc.html()
     }
 
     fun setUrl(urlService: String): WebView {
         val url = URL(urlService)
-        val cookieMaps = App.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE)
+        val cookieMaps =
+            YaoApplication.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE)
         val cookie = cookieMaps.getString(url.host, "")
         syncCookie(url.host, cookie)
-        webView.loadUrl("file://android_asset/loading.html")
         webView.loadUrl(urlService)
         webView.setDownloadListener { urlLink, _, contentDisposition, mistype, _ ->
-            onDownloadListener?.invoke(urlLink, contentDisposition, mistype,cookie)
+            onDownloadListener?.invoke(urlLink, contentDisposition, mistype, cookie)
         }
         return webView
     }
 
     fun setHtmlCode(htmlCode: String): WebView? {
-        val css =
-            "<style type=\"text/css\">*{margin: 0;padding: 0;outline: none;cursor: pointer;}.main{width: 90%;margin:0 auto;}img{width: 100%;display: block;margin: 0;padding: 0;border: 0;}p:empty{line-height:0;}p{margin:10px 0;}\"</style>"
-        val html =
-            "<html><head><meta charset=\"utf-8\" name=\"viewport\" content=\"width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0\"/>$css</head><body>${getNewContent(
-                htmlCode
-            )}</body></html>"
-        webView.loadDataWithBaseURL(BuildConfig.BASE_YAOHUO_URL, html, "text/html", "UTF-8", null)
+        val cookieMaps =
+            YaoApplication.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE)
+        val cookie = cookieMaps.getString("yaohuo.me", "")
+        syncCookie("yaohuo.me", cookie)
+        webView.loadDataWithBaseURL(BuildConfig.BASE_YAOHUO_URL, getNewContent(htmlCode), "text/html", "UTF-8", null)
         return webView
     }
 

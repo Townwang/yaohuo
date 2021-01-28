@@ -2,14 +2,11 @@ package com.townwang.yaohuo.ui.fragment.details
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.townwang.yaohuo.common.OnItemClickListener
-import com.townwang.yaohuo.common.OnItemLongClickListener
-import com.townwang.yaohuo.common.onClickListener
+import com.townwang.yaohuo.common.OnItemListener
 import com.townwang.yaohuo.repo.data.details.CommitListBean
 
 class CommentAdapter : RecyclerView.Adapter<CommentViewHolder>() {
-    var onItemClickListener: OnItemClickListener? = null
-    var onItemLongClickListener: OnItemLongClickListener? = null
+    var onItemListener:OnItemListener? = null
     var datas = arrayListOf<CommitListBean>()
         set(value) {
             if (field.isNotEmpty()) {
@@ -31,14 +28,7 @@ class CommentAdapter : RecyclerView.Adapter<CommentViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-        holder.itemView.onClickListener {
-            onItemClickListener?.invoke(holder.itemView, datas[position])
-        }
-        holder.itemView.setOnLongClickListener {
-            onItemLongClickListener?.invoke(holder.itemView, datas[position])
-            return@setOnLongClickListener true
-        }
-        return holder.bind(datas[position])
+            onItemListener?.invoke(holder.itemView, datas[position])
     }
 
 }

@@ -20,25 +20,29 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.android.tu.loadingdialog.LoadingDailog
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.tencent.bugly.crashreport.BuglyLog
-import com.townwang.yaohuo.App
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
-import org.jsoup.nodes.Document
+import com.townwang.yaohuo.YaoApplication
+import com.townwang.yaohuo.common.utils.LoginHelper
+import com.townwang.yaohuo.repo.enum.ErrorCode
+import com.townwang.yaohuo.ui.activity.ActivityList
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 
 typealias OnItemClickListener = (view: View, data: T) -> Unit
-typealias OnItemLongClickListener = (view: View, data: T) -> Unit
+typealias OnItemListener = (view: View, data: T) -> Unit
 
 var gson = Gson()
 
@@ -86,8 +90,8 @@ fun startAnimator(drawable: Drawable) {
     }
 }
 
-fun Fragment.config(key: String, value: String? = null): String {
-    var config: String by Preference(requireContext(), key, default = "1")
+fun Context.config(key: String, value: String? = null): String {
+    var config: String by Preference(this, key, default = "1")
     return if (value.isNullOrEmpty()) {
         config
     } else {
@@ -96,13 +100,13 @@ fun Fragment.config(key: String, value: String? = null): String {
     }
 }
 
-fun Activity.config(key: String, value: String? = null): String {
-    var config: String by Preference(this, key, default = "1")
-    return if (value.isNullOrEmpty()) {
-        config
-    } else {
-        config = value
-        config
+fun Context.clearConfig(vararg key: String) {
+    key.forEach {
+        val sp = getSharedPreferences(
+            it,
+            Context.MODE_PRIVATE
+        )
+        sp.all.clear()
     }
 }
 
@@ -137,7 +141,8 @@ fun Activity.setSharedElement() {
 }
 
 fun isCookieBoolean(): Boolean {
-    val cookieMaps = App.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE).all
+    val cookieMaps =
+        YaoApplication.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE).all
     return cookieMaps.isNullOrEmpty()
 }
 
@@ -196,7 +201,10 @@ fun View._paddingEnd() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_
 fun Context.px2mm(px: Float): Float {
     return px / resources.displayMetrics.xdpi * 25.4f
 }
-
+fun Context.dp2px(dipValue: Int): Int {
+    val scale = resources.displayMetrics.density
+    return (dipValue * scale + 0.5f).toInt()
+}
 fun Context.dp(value: Float): Float {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.displayMetrics)
 }
@@ -222,7 +230,27 @@ fun Context.handleException(
             toast("未能请求到数据，请稍后再试～")
         }
         is ApiErrorException -> {
-            toast(t.message.orEmpty())
+            when (t.code) {
+                ErrorCode.E_1001.hashCode(),
+                ErrorCode.E_1004.hashCode() -> {
+                    //2021/1/17/017 找不到帖子 和 审核 无需处理 提示即可
+                    toast(t.message.orEmpty())
+                }
+                ErrorCode.E_1002.hashCode() -> {
+                    // TODO: 2021/1/17/017 访问验证
+                    toast(t.message.orEmpty())
+                }
+                ErrorCode.E_1003.hashCode(),
+                ErrorCode.E_1006.hashCode(),
+                ErrorCode.E_1007.hashCode() -> {
+                    clearConfig(THEME_KEY,TROUSER_KEY,COOKIE_KEY,HOME_LIST_THEME_SHOW)
+                    LoginHelper.instance.restartLogin(this)
+                }
+                ErrorCode.E_1005.hashCode() -> {
+                    // TODO: 2021/1/17/017 校验密码
+                    toast(t.message.orEmpty())
+                }
+            }
             onApiError?.invoke(t.code, t.message.orEmpty())
         }
         is UnknownHostException,
@@ -267,7 +295,6 @@ fun getUrlString(url: String): String {
         BuildConfig.BASE_YAOHUO_URL + url
     }
 }
-
 
 val options = RequestOptions()
     .error(R.drawable.ic_picture_error)

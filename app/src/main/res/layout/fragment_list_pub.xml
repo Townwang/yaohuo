@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/refreshLayout"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    app:srlPrimaryColor="?colorPrimary"
-    app:srlAccentColor="@android:color/white"
-    app:srlEnablePreviewInEditMode="true"
-    android:layout_height="match_parent">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/homeList"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_isConsecutive="false">
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layoutAnimation="@anim/layout_animation_fall_down"
-        android:transitionName="share name"
-        tools:listitem="@layout/item_list_data"
-        tools:ignore="UnusedAttribute"/>
-</com.scwang.smart.refresh.layout.SmartRefreshLayout>
+        android:background="@color/white"
+        app:layout_isConsecutive="false"
+        app:srlAccentColor="@android:color/white"
+        app:srlEnablePreviewInEditMode="true"
+        app:srlPrimaryColor="?colorPrimary">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homeList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layoutAnimation="@anim/layout_animation_fall_down"
+            tools:ignore="UnusedAttribute"
+            tools:listitem="@layout/item_list_data" />
+
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+</com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout>

@@ -14,7 +14,6 @@ import com.townwang.yaohuo.common.SEND_CONTENT_KEY
 import com.townwang.yaohuo.common.onClickListener
 import kotlinx.android.synthetic.main.fragment_send.*
 
-
 typealias SendListener = (fragment: SendFragment, message: String) -> Unit
 
 class SendFragment : DialogFragment() {

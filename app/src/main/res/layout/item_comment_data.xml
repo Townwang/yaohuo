@@ -6,32 +6,62 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
-    android:background="@color/md_grey_50"
+    android:background="@drawable/background_translucent_bg"
     android:padding="5dp">
 
-    <ImageView
+    <com.townwang.yaohuo.ui.weight.view.NiceImageView
         android:id="@+id/userImg"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_centerInParent="true"
         android:layout_margin="8dp"
-        android:src="@drawable/anim_vector_android_blue_senior"
+        android:scaleType="fitCenter"
+        android:src="@drawable/avatar"
+        app:border_color="?colorPrimary"
+        app:border_width="1dp"
+        app:is_circle="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.townwang.yaohuo.ui.weight.htmltext.TextViewFixTouchConsume
-        android:id="@+id/auth"
+    <TextView
+        android:id="@+id/leval"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="@string/_0"
+        android:textColor="?colorPrimary"
+        android:textSize="@dimen/text10Size"
+        app:drawableStartCompat="@drawable/ic_level_icon_15"
+        app:layout_constraintStart_toEndOf="@+id/userImg"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:text="11" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/auth_layut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:textColor="@color/md_grey_500"
-        android:textSize="@dimen/text14Size"
         android:enabled="true"
         android:focusable="true"
+        android:lines="1"
         android:longClickable="true"
+        android:maxLength="20"
+        android:singleLine="true"
+        android:textColor="@color/md_grey_800"
         android:textIsSelectable="true"
-        app:layout_constraintStart_toEndOf="@+id/userImg"
+        android:textSize="@dimen/text14Size"
+        app:layout_constraintStart_toEndOf="@+id/leval"
         app:layout_constraintTop_toTopOf="@+id/userImg"
-        tools:text="妖火" />
+        tools:ignore="RtlSymmetry"
+        tools:text="妖火" >
+        <WebView
+            android:id="@+id/auth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            tools:ignore="WebViewLayout" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView
         android:id="@+id/floor"
@@ -40,29 +70,27 @@
         android:layout_marginTop="8dp"
         android:textColor="?colorPrimary"
         android:textSize="@dimen/text14Size"
-        app:layout_constraintStart_toStartOf="@+id/auth"
-        app:layout_constraintTop_toBottomOf="@+id/auth"
+        app:layout_constraintBottom_toBottomOf="@+id/userImg"
+        app:layout_constraintStart_toEndOf="@+id/userImg"
+        app:layout_constraintTop_toBottomOf="@+id/auth_layut"
         tools:text="1楼" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linearLayoutCompat2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/reward"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/reply"
         app:layout_constraintStart_toEndOf="@+id/floor"
-        app:layout_constraintTop_toBottomOf="@+id/auth">
-
-        <com.townwang.yaohuo.ui.weight.htmltext.TextViewFixTouchConsume
-            android:id="@+id/comment_tv"
+        app:layout_constraintTop_toTopOf="@+id/floor">
+        <WebView
+            android:id="@+id/htv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/md_black_1000"
-            android:textSize="@dimen/text14Size"
-            tools:text="我只是评论" />
+            android:background="@color/white"
+            tools:ignore="WebViewLayout" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView
@@ -76,4 +104,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="悬赏" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/md_grey_500"
+        android:textSize="@dimen/text10Size"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayoutCompat2"
+        app:layout_constraintStart_toStartOf="@+id/linearLayoutCompat2"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat2"
+        tools:ignore="MissingConstraints"
+        tools:text="2021/01/01 12:52:21" />
+
+    <TextView
+        android:id="@+id/reply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="8dp"
+        android:paddingStart="10dp"
+        android:textColor="?colorPrimary"
+        app:drawableBottomCompat="@drawable/ic_bottom_comment_15_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="RtlSymmetry" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
