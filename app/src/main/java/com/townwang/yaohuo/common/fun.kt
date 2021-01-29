@@ -307,6 +307,3 @@ fun getUrlString(url: String): String {
 val options = RequestOptions()
     .error(R.drawable.ic_picture_error)
     .placeholder(R.drawable.loading_anim)
-
-
-
