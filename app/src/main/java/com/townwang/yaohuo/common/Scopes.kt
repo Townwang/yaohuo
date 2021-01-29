@@ -140,5 +140,8 @@ fun checkDoc(document: Element?): Throwable? {
     if (tip.contains(BuildConfig.YH_MATCH_SEARCH_NO_DATA)) {
         return ApiErrorException(ErrorCode.E_1008.hashCode(), "暂无记录!")
     }
+    if (doc.body().text().contains(BuildConfig.YH_MATCH_SEND_POST_LIMIT)) {
+        return ApiErrorException(ErrorCode.E_1009.hashCode(), "今天你已超过发帖限制!")
+    }
     return null
 }

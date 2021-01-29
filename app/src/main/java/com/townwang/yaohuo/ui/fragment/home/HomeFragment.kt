@@ -95,15 +95,25 @@ class HomeFragment : Fragment() {
                 )
             }
         }
-
         viewModel.loadList(0, 1, BuildConfig.YH_BBS_ACTION_NEW)
+        noMore.onClickListener {
+            startActivity(Intent(
+                requireContext(), ActivityList::class.java
+            ).apply {
+                flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                putExtra(LIST_CLASS_ID_KEY, 0)
+                putExtra(LIST_BBS_NAME_KEY, getString(R.string.home_news))
+                putExtra(LIST_ACTION_KEY, BuildConfig.YH_BBS_ACTION_NEW)
+            }
+            )
+        }
         search_value.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val searchValue = search_value.text.toString()
                 if (searchValue.isNullOrEmpty()) {
                     Snackbar.make(
                         v,
-                        "请输入搜索内容",
+                        getString(R.string.search_value_empty_tip),
                         Snackbar.LENGTH_SHORT
                     ).show()
                 } else {
@@ -125,7 +135,7 @@ class HomeFragment : Fragment() {
             if (searchValue.isNullOrEmpty()) {
                 Snackbar.make(
                     it,
-                    "请输入搜索内容",
+                    getString(R.string.search_value_empty_tip),
                     Snackbar.LENGTH_SHORT
                 ).show()
             } else {
@@ -210,5 +220,9 @@ class HomeFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun refreshData() {
+        viewModel.loadList(0, 1, BuildConfig.YH_BBS_ACTION_NEW)
     }
 }

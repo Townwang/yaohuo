@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:text="发布帖子"
-        android:textSize="@dimen/text12Size"
         android:textColor="@color/md_black_1000"
+        android:textSize="@dimen/text12Size"
         app:layout_constraintBottom_toBottomOf="@+id/send"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/send"
@@ -20,36 +20,104 @@
 
     <Button
         android:id="@+id/send"
+        style="@style/button_blue_style"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/button_blue_style"
-        android:text="发布"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="12dp"
+        android:text="发布"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text12Size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/select_bbs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        app:layout_constraintTop_toBottomOf="@id/send"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="发布到"
+            android:textColor="@color/md_black_1000"
+            android:textSize="@dimen/text12Size"
+            app:drawableStartCompat="@drawable/ic_baseline_add_box_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/selectBBSValue"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="请选择合适的板块"
+            android:textColor="@color/md_grey_500"
+            android:textSize="@dimen/text10Size"
+            app:drawableEndCompat="@drawable/ic_right_direction"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/dividingLine"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/comment_dialog_et_selector"
+        app:layout_constraintTop_toBottomOf="@+id/select_bbs"
+        tools:ignore="MissingConstraints" />
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:singleLine="true"
+        android:background="@color/transparent"
+        android:hint="请输入标题"
+        android:textColor="@color/md_black_1000"
+        android:textColorHint="@color/md_grey_500"
+        android:textSize="@dimen/text12Size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dividingLine"
+        tools:ignore="MissingConstraints,RtlHardcoded,RtlSymmetry" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/comment_et"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        android:background="@drawable/comment_dialog_et_selector"
+        android:minHeight="100dp"
+        android:background="@color/transparent"
         android:gravity="left|top"
-        android:hint="正在开发..."
-        android:paddingStart="15dp"
-        android:paddingLeft="15dp"
-        android:paddingTop="12dp"
-        android:textColor="#808080"
-        android:textColorHint="#929292"
-        android:textSize="@dimen/text14Size"
+        android:hint="请开始你的表演..."
+        android:textColor="@color/md_black_1000"
+        android:textColorHint="@color/md_grey_500"
+        android:textSize="@dimen/text12Size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/send"
+        app:layout_constraintTop_toBottomOf="@+id/title"
         tools:ignore="MissingConstraints,RtlHardcoded,RtlSymmetry" />
+
+
+    <ImageView
+        android:id="@+id/addImg"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="12dp"
+        android:src="@drawable/ic_baseline_add_photo_alternate_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/comment_et"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

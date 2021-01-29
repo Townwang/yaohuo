@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
-            android:hint="善用搜索"
+            android:hint="@string/search_hint_tip"
             android:imeOptions="actionSearch"
             android:padding="20dp"
             android:singleLine="true"
@@ -54,7 +54,7 @@
 
     <Space
         android:layout_width="0dp"
-        android:layout_height="20dp" />
+        android:layout_height="10dp" />
 
     <com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout
         android:id="@+id/navBBSHost"
@@ -64,7 +64,7 @@
 
     <Space
         android:layout_width="0dp"
-        android:layout_height="20dp" />
+        android:layout_height="10dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/homeList"
@@ -82,8 +82,8 @@
         android:background="@color/white"
         android:gravity="center"
         android:paddingTop="10dp"
-        android:paddingBottom="25dp"
-        android:text="————————我是有底线的————————"
-        android:textColor="@color/md_grey_500"
+        android:paddingBottom="40dp"
+        android:text="@string/home_more"
+        android:textColor="?colorPrimary"
         android:textSize="@dimen/text12Size" />
 </com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout>

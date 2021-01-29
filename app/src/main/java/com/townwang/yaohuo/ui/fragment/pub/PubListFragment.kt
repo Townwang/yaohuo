@@ -45,8 +45,8 @@ class PubListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).work {
             supportActionBar.work {
-                title = requireArguments().getString(LIST_BBS_NAME_KEY, "主页")
-                setDisplayHomeAsUpEnabled(requireArguments().getInt(LIST_CLASS_ID_KEY, 0) != 0)
+                title = requireArguments().getString(LIST_BBS_NAME_KEY, "")
+                setDisplayHomeAsUpEnabled(true)
             }
         }
         homeList?.adapter = adapter

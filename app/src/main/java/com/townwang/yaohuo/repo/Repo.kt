@@ -41,13 +41,13 @@ class Repo constructor(
         con.getResp()
     }
 
-    suspend fun getNewList(classId: Int, page: Int,action:String): Document = withRepoContext {
-        val bbs = api.getNewList(classId.toString(), page.toString(),action)
+    suspend fun getNewList(classId: Int, page: Int, action: String): Document = withRepoContext {
+        val bbs = api.getNewList(classId.toString(), page.toString(), action)
         bbs.getResp()
     }
 
-    suspend fun queryList(key:String, page: Int): Document = withRepoContext {
-        val bbs = api.queryListBBS(key=key, page = page.toString())
+    suspend fun queryList(key: String, page: Int): Document = withRepoContext {
+        val bbs = api.queryListBBS(key = key, page = page.toString())
         bbs.getResp()
     }
 
@@ -129,7 +129,7 @@ class Repo constructor(
         content: String,
         floor: String? = null,
         touserid: String? = null,
-        sendmsg:String? = "1"
+        sendmsg: String? = "1"
     ): Document = withRepoContext {
         val bbs = api.urlPenetrate(url)
         val rs = bbs.getResp()
@@ -142,7 +142,7 @@ class Repo constructor(
             if (it.attr(AK_NAME) == BuildConfig.YH_REPLY_SEND_MSG) {
                 it.attr(AK_VALUE, sendmsg)
             }
-            if (it.attr(AK_NAME) ==BuildConfig.YH_REPLY_REPLY) {
+            if (it.attr(AK_NAME) == BuildConfig.YH_REPLY_REPLY) {
                 it.attr(AK_VALUE, floor)
             }
             if (it.attr(AK_NAME) == BuildConfig.YH_REPLY_TOUSERID) {
@@ -155,6 +155,35 @@ class Repo constructor(
         val rep = api.reply(data)
         rep.getResp()
     }
+
+
+    suspend fun sendGeneral(
+        classId: String,
+        title: String,
+        content: String
+    ): Document = withRepoContext {
+        val bbs = api.getSendBookUrl(classId)
+        val rs = bbs.getResp()
+        val ets = rs.select(AK_FORM)
+        val data = HashMap<String, String>()
+        ets.first().allElements.forEach {
+            if (it.attr(AK_NAME) == BuildConfig.YH_SEND_BOOK_TITLE) {
+                it.attr(AK_VALUE, title)
+            }
+            if (it.attr(AK_NAME) ==  BuildConfig.YH_SEND_BOOK_CONTENT) {
+                it.attr(AK_VALUE, content)
+            }
+            if (it.attr(AK_NAME) == BuildConfig.YH_SEND_BOOK_CLASSID) {
+                it.attr(AK_VALUE, classId)
+            }
+            if (it.attr(AK_NAME).isNotEmpty()) {
+                data[it.attr(AK_NAME)] = it.attr(AK_VALUE)
+            }
+        }
+        val rep = api.sendGeneral(data)
+        rep.getResp()
+    }
+
 
     suspend fun getMe(): Document = withRepoContext {
         val me = api.getMe()

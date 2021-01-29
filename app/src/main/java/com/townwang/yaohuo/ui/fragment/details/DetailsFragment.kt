@@ -1,9 +1,6 @@
 package com.townwang.yaohuo.ui.fragment.details
 
 import android.annotation.SuppressLint
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -19,7 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.android.tu.loadingdialog.LoadingDailog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
@@ -32,7 +28,7 @@ import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
-import com.townwang.yaohuo.ui.weight.commit.CommentDialogFragment
+import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.item_comment_data.view.*
 import kotlinx.android.synthetic.main.view_download_style.view.*
@@ -42,7 +38,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class DetailsFragment : Fragment() {
     private var page: Int = 1
     private var ot: Int = 0
-    private var loading: LoadingDailog? = null
+    private var loading: LoadingDialog? = null
     private val adapter = CommentAdapter()
     private val viewModel: DetailsModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,7 +95,10 @@ class DetailsFragment : Fragment() {
                     }
                 }
             dialogFragment.mDialogListener = { _, message ->
-                loading = Loading("正在发送评论...").create()
+                loading = Loading("正在发送评论...").apply {
+                    setSuccessText("评论成功")
+                    setFailedText("评论失败")
+                }
                 loading?.show()
                 viewModel.reply(
                     message,
@@ -297,15 +296,14 @@ class DetailsFragment : Fragment() {
             requireContext().handleException(it)
         })
         viewModel.commentSuccess.observe(viewLifecycleOwner, safeObserver {
-            loading?.dismiss()
             if (it) {
                 page = 1
                 ot = 0
                 adapter.datas.clear()
                 viewModel.commentDetails(page, ot)
-                Snackbar.make(requireView(), "评论成功", Snackbar.LENGTH_SHORT).show()
+                loading?.loadSuccess()
             } else {
-                Snackbar.make(requireView(), "评论失败", Snackbar.LENGTH_SHORT).show()
+                loading?.loadFailed()
             }
         })
         viewModel.medal.observe(viewLifecycleOwner, safeObserver {
@@ -371,13 +369,17 @@ class DetailsFragment : Fragment() {
                 if (fragment != null) {
                     magTransaction.remove(fragment)
                 }
-                val dialogFragment = CommentDialogFragment().apply {
+                val dialogFragment = CommentDialogFragment()
+                    .apply {
                     arguments = Bundle().also {
                         it.putString(SEND_CONTENT_KEY, "回复：${data.auth}")
                     }
                 }
                 dialogFragment.mDialogListener = { _, msg ->
-                    loading = Loading("正在回复妖友...").create()
+                    loading = Loading("正在回复妖友...").apply {
+                        setSuccessText("评论成功")
+                        setFailedText("评论失败")
+                    }
                     loading?.show()
                     viewModel.reply(
                         msg,

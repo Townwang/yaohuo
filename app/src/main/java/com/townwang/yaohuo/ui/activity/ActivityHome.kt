@@ -9,17 +9,22 @@ import com.tencent.bugly.beta.Beta
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.ui.fragment.bbs.BBSFragment
 import com.townwang.yaohuo.ui.fragment.home.HomeFragment
 import com.townwang.yaohuo.ui.fragment.me.MeFragment
 import com.townwang.yaohuo.ui.fragment.send.SendFragment
+import com.townwang.yaohuo.ui.fragment.send.SendModel
+import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.appbar.*
 import kotlinx.android.synthetic.main.bottom_nav_view.*
 import kotlinx.android.synthetic.main.include_home_bottom_btn.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ActivityHome : AppCompatActivity() {
+    val viewModel: SendModel by viewModel()
+    private var loading: LoadingDialog? = null
+    val newsFrag = HomeFragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         when (config(THEME_KEY).toInt()) {
             1 -> config(THEME_KEY, R.style.DefaultAppTheme.toString())
@@ -34,29 +39,27 @@ class ActivityHome : AppCompatActivity() {
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)
         }
-        val newsFrag = HomeFragment()
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.navHost, newsFrag)
                 .commit()
         }
         addFab.onClickListener {
+            val dialogFragment = SendFragment()
             val magTransaction = supportFragmentManager.beginTransaction()
             val fragment = supportFragmentManager.findFragmentByTag("send frag")
             if (fragment != null) {
                 magTransaction.remove(fragment)
             }
-            val dialogFragment = SendFragment().apply {
-                arguments = Bundle().also {
-                    it.putString(SEND_CONTENT_KEY, "正在开发...")
+            dialogFragment.mDialogListener = { _, title, type, content ->
+                loading = Loading(getString(R.string.home_send_post_loading)).apply {
+                    setSuccessText(getString(R.string.home_send_post_success))
+                    setFailedText(getString(R.string.home_send_post_failure))
                 }
+                loading?.show()
+                viewModel.sendPost(type, title, content)
+                dialogFragment.dismiss()
             }
-//            dialogFragment.mDialogListener = { _, message ->
-////                loading = Loading("正在提交...").create()
-////                loading?.show()
-////                viewModel.reply(message, url)
-//                dialogFragment.dismiss()
-//            }
             dialogFragment.show(supportFragmentManager, "send frag")
         }
         news.onClickListener {
@@ -69,6 +72,14 @@ class ActivityHome : AppCompatActivity() {
                 .replace(R.id.navHost, MeFragment())
                 .commit()
         }
+        viewModel.sendSuccess.observe(this, safeObserver {
+            if (it) {
+                newsFrag.refreshData()
+                loading?.loadSuccess()
+            } else {
+                loading?.loadFailed()
+            }
+        })
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

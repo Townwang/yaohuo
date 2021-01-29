@@ -11,19 +11,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
-import com.android.tu.loadingdialog.LoadingDailog
 import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.ui.activity.ActivityHome
+import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class LoginFragment : Fragment() {
-    private var loading: LoadingDailog? = null
+    private var loading: LoadingDialog? = null
     private val viewModel: LoginModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +44,14 @@ class LoginFragment : Fragment() {
             }
         }
         loginBtn.onClickListener {
+            if (loading == null) {
+                loading = Loading("登录中...").apply {
+                    setSuccessText("登陆成功")
+                    setFailedText("登陆失败")
+                }
+            }
+            loading?.show()
+
             viewModel.login(user_name.editText?.text.toString(), user_password.editText?.text.toString())
         }
     }
@@ -62,8 +70,9 @@ class LoginFragment : Fragment() {
                 ActivityCompat.startActivity(requireContext(), intent, bundle)
                 requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
                 BuglyLog.d(BuildConfig.FLAVOR,"login == true")
-                Snackbar.make(inputGuide, "登录成功", Snackbar.LENGTH_SHORT).show()
+                loading?.loadSuccess()
             }else{
+                loading?.loadFailed()
                 Snackbar.make(requireView(), "请勿乱破解，谢谢！", Snackbar.LENGTH_INDEFINITE).apply {
                     setAction(android.R.string.ok) {
                         requireActivity().finish()
@@ -72,30 +81,21 @@ class LoginFragment : Fragment() {
             }
         })
         viewModel.loginError.observe(viewLifecycleOwner, safeObserver {
+            loading?.loadFailed()
             Snackbar.make(inputGuide, it, Snackbar.LENGTH_SHORT).show()
         })
         viewModel.loginUserError.observe(viewLifecycleOwner, safeObserver {
+            loading?.loadFailed()
             user_name.error = it
         })
         viewModel.loginPsdError.observe(viewLifecycleOwner, safeObserver {
+            loading?.loadFailed()
             user_password.error = it
         })
-        viewModel.loading.observe(viewLifecycleOwner, safeObserver {
-            if (it) {
-                if (loading == null) {
-                    loading = Loading("登录中...").create()
-                }
-                if (loading?.isShowing?.not() == true) {
-                    loading?.show()
-                }
-            } else {
-                loading?.dismiss()
-            }
-        })
         viewModel.error.observe(viewLifecycleOwner, safeObserver {
+            loading?.loadFailed()
             context?.handleException(it)
         })
-
         viewModel.nieceSuccess.observe(viewLifecycleOwner, safeObserver {
             if (it) {
                 requireContext().config(TROUSER_KEY,viewModel.trouser.value)
@@ -108,8 +108,9 @@ class LoginFragment : Fragment() {
                 ActivityCompat.startActivity(requireContext(), intent, bundle)
                 requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
                 BuglyLog.d(BuildConfig.FLAVOR,"login == true")
-                Snackbar.make(inputGuide, "登录成功", Snackbar.LENGTH_SHORT).show()
-            } else {
+                loading?.loadSuccess()
+            }else{
+                loading?.loadFailed()
                 Snackbar.make(requireView(), "非内测成员，请关注后续更新", Snackbar.LENGTH_INDEFINITE).apply {
                     setAction(android.R.string.ok) {
                         requireActivity().finish()

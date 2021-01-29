@@ -88,4 +88,21 @@ interface Api {
         @Query("getTotal") getTotal: String? = "2021"
     ): Call<Document>
 
+    /**
+     * 获取发帖参数
+     */
+    @GET("bbs/book_view_add.aspx")
+    fun getSendBookUrl(
+        @Query("classId") classId:String
+    ): Call<Document>
+
+    /**
+     * 发帖
+     */
+    @FormUrlEncoded
+    @POST("bbs/book_view_add.aspx")
+    fun sendGeneral(
+        @FieldMap map: HashMap<String, String>
+    ): Call<Document>
+
 }

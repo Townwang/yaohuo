@@ -9,7 +9,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.dp2px
 
-class NiceImageView @JvmOverloads constructor(
+class TownNiceImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

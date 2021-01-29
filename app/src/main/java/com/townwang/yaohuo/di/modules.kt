@@ -21,6 +21,7 @@ import com.townwang.yaohuo.ui.fragment.login.LoginModel
 import com.townwang.yaohuo.ui.fragment.me.MeModel
 import com.townwang.yaohuo.ui.fragment.pub.ListModel
 import com.townwang.yaohuo.ui.fragment.search.SearchModel
+import com.townwang.yaohuo.ui.fragment.send.SendModel
 import com.townwang.yaohuo.ui.fragment.splash.SplashModel
 import com.townwang.yaohuo.ui.fragment.theme.ThemeModel
 import okhttp3.OkHttpClient
@@ -108,6 +109,7 @@ private val storageModule = module {
         viewModel { SplashModel(get()) }
         viewModel { MeModel(get()) }
         viewModel { HomeModel(get()) }
+        viewModel { SendModel(get()) }
 
     }
 

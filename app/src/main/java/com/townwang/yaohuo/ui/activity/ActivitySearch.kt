@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.ui.fragment.details.DetailsFragment
 import com.townwang.yaohuo.ui.fragment.search.SearchFragment
 import kotlinx.android.synthetic.main.appbar.*
 
@@ -15,7 +14,7 @@ class ActivitySearch : AppCompatActivity() {
         }
         setActTheme()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detals)
+        setContentView(R.layout.activity_pub)
         setSupportActionBar(toolbar)
         setSharedElement()
         supportActionBar.work {

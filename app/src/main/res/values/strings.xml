@@ -35,4 +35,19 @@
     <string name="my_title">我的头衔</string>
     <string name="my_identity">我的身份</string>
     <string name="management_authority">管理权限</string>
+    <string name="search_value_empty_tip">请输入搜索内容</string>
+    <string name="search_hint_tip">善用搜索</string>
+    <string name="home_more">————————查看更多————————</string>
+    <string name="error_use_vpn_exception">网络环境异常，请切换正常网络</string>
+    <string name="error_unknown_exception">发生错误，请重试</string>
+    <string name="error_socket_time_out_exception">网络超时</string>
+    <string name="error_qesponse_null_pointer_exception">未能请求到数据，请稍后再试～</string>
+    <string name="loading">加载中…</string>
+    <string name="alert_dialog_tip_title">温馨提示</string>
+    <string name="home_send_post_loading">正在发送帖子...</string>
+    <string name="home_send_post_success">发帖成功</string>
+    <string name="home_send_post_failure">发帖失败</string>
+    <string name="list_tab_new_reply">最近回复</string>
+    <string name="list_tab_new_send">最新发布</string>
+    <string name="list_tab_marrow">本版精华</string>
 </resources>
