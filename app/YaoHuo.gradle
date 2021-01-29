@@ -21,6 +21,11 @@ android{
         buildConfigField("String", "YH_BBS_ACTION_NEW", '"new"')
         buildConfigField("String", "YH_BBS_ACTION_GOOD", '"good"')
         buildConfigField("String", "YH_BBS_ACTION_SERCH", '"search"')
+        //send post
+        buildConfigField("String", "YH_SEND_BOOK_TITLE", '"book_title"')
+        buildConfigField("String", "YH_SEND_BOOK_CONTENT", '"book_content"')
+        buildConfigField("String", "YH_SEND_BOOK_CLASSID", '"classid"')
+
 
 
     }
@@ -42,6 +47,7 @@ android{
         buildConfigField("String", "YH_MATCH_LOGIN_USER_ERROR", '"用户ID/用户名/手机号不存！"')
         buildConfigField("String", "YH_MATCH_LOGIN_MAX_ERROR", '"登录失败次数超过10次了，请明天再来!"')
         buildConfigField("String", "YH_MATCH_SEARCH_NO_DATA", '"暂无记录"')
+        buildConfigField("String", "YH_MATCH_SEND_POST_LIMIT", '"今天你已超过发帖限制："')
 
         buildConfigField("String", "YH_MATCH_MY_ID", '"我的ID"')
         buildConfigField("String", "YH_MATCH_MY_MONEY", '"我的妖晶"')

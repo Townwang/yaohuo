@@ -1,4 +1,4 @@
-package com.townwang.yaohuo.ui.weight.commit
+package com.townwang.yaohuo.ui.fragment.details
 
 import android.annotation.SuppressLint
 import android.content.Context

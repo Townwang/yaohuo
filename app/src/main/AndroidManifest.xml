@@ -3,30 +3,25 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.townwang.yaohuo">
-    <!--网络-->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 微信需要往sd卡写入二维码 -->
+    <!-- 网络 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 微信需要往sd卡写入二维码 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
-    <!-- 创建与删除文件 -->
+        tools:ignore="ScopedStorage" /> <!-- 创建与删除文件 -->
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
-        tools:ignore="ProtectedPermissions" />
-    <!-- 必选 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- 获取网络状态 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- 获取设备信息 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 可选 -->
+        tools:ignore="ProtectedPermissions" /> <!-- 必选 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 获取网络状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 获取设备信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 可选 -->
     <uses-permission
         android:name="android.permission.READ_LOGS"
-        tools:ignore="ProtectedPermissions" />
-    <!-- 获取logcat日志 -->
+        tools:ignore="ProtectedPermissions" /> <!-- 获取logcat日志 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
     <dist:module dist:instant="true" />
+
     <application
         android:name=".YaoApplication"
         android:icon="@mipmap/ic_launcher"
@@ -40,12 +35,14 @@
         <activity android:name=".ui.activity.ActivityWelcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.ActivityLogin" />
-        <activity android:name=".ui.activity.ActivityHome"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity
+            android:name=".ui.activity.ActivityHome"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.activity.ActivityTheme" />
         <activity android:name=".ui.activity.ActivityAbout" />
         <activity android:name=".ui.activity.ActivityList" />

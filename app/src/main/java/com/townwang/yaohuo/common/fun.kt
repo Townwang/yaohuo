@@ -20,14 +20,11 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.android.tu.loadingdialog.LoadingDailog
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.tencent.bugly.crashreport.BuglyLog
@@ -36,7 +33,8 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.common.utils.LoginHelper
 import com.townwang.yaohuo.repo.enum.ErrorCode
-import com.townwang.yaohuo.ui.activity.ActivityList
+import com.xiasuhuei321.loadingdialog.view.LoadingDialog
+import com.xiasuhuei321.loadingdialog.view.LoadingDialog.Speed
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -68,6 +66,11 @@ fun <T> MutableLiveData<T>.asLiveData(): LiveData<T> = this
 
 fun <T> Fragment.safeObserver(block: (value: T) -> Unit) = Observer<T> {
     if (!isAdded) return@Observer
+    it ?: return@Observer
+    block(it)
+}
+
+fun <T> safeObserver(block: (value: T) -> Unit) = Observer<T> {
     it ?: return@Observer
     block(it)
 }
@@ -167,18 +170,20 @@ fun setTitleCenter(toolbar: Toolbar) {
     }
 }
 
-fun Fragment.Loading(text: String? = null): LoadingDailog.Builder {
-    return LoadingDailog.Builder(context)
-        .setMessage(text ?: "加载中...")
-        .setCancelable(false)
-        .setCancelOutside(false)
+fun Fragment.Loading(text: String? = null): LoadingDialog {
+    return LoadingDialog(context).apply {
+        setLoadingText(text ?: getString(R.string.loading))
+        interceptBack = false
+        setLoadSpeed(Speed.SPEED_TWO)
+    }
 }
 
-fun Activity.Loading(text: String? = null): LoadingDailog.Builder {
-    return LoadingDailog.Builder(this)
-        .setMessage(text ?: "加载中...")
-        .setCancelable(false)
-        .setCancelOutside(false)
+fun Activity.Loading(text: String? = null): LoadingDialog {
+    return LoadingDialog(this).apply {
+        setLoadingText(text ?: getString(R.string.loading))
+        interceptBack = false
+        setLoadSpeed(Speed.SPEED_TWO)
+    }
 }
 
 fun View.widthWithoutPadding() = width - _paddingStart() - _paddingEnd()
@@ -201,10 +206,12 @@ fun View._paddingEnd() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_
 fun Context.px2mm(px: Float): Float {
     return px / resources.displayMetrics.xdpi * 25.4f
 }
+
 fun Context.dp2px(dipValue: Int): Int {
     val scale = resources.displayMetrics.density
     return (dipValue * scale + 0.5f).toInt()
 }
+
 fun Context.dp(value: Float): Float {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.displayMetrics)
 }
@@ -227,11 +234,12 @@ fun Context.handleException(
     t.printStackTrace()
     when (t) {
         is ResponseNullPointerException -> {
-            toast("未能请求到数据，请稍后再试～")
+            toast(getString(R.string.error_qesponse_null_pointer_exception))
         }
         is ApiErrorException -> {
             when (t.code) {
                 ErrorCode.E_1001.hashCode(),
+                ErrorCode.E_1009.hashCode(),
                 ErrorCode.E_1004.hashCode() -> {
                     //2021/1/17/017 找不到帖子 和 审核 无需处理 提示即可
                     toast(t.message.orEmpty())
@@ -243,7 +251,7 @@ fun Context.handleException(
                 ErrorCode.E_1003.hashCode(),
                 ErrorCode.E_1006.hashCode(),
                 ErrorCode.E_1007.hashCode() -> {
-                    clearConfig(THEME_KEY,TROUSER_KEY,COOKIE_KEY,HOME_LIST_THEME_SHOW)
+                    clearConfig(THEME_KEY, TROUSER_KEY, COOKIE_KEY, HOME_LIST_THEME_SHOW)
                     LoginHelper.instance.restartLogin(this)
                 }
                 ErrorCode.E_1005.hashCode() -> {
@@ -256,14 +264,14 @@ fun Context.handleException(
         is UnknownHostException,
         is NetworkFailureException,
         is SocketTimeoutException -> {
-            toast("网络错误")
+            toast(getString(R.string.error_socket_time_out_exception))
             onNetworkError?.invoke()
         }
         is UseVPNException -> {
-            toast("网络环境异常，请切换正常网络")
+            toast(getString(R.string.error_use_vpn_exception))
         }
         else -> {
-            toast("发生错误，请重试")
+            toast(getString(R.string.error_unknown_exception))
             onUnknownError?.invoke(t)
         }
     }

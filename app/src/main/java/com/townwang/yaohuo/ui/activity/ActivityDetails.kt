@@ -14,7 +14,7 @@ class ActivityDetails : AppCompatActivity() {
         }
         setActTheme()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detals)
+        setContentView(R.layout.activity_pub)
         setSupportActionBar(toolbar)
         setSharedElement()
         supportActionBar.work {

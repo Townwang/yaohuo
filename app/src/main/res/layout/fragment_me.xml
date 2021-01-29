@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nesScroll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+<com.scwang.smart.refresh.layout.SmartRefreshLayout
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,17 +15,11 @@
     app:srlAccentColor="@android:color/white"
     app:srlEnablePreviewInEditMode="true"
     app:srlPrimaryColor="?colorPrimary">
-    <com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout
-        android:id="@+id/nesScroll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:fitsSystemWindows="true">
+            android:background="@color/white">
             <View
                 android:id="@+id/view"
                 android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <com.townwang.yaohuo.ui.weight.view.NiceImageView
+            <com.townwang.yaohuo.ui.weight.view.TownNiceImageView
                 android:id="@+id/avatar"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -178,5 +178,5 @@
                     app:valueSize="@dimen/text12Size" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout>
 </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+</com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout>

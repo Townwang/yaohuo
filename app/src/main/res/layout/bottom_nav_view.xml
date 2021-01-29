@@ -28,6 +28,6 @@
         app:fabSize="auto"
         app:layout_anchor="@+id/bottom_app_bar"
         app:layout_anchorGravity="center|top"
-        app:srcCompat="@drawable/anim_vector_fingerprint"
+        app:srcCompat="@drawable/ic_baseline_add_24"
         tools:ignore="VectorDrawableCompat" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

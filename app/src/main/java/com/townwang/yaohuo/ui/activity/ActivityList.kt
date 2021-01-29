@@ -25,50 +25,52 @@ class ActivityList : AppCompatActivity() {
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)
         }
-       if (savedInstanceState == null) {
-           val list = arrayListOf<TabBean>()
-
-           list.add(TabBean("最近回复", PubListFragment().apply {
-               arguments = Bundle().also {
-                   it.putInt(LIST_CLASS_ID_KEY, intent.getIntExtra(LIST_CLASS_ID_KEY, 0))
-                   it.putString(
-                       LIST_BBS_NAME_KEY,
-                       intent.getStringExtra(LIST_BBS_NAME_KEY)
-                   )
-                   it.putString(
-                       LIST_ACTION_KEY,
-                       BuildConfig.YH_BBS_ACTION_CLASS
-                   )
-               }
-           }))
-           list.add(TabBean("最新发布", PubListFragment().apply {
-               arguments = Bundle().also {
-                   it.putInt(LIST_CLASS_ID_KEY, intent.getIntExtra(LIST_CLASS_ID_KEY, 0))
-                   it.putString(
-                       LIST_BBS_NAME_KEY,
-                       intent.getStringExtra(LIST_BBS_NAME_KEY)
-                   )
-                   it.putString(
-                       LIST_ACTION_KEY,
-                       BuildConfig.YH_BBS_ACTION_NEW
-                   )
-               }
-           }))
-           list.add(TabBean("本版精华", PubListFragment().apply {
-               arguments = Bundle().also {
-                   it.putInt(LIST_CLASS_ID_KEY, intent.getIntExtra(LIST_CLASS_ID_KEY, 0))
-                   it.putString(
-                       LIST_BBS_NAME_KEY,
-                       intent.getStringExtra(LIST_BBS_NAME_KEY)
-                   )
-                   it.putString(
-                       LIST_ACTION_KEY,
-                      BuildConfig.YH_BBS_ACTION_GOOD
-                   )
-               }
-           }))
-           viewPager?.adapter = TabListAdapter(supportFragmentManager,lifecycle.currentState.ordinal, list)
-           tab_layout?.setupWithViewPager(viewPager)
-       }
+        if (savedInstanceState == null) {
+            val list = arrayListOf<TabBean>()
+            if (intent.getIntExtra(LIST_CLASS_ID_KEY, 0) != 0) {
+                list.add(TabBean(getString(R.string.list_tab_new_reply), PubListFragment().apply {
+                    arguments = Bundle().also {
+                        it.putInt(LIST_CLASS_ID_KEY, intent.getIntExtra(LIST_CLASS_ID_KEY, 0))
+                        it.putString(
+                            LIST_BBS_NAME_KEY,
+                            intent.getStringExtra(LIST_BBS_NAME_KEY)
+                        )
+                        it.putString(
+                            LIST_ACTION_KEY,
+                            BuildConfig.YH_BBS_ACTION_CLASS
+                        )
+                    }
+                }))
+            }
+            list.add(TabBean(getString(R.string.list_tab_new_send), PubListFragment().apply {
+                arguments = Bundle().also {
+                    it.putInt(LIST_CLASS_ID_KEY, intent.getIntExtra(LIST_CLASS_ID_KEY, 0))
+                    it.putString(
+                        LIST_BBS_NAME_KEY,
+                        intent.getStringExtra(LIST_BBS_NAME_KEY)
+                    )
+                    it.putString(
+                        LIST_ACTION_KEY,
+                        BuildConfig.YH_BBS_ACTION_NEW
+                    )
+                }
+            }))
+            list.add(TabBean(getString(R.string.list_tab_marrow), PubListFragment().apply {
+                arguments = Bundle().also {
+                    it.putInt(LIST_CLASS_ID_KEY, intent.getIntExtra(LIST_CLASS_ID_KEY, 0))
+                    it.putString(
+                        LIST_BBS_NAME_KEY,
+                        intent.getStringExtra(LIST_BBS_NAME_KEY)
+                    )
+                    it.putString(
+                        LIST_ACTION_KEY,
+                        BuildConfig.YH_BBS_ACTION_GOOD
+                    )
+                }
+            }))
+            viewPager?.adapter =
+                TabListAdapter(supportFragmentManager, lifecycle.currentState.ordinal, list)
+            tab_layout?.setupWithViewPager(viewPager)
+        }
     }
 }

@@ -33,7 +33,7 @@
                 android:visibility="gone"
                 tools:ignore="MissingConstraints">
 
-                <com.townwang.yaohuo.ui.weight.view.NiceImageView
+                <com.townwang.yaohuo.ui.weight.view.TownNiceImageView
                     android:id="@+id/userImg"
                     android:layout_width="50dp"
                     android:layout_height="50dp"

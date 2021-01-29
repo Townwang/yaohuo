@@ -9,7 +9,7 @@
     android:background="@drawable/background_translucent_bg"
     android:padding="5dp">
 
-    <com.townwang.yaohuo.ui.weight.view.NiceImageView
+    <com.townwang.yaohuo.ui.weight.view.TownNiceImageView
         android:id="@+id/userImg"
         android:layout_width="50dp"
         android:layout_height="50dp"
