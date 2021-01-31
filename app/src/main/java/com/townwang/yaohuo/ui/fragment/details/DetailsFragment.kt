@@ -14,7 +14,6 @@ import android.widget.ImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -25,20 +24,20 @@ import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.databinding.FragmentDetailsBinding
+import com.townwang.yaohuo.databinding.ItemCommentDataBinding
+import com.townwang.yaohuo.databinding.ViewDownloadStyleBinding
 import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.ui.activity.ActivityWebView
+import com.townwang.yaohuo.ui.fragment.BaseFragment
 import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
-import com.xiasuhuei321.loadingdialog.view.LoadingDialog
-import kotlinx.android.synthetic.main.fragment_details.*
-import kotlinx.android.synthetic.main.item_comment_data.view.*
-import kotlinx.android.synthetic.main.view_download_style.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class DetailsFragment : Fragment() {
+class DetailsFragment : BaseFragment() {
+    private val binding get() = _binding!! as FragmentDetailsBinding
     private var page: Int = 1
     private var ot: Int = 0
-    private var loading: LoadingDialog? = null
     private val adapter = CommentAdapter()
     private val viewModel: DetailsModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,34 +50,35 @@ class DetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_details, container, false)
+        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        refreshLayout?.setOnRefreshListener {
+        binding.refreshLayout.setOnRefreshListener {
             page = 1
             ot = 0
             adapter.datas.clear()
             viewModel.commentDetails(page, ot)
         }
-        refreshLayout?.setOnLoadMoreListener {
+        binding.refreshLayout.setOnLoadMoreListener {
             if (adapter.datas.isNullOrEmpty()) {
-                refreshLayout?.finishLoadMoreWithNoMoreData()
+                binding.refreshLayout.finishLoadMoreWithNoMoreData()
                 return@setOnLoadMoreListener
             }
             if (adapter.datas.last().floor == 1) {
-                refreshLayout?.finishLoadMoreWithNoMoreData()
+                binding.refreshLayout.finishLoadMoreWithNoMoreData()
                 return@setOnLoadMoreListener
             }
             page++
             viewModel.commentDetails(page, ot)
         }
-        attention?.onClickListener {
+        binding.attention.onClickListener {
             Snackbar.make(requireView(), "正在开发...", Snackbar.LENGTH_SHORT).show()
         }
-        reply?.onClickListener {
+        binding.reply.onClickListener {
             if (requireArguments().getBoolean(HOME_DETAILS_BEAR_KEY).not()) {
                 Snackbar.make(requireView(), "已经结贴，无法参与评论！", Snackbar.LENGTH_SHORT).show()
                 return@onClickListener
@@ -102,39 +102,39 @@ class DetailsFragment : Fragment() {
                 loading?.show()
                 viewModel.reply(
                     message,
-                    requireArguments().getString(HOME_DETAILS_URL_KEY, ""),
+                    requireContext().config(BuildConfig.YH_COOKIE_SID),
                     sendmsg = "1"
                 )
                 dialogFragment.dismiss()
             }
             dialogFragment.show(parentFragmentManager, "input frag")
         }
-        comment?.onClickListener {
-                scrollerLayout?.smoothScrollToChild(comment_tip)
+        binding.comment.onClickListener {
+            binding.scrollerLayout.smoothScrollToChild(binding.commentTip)
         }
-        praise?.onClickListener {
-            praise_value.setCompoundDrawablesWithIntrinsicBounds(
+        binding.praise.onClickListener {
+            binding.praiseValue.setCompoundDrawablesWithIntrinsicBounds(
                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_bottom_praise_selected),
                 null,
                 null,
                 null
             )
-            praise.isClickable = false
-            praise_value.text = (praise_value.text.toString().toInt() + 1).toString()
+            binding.praise.isClickable = false
+            binding.praiseValue.text = (binding.praiseValue.text.toString().toInt() + 1).toString()
             viewModel.praise()
         }
-        favorite?.onClickListener {
-            favorite_value.setCompoundDrawablesWithIntrinsicBounds(
+        binding.favorite.onClickListener {
+            binding.favoriteValue.setCompoundDrawablesWithIntrinsicBounds(
                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_bottom_favorite_selected),
                 null,
                 null,
                 null
             )
-            favorite.isClickable = false
+            binding.favorite.isClickable = false
             viewModel.favorite()
         }
-        commentLists?.adapter = adapter
-        commentLists?.layoutManager =
+        binding.commentLists.adapter = adapter
+        binding.commentLists.layoutManager =
             (StaggeredGridLayoutManager(
                 1,
                 StaggeredGridLayoutManager.VERTICAL
@@ -142,33 +142,34 @@ class DetailsFragment : Fragment() {
 
         adapter.onItemListener = { item, data ->
             if (data is CommitListBean) {
-                item.apply {
-                    viewModel.getUserInfo(
-                        this,
-                        getParam(data.avatar, BuildConfig.YH_REPLY_TOUSERID)
-                    )
-                    WebViewHelper(requireContext(), auth).apply {
-                        shouldOverrideUrlLoading = true
-                    }.setHtmlCode(data.auth.replace("<br>", ""))
-                    floor.text = "${data.floor}楼"
-                    reward.text = data.b
-                    time.text = data.time
+                if (item is ItemCommentDataBinding) {
+                    item.apply {
+                        viewModel.getUserInfo(
+                            item,
+                            getParam(data.avatar, BuildConfig.YH_REPLY_TOUSERID)
+                        )
+                        WebViewHelper(requireContext(), auth).apply {
+                            shouldOverrideUrlLoading = true
+                        }.setHtmlCode(data.auth)
+                        floor.text = "${data.floor}楼"
+                        reward.text = data.b
+                        time.text = data.time
 
-                    WebViewHelper(requireContext(), htv_content).apply {
-                        shouldOverrideUrlLoading = true
-                    }.setHtmlCode(data.content.replace("<br>", ""))
-
-                    if (userImg.drawable != null) {
-                        startAnimator(userImg.drawable)
-                    }
-                    reply.onClickListener {
-                        sendCommit(data)
+                        WebViewHelper(requireContext(), htvContent).apply {
+                            shouldOverrideUrlLoading = true
+                        }.setHtmlCode(data.content)
+                        if (userImg.drawable != null) {
+                            startAnimator(userImg.drawable)
+                        }
+                        reply.onClickListener {
+                            sendCommit(data)
+                        }
                     }
                 }
             }
 
         }
-        refreshLayout?.setOnMultiListener(object : SimpleMultiListener() {
+        binding.refreshLayout.setOnMultiListener(object : SimpleMultiListener() {
             override fun onFooterMoving(
                 footer: RefreshFooter?,
                 isDragging: Boolean,
@@ -177,7 +178,7 @@ class DetailsFragment : Fragment() {
                 footerHeight: Int,
                 maxDragHeight: Int
             ) {
-                scrollerLayout?.stickyOffset = offset
+                binding.scrollerLayout.stickyOffset = offset
             }
         })
     }
@@ -187,49 +188,48 @@ class DetailsFragment : Fragment() {
         super.onViewStateRestored(savedInstanceState)
         viewModel.data.observe(viewLifecycleOwner, safeObserver {
             viewModel.getAvatar(getParam(it.headUrl, BuildConfig.YH_REPLY_TOUSERID))
-            time?.text = it.time
-            read_num?.visibility = View.VISIBLE
-            read_num?.text =
+            binding.time.text = it.time
+            binding.readNum.visibility = View.VISIBLE
+            binding.readNum.text =
                 requireArguments().getString(HOME_DETAILS_READ_KEY, "").split(" ").first()
-            constraintLayout?.visibility = View.VISIBLE
-            userName?.text = it.userName
-            constraintLayout?.visibility = View.VISIBLE
+            binding.constraintLayout.visibility = View.VISIBLE
+            binding.userName.text = it.userName
+            binding.constraintLayout.visibility = View.VISIBLE
             if (it.onLineState) {
-                online?.background =
+                binding.online.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_green_10)
             } else {
-                online?.background =
+                binding.online.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_grey_10)
             }
             if (it.giftMoney.isNotEmpty()) {
-                linearTop?.visibility = View.VISIBLE
-                icon?.text = BuildConfig.YH_MATCH_LIST_MEAT
-                icon?.background =
+                binding.linearTop.visibility = View.VISIBLE
+                binding.icon.text = BuildConfig.YH_MATCH_LIST_MEAT
+                binding.icon.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
-                subtitle?.text = HtmlCompat.fromHtml(it.giftMoney, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                binding.subtitle.text =
+                    HtmlCompat.fromHtml(it.giftMoney, HtmlCompat.FROM_HTML_MODE_LEGACY)
             }
             if (it.reward.isNotEmpty()) {
-                linearTop?.visibility = View.VISIBLE
-                icon?.text = BuildConfig.YH_MATCH_LIST_GIVE
-                icon?.background =
+                binding.linearTop.visibility = View.VISIBLE
+                binding.icon.text = BuildConfig.YH_MATCH_LIST_GIVE
+                binding.icon.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
-                subtitle?.text = it.reward
+                binding.subtitle.text = it.reward
             }
 
-            WebViewHelper(requireContext(), webView).apply {
+            WebViewHelper(requireContext(), binding.webView).apply {
                 shouldOverrideUrlLoading = true
             }.setHtmlCode(it.content)
-            webView?.webChromeClient = object : WebChromeClient() {
+            binding.webView.webChromeClient = object : WebChromeClient() {
                 override fun onProgressChanged(view: WebView, newProgress: Int) {
                     super.onProgressChanged(view, newProgress)
-                    scrollerLayout?.checkLayoutChange()
+                    binding.scrollerLayout.checkLayoutChange()
                 }
             }
-            praise_value?.text = it.praiseSize
+            binding.praiseValue.text = it.praiseSize
             it.downloadList?.forEach { download ->
-                val contentLoad =
-                    LayoutInflater.from(requireContext())
-                        .inflate(R.layout.view_download_style, null)
+                val contentLoad = ViewDownloadStyleBinding.inflate(layoutInflater)
                 contentLoad.downloadName.text = download.fileName
 
                 contentLoad.downloadUrl.onClickListener { _ ->
@@ -249,9 +249,8 @@ class DetailsFragment : Fragment() {
                 } else {
                     contentLoad.description.text = download.description
                     contentLoad.description.visibility = View.VISIBLE
-
                 }
-                list_content?.addView(contentLoad)
+                binding.listContent.addView(contentLoad.root)
             }
         })
 
@@ -260,30 +259,30 @@ class DetailsFragment : Fragment() {
                 .load(getUrlString(it))
                 .apply(options)
                 .apply(RequestOptions.bitmapTransform(CircleCrop()))
-                .into(userImg)
+                .into(binding.userImg)
         })
         viewModel.grade.observe(viewLifecycleOwner, safeObserver {
             it ?: return@safeObserver
-            leval?.text = it
+            binding.leval.text = it
         })
         viewModel.commentSize.observe(viewLifecycleOwner, safeObserver {
             if (page == 1 && ot == 0) {
-                comment_value?.text = it
+                binding.commentValue.text = it
             }
         })
         viewModel.commentLists.observe(viewLifecycleOwner, safeObserver {
-            commentLists?.visibility = View.VISIBLE
-            noMore?.visibility = View.GONE
-            refreshLayout?.setEnableLoadMore(true)
+            binding.commentLists.visibility = View.VISIBLE
+            binding.noMore.visibility = View.GONE
+            binding.refreshLayout.setEnableLoadMore(true)
             if (it is ArrayList<CommitListBean>) {
                 adapter.datas = it
             }
         })
         viewModel.noMore.observe(viewLifecycleOwner, safeObserver {
-            noMore?.visibility = View.VISIBLE
+            binding.noMore.visibility = View.VISIBLE
             if (it) {
-                commentLists?.visibility = View.GONE
-                refreshLayout?.setEnableLoadMore(false)
+                binding.commentLists.visibility = View.GONE
+                binding.refreshLayout.setEnableLoadMore(false)
             }
         })
         viewModel.loading.observe(viewLifecycleOwner, safeObserver {
@@ -314,14 +313,14 @@ class DetailsFragment : Fragment() {
                     .load(getUrlString(it))
                     .apply(options)
                     .into(image)
-                honor.visibility = View.VISIBLE
-                honor.addView(image)
+                binding.honor.visibility = View.VISIBLE
+                binding.honor.addView(image)
             }
         })
         viewModel.itemAvatar.observe(viewLifecycleOwner, safeObserver {
             it ?: return@safeObserver
             if (isVisible) {
-                val imgView = it.item.findViewWithTag<ImageView>(it.touserid)
+                val imgView = it.item.userImg.findViewWithTag<ImageView>(it.touserid)
                 if (imgView != null) {
                     Glide.with(requireContext())
                         .load(getUrlString(it.avatarUrl))
@@ -346,12 +345,11 @@ class DetailsFragment : Fragment() {
     }
 
     private fun refreshDone(success: Boolean) {
-        refreshLayout ?: return
-        comment_tip?.visibility = View.VISIBLE
+        binding.commentTip.visibility = View.VISIBLE
         if (page == 1) {
-            refreshLayout.finishRefresh(success)
+            binding.refreshLayout.finishRefresh(success)
         } else {
-            refreshLayout.finishLoadMore(success)
+            binding.refreshLayout.finishLoadMore(success)
         }
     }
 
@@ -371,10 +369,10 @@ class DetailsFragment : Fragment() {
                 }
                 val dialogFragment = CommentDialogFragment()
                     .apply {
-                    arguments = Bundle().also {
-                        it.putString(SEND_CONTENT_KEY, "回复：${data.auth}")
+                        arguments = Bundle().also {
+                            it.putString(SEND_CONTENT_KEY, "回复：${data.auth}")
+                        }
                     }
-                }
                 dialogFragment.mDialogListener = { _, msg ->
                     loading = Loading("正在回复妖友...").apply {
                         setSuccessText("评论成功")
@@ -383,7 +381,7 @@ class DetailsFragment : Fragment() {
                     loading?.show()
                     viewModel.reply(
                         msg,
-                        data.url,
+                        requireContext().config(BuildConfig.YH_COOKIE_SID),
                         data.floor.toString(),
                         getParam(data.url, BuildConfig.YH_REPLY_TOUSERID),
                         "0"

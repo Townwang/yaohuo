@@ -49,6 +49,12 @@
         <activity android:name=".ui.activity.ActivityDetails" />
         <activity android:name=".ui.activity.ActivityWebView" />
         <activity android:name=".ui.activity.ActivitySearch" />
+        <activity
+            android:name=".ui.weight.pay.ZhiActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/PayTheme" />
     </application>
 
 </manifest>

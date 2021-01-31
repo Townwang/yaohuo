@@ -3,10 +3,9 @@ package com.townwang.yaohuo.ui.fragment.send
 import androidx.lifecycle.MutableLiveData
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
-import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.common.resolve.ResolveListHelper
+import com.townwang.yaohuo.common.UIViewModel
+import com.townwang.yaohuo.common.asLiveData
 import com.townwang.yaohuo.repo.Repo
-import com.townwang.yaohuo.repo.data.HomeData
 
 class SendModel(private val repo: Repo) : UIViewModel() {
     private val _sendSuccess = MutableLiveData<Boolean>()

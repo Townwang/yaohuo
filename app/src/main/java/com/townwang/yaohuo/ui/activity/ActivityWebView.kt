@@ -2,14 +2,10 @@ package com.townwang.yaohuo.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.BundleCompat
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.ui.fragment.about.AboutFragment
+import com.townwang.yaohuo.databinding.ActivityWebviewBinding
 import com.townwang.yaohuo.ui.fragment.web.WebViewFragment
-import kotlinx.android.synthetic.main.appbar.*
-
-
 class ActivityWebView : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,8 +14,9 @@ class ActivityWebView : AppCompatActivity() {
         }
         setActTheme()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_webview)
-        setSupportActionBar(toolbar)
+        val binding = ActivityWebviewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.appbarLayout.toolbar)
         setSharedElement()
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)

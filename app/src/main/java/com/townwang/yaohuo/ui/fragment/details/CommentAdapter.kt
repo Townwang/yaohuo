@@ -1,12 +1,11 @@
 package com.townwang.yaohuo.ui.fragment.details
-
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.townwang.yaohuo.common.OnItemListener
 import com.townwang.yaohuo.repo.data.details.CommitListBean
 
 class CommentAdapter : RecyclerView.Adapter<CommentViewHolder>() {
-    var onItemListener:OnItemListener? = null
+    var onItemListener: OnItemListener? = null
     var datas = arrayListOf<CommitListBean>()
         set(value) {
             if (field.isNotEmpty()) {
@@ -28,7 +27,7 @@ class CommentAdapter : RecyclerView.Adapter<CommentViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-            onItemListener?.invoke(holder.itemView, datas[position])
+        onItemListener?.invoke(holder.binding, datas[position])
     }
 
 }

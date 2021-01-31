@@ -7,15 +7,14 @@ const val COOKIE_KEY = "cookie cache"
 const val TROUSER_KEY = "trouser id"
 
 /***********************************************异常信息*******************************************/
-class ResponseNullPointerException : Exception("服务器异常")
-
+class ResponseNullPointerException : Exception()
 class ApiErrorException(val code: Int, error: String) : Exception(error)
 class NetworkFailureException(failure: String) : Exception(failure)
 class UseVPNException(failure: String) : Exception(failure)
-
 /**********************************************校验*********************************************/
 
 var isCrack = false
+
 //浏览器参数配置
 const val USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0.1; Moto G (4)) Gecko/20100101 Firefox/54.0"
 //解析所用字段

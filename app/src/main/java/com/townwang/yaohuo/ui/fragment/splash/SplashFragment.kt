@@ -5,43 +5,48 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.databinding.FragmentWelcomeBinding
 import com.townwang.yaohuo.ui.activity.ActivityHome
 import com.townwang.yaohuo.ui.activity.ActivityLogin
-import kotlinx.android.synthetic.main.fragment_welcome.*
+import com.townwang.yaohuo.ui.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SplashFragment : Fragment() {
+class SplashFragment : BaseFragment() {
+    private val binding get() = _binding!! as FragmentWelcomeBinding
     private val viewModel: SplashModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_welcome, container, false)
+        _binding = FragmentWelcomeBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mParticleView.startAnim()
-        mParticleView.mParticleAnimListener = {
-            if (isCookieBoolean()) {
-                startActivity(Intent(requireContext(), ActivityLogin::class.java).apply {
-                   flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-                })
-                requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-            } else {
-                viewModel.checkCookie(requireContext().config(TROUSER_KEY))
+        binding.mParticleView.startAnim()
+        binding. mParticleView.mParticleAnimListener = {
+            if (isAdded) {
+                if (isCookieBoolean()) {
+                    startActivity(Intent(requireContext(), ActivityLogin::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    })
+                    requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
+                } else {
+                    viewModel.checkCookie(requireContext().config(TROUSER_KEY))
+                }
             }
         }
     }

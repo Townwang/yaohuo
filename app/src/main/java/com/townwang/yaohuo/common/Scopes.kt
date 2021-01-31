@@ -3,6 +3,7 @@ package com.townwang.yaohuo.common
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.utils.isHaveMsg
 import com.townwang.yaohuo.repo.data.Niece
+import com.townwang.yaohuo.repo.data.YaoCdnReq
 import com.townwang.yaohuo.repo.enum.ErrorCode
 import kotlinx.coroutines.*
 import org.jsoup.Jsoup
@@ -40,7 +41,6 @@ suspend fun <T> withRepoContext(block: suspend CoroutineScope.() -> T): T =
  */
 class NullResponseBodyException : Exception()
 
-
 suspend fun <T : Niece> Call<T>.getUResp() =
     withContext(networkScope.coroutineContext) {
         suspendCoroutine<T> {
@@ -66,6 +66,30 @@ suspend fun <T : Niece> Call<T>.getUResp() =
         }
     }
 
+suspend fun Call<YaoCdnReq>.getYaoResp() =
+    withContext(networkScope.coroutineContext) {
+        suspendCoroutine<YaoCdnReq> {
+            kotlin.runCatching {
+                val result = execute()
+                if (result.isSuccessful) {
+                    val body = result.body()
+                    if (body != null) {
+                        if (body.code == 200) {
+                            it.resume(body)
+                        } else {
+                            it.resumeWithException(ApiErrorException(body.code, body.msg?:""))
+                        }
+                    } else {
+                        it.resumeWithException(NullResponseBodyException())
+                    }
+                } else {
+                    it.resumeWithException(NetworkFailureException(result.message()))
+                }
+            }.onFailure { error ->
+                it.resumeWithException(error)
+            }
+        }
+    }
 /**
  * 检测是否使用VPN
  * @return Boolean  true 使用 false 未使用

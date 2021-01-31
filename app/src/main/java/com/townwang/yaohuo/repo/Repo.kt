@@ -3,7 +3,12 @@ package com.townwang.yaohuo.repo
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.api.Api
 import com.townwang.yaohuo.common.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.jsoup.nodes.Document
+import java.io.File
+
 
 class Repo constructor(
     private val api: Api
@@ -19,24 +24,9 @@ class Repo constructor(
     }
 
     suspend fun login(loginName: String, password: String): Document = withRepoContext {
-        val rs = api.getLoginParameter()
-        val doc = rs.getResp()
-        val ets = doc.select(AK_FORM)
         val data = HashMap<String, String>()
-        ets.first().allElements.forEach {
-            if (it.attr(AK_NAME) == BuildConfig.YH_LOGIN_USER_NAME) {
-                it.attr(AK_VALUE, loginName)
-            }
-            if (it.attr(AK_NAME) == BuildConfig.YH_LOGIN_PASSWORD) {
-                it.attr(AK_VALUE, password)
-            }
-            if (it.attr(AK_NAME) == BuildConfig.YH_LOGIN_SACESID) {
-                it.attr(AK_VALUE, "1")
-            }
-            if (it.attr(AK_NAME).isNotEmpty()) {
-                data[it.attr(AK_NAME)] = it.attr(AK_VALUE)
-            }
-        }
+        data[BuildConfig.YH_LOGIN_USER_NAME] = loginName
+        data[BuildConfig.YH_LOGIN_PASSWORD] = password
         val con = api.login(data)
         con.getResp()
     }
@@ -125,33 +115,26 @@ class Repo constructor(
     }
 
     suspend fun reply(
-        url: String,
+        sid: String,
         content: String,
+        id: String,
+        classId: Int,
         floor: String? = null,
         touserid: String? = null,
-        sendmsg: String? = "1"
+        sendmsg: String? = null
     ): Document = withRepoContext {
-        val bbs = api.urlPenetrate(url)
-        val rs = bbs.getResp()
-        val ets = rs.select(AK_FORM)
         val data = HashMap<String, String>()
-        ets.first().allElements.forEach {
-            if (it.attr(AK_NAME) == BuildConfig.YH_REPLY_CONTENT) {
-                it.attr(AK_VALUE, content)
-            }
-            if (it.attr(AK_NAME) == BuildConfig.YH_REPLY_SEND_MSG) {
-                it.attr(AK_VALUE, sendmsg)
-            }
-            if (it.attr(AK_NAME) == BuildConfig.YH_REPLY_REPLY) {
-                it.attr(AK_VALUE, floor)
-            }
-            if (it.attr(AK_NAME) == BuildConfig.YH_REPLY_TOUSERID) {
-                it.attr(AK_VALUE, touserid)
-            }
-            if (it.attr(AK_NAME).isNotEmpty()) {
-                data[it.attr(AK_NAME)] = it.attr(AK_VALUE)
-            }
+        data[BuildConfig.YH_REPLY_CONTENT] = content
+        data[BuildConfig.YH_REPLY_SEND_MSG] = sendmsg ?: "1"
+        floor?.apply {
+            data[BuildConfig.YH_REPLY_REPLY] = floor
         }
+        touserid?.apply {
+            data[BuildConfig.YH_REPLY_TOUSERID] = touserid
+        }
+        data[BuildConfig.YH_REPLY_SID] = sid
+        data[BuildConfig.YH_REPLY_ID] = id
+        data[BuildConfig.YH_SEND_BOOK_CLASSID] = classId.toString()
         val rep = api.reply(data)
         rep.getResp()
     }
@@ -170,7 +153,7 @@ class Repo constructor(
             if (it.attr(AK_NAME) == BuildConfig.YH_SEND_BOOK_TITLE) {
                 it.attr(AK_VALUE, title)
             }
-            if (it.attr(AK_NAME) ==  BuildConfig.YH_SEND_BOOK_CONTENT) {
+            if (it.attr(AK_NAME) == BuildConfig.YH_SEND_BOOK_CONTENT) {
                 it.attr(AK_VALUE, content)
             }
             if (it.attr(AK_NAME) == BuildConfig.YH_SEND_BOOK_CLASSID) {
@@ -188,5 +171,16 @@ class Repo constructor(
     suspend fun getMe(): Document = withRepoContext {
         val me = api.getMe()
         me.getResp()
+    }
+
+    suspend fun uploadFile(file: File) = withRepoContext {
+        val fileRequestBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+        val requestImgPart = MultipartBody.Part.createFormData("file", file.name, fileRequestBody)
+        val repo = api.upLoadFile(requestImgPart)
+        repo.getYaoResp()
+    }
+
+    suspend fun deleteImg(url: String)  = withRepoContext{
+        api.urlPenetrate(url)
     }
 }

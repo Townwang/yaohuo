@@ -2,25 +2,24 @@ package com.townwang.yaohuo.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.databinding.ActivityListBinding
 import com.townwang.yaohuo.repo.data.TabBean
 import com.townwang.yaohuo.ui.fragment.pub.PubListFragment
 import com.townwang.yaohuo.ui.fragment.pub.TabListAdapter
-import kotlinx.android.synthetic.main.activity_list.*
-import kotlinx.android.synthetic.main.appbar.*
-
 class ActivityList : AppCompatActivity() {
+    lateinit var binding: ActivityListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         when (config(THEME_KEY).toInt()) {
             1 -> config(THEME_KEY, R.style.DefaultAppTheme.toString())
         }
         setActTheme()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list)
-        setSupportActionBar(toolbar)
+        binding = ActivityListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.appbarLayout.toolbar)
         setSharedElement()
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)
@@ -68,9 +67,9 @@ class ActivityList : AppCompatActivity() {
                     )
                 }
             }))
-            viewPager?.adapter =
+            binding.viewPager.adapter =
                 TabListAdapter(supportFragmentManager, lifecycle.currentState.ordinal, list)
-            tab_layout?.setupWithViewPager(viewPager)
+            binding.tabLayout.setupWithViewPager(binding.viewPager)
         }
     }
 }

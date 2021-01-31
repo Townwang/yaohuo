@@ -1,8 +1,8 @@
-package com.townwang.yaohuo.common
+package com.townwang.yaohuo.common.utils
 
 import java.util.*
 
-object RelativeDateFormat {
+object DateFormatHelper {
 
     private const val ONE_MINUTE = 60000L
     private const val ONE_HOUR = 3600000L
@@ -19,29 +19,35 @@ object RelativeDateFormat {
     fun format(date: Date): String {
         val delta = Date().time - date.time
         if (delta < 1L * ONE_MINUTE) {
-            val seconds = toSeconds(delta)
+            val seconds =
+                toSeconds(delta)
             return (if (seconds <= 0) 1 else seconds).toString() + ONE_SECOND_AGO
         }
         if (delta < 45L * ONE_MINUTE) {
-            val minutes = toMinutes(delta)
+            val minutes =
+                toMinutes(delta)
             return (if (minutes <= 0) 1 else minutes).toString() + ONE_MINUTE_AGO
         }
         if (delta < 24L * ONE_HOUR) {
-            val hours = toHours(delta)
+            val hours =
+                toHours(delta)
             return (if (hours <= 0) 1 else hours).toString() + ONE_HOUR_AGO
         }
         if (delta < 48L * ONE_HOUR) {
             return "昨天"
         }
         if (delta < 30L * ONE_DAY) {
-            val days = toDays(delta)
+            val days =
+                toDays(delta)
             return (if (days <= 0) 1 else days).toString() + ONE_DAY_AGO
         }
         return if (delta < 12L * 4L * ONE_WEEK) {
-            val months = toMonths(delta)
+            val months =
+                toMonths(delta)
             (if (months <= 0) 1 else months).toString() + ONE_MONTH_AGO
         } else {
-            val years = toYears(delta)
+            val years =
+                toYears(delta)
             (if (years <= 0) 1 else years).toString() + ONE_YEAR_AGO
         }
     }

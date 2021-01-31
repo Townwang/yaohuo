@@ -10,10 +10,10 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.snackbar.Snackbar
-import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.SEND_CONTENT_KEY
 import com.townwang.yaohuo.common.onClickListener
-import kotlinx.android.synthetic.main.fragment_comment_dialog.*
+import com.townwang.yaohuo.databinding.FragmentCommentDialogBinding
+import java.lang.StringBuilder
 
 /**
  * 输入对话框：评论框
@@ -22,6 +22,10 @@ import kotlinx.android.synthetic.main.fragment_comment_dialog.*
 typealias CommentDialogSendListener = (fragment: CommentDialogFragment, message: String) -> Unit
 
 class CommentDialogFragment : DialogFragment() {
+    private var _binding: FragmentCommentDialogBinding? = null
+
+    private val binding get() = _binding!!
+
     var mDialogListener: CommentDialogSendListener? = null
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,29 +35,43 @@ class CommentDialogFragment : DialogFragment() {
         requireDialog().window?.requestFeature(Window.FEATURE_NO_TITLE)
         requireDialog().setCancelable(true)
         requireDialog().setCanceledOnTouchOutside(true)
-        return inflater.inflate(R.layout.fragment_comment_dialog, container, false)
+        _binding = FragmentCommentDialogBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     @SuppressLint("InlinedApi", "WrongConstant")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dialog_comment_et.hint = HtmlCompat.fromHtml(
+        binding.dialogCommentEt.hint = HtmlCompat.fromHtml(
             requireArguments().getString(SEND_CONTENT_KEY, ""),
             Html.FROM_HTML_MODE_LEGACY
         )
-        dialog_comment_et.requestFocus()
-        dialog_comment_et.post {
+        binding.dialogCommentEt.requestFocus()
+        binding.dialogCommentEt.post {
             (requireActivity().getSystemService(
                 Context
                     .INPUT_METHOD_SERVICE
-            ) as InputMethodManager).showSoftInput(dialog_comment_et, 0)
+            ) as InputMethodManager).showSoftInput(binding.dialogCommentEt, 0)
         }
-        dialog_comment_bt.onClickListener {
-            val commentStr = dialog_comment_et.text.toString()
+        binding.dialogCommentBt.onClickListener {
+            val commentStr = binding.dialogCommentEt.text.lines()
+
             if (commentStr.isEmpty()) {
                 Snackbar.make(requireView(), "请输入内容", Snackbar.LENGTH_SHORT).show()
             } else {
-                mDialogListener?.invoke(this@CommentDialogFragment, "$commentStr      \uD83D\uDCF1")
+                Snackbar.make(requireView(), "请输入内容", Snackbar.LENGTH_SHORT).show()
+                val stringBuilder = StringBuilder()
+                commentStr.forEach {
+                    if (commentStr.last() != it) {
+                        stringBuilder.append("$it///")
+                    } else {
+                        stringBuilder.append(it)
+                    }
+                }
+                mDialogListener?.invoke(
+                    this@CommentDialogFragment,
+                    "$stringBuilder      \uD83D\uDCF1"
+                )
             }
         }
     }
@@ -76,6 +94,11 @@ class CommentDialogFragment : DialogFragment() {
                 )
             )
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }

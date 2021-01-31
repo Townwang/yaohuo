@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.tencent.bugly.beta.Beta
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.databinding.ActivityLoginBinding
 import com.townwang.yaohuo.ui.fragment.login.LoginFragment
-import kotlinx.android.synthetic.main.appbar.*
 
 class ActivityLogin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,12 +15,13 @@ class ActivityLogin : AppCompatActivity() {
         }
         setActTheme()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-        setSupportActionBar(toolbar)
-        setTitleCenter(toolbar)
+        val binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.appbarLayout.toolbar)
         setSharedElement()
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)
+            setTitleCenter()
         }
         Beta.checkUpgrade(false, true)
         if (savedInstanceState == null) {

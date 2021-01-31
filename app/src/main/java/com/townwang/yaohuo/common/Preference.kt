@@ -8,6 +8,25 @@ import java.io.ObjectOutputStream
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+fun Context.config(key: String, value: String? = null): String {
+    var config: String by Preference(this, key, default = "1")
+    return if (value.isNullOrEmpty()) {
+        config
+    } else {
+        config = value
+        config
+    }
+}
+
+fun Context.clearConfig(vararg key: String) {
+    key.forEach {
+        val sp = getSharedPreferences(
+            it,
+            Context.MODE_PRIVATE
+        )
+        sp.all.clear()
+    }
+}
 @Suppress("UNCHECKED_CAST")
 class Preference<T>(private val context: Context, private val string:String, private val default : T) : ReadWriteProperty<Any?, T> {
 

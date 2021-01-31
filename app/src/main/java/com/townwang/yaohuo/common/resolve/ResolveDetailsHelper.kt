@@ -1,7 +1,9 @@
 package com.townwang.yaohuo.common.resolve
 
 import android.annotation.SuppressLint
+import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.common.utils.DateFormatHelper
 import com.townwang.yaohuo.common.utils.matchValue
 import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.repo.data.details.DownloadBean
@@ -11,6 +13,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class ResolveDetailsHelper(private val document: Document) {
+    val id: String
+        get() = getParam(getPraiseUrl, BuildConfig.YH_REPLY_ID)
+    val classId: Int
+        get() = getParam(getPraiseUrl, BuildConfig.YH_SEND_BOOK_CLASSID).toInt()
     val userName: String
         get() = document.select("div.subtitle").last().select(A_KEY).first().ownText()
 
@@ -22,7 +28,7 @@ class ResolveDetailsHelper(private val document: Document) {
             .attr(IMG_ALT) == "ONLINE"
 
     val getPraiseUrl: String
-        get() = document.select("div.subtitle").last().select(A_KEY).last().attr(A_HREF)
+        get() = document.select("div.subtitle").last().getElementsContainingOwnText("顶").attr(A_HREF)
 
     val getFavoriteUrl: String
         get() = document.getElementsContainingOwnText("收藏").last().attr(A_HREF)
@@ -123,11 +129,6 @@ class ResolveDetailsHelper(private val document: Document) {
             return list
         }
 
-    val id: String
-        get() = getParam(getPraiseUrl, "id")
-    val classId: Int
-        get() = getParam(getPraiseUrl, "classid").toInt()
-
     val isHaveMore: Boolean
         get() {
             val more = document.select("div.content").last().select("div.more")
@@ -194,7 +195,7 @@ class ResolveDetailsHelper(private val document: Document) {
                     url,
                     authString,
                     avatar,
-                    RelativeDateFormat.format(dateObj!!),
+                    DateFormatHelper.format(dateObj!!),
                     content, b
                 )
             )

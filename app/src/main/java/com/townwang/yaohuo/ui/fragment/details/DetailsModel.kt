@@ -9,12 +9,12 @@ import com.townwang.yaohuo.common.UIViewModel
 import com.townwang.yaohuo.common.asLiveData
 import com.townwang.yaohuo.common.resolve.ResolveDetailsHelper
 import com.townwang.yaohuo.common.resolve.ResolveUserInfoHelper
+import com.townwang.yaohuo.databinding.ItemCommentDataBinding
 import com.townwang.yaohuo.repo.Repo
 import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.repo.data.details.DetailsContentBean
 import com.townwang.yaohuo.repo.data.local.ItemAvatarBean
 import com.townwang.yaohuo.repo.enum.Level
-import kotlinx.android.synthetic.main.item_comment_data.view.*
 import org.jsoup.Jsoup
 
 class DetailsModel(private val repo: Repo) : UIViewModel() {
@@ -84,33 +84,39 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         val userInfoHelper = ResolveUserInfoHelper(doc)
         _avatar.value = userInfoHelper.avatar
         _grade.value = Level.getLevel(userInfoHelper.grade).toString()
-       val  medalImgUrl = userInfoHelper.medal
+        val medalImgUrl = userInfoHelper.medal
         Jsoup.parse(medalImgUrl).select(IMG_JPG).forEach {
             _medal.value = it.attr("src")
         }
     }
 
-    fun getUserInfo(view: View?, touserid: String) = launchTask {
-        view ?: return@launchTask
-        view.userImg.tag = touserid
+    fun getUserInfo(item: ItemCommentDataBinding, touserid: String) = launchTask {
+        item.userImg.tag = touserid
         val doc = repo.getUserInfo(touserid)
         val userInfoHelper = ResolveUserInfoHelper(doc)
         _itemAvatar.value =
-            ItemAvatarBean(view, userInfoHelper.avatar, Level.getLevel(userInfoHelper.grade),touserid)
+            ItemAvatarBean(
+                item,
+                userInfoHelper.avatar,
+                Level.getLevel(userInfoHelper.grade),
+                touserid
+            )
     }
 
     fun reply(
         content: String,
-        url: String,
+        sid: String,
         floor: String? = null,
         touserid: String? = null,
         sendmsg: String? = "1"
     ) =
         launchTask {
             try {
-                val doc = repo.reply(url, content, floor, touserid, sendmsg = sendmsg)
-                doc.body()
-                _commentSuccess.value = true
+                helper?.run {
+                    val doc = repo.reply(sid, content,id,classId, floor, touserid, sendmsg = sendmsg)
+                    doc.body()
+                    _commentSuccess.value = true
+                }
             } catch (e: Exception) {
                 _commentSuccess.value = false
                 BuglyLog.e(BuildConfig.FLAVOR, e.message)

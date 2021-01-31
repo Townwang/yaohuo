@@ -9,42 +9,42 @@ import com.tencent.bugly.beta.Beta
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.databinding.ActivityHomeBinding
 import com.townwang.yaohuo.ui.fragment.home.HomeFragment
 import com.townwang.yaohuo.ui.fragment.me.MeFragment
 import com.townwang.yaohuo.ui.fragment.send.SendFragment
 import com.townwang.yaohuo.ui.fragment.send.SendModel
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
-import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.appbar.*
-import kotlinx.android.synthetic.main.bottom_nav_view.*
-import kotlinx.android.synthetic.main.include_home_bottom_btn.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
 
 
 class ActivityHome : AppCompatActivity() {
     val viewModel: SendModel by viewModel()
     private var loading: LoadingDialog? = null
     val newsFrag = HomeFragment()
+    lateinit var binding: ActivityHomeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         when (config(THEME_KEY).toInt()) {
             1 -> config(THEME_KEY, R.style.DefaultAppTheme.toString())
         }
         setActTheme()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
-        setSupportActionBar(toolbar)
-        setTitleCenter(toolbar)
-        startAnimator(addFab.drawable)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.appbarLayout.toolbar)
+        startAnimator(binding.include.addFab.drawable)
         setSharedElement()
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)
+            setTitleCenter()
         }
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.navHost, newsFrag)
                 .commit()
         }
-        addFab.onClickListener {
+        binding.include.addFab.onClickListener {
             val dialogFragment = SendFragment()
             val magTransaction = supportFragmentManager.beginTransaction()
             val fragment = supportFragmentManager.findFragmentByTag("send frag")
@@ -62,12 +62,12 @@ class ActivityHome : AppCompatActivity() {
             }
             dialogFragment.show(supportFragmentManager, "send frag")
         }
-        news.onClickListener {
+        binding.include.bottom.news.onClickListener {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.navHost, newsFrag)
                 .commit()
         }
-        me.onClickListener {
+        binding.include.bottom.me.onClickListener {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.navHost, MeFragment())
                 .commit()
@@ -102,7 +102,7 @@ class ActivityHome : AppCompatActivity() {
             } else {
                 prePressTime = SystemClock.uptimeMillis()
                 Snackbar.make(
-                    appbarLayout,
+                    binding.appbarLayout.toolbar,
                     getString(R.string.exit_app_hint),
                     Snackbar.LENGTH_SHORT
                 ).show()

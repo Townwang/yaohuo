@@ -1,42 +1,45 @@
 package com.townwang.yaohuo.ui.fragment.send
 
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
 import android.widget.PopupWindow
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.text.HtmlCompat
 import androidx.core.view.doOnPreDraw
 import androidx.core.widget.PopupWindowCompat
 import androidx.fragment.app.DialogFragment
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.internal.bind.ReflectiveTypeAdapterFactory
+import com.luck.picture.lib.PictureSelector
+import com.luck.picture.lib.config.PictureConfig
+import com.luck.picture.lib.config.PictureMimeType
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.HOME_LIST_THEME_SHOW
-import com.townwang.yaohuo.common.SEND_CONTENT_KEY
-import com.townwang.yaohuo.common.config
-import com.townwang.yaohuo.common.onClickListener
+import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.databinding.FragmentSendBinding
+import com.townwang.yaohuo.databinding.ProBbsSwitchBinding
 import com.townwang.yaohuo.repo.data.SelectBean
-import com.townwang.yaohuo.repo.data.details.MeBean
-import com.townwang.yaohuo.ui.fragment.pub.PubListAdapter
-import kotlinx.android.synthetic.main.fragment_about.*
-import kotlinx.android.synthetic.main.fragment_list_pub.*
-import kotlinx.android.synthetic.main.fragment_send.*
-import kotlinx.android.synthetic.main.pro_bbs_switch.view.*
-import okhttp3.RequestBody
+import com.townwang.yaohuo.repo.data.YaoCdnReq
+import com.xiasuhuei321.loadingdialog.view.LoadingDialog
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
 
 typealias SendListener = (fragment: SendFragment, title: String, type: String, content: String) -> Unit
 
 class SendFragment : DialogFragment() {
+    private var _binding: FragmentSendBinding? = null
+    private var loading: LoadingDialog? = null
+    private val binding get() = _binding!!
     var mDialogListener: SendListener? = null
     var type = 0
+    val viewModel: UploadFileModel by viewModel()
     private val adapter = SelectAdapter()
+    private lateinit var adapterImg: ImageAdapter
+    private val listImgs = arrayListOf<YaoCdnReq>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,21 +48,23 @@ class SendFragment : DialogFragment() {
         requireDialog().window?.requestFeature(Window.FEATURE_NO_TITLE)
         requireDialog().setCancelable(true)
         requireDialog().setCanceledOnTouchOutside(true)
-        return inflater.inflate(R.layout.fragment_send, container, false)
+        _binding = FragmentSendBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     @SuppressLint("InlinedApi", "WrongConstant")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        comment_et.requestFocus()
-        comment_et.post {
+        adapterImg = ImageAdapter(requireContext())
+        binding.commentEt.requestFocus()
+        binding.commentEt.post {
             (requireActivity().getSystemService(
                 Context
                     .INPUT_METHOD_SERVICE
-            ) as InputMethodManager).showSoftInput(comment_et, 0)
+            ) as InputMethodManager).showSoftInput(binding.commentEt, 0)
         }
-        send.onClickListener {
-            val title = title.text.toString()
+        binding.send.onClickListener {
+            val title = binding.title.text.toString()
             if (title.isNullOrEmpty()) {
                 Snackbar.make(it, "请输入标题", Snackbar.LENGTH_SHORT).show()
                 return@onClickListener
@@ -68,9 +73,8 @@ class SendFragment : DialogFragment() {
                 Snackbar.make(it, "请输入标题在5~25个字符内", Snackbar.LENGTH_SHORT).show()
                 return@onClickListener
             }
-            val content = comment_et.text.toString()
-
-            if (content.length <= 15) {
+            val content = binding.commentEt.text?.lines()
+            if (content.isNullOrEmpty() || binding.commentEt.text.toString().length <= 15) {
                 Snackbar.make(it, "内容不足15字", Snackbar.LENGTH_SHORT).show()
                 return@onClickListener
             }
@@ -78,30 +82,59 @@ class SendFragment : DialogFragment() {
                 Snackbar.make(it, "请选择板块", Snackbar.LENGTH_SHORT).show()
                 return@onClickListener
             }
-            mDialogListener?.invoke(this, title, type.toString(), content)
+            val stringBuilder = StringBuilder()
+            content.forEach { stringBuilderValue ->
+                if (content.last() != stringBuilderValue) {
+                    stringBuilder.append("$stringBuilderValue///")
+                } else {
+                    stringBuilder.append(stringBuilderValue)
+                }
+            }
+            adapterImg.datas.remove(adapterImg.datas.last())
+            if (adapterImg.datas.isNotEmpty()) {
+                adapterImg.datas.forEach { ImgUrl ->
+                    stringBuilder.append("[img]$ImgUrl[/img]///")
+                }
+            }
+            mDialogListener?.invoke(this, title, type.toString(), stringBuilder.toString())
         }
-        addImg.onClickListener {
-            Snackbar.make(it, "正在开发...", Snackbar.LENGTH_SHORT).show()
+        listImgs.add(YaoCdnReq(0))
+        adapterImg.datas = listImgs
+        binding.gridView.adapter = adapterImg
+        adapter.onItemClickListener = { _, data ->
+            if (data is YaoCdnReq) {
+                viewModel.remove(data.delete)
+            }
         }
-        selectBBSValue.doOnPreDraw {
+
+        binding.gridView.setOnItemClickListener { parent, view, position, id ->
+            if (position == adapterImg.datas.lastIndex) {
+                PictureSelector.create(this)
+                    .openGallery(PictureMimeType.ofImage())
+                    .isGif(true)
+                    .imageEngine(GlideEngine.createGlideEngine())
+                    .isCompress(true)
+                    .forResult(PictureConfig.CHOOSE_REQUEST)
+            }
+        }
+        binding.selectBBSValue.doOnPreDraw {
             var isOpenPopup = true
-            val inflater: LayoutInflater = LayoutInflater.from(context)
-            val contentView = inflater.inflate(R.layout.pro_bbs_switch, null)
-            val tooltipPopup = PopupWindow(contentView).apply {
+            val contentBinding = ProBbsSwitchBinding.inflate(layoutInflater)
+            val tooltipPopup = PopupWindow(contentBinding.root).apply {
                 isOutsideTouchable = true
                 height = WindowManager.LayoutParams.WRAP_CONTENT
                 width = WindowManager.LayoutParams.WRAP_CONTENT
             }
-            contentView.selectList.layoutManager =
+            contentBinding.selectList.layoutManager =
                 (StaggeredGridLayoutManager(
                     3,
                     StaggeredGridLayoutManager.VERTICAL
                 ))
-            contentView.selectList.adapter = adapter
+            contentBinding.selectList.adapter = adapter
             adapter.onItemClickListener = { _, data ->
                 if (data is SelectBean) {
                     type = data.type
-                    selectBBSValue.text = data.string
+                    binding.selectBBSValue.text = data.string
                     isOpenPopup = true
                     tooltipPopup.dismiss()
                 }
@@ -118,16 +151,16 @@ class SendFragment : DialogFragment() {
             lists.add(SelectBean(198, getString(R.string.bbs_complaint)))
             adapter.datas = lists
             if (type != 0) {
-
+                binding.selectBBSValue.text = lists[type].string
             }
-            selectBBSValue.onClickListener {
+            binding.selectBBSValue.onClickListener {
                 if (isOpenPopup) {
                     isOpenPopup = false
                     type = 0
-                    selectBBSValue.text = "请选择合适的板块"
+                    binding.selectBBSValue.text = "请选择合适的板块"
                     PopupWindowCompat.showAsDropDown(
                         tooltipPopup,
-                        selectBBSValue,
+                        binding.selectBBSValue,
                         0,
                         0,
                         Gravity.BOTTOM
@@ -138,6 +171,23 @@ class SendFragment : DialogFragment() {
                 }
             }
         }
+
+        viewModel.fileStatus.observe(requireActivity(), safeObserver {
+            if (it) {
+                loading?.loadSuccess()
+            }
+        })
+        viewModel.error.observe(requireActivity(),safeObserver {
+            loading?.setFailedText(it.message)
+            loading?.loadFailed()
+            requireContext().handleException(it)
+        })
+        viewModel.list.observe(requireActivity(), safeObserver {
+            it ?: return@safeObserver
+            listImgs.add(0, it)
+            adapterImg.datas = listImgs
+        })
+
     }
 
     override fun onStart() {
@@ -161,4 +211,34 @@ class SendFragment : DialogFragment() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (resultCode) {
+            RESULT_OK -> {
+                if (requestCode == PictureConfig.CHOOSE_REQUEST) {
+                    val selectList =
+                        PictureSelector.obtainMultipleResult(data)
+                    if (loading == null) {
+                        loading = Loading("上传图片中...").apply {
+                            setFailedText("上传失败")
+                            setSuccessText("上传成功")
+                        }
+                    }
+                    loading?.show()
+                    selectList?.forEach { file ->
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            viewModel.uploadFile(File(file.androidQToPath))
+                        } else {
+                            viewModel.uploadFile(File(file.realPath))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        loading?.close()
+    }
 }

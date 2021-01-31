@@ -5,33 +5,35 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.LIST_ACTION_KEY
 import com.townwang.yaohuo.common.LIST_BBS_NAME_KEY
 import com.townwang.yaohuo.common.LIST_CLASS_ID_KEY
 import com.townwang.yaohuo.common.onClickListener
+import com.townwang.yaohuo.databinding.FragmentBbsBinding
 import com.townwang.yaohuo.ui.activity.ActivityList
-import kotlinx.android.synthetic.main.fragment_bbs.*
+import com.townwang.yaohuo.ui.fragment.BaseFragment
 
-class BBSFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
+class BBSFragment : BaseFragment() {
+    private val binding get() = _binding!! as FragmentBbsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_bbs, container, false)
+        _binding = FragmentBbsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        resourceSharing.onClickListener {
+        binding.resourceSharing.onClickListener {
             startActivity(Intent(
                 requireContext(), ActivityList::class.java
             ).apply {
@@ -43,7 +45,7 @@ class BBSFragment : Fragment() {
             )
         }
 
-        integratedTechnology.onClickListener {
+        binding.integratedTechnology.onClickListener {
             startActivity(Intent(
                 requireContext(), ActivityList::class.java
             ).apply {
@@ -54,7 +56,7 @@ class BBSFragment : Fragment() {
             }
             )
         }
-        mlTalkOver.onClickListener {
+        binding.mlTalkOver.onClickListener {
             startActivity(Intent(
                 requireContext(), ActivityList::class.java
             ).apply {
@@ -65,7 +67,7 @@ class BBSFragment : Fragment() {
             }
             )
         }
-        reward.onClickListener {
+        binding.reward.onClickListener {
             startActivity(Intent(
                 requireContext(), ActivityList::class.java
             ).apply {
@@ -76,7 +78,7 @@ class BBSFragment : Fragment() {
             }
             )
         }
-        teahouse.onClickListener {
+        binding.teahouse.onClickListener {
             startActivity(Intent(
                 requireContext(), ActivityList::class.java
             ).apply {
@@ -87,7 +89,7 @@ class BBSFragment : Fragment() {
             }
             )
         }
-        rewardQuestionAndAnswer.onClickListener {
+        binding.rewardQuestionAndAnswer.onClickListener {
             startActivity(Intent(
                 requireContext(), ActivityList::class.java
             ).apply {
@@ -98,7 +100,7 @@ class BBSFragment : Fragment() {
             }
             )
         }
-        texturedPhoto.onClickListener {
+        binding.texturedPhoto.onClickListener {
             startActivity(Intent(
                 requireContext(), ActivityList::class.java
             ).apply {
@@ -109,7 +111,7 @@ class BBSFragment : Fragment() {
             }
             )
         }
-        stationService.onClickListener {
+        binding.stationService.onClickListener {
             startActivity(Intent(
                 requireContext(), ActivityList::class.java
             ).apply {
@@ -120,7 +122,7 @@ class BBSFragment : Fragment() {
             }
             )
         }
-        complaint.onClickListener {
+        binding.complaint.onClickListener {
             startActivity(Intent(
                 requireContext(), ActivityList::class.java
             ).apply {
@@ -131,7 +133,7 @@ class BBSFragment : Fragment() {
             }
             )
         }
-        announcement.onClickListener {
+        binding.announcement.onClickListener {
             startActivity(Intent(
                 requireContext(), ActivityList::class.java
             ).apply {

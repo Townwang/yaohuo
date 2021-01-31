@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.databinding.ActivityPubBinding
 import com.townwang.yaohuo.ui.fragment.search.SearchFragment
-import kotlinx.android.synthetic.main.appbar.*
 
 class ActivitySearch : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,8 +14,9 @@ class ActivitySearch : AppCompatActivity() {
         }
         setActTheme()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pub)
-        setSupportActionBar(toolbar)
+        val binding = ActivityPubBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.appbarLayout.toolbar)
         setSharedElement()
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)

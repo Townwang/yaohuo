@@ -16,7 +16,9 @@
         android:layout_gravity="bottom"
         app:backgroundTint="?colorPrimary"
         app:fabAlignmentMode="center">
-        <include layout="@layout/include_home_bottom_btn" />
+        <include
+            android:id="@+id/bottom"
+            layout="@layout/include_home_bottom_btn" />
     </com.google.android.material.bottomappbar.BottomAppBar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -29,5 +31,5 @@
         app:layout_anchor="@+id/bottom_app_bar"
         app:layout_anchorGravity="center|top"
         app:srcCompat="@drawable/ic_baseline_add_24"
-        tools:ignore="VectorDrawableCompat" />
+        tools:ignore="ContentDescription,VectorDrawableCompat" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

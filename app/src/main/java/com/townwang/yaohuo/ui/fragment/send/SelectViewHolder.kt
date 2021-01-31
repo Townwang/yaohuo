@@ -4,20 +4,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.townwang.yaohuo.R
+import com.townwang.yaohuo.databinding.ItemSelectListDataBinding
 import com.townwang.yaohuo.repo.data.SelectBean
-import kotlinx.android.synthetic.main.item_list_data.view.*
 
-class SelectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class SelectViewHolder(val binding: ItemSelectListDataBinding) : RecyclerView.ViewHolder(binding.root) {
     companion object {
         fun create(parent: ViewGroup): SelectViewHolder {
-            return SelectViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_select_list_data, parent, false)
+          val  binding = ItemSelectListDataBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
             )
+            return SelectViewHolder(binding)
         }
     }
 
     fun bind(data: SelectBean) {
-        itemView.title.text = data.string
+        binding.title.text = data.string
     }
 }

@@ -1,10 +1,11 @@
 package com.townwang.yaohuo
+
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.multidex.MultiDex
 import com.bumptech.glide.request.target.ViewTarget
@@ -28,10 +29,11 @@ class YaoApplication : Application() {
     companion object {
         var application: Application? = null
 
+
         /**
          * 维护Activity 的list
          */
-        private val mActivitys = Collections
+        private val mActivates = Collections
             .synchronizedList(LinkedList<Activity>())
 
         fun getContext(): Context {
@@ -56,10 +58,18 @@ class YaoApplication : Application() {
     @SuppressLint("PackageManagerGetSignatures")
     private fun initApp() {
         try {
-            val a = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-            val b = a.signatures
-            val c = b[0]
-            val d = c.hashCode()
+            val a = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                packageManager.getPackageInfo(
+                    packageName,
+                    PackageManager.GET_SIGNING_CERTIFICATES
+                ).signingInfo.apkContentsSigners[0]
+            } else {
+                packageManager.getPackageInfo(
+                    packageName,
+                    PackageManager.GET_SIGNATURES
+                ).signatures[0]
+            }
+            val d = a.hashCode()
             if (d == -508714960 || d == 1375692864) {
                 isCrack = true
             }
@@ -91,33 +101,33 @@ class YaoApplication : Application() {
      * @param activity 作用说明 ：添加一个activity到管理里
      */
     fun pushActivity(activity: Activity?) {
-        mActivitys.add(activity)
+        mActivates.add(activity)
     }
 
     /**
      * @param activity 作用说明 ：删除一个activity在管理里
      */
     fun popActivity(activity: Activity?) {
-        mActivitys.remove(activity)
+        mActivates.remove(activity)
     }
 
     /**
      * get current Activity 获取当前Activity（栈中最后一个压入的）
      */
     fun currentActivity(): Activity? {
-        return if (mActivitys.isEmpty()) {
+        return if (mActivates.isEmpty()) {
             null
-        } else mActivitys[mActivitys.size - 1]
+        } else mActivates[mActivates.size - 1]
     }
 
     /**
      * 结束当前Activity（栈中最后一个压入的）
      */
     fun finishCurrentActivity() {
-        if (mActivitys.isEmpty()) {
+        if (mActivates.isEmpty()) {
             return
         }
-        val activity = mActivitys[mActivitys.size - 1]
+        val activity = mActivates[mActivates.size - 1]
         finishActivity(activity)
     }
 
@@ -125,11 +135,11 @@ class YaoApplication : Application() {
      * 结束指定的Activity
      */
     fun finishActivity(activity: Activity?) {
-        if (mActivitys.isEmpty()) {
+        if (mActivates.isEmpty()) {
             return
         }
         if (activity != null) {
-            mActivitys.remove(activity)
+            mActivates.remove(activity)
             activity.finish()
         }
     }
@@ -138,10 +148,10 @@ class YaoApplication : Application() {
      * 结束指定类名的Activity
      */
     fun finishActivity(cls: Class<*>) {
-        if (mActivitys.isEmpty()) {
+        if (mActivates.isEmpty()) {
             return
         }
-        for (activity in mActivitys) {
+        for (activity in mActivates) {
             if (activity.javaClass == cls) {
                 finishActivity(activity)
             }
@@ -156,7 +166,7 @@ class YaoApplication : Application() {
      */
     fun findActivity(cls: Class<*>): Activity? {
         var targetActivity: Activity? = null
-        for (activity in mActivitys) {
+        for (activity in mActivates) {
             if (activity.javaClass == cls) {
                 targetActivity = activity
                 break
@@ -170,12 +180,12 @@ class YaoApplication : Application() {
      */
     fun getTopActivity(): Activity? {
         var mBaseActivity: Activity?
-        synchronized(mActivitys) {
-            val size: Int = mActivitys.size - 1
+        synchronized(mActivates) {
+            val size: Int = mActivates.size - 1
             if (size < 0) {
                 return null
             }
-            mBaseActivity = mActivitys[size]
+            mBaseActivity = mActivates[size]
         }
         return mBaseActivity
     }
@@ -185,12 +195,12 @@ class YaoApplication : Application() {
      */
     fun getTopActivityName(): String? {
         var mBaseActivity: Activity?
-        synchronized(mActivitys) {
-            val size: Int = mActivitys.size - 1
+        synchronized(mActivates) {
+            val size: Int = mActivates.size - 1
             if (size < 0) {
                 return null
             }
-            mBaseActivity = mActivitys[size]
+            mBaseActivity = mActivates[size]
         }
         return mBaseActivity?.javaClass?.name
     }
@@ -199,10 +209,10 @@ class YaoApplication : Application() {
      * 结束所有Activity
      */
     private fun finishAllActivity() {
-        for (activity in mActivitys) {
+        for (activity in mActivates) {
             activity.finish()
         }
-        mActivitys.clear()
+        mActivates.clear()
     }
 
     /**
@@ -216,6 +226,7 @@ class YaoApplication : Application() {
             BuglyLog.e(BuildConfig.FLAVOR, "app == exit${e.message}")
         }
     }
+
     private fun registerActivityListener() {
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
@@ -228,15 +239,16 @@ class YaoApplication : Application() {
             override fun onActivityStopped(activity: Activity) {}
             override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
             override fun onActivityDestroyed(activity: Activity) {
-                if (mActivitys.isEmpty()) {
+                if (mActivates.isEmpty()) {
                     return
                 }
-                if (mActivitys.contains(activity)) {
+                if (mActivates.contains(activity)) {
                     popActivity(activity)
                 }
             }
         })
     }
+
     init {
         SmartRefreshLayout.setDefaultRefreshInitializer { _, layout ->
             layout.setEnableAutoLoadMore(true)
