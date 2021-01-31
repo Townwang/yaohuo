@@ -8,8 +8,8 @@ import com.townwang.yaohuo.common.THEME_KEY
 import com.townwang.yaohuo.common.config
 import com.townwang.yaohuo.common.setActTheme
 import com.townwang.yaohuo.common.work
+import com.townwang.yaohuo.databinding.ActivityPubBinding
 import com.townwang.yaohuo.ui.fragment.splash.SplashFragment
-import kotlinx.android.synthetic.main.activity_about.*
 
 class ActivityWelcome : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,11 +18,12 @@ class ActivityWelcome : AppCompatActivity() {
         }
         setActTheme()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_about)
+        val binding = ActivityPubBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(false)
         }
-        appbarLayout.visibility = View.GONE
+        binding.appbarLayout.appbar.visibility = View.GONE
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.navHost, SplashFragment())

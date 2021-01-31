@@ -6,19 +6,19 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.THEME_KEY
 import com.townwang.yaohuo.common.config
 import com.townwang.yaohuo.common.reload
 import com.townwang.yaohuo.common.work
+import com.townwang.yaohuo.databinding.FragmentThemeBinding
 import com.townwang.yaohuo.repo.data.ThemeList
-import kotlinx.android.synthetic.main.fragment_theme.*
+import com.townwang.yaohuo.ui.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ThemeFragment : Fragment() {
-
+class ThemeFragment : BaseFragment() {
+    private val binding get() = _binding!! as FragmentThemeBinding
     private val adapter = ThemeAdapter()
     private val viewModel: ThemeModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +26,8 @@ class ThemeFragment : Fragment() {
         setHasOptionsMenu(true)
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_theme, container, false)
+        _binding = FragmentThemeBinding.inflate(inflater,container,false)
+        return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,8 +37,8 @@ class ThemeFragment : Fragment() {
                 setDisplayHomeAsUpEnabled(true)
             }
         }
-        themeList.adapter = adapter
-        themeList.layoutManager = LinearLayoutManager(context)
+        binding.themeList.adapter = adapter
+        binding.themeList.layoutManager = LinearLayoutManager(context)
         adapter.onItemClickListener = { _, data ->
             requireActivity().work {
                 reload(config(THEME_KEY,(data as ThemeList).id.toString()))

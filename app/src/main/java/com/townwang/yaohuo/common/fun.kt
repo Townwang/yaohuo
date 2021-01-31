@@ -3,6 +3,7 @@
 package com.townwang.yaohuo.common
 
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.app.Activity
 import android.app.SharedElementCallback
 import android.content.Context
@@ -12,7 +13,6 @@ import android.graphics.RectF
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.os.Handler
 import android.os.Parcelable
 import android.util.TypedValue
 import android.view.Gravity
@@ -26,7 +26,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
-import com.google.gson.Gson
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
@@ -39,12 +38,9 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 
-typealias OnItemClickListener = (view: View, data: T) -> Unit
-typealias OnItemListener = (view: View, data: T) -> Unit
-
-var gson = Gson()
-
-val handler = Handler()
+typealias OnItemClickListener = (view: T, data: T) -> Unit
+typealias OnItemListener = (view: T, data: T) -> Unit
+typealias OnClickListener = (view: T, data: T) -> Unit
 
 inline fun <T> T?.work(block: T.() -> Unit) {
     if (this != null) block.invoke(this)
@@ -93,26 +89,6 @@ fun startAnimator(drawable: Drawable) {
     }
 }
 
-fun Context.config(key: String, value: String? = null): String {
-    var config: String by Preference(this, key, default = "1")
-    return if (value.isNullOrEmpty()) {
-        config
-    } else {
-        config = value
-        config
-    }
-}
-
-fun Context.clearConfig(vararg key: String) {
-    key.forEach {
-        val sp = getSharedPreferences(
-            it,
-            Context.MODE_PRIVATE
-        )
-        sp.all.clear()
-    }
-}
-
 fun Activity.setActTheme(string: String? = null) {
     setTheme(config(THEME_KEY, string).toInt())
 }
@@ -149,24 +125,27 @@ fun isCookieBoolean(): Boolean {
     return cookieMaps.isNullOrEmpty()
 }
 
-fun setTitleCenter(toolbar: Toolbar) {
+fun androidx.appcompat.app.ActionBar.setTitleCenter() {
     val title = "title"
-    val originalTitle = toolbar.title
-    toolbar.title = title
-    for (i in 0 until toolbar.childCount) {
-        val view = toolbar.getChildAt(i)
-        if (view is TextView) {
-            if (title == view.text) {
-                view.gravity = Gravity.CENTER
-                val params = Toolbar.LayoutParams(
-                    Toolbar.LayoutParams.WRAP_CONTENT,
-                    Toolbar.LayoutParams.MATCH_PARENT
-                )
-                params.gravity = Gravity.CENTER
-                view.layoutParams = params
+    val toolbar = this.customView
+    if (toolbar is Toolbar) {
+        val originalTitle = toolbar.title
+        toolbar.title = title
+        for (i in 0 until toolbar.childCount) {
+            val view = toolbar.getChildAt(i)
+            if (view is TextView) {
+                if (title == view.text) {
+                    view.gravity = Gravity.CENTER
+                    val params = Toolbar.LayoutParams(
+                        Toolbar.LayoutParams.WRAP_CONTENT,
+                        Toolbar.LayoutParams.MATCH_PARENT
+                    )
+                    params.gravity = Gravity.CENTER
+                    view.layoutParams = params
+                }
             }
+            toolbar.title = originalTitle
         }
-        toolbar.title = originalTitle
     }
 }
 
@@ -256,6 +235,9 @@ fun Context.handleException(
                 }
                 ErrorCode.E_1005.hashCode() -> {
                     // TODO: 2021/1/17/017 校验密码
+                    toast(t.message.orEmpty())
+                }
+                else -> {
                     toast(t.message.orEmpty())
                 }
             }

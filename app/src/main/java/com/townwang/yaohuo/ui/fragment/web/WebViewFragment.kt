@@ -1,13 +1,8 @@
 package com.townwang.yaohuo.ui.fragment.web
+
 import android.app.DownloadManager
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
-import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -16,17 +11,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import com.townwang.yaohuo.R
-import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
 import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
 import com.townwang.yaohuo.common.getUrlString
-import com.townwang.yaohuo.common.utils.*
+import com.townwang.yaohuo.common.utils.clearNotificaion
 import com.townwang.yaohuo.common.work
-import kotlinx.android.synthetic.main.fragment_webview.*
-class WebViewFragment : Fragment() {
+import com.townwang.yaohuo.databinding.FragmentWebviewBinding
+import com.townwang.yaohuo.ui.fragment.BaseFragment
+
+class WebViewFragment : BaseFragment() {
+    private val binding get() = _binding!! as FragmentWebviewBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -37,12 +32,13 @@ class WebViewFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_webview, container, false)
+        _binding = FragmentWebviewBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val web = WebViewHelper(requireContext(), content).apply {
+        val web = WebViewHelper(requireContext(), binding.content).apply {
             shouldOverrideUrlLoading = false
         }
         web.onStartListener = {
@@ -52,29 +48,29 @@ class WebViewFragment : Fragment() {
                     setDisplayHomeAsUpEnabled(true)
                 }
             }
-            progressBar?.visibility = View.VISIBLE
-            progressBar?.alpha = 1.0f
+            binding.progressBar.visibility = View.VISIBLE
+            binding.progressBar.alpha = 1.0f
         }
         web.onLoadingListener = {
-            web.startProgressAnimation(progressBar, it)
+            web.startProgressAnimation(binding.progressBar, it)
         }
         web.onFinishedListener = {
-            progressBar?.progress = it
-            web.startDismissAnimation(progressBar, it)
+            binding.progressBar.progress = it
+            web.startDismissAnimation(binding.progressBar, it)
         }
-        web.onDownloadListener = { url, contentDisposition, mimeType,cookie ->
+        web.onDownloadListener = { url, contentDisposition, mimeType, cookie ->
             Snackbar.make(requireView(), "检测到一个文件需要下载", Snackbar.LENGTH_INDEFINITE)
                 .setAction("下载") {
-                    downloadBySystem(url, contentDisposition, mimeType,cookie)
+                    downloadBySystem(url, contentDisposition, mimeType, cookie)
                 }.show()
         }
 
-        refreshLayout?.setOnRefreshListener {
-            refreshLayout?.finishRefresh()
+        binding.refreshLayout.setOnRefreshListener {
+            binding.refreshLayout.finishRefresh()
             web.setUrl(getUrlString(requireArguments().getString(WEB_VIEW_URL_KEY, "")))
         }
-        refreshLayout?.setEnableLoadMore(false)
-        refreshLayout?.autoRefresh()
+        binding.refreshLayout.setEnableLoadMore(false)
+        binding.refreshLayout.autoRefresh()
         if ("消息" == requireArguments().getString(WEB_VIEW_URL_TITLE, "")) {
             clearNotificaion()
         }
@@ -94,7 +90,7 @@ class WebViewFragment : Fragment() {
         url: String,
         contentDisposition: String,
         mimeType: String,
-        cookie:String?
+        cookie: String?
     ) {
         val request = DownloadManager.Request(Uri.parse(url))
         request.allowScanningByMediaScanner()

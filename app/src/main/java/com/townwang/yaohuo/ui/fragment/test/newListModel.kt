@@ -5,8 +5,6 @@ import androidx.paging.PagedList
 import com.townwang.yaohuo.common.UIViewModel
 import com.townwang.yaohuo.repo.Repo
 import com.townwang.yaohuo.repo.data.HomeData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class newListModel(private val repo: Repo) : UIViewModel() {
 

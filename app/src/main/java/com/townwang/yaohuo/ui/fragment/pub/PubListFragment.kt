@@ -9,21 +9,18 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.townwang.yaohuo.BuildConfig
-import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.databinding.FragmentListPubBinding
 import com.townwang.yaohuo.repo.data.HomeData
 import com.townwang.yaohuo.ui.activity.ActivityDetails
-import com.townwang.yaohuo.ui.weight.consecutivescroller.IConsecutiveScroller
-import kotlinx.android.synthetic.main.fragment_list_pub.*
-import kotlinx.android.synthetic.main.item_list_data.view.*
+import com.townwang.yaohuo.ui.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PubListFragment : Fragment() {
-
+class PubListFragment : BaseFragment() {
+    private val binding get() = _binding!! as FragmentListPubBinding
     private val adapter = PubListAdapter()
     private val viewModel: ListModel by viewModel()
 
@@ -32,13 +29,13 @@ class PubListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_list_pub, container, false)
+        _binding = FragmentListPubBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,17 +46,14 @@ class PubListFragment : Fragment() {
                 setDisplayHomeAsUpEnabled(true)
             }
         }
-        homeList?.adapter = adapter
-        homeList?.layoutManager =
+        binding.homeList.adapter = adapter
+        binding.homeList.layoutManager =
             (StaggeredGridLayoutManager(
                 requireContext().config(HOME_LIST_THEME_SHOW).toInt(),
                 StaggeredGridLayoutManager.VERTICAL
             ))
         adapter.onItemClickListener = { v, data ->
             if (data is HomeData) {
-                val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    requireActivity(), v.title, "share name"
-                ).toBundle()
                 var isBear = true
                 data.smailIng.forEach {
                     if (it == BuildConfig.YH_MATCH_LIST_BEAR) {
@@ -67,8 +61,7 @@ class PubListFragment : Fragment() {
                         return@forEach
                     }
                 }
-                ActivityCompat.startActivity(
-                    requireContext(), Intent(
+                startActivity( Intent(
                         requireContext(), ActivityDetails::class.java
                     ).apply {
                         flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
@@ -76,11 +69,11 @@ class PubListFragment : Fragment() {
                         putExtra(HOME_DETAILS_READ_KEY, data.read)
                         putExtra(HOME_DETAILS_BEAR_KEY, isBear)
                         putExtra(HOME_DETAILS_TITLE_KEY, data.title)
-                    }, bundle
+                    }
                 )
             }
         }
-        refreshLayout?.setOnRefreshListener {
+        binding.refreshLayout.setOnRefreshListener {
             page = 1
             viewModel.loadList(
                 requireArguments().getInt(LIST_CLASS_ID_KEY, 0),
@@ -88,7 +81,7 @@ class PubListFragment : Fragment() {
                 requireArguments().getString(LIST_ACTION_KEY, "new")
             )
         }
-        refreshLayout?.setOnLoadMoreListener {
+        binding.refreshLayout.setOnLoadMoreListener {
             page++
             viewModel.loadList(
                 requireArguments().getInt(LIST_CLASS_ID_KEY, 0),
@@ -96,7 +89,7 @@ class PubListFragment : Fragment() {
                 requireArguments().getString(LIST_ACTION_KEY, "new")
             )
         }
-        refreshLayout?.autoRefresh()
+        binding.refreshLayout.autoRefresh()
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -129,11 +122,10 @@ class PubListFragment : Fragment() {
     }
 
     private fun refreshDone(success: Boolean) {
-        refreshLayout ?: return
         if (page == 1) {
-            refreshLayout.finishRefresh(success)
+            binding.refreshLayout.finishRefresh(success)
         } else {
-            refreshLayout.finishLoadMore(success)
+            binding.refreshLayout.finishLoadMore(success)
         }
     }
 }

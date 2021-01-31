@@ -22,12 +22,20 @@ class NetCookiesInterceptor : Interceptor {
                 "town" -> {
                     BuildConfig.BASE_URL.toHttpUrlOrNull()
                 }
+                "yao_cdn" -> {
+                    builder.addHeader("accept", "application/json, text/javascript, */*; q=0.01")
+                    builder.addHeader("accept-encoding", "gzip, deflate, br")
+                    builder.addHeader("accept-language", "zh-CN")
+                    builder.addHeader("origin", BuildConfig.YAO_CDN_URL)
+                    builder.addHeader("content-type", "multipart/form-data")
+                    builder.addHeader("user-agent", USER_AGENT)
+                    BuildConfig.YAO_CDN_URL.toHttpUrlOrNull()
+                }
                 "cn" -> {
                     BuildConfig.CN_URL.toHttpUrlOrNull()
                 }
                 else -> {
                     builder.addHeader("accept", "*/*")
-                    builder.addHeader("accept-encoding", "gzip, deflate, br")
                     builder.addHeader("accept-encoding", "gzip, deflate, br")
                     builder.addHeader("accept-language", "zh-CN,zh;q=0.9,en;q=0.8")
                     builder.addHeader("origin", BuildConfig.BASE_YAOHUO_URL)

@@ -1,7 +1,6 @@
 package com.townwang.yaohuo.ui.fragment.about
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -9,31 +8,32 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
+import com.tencent.bugly.beta.Beta
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
-import kotlinx.android.synthetic.main.fragment_about.*
-import com.canking.minipay.MiniPayUtils
-import com.canking.minipay.Config
-import com.google.android.material.snackbar.Snackbar
-import com.tencent.bugly.Bugly
-import com.tencent.bugly.beta.Beta
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.databinding.FragmentAboutBinding
 import com.townwang.yaohuo.ui.activity.ActivityWebView
+import com.townwang.yaohuo.ui.fragment.BaseFragment
+import com.townwang.yaohuo.ui.weight.pay.PayHelper
+import com.townwang.yaohuo.ui.weight.pay.PayConfig
 
 
-class AboutFragment : Fragment() {
+class AboutFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
+    private val binding get() = _binding!! as FragmentAboutBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_about, container, false)
+        _binding = FragmentAboutBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,18 +44,18 @@ class AboutFragment : Fragment() {
                 setDisplayHomeAsUpEnabled(true)
             }
         }
-        startAnimator(logoImage.drawable)
-        versionName.text = BuildConfig.VERSION_NAME
-        versionName.onClickListener {
+        startAnimator(binding.logoImage.drawable)
+        binding.versionName.text = BuildConfig.VERSION_NAME
+        binding.versionName.onClickListener {
             Beta.checkUpgrade()
         }
         val upgradeInfo = Beta.getUpgradeInfo()
         if (upgradeInfo == null) {
-            redDot.visibility = View.GONE
+            binding.redDot.visibility = View.GONE
         } else {
-            redDot.visibility = View.VISIBLE
+            binding.redDot.visibility = View.VISIBLE
         }
-        openSource.onClickListener {
+        binding.openSource.onClickListener {
             ActivityCompat.startActivity(
                 requireContext(), Intent(
                     requireContext(), ActivityWebView::class.java
@@ -66,7 +66,7 @@ class AboutFragment : Fragment() {
                 }, null
             )
         }
-        pubWechat.onClickListener {
+        binding.pubWechat.onClickListener {
             ActivityCompat.startActivity(
                 requireContext(), Intent(
                     requireContext(), ActivityWebView::class.java
@@ -77,13 +77,16 @@ class AboutFragment : Fragment() {
                 }, null
             )
         }
-        post.onClickListener {
-            Snackbar.make(post, "暂未开贴", Snackbar.LENGTH_SHORT).show()
+        binding.post.onClickListener {
+            Snackbar.make(binding.post, "暂未开贴", Snackbar.LENGTH_SHORT).show()
         }
-        praise.onClickListener {
-            MiniPayUtils.setupPay(
+        binding.praise.onClickListener {
+            PayHelper.setupPay(
                 requireContext(),
-                Config.Builder("fkx083710xkhl4xuxzpud4e", R.mipmap.alipay, R.mipmap.wechat).build()
+                PayConfig(
+                    "fkx083710xkhl4xuxzpud4e",
+                    R.mipmap.alipay, R.mipmap.wechat
+                )
             )
         }
     }

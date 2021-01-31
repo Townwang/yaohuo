@@ -9,26 +9,22 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.scwang.smart.refresh.layout.api.RefreshFooter
-import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.utils.isHaveMessage
+import com.townwang.yaohuo.databinding.FragmentHomeBinding
 import com.townwang.yaohuo.repo.data.HomeData
 import com.townwang.yaohuo.ui.activity.*
+import com.townwang.yaohuo.ui.fragment.BaseFragment
 import com.townwang.yaohuo.ui.fragment.bbs.BBSFragment
 import com.townwang.yaohuo.ui.fragment.pub.PubListAdapter
-import kotlinx.android.synthetic.main.appbar.*
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.item_list_data.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
+    private val binding get() = _binding!! as FragmentHomeBinding
     private val adapter = PubListAdapter()
     private val viewModel: HomeModel by viewModel()
     lateinit var request: ActivityResultLauncher<Intent>
@@ -47,7 +43,8 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,25 +53,22 @@ class HomeFragment : Fragment() {
             supportActionBar.work {
                 title = getString(R.string.home_page)
                 setDisplayHomeAsUpEnabled(false)
+                setTitleCenter()
             }
-            setTitleCenter(toolbar)
         }
         if (savedInstanceState == null) {
             childFragmentManager.beginTransaction()
                 .replace(R.id.navBBSHost, BBSFragment())
                 .commit()
         }
-        homeList?.adapter = adapter
-        homeList?.layoutManager =
+        binding.homeList?.adapter = adapter
+        binding.homeList?.layoutManager =
             (StaggeredGridLayoutManager(
                 requireContext().config(HOME_LIST_THEME_SHOW).toInt(),
                 StaggeredGridLayoutManager.VERTICAL
             ))
         adapter.onItemClickListener = { v, data ->
             if (data is HomeData) {
-                val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    requireActivity(), v.title, "share name"
-                ).toBundle()
                 var isBear = true
                 data.smailIng.forEach {
                     if (it == BuildConfig.YH_MATCH_LIST_BEAR) {
@@ -82,8 +76,7 @@ class HomeFragment : Fragment() {
                         return@forEach
                     }
                 }
-                ActivityCompat.startActivity(
-                    requireContext(), Intent(
+                startActivity( Intent(
                         requireContext(), ActivityDetails::class.java
                     ).apply {
                         flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
@@ -91,12 +84,12 @@ class HomeFragment : Fragment() {
                         putExtra(HOME_DETAILS_READ_KEY, data.read)
                         putExtra(HOME_DETAILS_BEAR_KEY, isBear)
                         putExtra(HOME_DETAILS_TITLE_KEY, data.title)
-                    }, bundle
+                    }
                 )
             }
         }
         viewModel.loadList(0, 1, BuildConfig.YH_BBS_ACTION_NEW)
-        noMore.onClickListener {
+        binding. noMore.onClickListener {
             startActivity(Intent(
                 requireContext(), ActivityList::class.java
             ).apply {
@@ -107,9 +100,9 @@ class HomeFragment : Fragment() {
             }
             )
         }
-        search_value.setOnEditorActionListener { v, actionId, event ->
+        binding.searchValue.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val searchValue = search_value.text.toString()
+                val searchValue =  binding.searchValue.text.toString()
                 if (searchValue.isNullOrEmpty()) {
                     Snackbar.make(
                         v,
@@ -130,8 +123,8 @@ class HomeFragment : Fragment() {
             }
             return@setOnEditorActionListener false
         }
-        searchBtn.onClickListener {
-            val searchValue = search_value.text.toString()
+        binding.searchBtn.onClickListener {
+            val searchValue =  binding.searchValue.text.toString()
             if (searchValue.isNullOrEmpty()) {
                 Snackbar.make(
                     it,
@@ -195,7 +188,7 @@ class HomeFragment : Fragment() {
             }
             R.id.toolbar_r_about -> {
                 val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    requireActivity(), scrollerLayout, "share name"
+                    requireActivity(),  binding.scrollerLayout, "share name"
                 ).toBundle()
                 ActivityCompat.startActivity(
                     requireContext(), Intent(

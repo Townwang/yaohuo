@@ -7,6 +7,7 @@ import com.townwang.yaohuo.common.setSharedElement
 import com.townwang.yaohuo.common.work
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.setTitleCenter
+import com.townwang.yaohuo.databinding.ActivityThemeBinding
 import com.townwang.yaohuo.ui.fragment.theme.ThemeFragment
 import kotlinx.android.synthetic.main.appbar.*
 
@@ -14,12 +15,13 @@ class ActivityTheme : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setActTheme()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_theme)
-        setSupportActionBar(toolbar)
-        setTitleCenter(toolbar)
+        val binding = ActivityThemeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.appbarLayout.toolbar)
         setSharedElement()
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)
+            setTitleCenter()
         }
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()

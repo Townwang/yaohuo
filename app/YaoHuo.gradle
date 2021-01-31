@@ -4,9 +4,14 @@ android{
         buildConfigField("String", "BASE_URL", '"https://townwang.com/"')
         buildConfigField("String", "CN_URL", '"http://cdn.townwang.cn/"')
         buildConfigField("String", "BASE_YAOHUO_URL", '"https://yaohuo.me/"')
+        buildConfigField("String", "YAO_CDN_URL", '"https://tu.yaohuo.me/"')
     }
     //妖火字段
     buildTypes.all {
+        //cookie
+        buildConfigField("String", "YH_COOKIE_SID", '"sidyaohuo"')
+        buildConfigField("String", "YH_COOKIE_SESSION_ID", '"ASP.NET_SessionId"')
+        buildConfigField("String", "YH_COOKIE_GUID", '"GUID"')
         //login
         buildConfigField("String", "YH_LOGIN_USER_NAME", '"logname"')
         buildConfigField("String", "YH_LOGIN_PASSWORD", '"logpass"')
@@ -16,6 +21,8 @@ android{
         buildConfigField("String", "YH_REPLY_SEND_MSG", '"sendmsg"')
         buildConfigField("String", "YH_REPLY_REPLY", '"reply"')
         buildConfigField("String", "YH_REPLY_TOUSERID", '"touserid"')
+        buildConfigField("String", "YH_REPLY_ID", '"id"')
+        buildConfigField("String", "YH_REPLY_SID", '"sid"')
         //bbs action
         buildConfigField("String", "YH_BBS_ACTION_CLASS", '"class"')
         buildConfigField("String", "YH_BBS_ACTION_NEW", '"new"')
@@ -25,8 +32,6 @@ android{
         buildConfigField("String", "YH_SEND_BOOK_TITLE", '"book_title"')
         buildConfigField("String", "YH_SEND_BOOK_CONTENT", '"book_content"')
         buildConfigField("String", "YH_SEND_BOOK_CLASSID", '"classid"')
-
-
 
     }
     //Jsoup解析字段

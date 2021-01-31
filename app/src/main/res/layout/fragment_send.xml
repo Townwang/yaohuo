@@ -80,8 +80,12 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:singleLine="true"
+        android:gravity="center_vertical"
         android:background="@color/transparent"
         android:hint="请输入标题"
         android:textColor="@color/md_black_1000"
@@ -91,7 +95,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dividingLine"
         tools:ignore="MissingConstraints,RtlHardcoded,RtlSymmetry" />
-
+    <View
+        android:id="@+id/dividingLine1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_margin="12dp"
+        android:background="@drawable/comment_dialog_et_selector"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        tools:ignore="MissingConstraints" />
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/comment_et"
         android:layout_width="match_parent"
@@ -106,18 +117,34 @@
         android:textSize="@dimen/text12Size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/dividingLine1"
         tools:ignore="MissingConstraints,RtlHardcoded,RtlSymmetry" />
-
-
-    <ImageView
-        android:id="@+id/addImg"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="12dp"
-        android:src="@drawable/ic_baseline_add_photo_alternate_24"
-        app:layout_constraintStart_toStartOf="parent"
+    <View
+        android:id="@+id/dividingLine2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_margin="12dp"
+        android:background="@drawable/comment_dialog_et_selector"
         app:layout_constraintTop_toBottomOf="@+id/comment_et"
         tools:ignore="MissingConstraints" />
-
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_margin="12dp"
+        android:columnWidth="90dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/dividingLine2"
+        android:layout_height="wrap_content"/>
+    <View
+        android:id="@+id/dividingLine3"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_margin="12dp"
+        android:background="@drawable/comment_dialog_et_selector"
+        app:layout_constraintTop_toBottomOf="@+id/gridView"
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>
