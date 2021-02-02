@@ -97,8 +97,8 @@ class SendFragment : DialogFragment() {
             }
             adapterImg.datas.remove(adapterImg.datas.last())
             if (adapterImg.datas.isNotEmpty()) {
-                adapterImg.datas.forEach { ImgUrl ->
-                    stringBuilder.append("[img]$ImgUrl[/img]///")
+                adapterImg.datas.forEach { data ->
+                    stringBuilder.append("[img]${data.url}[/img]///")
                 }
             }
             mDialogListener?.invoke(this, title, type.toString(), stringBuilder.toString())
