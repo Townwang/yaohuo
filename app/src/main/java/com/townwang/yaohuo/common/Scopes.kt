@@ -1,11 +1,16 @@
 package com.townwang.yaohuo.common
 
+import android.util.Log
+import com.google.gson.Gson
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.utils.isHaveMsg
 import com.townwang.yaohuo.repo.data.Niece
 import com.townwang.yaohuo.repo.data.YaoCdnReq
 import com.townwang.yaohuo.repo.enum.ErrorCode
 import kotlinx.coroutines.*
+import okhttp3.RequestBody
+import okhttp3.Response
+import okhttp3.ResponseBody
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -77,7 +82,12 @@ suspend fun Call<YaoCdnReq>.getYaoResp() =
                         if (body.code == 200) {
                             it.resume(body)
                         } else {
-                            it.resumeWithException(ApiErrorException(body.code, body.msg?:""))
+                            it.resumeWithException(
+                                ApiErrorException(
+                                    body.code ?: 0,
+                                    body.msg ?: "上传失败"
+                                )
+                            )
                         }
                     } else {
                         it.resumeWithException(NullResponseBodyException())
@@ -90,6 +100,7 @@ suspend fun Call<YaoCdnReq>.getYaoResp() =
             }
         }
     }
+
 /**
  * 检测是否使用VPN
  * @return Boolean  true 使用 false 未使用
@@ -139,7 +150,7 @@ suspend fun <T : Document> Call<T>.getResp() = withContext(networkScope.coroutin
 fun checkDoc(document: Element?): Throwable? {
     document ?: return null
     val doc = Jsoup.parse(document.toString())
-    val tip = document.select("div.tip")?.first()?.toString()?:""
+    val tip = document.select("div.tip")?.first()?.toString() ?: ""
     if (doc.title().contains(BuildConfig.YH_MATCH_404)) {
         return ApiErrorException(ErrorCode.E_1001.hashCode(), "找不到此贴了!")
     }

@@ -9,13 +9,13 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.setTitleCenter
 import com.townwang.yaohuo.databinding.ActivityAboutBinding
 import com.townwang.yaohuo.ui.fragment.about.AboutFragment
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 
 class ActivityAbout : AppCompatActivity() {
+    val binding: ActivityAboutBinding by viewbind()
     override fun onCreate(savedInstanceState: Bundle?) {
         setActTheme()
         super.onCreate(savedInstanceState)
-        val binding = ActivityAboutBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         setSupportActionBar(binding.appbarLayout.toolbar)
         setSharedElement()
         supportActionBar.work {

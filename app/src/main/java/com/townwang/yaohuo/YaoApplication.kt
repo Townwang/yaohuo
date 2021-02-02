@@ -80,7 +80,6 @@ class YaoApplication : Application() {
 
 
     private fun initBugFly() {
-        Bugly.init(applicationContext, "56bf507146", false)
         Beta.autoInit = true
         Beta.autoCheckUpgrade = true
         Beta.upgradeCheckPeriod = 60 * 1000
@@ -89,6 +88,7 @@ class YaoApplication : Application() {
         strategy.appVersion = BuildConfig.VERSION_NAME
         strategy.appPackageName = BuildConfig.APPLICATION_ID
         strategy.appReportDelay = 20000
+        Bugly.init(applicationContext, "56bf507146", false)
         CrashReport.setIsDevelopmentDevice(applicationContext, BuildConfig.DEBUG)
     }
 

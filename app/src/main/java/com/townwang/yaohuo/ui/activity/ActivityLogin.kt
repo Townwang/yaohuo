@@ -7,16 +7,16 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.ActivityLoginBinding
 import com.townwang.yaohuo.ui.fragment.login.LoginFragment
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 
 class ActivityLogin : AppCompatActivity() {
+    val binding: ActivityLoginBinding by viewbind()
     override fun onCreate(savedInstanceState: Bundle?) {
         when (config(THEME_KEY).toInt()) {
             1 -> config(THEME_KEY, R.style.DefaultAppTheme.toString())
         }
         setActTheme()
         super.onCreate(savedInstanceState)
-        val binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         setSupportActionBar(binding.appbarLayout.toolbar)
         setSharedElement()
         supportActionBar.work {

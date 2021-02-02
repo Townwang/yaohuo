@@ -15,6 +15,7 @@ import com.townwang.yaohuo.repo.data.ThemeList
 import kotlinx.android.synthetic.main.item_theme_data.view.*
 
 class ThemeViewHolder(val binding: ItemThemeDataBinding) : RecyclerView.ViewHolder(binding.root) {
+
     companion object {
         fun create(parent: ViewGroup): ThemeViewHolder {
           val  binding = ItemThemeDataBinding.inflate(LayoutInflater.from(parent.context),parent,false)

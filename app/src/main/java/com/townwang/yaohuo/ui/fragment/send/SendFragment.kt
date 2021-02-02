@@ -20,10 +20,12 @@ import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.databinding.ActivityListBinding
 import com.townwang.yaohuo.databinding.FragmentSendBinding
 import com.townwang.yaohuo.databinding.ProBbsSwitchBinding
 import com.townwang.yaohuo.repo.data.SelectBean
 import com.townwang.yaohuo.repo.data.YaoCdnReq
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -62,6 +64,9 @@ class SendFragment : DialogFragment() {
                 Context
                     .INPUT_METHOD_SERVICE
             ) as InputMethodManager).showSoftInput(binding.commentEt, 0)
+        }
+        binding.close.onClickListener {
+            dialog?.dismiss()
         }
         binding.send.onClickListener {
             val title = binding.title.text.toString()
@@ -107,7 +112,7 @@ class SendFragment : DialogFragment() {
             }
         }
 
-        binding.gridView.setOnItemClickListener { parent, view, position, id ->
+        binding.gridView.setOnItemClickListener { _, _, position, id ->
             if (position == adapterImg.datas.lastIndex) {
                 PictureSelector.create(this)
                     .openGallery(PictureMimeType.ofImage())
@@ -193,8 +198,8 @@ class SendFragment : DialogFragment() {
     override fun onStart() {
         super.onStart()
         requireDialog().window?.let {
-            it.setGravity(Gravity.BOTTOM)
-            it.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            it.setGravity(Gravity.TOP)
+            it.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             it.setBackgroundDrawableResource(android.R.color.transparent)
 
         }
@@ -226,9 +231,9 @@ class SendFragment : DialogFragment() {
                     loading?.show()
                     selectList?.forEach { file ->
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            viewModel.uploadFile(File(file.androidQToPath))
+                            viewModel.uploadFile(File(file.androidQToPath),file.mimeType)
                         } else {
-                            viewModel.uploadFile(File(file.realPath))
+                            viewModel.uploadFile(File(file.realPath),file.mimeType)
                         }
                     }
                 }

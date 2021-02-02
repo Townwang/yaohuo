@@ -4,25 +4,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/background_frame_1"
     android:layout_height="match_parent">
-
-    <ImageView
-        android:id="@+id/chooseImage"
-        android:layout_width="85dp"
-        android:layout_height="85dp"
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/background_frame_1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints">
 
-    <ImageView
-        android:id="@+id/remove"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_round_clear_24px"
-        app:layout_constraintStart_toEndOf="@+id/chooseImage"
-        tools:ignore="MissingConstraints" />
+        <ImageView
+            android:id="@+id/chooseImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_delete_img"
+            tools:ignore="MissingConstraints" />
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

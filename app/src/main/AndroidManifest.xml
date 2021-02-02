@@ -30,6 +30,7 @@
         android:supportsRtl="true"
         android:theme="@style/DefaultAppTheme"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="n">
         <activity android:name=".ui.activity.ActivityWelcome">

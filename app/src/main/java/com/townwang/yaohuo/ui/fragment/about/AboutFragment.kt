@@ -2,12 +2,11 @@ package com.townwang.yaohuo.ui.fragment.about
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.beta.Beta
 import com.townwang.yaohuo.BuildConfig
@@ -15,27 +14,15 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentAboutBinding
 import com.townwang.yaohuo.ui.activity.ActivityWebView
-import com.townwang.yaohuo.ui.fragment.BaseFragment
-import com.townwang.yaohuo.ui.weight.pay.PayHelper
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import com.townwang.yaohuo.ui.weight.pay.PayConfig
-
-
-class AboutFragment : BaseFragment() {
+import com.townwang.yaohuo.ui.weight.pay.PayHelper
+class AboutFragment : Fragment(R.layout.fragment_about) {
+    val binding: FragmentAboutBinding by viewbind()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-    private val binding get() = _binding!! as FragmentAboutBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentAboutBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).work {

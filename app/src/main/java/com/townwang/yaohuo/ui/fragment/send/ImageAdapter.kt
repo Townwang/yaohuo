@@ -36,14 +36,13 @@ class ImageAdapter(val context: Context) : BaseAdapter() {
         val binding =
             ItemImageDataBinding.inflate(LayoutInflater.from(context), arg2, false)
         Glide.with(context)
-            .load(datas[position].relative_path)
+            .load(datas[position].url)
             .into(binding.chooseImage)
         if (position == datas.lastIndex) {
             binding.remove.visibility = View.GONE
         } else {
             binding.remove.visibility = View.VISIBLE
         }
-
         binding.remove.setOnClickListener {
             onClickListener?.invoke(binding.remove, datas[position])
             datas.removeAt(position)

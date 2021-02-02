@@ -6,16 +6,16 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.ActivityWebviewBinding
 import com.townwang.yaohuo.ui.fragment.web.WebViewFragment
-class ActivityWebView : AppCompatActivity() {
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 
+class ActivityWebView : AppCompatActivity() {
+    val binding: ActivityWebviewBinding by viewbind()
     override fun onCreate(savedInstanceState: Bundle?) {
         when (config(THEME_KEY).toInt()) {
             1 -> config(THEME_KEY, R.style.DefaultAppTheme.toString())
         }
         setActTheme()
         super.onCreate(savedInstanceState)
-        val binding = ActivityWebviewBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         setSupportActionBar(binding.appbarLayout.toolbar)
         setSharedElement()
         supportActionBar.work {
