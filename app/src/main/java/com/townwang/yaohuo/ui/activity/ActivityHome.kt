@@ -14,6 +14,7 @@ import com.townwang.yaohuo.ui.fragment.home.HomeFragment
 import com.townwang.yaohuo.ui.fragment.me.MeFragment
 import com.townwang.yaohuo.ui.fragment.send.SendFragment
 import com.townwang.yaohuo.ui.fragment.send.SendModel
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -21,17 +22,15 @@ import java.io.File
 
 class ActivityHome : AppCompatActivity() {
     val viewModel: SendModel by viewModel()
+    val binding: ActivityHomeBinding by viewbind()
     private var loading: LoadingDialog? = null
     val newsFrag = HomeFragment()
-    lateinit var binding: ActivityHomeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         when (config(THEME_KEY).toInt()) {
             1 -> config(THEME_KEY, R.style.DefaultAppTheme.toString())
         }
         setActTheme()
         super.onCreate(savedInstanceState)
-        binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         setSupportActionBar(binding.appbarLayout.toolbar)
         startAnimator(binding.include.addFab.drawable)
         setSharedElement()

@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.tencent.bugly.beta.Beta
 import com.townwang.yaohuo.BuildConfig
@@ -63,7 +64,13 @@ private val netModule = module {
                 .build()
             )
             .addConverterFactory(DocumentConverterFactory())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(
+                GsonConverterFactory.create(
+                    GsonBuilder()
+                        .setLenient()
+                        .create()
+                )
+            )
             .build()
     }
     single {
@@ -98,21 +105,21 @@ private val storageModule = module {
         get<Application>().getSharedPreferences("config", Context.MODE_PRIVATE)
     }
 }
-    private val repoModule = module {
-        single { Repo(get()) }
-    }
-    private val viewModelModule = module {
-        viewModel { ListModel(get()) }
-        viewModel { SearchModel(get()) }
-        viewModel { LoginModel(get()) }
-        viewModel { ThemeModel() }
-        viewModel { DetailsModel(get()) }
-        viewModel { SplashModel(get()) }
-        viewModel { MeModel(get()) }
-        viewModel { HomeModel(get()) }
-        viewModel { SendModel(get()) }
-        viewModel { UploadFileModel(get()) }
+private val repoModule = module {
+    single { Repo(get()) }
+}
+private val viewModelModule = module {
+    viewModel { ListModel(get()) }
+    viewModel { SearchModel(get()) }
+    viewModel { LoginModel(get()) }
+    viewModel { ThemeModel() }
+    viewModel { DetailsModel(get()) }
+    viewModel { SplashModel(get()) }
+    viewModel { MeModel(get()) }
+    viewModel { HomeModel(get()) }
+    viewModel { SendModel(get()) }
+    viewModel { UploadFileModel(get()) }
 
-    }
+}
 
-    val koinModules = viewModelModule + repoModule + netModule
+val koinModules = viewModelModule + repoModule + netModule

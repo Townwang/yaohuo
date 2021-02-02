@@ -5,37 +5,27 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
 import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
 import com.townwang.yaohuo.common.getUrlString
 import com.townwang.yaohuo.common.utils.clearNotificaion
 import com.townwang.yaohuo.common.work
 import com.townwang.yaohuo.databinding.FragmentWebviewBinding
-import com.townwang.yaohuo.ui.fragment.BaseFragment
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 
-class WebViewFragment : BaseFragment() {
-    private val binding get() = _binding!! as FragmentWebviewBinding
+class WebViewFragment : Fragment(R.layout.fragment_webview) {
+    val binding: FragmentWebviewBinding by viewbind()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentWebviewBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val web = WebViewHelper(requireContext(), binding.content).apply {

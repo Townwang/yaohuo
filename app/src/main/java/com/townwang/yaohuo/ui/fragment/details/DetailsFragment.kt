@@ -14,6 +14,7 @@ import android.widget.ImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -29,13 +30,15 @@ import com.townwang.yaohuo.databinding.ItemCommentDataBinding
 import com.townwang.yaohuo.databinding.ViewDownloadStyleBinding
 import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.ui.activity.ActivityWebView
-import com.townwang.yaohuo.ui.fragment.BaseFragment
 import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class DetailsFragment : BaseFragment() {
-    private val binding get() = _binding!! as FragmentDetailsBinding
+class DetailsFragment : Fragment(R.layout.fragment_details) {
+    val binding:FragmentDetailsBinding by viewbind()
+    var loading: LoadingDialog? = null
     private var page: Int = 1
     private var ot: Int = 0
     private val adapter = CommentAdapter()
@@ -43,15 +46,6 @@ class DetailsFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     @SuppressLint("SetTextI18n")
@@ -393,5 +387,12 @@ class DetailsFragment : BaseFragment() {
                 context?.toast("不能给自己回复！")
             }
         }
+    }
+    override fun onDestroy() {
+        loading?.run {
+            close()
+        }
+        loading = null
+        super.onDestroy()
     }
 }

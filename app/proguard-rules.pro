@@ -186,4 +186,9 @@
 
 #Okio
 -dontwarn org.codehaus.mojo.animal_sniffer.*
+#view binding
+-keepclassmembers class ** implements androidx.viewbinding.ViewBinding {
+    public static ** bind(***);
+    public static ** inflate(***);
+}
 

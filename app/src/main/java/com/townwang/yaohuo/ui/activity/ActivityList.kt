@@ -9,16 +9,16 @@ import com.townwang.yaohuo.databinding.ActivityListBinding
 import com.townwang.yaohuo.repo.data.TabBean
 import com.townwang.yaohuo.ui.fragment.pub.PubListFragment
 import com.townwang.yaohuo.ui.fragment.pub.TabListAdapter
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+
 class ActivityList : AppCompatActivity() {
-    lateinit var binding: ActivityListBinding
+    val binding: ActivityListBinding by viewbind()
     override fun onCreate(savedInstanceState: Bundle?) {
         when (config(THEME_KEY).toInt()) {
             1 -> config(THEME_KEY, R.style.DefaultAppTheme.toString())
         }
         setActTheme()
         super.onCreate(savedInstanceState)
-        binding = ActivityListBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         setSupportActionBar(binding.appbarLayout.toolbar)
         setSharedElement()
         supportActionBar.work {

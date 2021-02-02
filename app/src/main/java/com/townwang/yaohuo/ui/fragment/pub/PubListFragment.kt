@@ -2,40 +2,29 @@ package com.townwang.yaohuo.ui.fragment.pub
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.townwang.yaohuo.BuildConfig
+import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentListPubBinding
 import com.townwang.yaohuo.repo.data.HomeData
 import com.townwang.yaohuo.ui.activity.ActivityDetails
-import com.townwang.yaohuo.ui.fragment.BaseFragment
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PubListFragment : BaseFragment() {
-    private val binding get() = _binding!! as FragmentListPubBinding
+class PubListFragment : Fragment(R.layout.fragment_list_pub) {
     private val adapter = PubListAdapter()
     private val viewModel: ListModel by viewModel()
-
+    val binding: FragmentListPubBinding by viewbind()
     private var page: Int = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentListPubBinding.inflate(inflater,container,false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

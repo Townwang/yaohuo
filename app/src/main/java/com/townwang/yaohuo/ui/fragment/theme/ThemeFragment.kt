@@ -1,11 +1,10 @@
 package com.townwang.yaohuo.ui.fragment.theme
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.THEME_KEY
@@ -14,20 +13,16 @@ import com.townwang.yaohuo.common.reload
 import com.townwang.yaohuo.common.work
 import com.townwang.yaohuo.databinding.FragmentThemeBinding
 import com.townwang.yaohuo.repo.data.ThemeList
-import com.townwang.yaohuo.ui.fragment.BaseFragment
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ThemeFragment : BaseFragment() {
-    private val binding get() = _binding!! as FragmentThemeBinding
+class ThemeFragment : Fragment(R.layout.fragment_theme) {
     private val adapter = ThemeAdapter()
     private val viewModel: ThemeModel by viewModel()
+    val binding: FragmentThemeBinding by viewbind()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = FragmentThemeBinding.inflate(inflater,container,false)
-        return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

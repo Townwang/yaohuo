@@ -9,14 +9,14 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.setTitleCenter
 import com.townwang.yaohuo.databinding.ActivityThemeBinding
 import com.townwang.yaohuo.ui.fragment.theme.ThemeFragment
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import kotlinx.android.synthetic.main.appbar.*
 
 class ActivityTheme : AppCompatActivity() {
+    val binding: ActivityThemeBinding by viewbind()
     override fun onCreate(savedInstanceState: Bundle?) {
         setActTheme()
         super.onCreate(savedInstanceState)
-        val binding = ActivityThemeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         setSupportActionBar(binding.appbarLayout.toolbar)
         setSharedElement()
         supportActionBar.work {

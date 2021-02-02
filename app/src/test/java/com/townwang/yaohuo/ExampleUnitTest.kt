@@ -1,14 +1,14 @@
 package com.townwang.yaohuo
 
+import com.google.gson.Gson
 import com.townwang.yaohuo.common.A_HREF
-import com.townwang.yaohuo.common.A_KEY
-import com.townwang.yaohuo.common.resolve.ResolveDetailsHelper
 import com.townwang.yaohuo.common.resolve.ResolveUserInfoHelper
+import com.townwang.yaohuo.repo.data.YaoCdnReq
 import com.townwang.yaohuo.repo.enum.Level
 import org.jsoup.Jsoup
 import org.junit.Test
-import java.util.*
 import java.util.concurrent.Executors
+
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -143,6 +143,15 @@ class ExampleUnitTest {
          .select("div.subtitle").last()
          .getElementsContainingOwnText("顶").attr(A_HREF)
         println("我在下载东西$ddd")
+    }
+    @Test
+    fun testJson(): Unit {
+       val json = """
+           {"code":200,"id":"41531","imgid":"157bfbacd8837863","relative_path":"\/imgs\/2021\/02\/157bfbacd8837863.jpeg","url":"https:\/\/tu.yaohuo.me\/imgs\/2021\/02\/157bfbacd8837863.jpeg","thumbnail_url":"https:\/\/tu.yaohuo.me\/imgs\/2021\/02\/157bfbacd8837863_thumb.jpeg","width":864,"height":1920}
+       """.trimIndent()
+        val gson = Gson()
+        val loginUserJson = gson.fromJson(json, YaoCdnReq::class.java)
+        println(loginUserJson)
     }
 
 }

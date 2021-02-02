@@ -3,6 +3,7 @@ package com.townwang.yaohuo.repo
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.api.Api
 import com.townwang.yaohuo.common.*
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -173,8 +174,8 @@ class Repo constructor(
         me.getResp()
     }
 
-    suspend fun uploadFile(file: File) = withRepoContext {
-        val fileRequestBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+    suspend fun uploadFile(file: File,type: String) = withRepoContext {
+        val fileRequestBody = RequestBody.create(type.toMediaTypeOrNull(), file)
         val requestImgPart = MultipartBody.Part.createFormData("file", file.name, fileRequestBody)
         val repo = api.upLoadFile(requestImgPart)
         repo.getYaoResp()

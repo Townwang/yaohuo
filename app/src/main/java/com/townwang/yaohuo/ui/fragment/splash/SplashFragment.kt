@@ -2,9 +2,8 @@ package com.townwang.yaohuo.ui.fragment.splash
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
@@ -13,27 +12,16 @@ import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentWelcomeBinding
 import com.townwang.yaohuo.ui.activity.ActivityHome
 import com.townwang.yaohuo.ui.activity.ActivityLogin
-import com.townwang.yaohuo.ui.fragment.BaseFragment
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SplashFragment : BaseFragment() {
-    private val binding get() = _binding!! as FragmentWelcomeBinding
+class SplashFragment : Fragment(R.layout.fragment_welcome) {
     private val viewModel: SplashModel by viewModel()
+    val binding: FragmentWelcomeBinding by viewbind()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentWelcomeBinding.inflate(inflater,container,false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.mParticleView.startAnim()

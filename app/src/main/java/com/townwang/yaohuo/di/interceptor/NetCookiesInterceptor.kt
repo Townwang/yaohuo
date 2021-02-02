@@ -23,8 +23,6 @@ class NetCookiesInterceptor : Interceptor {
                     BuildConfig.BASE_URL.toHttpUrlOrNull()
                 }
                 "yao_cdn" -> {
-                    builder.addHeader("accept", "application/json, text/javascript, */*; q=0.01")
-                    builder.addHeader("accept-encoding", "gzip, deflate, br")
                     builder.addHeader("accept-language", "zh-CN")
                     builder.addHeader("origin", BuildConfig.YAO_CDN_URL)
                     builder.addHeader("content-type", "multipart/form-data")

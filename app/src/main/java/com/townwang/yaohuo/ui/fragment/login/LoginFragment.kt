@@ -3,13 +3,12 @@ package com.townwang.yaohuo.ui.fragment.login
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
@@ -17,27 +16,18 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentLoginBinding
 import com.townwang.yaohuo.ui.activity.ActivityHome
-import com.townwang.yaohuo.ui.fragment.BaseFragment
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LoginFragment : BaseFragment() {
-    private val binding get() = _binding!! as FragmentLoginBinding
+class LoginFragment : Fragment(R.layout.fragment_login) {
     private val viewModel: LoginModel by viewModel()
+    val binding: FragmentLoginBinding by viewbind()
+    var loading: LoadingDialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -124,5 +114,13 @@ class LoginFragment : BaseFragment() {
                 }.show()
             }
         })
+    }
+
+    override fun onDestroy() {
+        loading?.run {
+            close()
+        }
+        loading = null
+        super.onDestroy()
     }
 }
