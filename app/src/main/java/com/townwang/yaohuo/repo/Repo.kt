@@ -15,8 +15,8 @@ class Repo constructor(
     private val api: Api
 ) {
     suspend fun neice() = withRepoContext {
-        val bbs = api.niece()
-        bbs.getUResp()
+        val doc = api.urlPenetrate(BuildConfig.CLOSED_ALPHA_LIST)
+        doc.getResp()
     }
 
     suspend fun checkNice() = withRepoContext {
