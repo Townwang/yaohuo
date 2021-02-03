@@ -58,8 +58,11 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
                 _loginSuccess.value = isCrack
             } else {
                 val result = repo.neice()
-                result.data.forEach {
-                    if (it.phone == trouserId) {
+                val d =  result.select("div.rich_media_content")
+                    .first()
+                    .getElementsByTag("span")
+                d.forEach {
+                    if (it.text() == trouserId) {
                         _nieceSuccess.value = isCrack
                         _trouser.value = trouserId
                         return@launchTask

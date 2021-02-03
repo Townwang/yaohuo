@@ -24,9 +24,10 @@ class ExampleUnitTest {
 
     @Test
     fun test() {
-        val service = Executors.newFixedThreadPool(10)
-        for (i in 1..10) {
-            service.submit(task(i))
+    val doc =   Jsoup.connect("https://mp.weixin.qq.com/s/QY_GNyihv1Zx1RGHus26fg").get()
+      val d =  doc.select("div.rich_media_content").first().getElementsByTag("span")
+        d.forEach {
+            println(it.text())
         }
     }
 
@@ -153,13 +154,5 @@ class ExampleUnitTest {
         val loginUserJson = gson.fromJson(json, YaoCdnReq::class.java)
         println(loginUserJson)
     }
-
-}
-
-class task(val a: Int) : Runnable {
-    override fun run() {
-        print("我在下载东西$a")
-    }
-
 
 }
