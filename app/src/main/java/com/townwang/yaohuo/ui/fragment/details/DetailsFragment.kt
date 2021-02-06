@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -129,11 +130,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         }
         binding.commentLists.adapter = adapter
         binding.commentLists.layoutManager =
-            (StaggeredGridLayoutManager(
-                1,
-                StaggeredGridLayoutManager.VERTICAL
-            ))
-
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         adapter.onItemListener = { item, data ->
             if (data is CommitListBean) {
                 if (item is ItemCommentDataBinding) {
@@ -392,7 +389,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         loading?.run {
             close()
         }
-        loading = null
         super.onDestroy()
     }
 }

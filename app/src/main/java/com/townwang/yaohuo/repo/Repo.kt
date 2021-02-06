@@ -127,6 +127,7 @@ class Repo constructor(
         val data = HashMap<String, String>()
         data[BuildConfig.YH_REPLY_CONTENT] = content
         data[BuildConfig.YH_REPLY_SEND_MSG] = sendmsg ?: "1"
+        data[BuildConfig.YH_REPLY_SEND_MSG2] = sendmsg ?: "1"
         floor?.apply {
             data[BuildConfig.YH_REPLY_REPLY] = floor
         }

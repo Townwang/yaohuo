@@ -1,4 +1,4 @@
-package com.townwang.yaohuo.ui.fragment.pub
+package com.townwang.yaohuo.ui.fragment.home
 
 import android.annotation.SuppressLint
 import android.view.View
@@ -8,7 +8,7 @@ import com.townwang.yaohuo.databinding.ItemListDataBinding
 import com.townwang.yaohuo.repo.data.HomeData
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 
-class PubListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class HomeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val binding: ItemListDataBinding by viewbind()
 
     @SuppressLint("SetTextI18n", "ResourceAsColor")

@@ -6,14 +6,14 @@ import androidx.room.TypeConverters
 import com.townwang.yaohuo.repo.data.HomeData
 import com.townwang.yaohuo.repo.data.details.SmailIngBean
 
-@Database(
-        entities = [
-            SmailIngBean::class
-        ],
-        exportSchema = true,
-        version = 1
-)
-@TypeConverters(AppTypeConverters::class)
-abstract class ApiCacheDB : RoomDatabase() {
-    abstract fun apiCacheDAO(): ApiCacheDAO
-}
+//@Database(
+//        entities = [
+//            SmailIngBean::class
+//        ],
+//        exportSchema = true,
+//        version = 1
+//)
+//@TypeConverters(AppTypeConverters::class)
+//abstract class ApiCacheDB : RoomDatabase() {
+//    abstract fun apiCacheDAO(): ApiCacheDAO
+//}

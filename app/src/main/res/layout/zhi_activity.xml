@@ -83,7 +83,6 @@
             android:layout_height="wrap_content"
             android:minWidth="296dp"
             android:layout_gravity="center"
-            android:onClick="onClick"
             android:text="去捐赠"
             android:textSize="13dp" />
     </LinearLayout>

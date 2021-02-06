@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
@@ -37,10 +38,7 @@ class PubListFragment : Fragment(R.layout.fragment_list_pub) {
         }
         binding.homeList.adapter = adapter
         binding.homeList.layoutManager =
-            (StaggeredGridLayoutManager(
-                requireContext().config(HOME_LIST_THEME_SHOW).toInt(),
-                StaggeredGridLayoutManager.VERTICAL
-            ))
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         adapter.onItemClickListener = { v, data ->
             if (data is HomeData) {
                 var isBear = true

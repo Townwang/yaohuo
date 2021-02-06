@@ -7,17 +7,16 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.databinding.ZhiActivityBinding
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+
 class ZhiActivity : AppCompatActivity() {
     private var mZhiWay = 0
-
+    val binding:ZhiActivityBinding by viewbind()
     companion object {
         private const val ZHI_WAY_WE_CHAT = 0 //weixin
     }
-
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ZhiActivityBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         val config = intent.getSerializableExtra(PayHelper.EXTRA_KEY_PAY_CONFIG)
         config ?: throw IllegalStateException("PayHelper PayConfig illegal!!!")
         if (config is PayConfig) {

@@ -14,7 +14,7 @@ abstract class ActivityDelegate<T : ViewBinding>(
 ) : ReadOnlyProperty<Activity, T> {
 
     protected var viewBinding: T? = null
-    private val LIFECYCLE_FRAGMENT_TAG = "com.hi.dhl.binding.lifecycle_fragment"
+    private val LIFECYCLE_FRAGMENT_TAG = "com.townwang.yaohuo.ui.weight.binding.lifecycle_fragment"
 
     init {
         when (activity) {

@@ -59,8 +59,8 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                     requireContext(), ActivityWebView::class.java
                 ).apply {
                     flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    putExtra(WEB_VIEW_URL_KEY, "https://mp.weixin.qq.com/s/QY_GNyihv1Zx1RGHus26fg")
-                    putExtra(WEB_VIEW_URL_TITLE, "公众号：文科中的技术宅")
+                    putExtra(WEB_VIEW_URL_KEY, BuildConfig.ABOUT_WECHAT)
+                    putExtra(WEB_VIEW_URL_TITLE, "公众号：开猿")
                 }, null
             )
         }

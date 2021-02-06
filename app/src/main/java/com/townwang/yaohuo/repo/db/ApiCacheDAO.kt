@@ -4,9 +4,9 @@ import androidx.paging.DataSource
 import androidx.room.*
 import com.townwang.yaohuo.repo.data.HomeData
 import java.util.*
-
-@Dao
-interface ApiCacheDAO {
+//
+//@Dao
+//interface ApiCacheDAO {
 //
 //    @Query("select * from HomeData where classId = :classId order by date desc")
 //    fun getVTHistoryDataSource(classId: Int): DataSource.Factory<Int, HomeData>
@@ -43,4 +43,4 @@ interface ApiCacheDAO {
 //        }
 //    }
 
-}
+//}

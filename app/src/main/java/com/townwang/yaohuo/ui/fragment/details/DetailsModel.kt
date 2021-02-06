@@ -40,16 +40,18 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
     fun getDetails(url: String) = launchTask {
         val doc = repo.getNewListDetails(url)
         helper = ResolveDetailsHelper(doc)
-        _data.value = DetailsContentBean(
-            helper?.reward.orEmpty(),
-            helper?.giftMoney.orEmpty(),
-            helper?.time.orEmpty(),
-            helper?.praiseSize.orEmpty(),
-            helper?.userName.orEmpty(),
-            helper?.onLineState ?: false,
-            helper?.getHandUrl.orEmpty(),
-            helper?.content.orEmpty(),
-            helper?.downLoad
+        _data.postValue(
+            DetailsContentBean(
+                helper?.reward.orEmpty(),
+                helper?.giftMoney.orEmpty(),
+                helper?.time.orEmpty(),
+                helper?.praiseSize.orEmpty(),
+                helper?.userName.orEmpty(),
+                helper?.onLineState ?: false,
+                helper?.getHandUrl.orEmpty(),
+                helper?.content.orEmpty(),
+                helper?.downLoad
+            )
         )
         commentDetails(1, 0)
     }
@@ -63,10 +65,10 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
                     it.classId,
                     ot
                 )
-                _commentSize.value = it.getCommitLastFloor(doc)
-                _commentLists.value = it.getCommitListData(doc)
+                _commentSize.postValue(it.getCommitLastFloor(doc))
+                _commentLists.postValue( it.getCommitListData(doc) )
             } else {
-                _noMore.value = true
+                _noMore.postValue(true)
             }
         }
     }
@@ -82,11 +84,11 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
     fun getAvatar(touserid: String) = launchTask {
         val doc = repo.getUserInfo(touserid)
         val userInfoHelper = ResolveUserInfoHelper(doc)
-        _avatar.value = userInfoHelper.avatar
-        _grade.value = Level.getLevel(userInfoHelper.grade).toString()
+        _avatar.postValue(userInfoHelper.avatar)
+        _grade.postValue( Level.getLevel(userInfoHelper.grade).toString())
         val medalImgUrl = userInfoHelper.medal
         Jsoup.parse(medalImgUrl).select(IMG_JPG).forEach {
-            _medal.value = it.attr("src")
+            _medal.postValue(it.attr("src"))
         }
     }
 
@@ -94,13 +96,13 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         item.userImg.tag = touserid
         val doc = repo.getUserInfo(touserid)
         val userInfoHelper = ResolveUserInfoHelper(doc)
-        _itemAvatar.value =
-            ItemAvatarBean(
-                item,
-                userInfoHelper.avatar,
-                Level.getLevel(userInfoHelper.grade),
-                touserid
-            )
+        _itemAvatar.postValue( ItemAvatarBean(
+            item,
+            userInfoHelper.avatar,
+            Level.getLevel(userInfoHelper.grade),
+            touserid
+        ))
+
     }
 
     fun reply(
@@ -113,12 +115,13 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         launchTask {
             try {
                 helper?.run {
-                    val doc = repo.reply(sid, content,id,classId, floor, touserid, sendmsg = sendmsg)
+                    val doc =
+                        repo.reply(sid, content, id, classId, floor, touserid, sendmsg = sendmsg)
                     doc.body()
-                    _commentSuccess.value = true
+                    _commentSuccess.postValue(true)
                 }
             } catch (e: Exception) {
-                _commentSuccess.value = false
+                _commentSuccess.postValue(false)
                 BuglyLog.e(BuildConfig.FLAVOR, e.message)
             }
         }

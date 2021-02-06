@@ -5,7 +5,8 @@ android{
         buildConfigField("String", "CN_URL", '"http://cdn.townwang.cn/"')
         buildConfigField("String", "BASE_YAOHUO_URL", '"https://yaohuo.me/"')
         buildConfigField("String", "YAO_CDN_URL", '"https://tu.yaohuo.me/"')
-        buildConfigField("String", "CLOSED_ALPHA_LIST", '"https://mp.weixin.qq.com/s/QY_GNyihv1Zx1RGHus26fg"')
+        buildConfigField("String", "CLOSED_ALPHA_LIST", '"https://mp.weixin.qq.com/s/-BKVd9_ctFCPEF9q_WlEOw"')
+        buildConfigField("String", "ABOUT_WECHAT", '"https://mp.weixin.qq.com/s/Zrj_Dbx6COy8npwgPNf9tQ"')
     }
     //妖火字段
     buildTypes.all {
@@ -20,6 +21,7 @@ android{
         //reply
         buildConfigField("String", "YH_REPLY_CONTENT", '"content"')
         buildConfigField("String", "YH_REPLY_SEND_MSG", '"sendmsg"')
+        buildConfigField("String", "YH_REPLY_SEND_MSG2", '"sendmsg2"')
         buildConfigField("String", "YH_REPLY_REPLY", '"reply"')
         buildConfigField("String", "YH_REPLY_TOUSERID", '"touserid"')
         buildConfigField("String", "YH_REPLY_ID", '"id"')

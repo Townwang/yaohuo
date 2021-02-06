@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.doOnPreDraw
 import androidx.core.widget.PopupWindowCompat
 import androidx.fragment.app.DialogFragment
@@ -19,8 +18,10 @@ import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.databinding.ActivityListBinding
+import com.townwang.yaohuo.common.Loading
+import com.townwang.yaohuo.common.handleException
+import com.townwang.yaohuo.common.onClickListener
+import com.townwang.yaohuo.common.safeObserver
 import com.townwang.yaohuo.databinding.FragmentSendBinding
 import com.townwang.yaohuo.databinding.ProBbsSwitchBinding
 import com.townwang.yaohuo.repo.data.SelectBean
@@ -32,16 +33,16 @@ import java.io.File
 
 typealias SendListener = (fragment: SendFragment, title: String, type: String, content: String) -> Unit
 
-class SendFragment : DialogFragment() {
-    private var _binding: FragmentSendBinding? = null
+class SendFragment : DialogFragment(R.layout.fragment_send) {
     private var loading: LoadingDialog? = null
-    private val binding get() = _binding!!
     var mDialogListener: SendListener? = null
     var type = 0
     val viewModel: UploadFileModel by viewModel()
+    val binding:FragmentSendBinding by viewbind()
     private val adapter = SelectAdapter()
     private lateinit var adapterImg: ImageAdapter
     private val listImgs = arrayListOf<YaoCdnReq>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,8 +51,7 @@ class SendFragment : DialogFragment() {
         requireDialog().window?.requestFeature(Window.FEATURE_NO_TITLE)
         requireDialog().setCancelable(true)
         requireDialog().setCanceledOnTouchOutside(true)
-        _binding = FragmentSendBinding.inflate(inflater, container, false)
-        return binding.root
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     @SuppressLint("InlinedApi", "WrongConstant")
@@ -70,7 +70,7 @@ class SendFragment : DialogFragment() {
         }
         binding.send.onClickListener {
             val title = binding.title.text.toString()
-            if (title.isNullOrEmpty()) {
+            if (title.isEmpty()) {
                 Snackbar.make(it, "请输入标题", Snackbar.LENGTH_SHORT).show()
                 return@onClickListener
             }
@@ -112,7 +112,7 @@ class SendFragment : DialogFragment() {
             }
         }
 
-        binding.gridView.setOnItemClickListener { _, _, position, id ->
+        binding.gridView.setOnItemClickListener { _, _, position, _ ->
             if (position == adapterImg.datas.lastIndex) {
                 PictureSelector.create(this)
                     .openGallery(PictureMimeType.ofImage())
@@ -195,25 +195,9 @@ class SendFragment : DialogFragment() {
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        requireDialog().window?.let {
-            it.setGravity(Gravity.TOP)
-            it.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            it.setBackgroundDrawableResource(android.R.color.transparent)
-
-        }
-        val titleDividerId = resources.getIdentifier("titleDivider", "id", "android")
-        if (titleDividerId > 0) {
-            val titleDivider = requireDialog().findViewById<View>(titleDividerId)
-            titleDivider?.setBackgroundColor(
-                ResourcesCompat.getColor(
-                    resources,
-                    android.R.color.transparent,
-                    null
-                )
-            )
-        }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_FRAME, android.R.style.Theme_DeviceDefault_NoActionBar_TranslucentDecor)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -243,7 +227,7 @@ class SendFragment : DialogFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
         loading?.close()
+        loading = null
     }
 }
