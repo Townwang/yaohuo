@@ -12,11 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
-import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
-import com.townwang.yaohuo.common.getUrlString
+import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.utils.clearNotificaion
-import com.townwang.yaohuo.common.work
 import com.townwang.yaohuo.databinding.FragmentWebviewBinding
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 

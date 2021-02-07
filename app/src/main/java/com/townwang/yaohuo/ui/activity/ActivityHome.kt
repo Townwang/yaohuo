@@ -4,6 +4,10 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.beta.Beta
 import com.townwang.yaohuo.R
@@ -11,13 +15,11 @@ import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.ActivityHomeBinding
 import com.townwang.yaohuo.ui.fragment.home.HomeFragment
-import com.townwang.yaohuo.ui.fragment.me.MeFragment
 import com.townwang.yaohuo.ui.fragment.send.SendFragment
 import com.townwang.yaohuo.ui.fragment.send.SendModel
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
 
 
 class ActivityHome : AppCompatActivity() {
@@ -25,6 +27,9 @@ class ActivityHome : AppCompatActivity() {
     val binding: ActivityHomeBinding by viewbind()
     private var loading: LoadingDialog? = null
     val newsFrag = HomeFragment()
+    private val navController: NavController by lazy {
+        Navigation.findNavController(this, R.id.navHost)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         when (config(THEME_KEY).toInt()) {
             1 -> config(THEME_KEY, R.style.DefaultAppTheme.toString())
@@ -35,14 +40,9 @@ class ActivityHome : AppCompatActivity() {
         startAnimator(binding.include.addFab.drawable)
         setSharedElement()
         supportActionBar.work {
-            setDisplayHomeAsUpEnabled(true)
-            setTitleCenter()
+            setDisplayHomeAsUpEnabled(false)
         }
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.navHost, newsFrag)
-                .commit()
-        }
+        binding.appbarLayout.toolbar.setTitleCenter()
         binding.include.addFab.onClickListener {
             val dialogFragment = SendFragment()
             val magTransaction = supportFragmentManager.beginTransaction()
@@ -61,16 +61,7 @@ class ActivityHome : AppCompatActivity() {
             }
             dialogFragment.show(supportFragmentManager, "send frag")
         }
-        binding.include.bottom.news.onClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.navHost, newsFrag)
-                .commit()
-        }
-        binding.include.bottom.me.onClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.navHost, MeFragment())
-                .commit()
-        }
+        binding.include.vBottomNav.setupWithNavController(navController)
         viewModel.sendSuccess.observe(this, safeObserver {
             if (it) {
                 newsFrag.refreshData()

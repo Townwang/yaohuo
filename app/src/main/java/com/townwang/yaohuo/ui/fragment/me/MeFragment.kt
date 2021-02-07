@@ -27,7 +27,6 @@ class MeFragment : Fragment(R.layout.fragment_me) {
             supportActionBar.work {
                 title = getString(R.string.home_me)
                 setDisplayHomeAsUpEnabled(false)
-                setTitleCenter()
             }
         }
         binding.refreshLayout.setOnRefreshListener {

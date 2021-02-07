@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nesScroll"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-<com.scwang.smart.refresh.layout.SmartRefreshLayout
-    android:id="@+id/refreshLayout"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    app:srlAccentColor="@android:color/white"
-    app:srlEnablePreviewInEditMode="true"
-    app:srlPrimaryColor="?colorPrimary">
+    android:orientation="vertical">
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:srlAccentColor="@android:color/white"
+        app:srlEnablePreviewInEditMode="true"
+        app:srlPrimaryColor="?colorPrimary">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white">
+
             <View
                 android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@id/guideline"
                 android:background="@drawable/shape_radius"
+                app:layout_constraintBottom_toTopOf="@id/guideline"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.25"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.25" />
 
             <com.townwang.yaohuo.ui.weight.view.TownNiceImageView
                 android:id="@+id/avatar"
@@ -178,5 +179,5 @@
                     app:valueSize="@dimen/text12Size" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-</com.scwang.smart.refresh.layout.SmartRefreshLayout>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout>

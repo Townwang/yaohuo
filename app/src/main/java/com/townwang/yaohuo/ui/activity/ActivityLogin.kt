@@ -21,8 +21,8 @@ class ActivityLogin : AppCompatActivity() {
         setSharedElement()
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)
-            setTitleCenter()
         }
+        binding.appbarLayout.toolbar.setTitleCenter()
         Beta.checkUpgrade(false, true)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()

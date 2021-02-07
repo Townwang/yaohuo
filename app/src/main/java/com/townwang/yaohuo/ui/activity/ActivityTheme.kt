@@ -21,8 +21,8 @@ class ActivityTheme : AppCompatActivity() {
         setSharedElement()
         supportActionBar.work {
             setDisplayHomeAsUpEnabled(true)
-            setTitleCenter()
         }
+        binding.appbarLayout.toolbar.setTitleCenter()
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.navHost, ThemeFragment())

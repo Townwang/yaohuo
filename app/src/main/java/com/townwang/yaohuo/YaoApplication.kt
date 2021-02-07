@@ -91,12 +91,6 @@ class YaoApplication : Application() {
         Bugly.init(applicationContext, "56bf507146", false)
         CrashReport.setIsDevelopmentDevice(applicationContext, BuildConfig.DEBUG)
     }
-
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-        MultiDex.install(this@YaoApplication)
-    }
-
     /**
      * @param activity 作用说明 ：添加一个activity到管理里
      */

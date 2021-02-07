@@ -1,113 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--<com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:id="@+id/scrollerLayout"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:orientation="vertical">-->
-
-<!--    <Space-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="20dp" />-->
-
-<!--    <com.google.android.material.card.MaterialCardView-->
-<!--        android:id="@+id/materialCardView2"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="20dp"-->
-<!--        android:background="@color/white"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:padding="10dp"-->
-<!--        app:cardCornerRadius="30dp"-->
-<!--        app:cardElevation="20dp"-->
-<!--        tools:ignore="MissingConstraints">-->
-
-<!--        <androidx.appcompat.widget.AppCompatEditText-->
-<!--            android:id="@+id/search_value"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@color/transparent"-->
-<!--            android:hint="@string/search_hint_tip"-->
-<!--            android:imeOptions="actionSearch"-->
-<!--            android:padding="20dp"-->
-<!--            android:singleLine="true"-->
-<!--            android:textColor="?colorAccent"-->
-<!--            android:textColorHint="?colorPrimary"-->
-<!--            android:textSize="@dimen/text14Size"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            tools:ignore="MissingConstraints" />-->
-
-<!--        <ImageView-->
-<!--            android:id="@+id/searchBtn"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="end|center_vertical"-->
-<!--            android:padding="10dp"-->
-<!--            android:src="@drawable/ic_round_search_48" />-->
-
-
-<!--    </com.google.android.material.card.MaterialCardView>-->
-
-<!--    <Space-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="10dp" />-->
-
-<!--    <com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout-->
-<!--        android:id="@+id/navBBSHost"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        tools:ignore="MissingConstraints" />-->
-
-<!--    <Space-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="10dp" />-->
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/homeList"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layoutAnimation="@anim/layout_animation_fall_down"-->
-<!--        tools:ignore="UnusedAttribute"-->
-<!--        tools:listitem="@layout/item_list_data" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/noMore"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="3dp"-->
-<!--        android:background="@color/white"-->
-<!--        android:gravity="center"-->
-<!--        android:paddingTop="10dp"-->
-<!--        android:paddingBottom="40dp"-->
-<!--        android:text="@string/home_more"-->
-<!--        android:textColor="?colorPrimary"-->
-<!--        android:textSize="@dimen/text12Size" />-->
-<!--</com.townwang.yaohuo.ui.weight.consecutivescroller.ConsecutiveScrollerLayout>-->
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-<!--    <data>-->
-
-<!--        <variable-->
-<!--            name="viewModel"-->
-<!--            type="com.townwang.yaohuo.ui.fragment.home.HomeModel" />-->
-
-<!--        <variable-->
-<!--            name="adapter"-->
-<!--            type="com.townwang.yaohuo.ui.fragment.home.HomeAdapter" />-->
-<!--    </data>-->
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+<com.scwang.smart.refresh.layout.SmartRefreshLayout
+    android:id="@+id/refreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    app:srlAccentColor="@android:color/white"
+    app:srlEnablePreviewInEditMode="true"
+    app:srlPrimaryColor="?colorPrimary"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</layout>
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+</com.scwang.smart.refresh.layout.SmartRefreshLayout>
