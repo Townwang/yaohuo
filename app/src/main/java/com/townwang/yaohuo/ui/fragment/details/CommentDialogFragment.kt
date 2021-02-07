@@ -10,9 +10,11 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.snackbar.Snackbar
+import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.SEND_CONTENT_KEY
 import com.townwang.yaohuo.common.onClickListener
 import com.townwang.yaohuo.databinding.FragmentCommentDialogBinding
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import java.lang.StringBuilder
 
 /**
@@ -21,11 +23,8 @@ import java.lang.StringBuilder
 
 typealias CommentDialogSendListener = (fragment: CommentDialogFragment, message: String) -> Unit
 
-class CommentDialogFragment : DialogFragment() {
-    private var _binding: FragmentCommentDialogBinding? = null
-
-    private val binding get() = _binding!!
-
+class CommentDialogFragment : DialogFragment(R.layout.fragment_comment_dialog) {
+    private val binding: FragmentCommentDialogBinding by viewbind()
     var mDialogListener: CommentDialogSendListener? = null
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,8 +34,7 @@ class CommentDialogFragment : DialogFragment() {
         requireDialog().window?.requestFeature(Window.FEATURE_NO_TITLE)
         requireDialog().setCancelable(true)
         requireDialog().setCanceledOnTouchOutside(true)
-        _binding = FragmentCommentDialogBinding.inflate(inflater, container, false)
-        return binding.root
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     @SuppressLint("InlinedApi", "WrongConstant")
@@ -76,6 +74,7 @@ class CommentDialogFragment : DialogFragment() {
         }
     }
 
+
     override fun onStart() {
         super.onStart()
         requireDialog().window?.let {
@@ -83,22 +82,6 @@ class CommentDialogFragment : DialogFragment() {
             it.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             it.setBackgroundDrawableResource(android.R.color.transparent)
         }
-        val titleDividerId = resources.getIdentifier("titleDivider", "id", "android")
-        if (titleDividerId > 0) {
-            val titleDivider = requireDialog().findViewById<View>(titleDividerId)
-            titleDivider?.setBackgroundColor(
-                ResourcesCompat.getColor(
-                    resources,
-                    android.R.color.transparent,
-                    null
-                )
-            )
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
 }

@@ -18,18 +18,11 @@ class FragmentViewBinding<T : ViewBinding>(
     override fun getValue(thisRef: Fragment, property: KProperty<*>): T {
         return viewBinding?.run {
             return this
-
         } ?: let {
-
-            val bind: T
-            if (thisRef.view == null) {
+            val bind: T = if (thisRef.view == null) {
                 // 这里为了兼容在 navigation 中使用 Fragment
-                bind = layoutInflater.invoke(null, thisRef.layoutInflater) as T
-            } else {
-                bind = bindView.invoke(null, thisRef.view) as T
-
-            }
-
+                return@let layoutInflater.invoke(null, thisRef.layoutInflater) as T
+            } else bindView.invoke(null, thisRef.view) as T
             return bind.apply { viewBinding = this }
         }
     }

@@ -3,9 +3,7 @@
 package com.townwang.yaohuo.common
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.app.Activity
-import android.app.Dialog
 import android.app.SharedElementCallback
 import android.content.Context
 import android.content.Intent
@@ -17,16 +15,15 @@ import android.os.Build
 import android.os.Parcelable
 import android.util.TypedValue
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.*
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
@@ -43,6 +40,7 @@ import java.net.UnknownHostException
 typealias OnItemClickListener = (view: T, data: T) -> Unit
 typealias OnItemListener = (view: T, data: T) -> Unit
 typealias OnClickListener = (view: T, data: T) -> Unit
+typealias OnBBSClickListener = (classId: Int, resId: Int, action: String) -> Unit
 
 inline fun <T> T?.work(block: T.() -> Unit) {
     if (this != null) block.invoke(this)
@@ -127,27 +125,21 @@ fun isCookieBoolean(): Boolean {
     return cookieMaps.isNullOrEmpty()
 }
 
-fun androidx.appcompat.app.ActionBar.setTitleCenter() {
-    val title = "title"
-    val toolbar = this.customView
-    if (toolbar is Toolbar) {
-        val originalTitle = toolbar.title
-        toolbar.title = title
-        for (i in 0 until toolbar.childCount) {
-            val view = toolbar.getChildAt(i)
-            if (view is TextView) {
-                if (title == view.text) {
-                    view.gravity = Gravity.CENTER
-                    val params = Toolbar.LayoutParams(
-                        Toolbar.LayoutParams.WRAP_CONTENT,
-                        Toolbar.LayoutParams.MATCH_PARENT
-                    )
-                    params.gravity = Gravity.CENTER
-                    view.layoutParams = params
-                }
+fun Toolbar.setTitleCenter() {
+    for (i in 0 until childCount) {
+        val view = getChildAt(i)
+        if (view is TextView) {
+            if (title == view.text) {
+                view.gravity = Gravity.CENTER
+                val params = Toolbar.LayoutParams(
+                    Toolbar.LayoutParams.WRAP_CONTENT,
+                    Toolbar.LayoutParams.MATCH_PARENT
+                )
+                params.gravity = Gravity.CENTER
+                view.layoutParams = params
             }
-            toolbar.title = originalTitle
         }
+//        this.title = title
     }
 }
 
@@ -265,6 +257,7 @@ fun Context.handleException(
 fun Context.toast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
+
 fun getParam(url: String, name: String): String {
     var result = ""
     val index = url.indexOf("?")

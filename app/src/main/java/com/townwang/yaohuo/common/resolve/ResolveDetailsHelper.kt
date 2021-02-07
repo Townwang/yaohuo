@@ -1,6 +1,7 @@
 package com.townwang.yaohuo.common.resolve
 
 import android.annotation.SuppressLint
+import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.utils.DateFormatHelper
@@ -14,32 +15,73 @@ import java.util.*
 
 class ResolveDetailsHelper(private val document: Document) {
     val id: String
-        get() = getParam(getPraiseUrl, BuildConfig.YH_REPLY_ID)
+        get() = try {
+            getParam(getFavoriteUrl, BuildConfig.YH_REPLY_ID)
+        } catch (e: Exception) {
+            BuglyLog.e(BuildConfig.FLAVOR, e.message)
+            ""
+        }
     val classId: Int
-        get() = getParam(getPraiseUrl, BuildConfig.YH_SEND_BOOK_CLASSID).toInt()
+        get() = try {
+            getParam(getFavoriteUrl, BuildConfig.YH_SEND_BOOK_CLASSID).toInt()
+        } catch (e: Exception) {
+            BuglyLog.e(BuildConfig.FLAVOR, e.message)
+            0
+        }
     val userName: String
-        get() = document.select("div.subtitle").last().select(A_KEY).first().ownText()
+        get() = try {
+            document.select("div.subtitle").last().select(A_KEY).first().ownText()
+        } catch (e: Exception) {
+            BuglyLog.e(BuildConfig.FLAVOR, e.message)
+            ""
+        }
 
     val getHandUrl: String
-        get() = document.select("div.subtitle").last().select(A_KEY).first().attr(A_HREF)
-
+        get() = try {
+            document.select("div.subtitle").last().select(A_KEY).first().attr(A_HREF)
+        } catch (e: Exception) {
+            BuglyLog.e(BuildConfig.FLAVOR, e.message)
+            ""
+        }
     val onLineState: Boolean
-        get() = document.select("div.subtitle").last().select(IMG_GIF).after(IMG_ALT).first()
+        get() = try {
+            document.select("div.subtitle").last().select(IMG_GIF).after(IMG_ALT).first()
             .attr(IMG_ALT) == "ONLINE"
-
+} catch (e: Exception) {
+    BuglyLog.e(BuildConfig.FLAVOR, e.message)
+    false
+}
     val getPraiseUrl: String
-        get() = document.select("div.subtitle").last().getElementsContainingOwnText("顶").attr(A_HREF)
-
+        get() = try {
+        document.select("div.subtitle").last().getElementsContainingOwnText("顶")
+            .attr(A_HREF)
+} catch (e: Exception) {
+    BuglyLog.e(BuildConfig.FLAVOR, e.message)
+    ""
+}
     val getFavoriteUrl: String
-        get() = document.getElementsContainingOwnText("收藏").last().attr(A_HREF)
-
+        get() = try {
+         document.getElementsContainingOwnText("收藏").last().attr(A_HREF)
+} catch (e: Exception) {
+    BuglyLog.e(BuildConfig.FLAVOR, e.message)
+    ""
+}
     val getShareUrl: String
-        get() = document.getElementsContainingOwnText("分享").last().attr(A_HREF)
-
+        get() = try {
+          document.getElementsContainingOwnText("分享").last().attr(A_HREF)
+} catch (e: Exception) {
+    BuglyLog.e(BuildConfig.FLAVOR, e.message)
+    ""
+}
     val praiseSize: String
-        get() = Regex("([()])").split(
+        get() = try {
+        Regex("([()])").split(
             document.select("div.subtitle").last().ownText().split(" ").last()
         )[1]
+} catch (e: Exception) {
+    BuglyLog.e(BuildConfig.FLAVOR, e.message)
+    ""
+}
     val reward: String?
         get() {
             val operatingData = document.select("div.content").first().toString()

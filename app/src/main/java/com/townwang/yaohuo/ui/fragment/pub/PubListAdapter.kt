@@ -1,10 +1,14 @@
 package com.townwang.yaohuo.ui.fragment.pub
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.OnItemClickListener
 import com.townwang.yaohuo.common.onClickListener
 import com.townwang.yaohuo.repo.data.HomeData
+import kotlinx.android.synthetic.main.fragment_details.*
+import okhttp3.internal.notifyAll
 
 class PubListAdapter : RecyclerView.Adapter<PubListViewHolder>() {
     var onItemClickListener: OnItemClickListener? = null
@@ -21,13 +25,17 @@ class PubListAdapter : RecyclerView.Adapter<PubListViewHolder>() {
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PubListViewHolder {
-        return PubListViewHolder.create(parent)
+        val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
+        return PubListViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return datas.size
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return R.layout.item_list_data
+    }
     override fun onBindViewHolder(holder: PubListViewHolder, position: Int) {
         holder.itemView.onClickListener {
             onItemClickListener?.invoke(holder.itemView,datas[position])

@@ -1,21 +1,15 @@
 package com.townwang.yaohuo.ui.fragment.pub
 
 import android.annotation.SuppressLint
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.databinding.ItemListDataBinding
 import com.townwang.yaohuo.repo.data.HomeData
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 
-class PubListViewHolder(val binding: ItemListDataBinding) : RecyclerView.ViewHolder(binding.root) {
-    companion object {
-        fun create(parent: ViewGroup): PubListViewHolder {
-           val binding = ItemListDataBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return PubListViewHolder(binding)
-        }
-    }
+class PubListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    val binding: ItemListDataBinding by viewbind()
 
     @SuppressLint("SetTextI18n", "ResourceAsColor")
     fun bind( data: HomeData) {

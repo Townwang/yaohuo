@@ -2,15 +2,16 @@ package com.townwang.yaohuo.ui.fragment.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
-import android.view.inputmethod.EditorInfo
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
@@ -19,15 +20,14 @@ import com.townwang.yaohuo.common.utils.isHaveMessage
 import com.townwang.yaohuo.databinding.FragmentHomeBinding
 import com.townwang.yaohuo.repo.data.HomeData
 import com.townwang.yaohuo.ui.activity.*
-import com.townwang.yaohuo.ui.fragment.bbs.BBSFragment
-import com.townwang.yaohuo.ui.fragment.pub.PubListAdapter
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
-    val binding:FragmentHomeBinding by viewbind()
-    private val adapter = PubListAdapter()
-    private val viewModel: HomeModel by viewModel()
+    val binding: FragmentHomeBinding by viewbind()
+    private val adapter = HomeAdapter()
+    var page = 1
+    private val model: HomeModel by viewModel()
     lateinit var request: ActivityResultLauncher<Intent>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,36 +38,38 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).work {
             supportActionBar.work {
                 title = getString(R.string.home_page)
                 setDisplayHomeAsUpEnabled(false)
-                setTitleCenter()
             }
         }
-        if (savedInstanceState == null) {
-            childFragmentManager.beginTransaction()
-                .replace(R.id.navBBSHost, BBSFragment())
-                .commit()
+        binding.listView.adapter = adapter
+        binding.refreshLayout.setOnRefreshListener {
+            page = 1
+            model.loadList(0, page, BuildConfig.YH_BBS_ACTION_NEW)
         }
-        binding.homeList?.adapter = adapter
-        binding.homeList?.layoutManager =
-            (StaggeredGridLayoutManager(
-                requireContext().config(HOME_LIST_THEME_SHOW).toInt(),
-                StaggeredGridLayoutManager.VERTICAL
-            ))
-        adapter.onItemClickListener = { v, data ->
-            if (data is HomeData) {
-                var isBear = true
-                data.smailIng.forEach {
-                    if (it == BuildConfig.YH_MATCH_LIST_BEAR) {
-                        isBear = false
-                        return@forEach
+        binding.refreshLayout.setOnLoadMoreListener {
+            page++
+            model.loadList(0, page, BuildConfig.YH_BBS_ACTION_NEW)
+        }
+        binding.refreshLayout.autoRefresh()
+
+        adapter.onItemListListener = { _, pro ->
+            if (pro is Product) {
+                val data = pro.t
+                if (data is HomeData) {
+                    var isBear = true
+                    data.smailIng.forEach {
+                        if (it == BuildConfig.YH_MATCH_LIST_BEAR) {
+                            isBear = false
+                            return@forEach
+                        }
                     }
-                }
-                startActivity( Intent(
+                    startActivity(Intent(
                         requireContext(), ActivityDetails::class.java
                     ).apply {
                         flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
@@ -76,73 +78,58 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         putExtra(HOME_DETAILS_BEAR_KEY, isBear)
                         putExtra(HOME_DETAILS_TITLE_KEY, data.title)
                     }
-                )
+                    )
+                }
             }
         }
-        viewModel.loadList(0, 1, BuildConfig.YH_BBS_ACTION_NEW)
-        binding. noMore.onClickListener {
+        adapter.onBBSListener = { classId, resId, action ->
             startActivity(Intent(
                 requireContext(), ActivityList::class.java
             ).apply {
                 flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                putExtra(LIST_CLASS_ID_KEY, 0)
-                putExtra(LIST_BBS_NAME_KEY, getString(R.string.home_news))
-                putExtra(LIST_ACTION_KEY, BuildConfig.YH_BBS_ACTION_NEW)
+                putExtra(LIST_CLASS_ID_KEY, classId)
+                putExtra(LIST_BBS_NAME_KEY, getString(resId))
+                putExtra(LIST_ACTION_KEY, action)
             }
             )
         }
-        binding.searchValue.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val searchValue =  binding.searchValue.text.toString()
-                if (searchValue.isNullOrEmpty()) {
-                    Snackbar.make(
-                        v,
-                        getString(R.string.search_value_empty_tip),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+        adapter.onSearchListener = { v, data ->
+            if (data is String) {
+                if (data.isEmpty()) {
+                    if (v is View) {
+                        Snackbar.make(
+                            v,
+                            getString(R.string.search_value_empty_tip),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
                 } else {
                     ActivityCompat.startActivity(
                         requireContext(), Intent(
                             requireContext(), ActivitySearch::class.java
                         ).apply {
                             flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                            putExtra(HOME_SEARCH_URL_KEY, searchValue)
+                            putExtra(HOME_SEARCH_URL_KEY, data)
                         }, null
                     )
                 }
-                return@setOnEditorActionListener true
-            }
-            return@setOnEditorActionListener false
-        }
-        binding.searchBtn.onClickListener {
-            val searchValue =  binding.searchValue.text.toString()
-            if (searchValue.isNullOrEmpty()) {
-                Snackbar.make(
-                    it,
-                    getString(R.string.search_value_empty_tip),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            } else {
-                ActivityCompat.startActivity(
-                    requireContext(), Intent(
-                        requireContext(), ActivitySearch::class.java
-                    ).apply {
-                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                        putExtra(HOME_SEARCH_URL_KEY, searchValue)
-                    }, null
-                )
             }
         }
-
-
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        viewModel.listDates.observe(viewLifecycleOwner, safeObserver {
-            adapter.datas = it as ArrayList<HomeData>
+        model.liveData.observe(viewLifecycleOwner, safeObserver {
+            adapter.submitList(it)
+            adapter.notifyDataSetChanged()
         })
-        viewModel.error.observe(viewLifecycleOwner, safeObserver {
+        model.loading.observe(viewLifecycleOwner, safeObserver {
+            if (it.not()) {
+                binding.refreshLayout.finishRefresh()
+                binding.refreshLayout.finishLoadMore()
+            }
+        })
+        model.error.observe(viewLifecycleOwner, safeObserver {
             requireContext().handleException(it)
         })
     }
@@ -179,7 +166,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
             R.id.toolbar_r_about -> {
                 val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    requireActivity(),  binding.scrollerLayout, "share name"
+                    requireActivity(), binding.listView, "share name"
                 ).toBundle()
                 ActivityCompat.startActivity(
                     requireContext(), Intent(
@@ -207,6 +194,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     fun refreshData() {
-        viewModel.loadList(0, 1, BuildConfig.YH_BBS_ACTION_NEW)
+        model.loadList(0, 1, BuildConfig.YH_BBS_ACTION_NEW)
     }
 }

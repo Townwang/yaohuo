@@ -1,15 +1,10 @@
 package com.townwang.yaohuo.ui.fragment.details
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.townwang.yaohuo.databinding.ItemCommentDataBinding
-class CommentViewHolder(val binding: ItemCommentDataBinding) : RecyclerView.ViewHolder(binding.root) {
-    companion object {
-        fun create(parent: ViewGroup): CommentViewHolder {
-           val binding = ItemCommentDataBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return CommentViewHolder(binding)
-        }
-    }
+import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 
+class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    val binding: ItemCommentDataBinding by viewbind()
 }
