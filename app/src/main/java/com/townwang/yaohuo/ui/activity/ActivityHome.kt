@@ -70,6 +70,13 @@ class ActivityHome : AppCompatActivity() {
                 loading?.loadFailed()
             }
         })
+        viewModel.loading.observe(this, safeObserver {
+            loading?.close()
+        })
+        viewModel.error.observe(this, safeObserver {
+            loading?.close()
+            baseContext.handleException(it)
+        })
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

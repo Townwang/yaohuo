@@ -120,6 +120,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         model.liveData.observe(viewLifecycleOwner, safeObserver {
+
             adapter.submitList(it)
             adapter.notifyDataSetChanged()
         })
