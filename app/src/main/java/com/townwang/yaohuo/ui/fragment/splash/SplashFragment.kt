@@ -27,13 +27,21 @@ class SplashFragment : Fragment(R.layout.fragment_welcome) {
         binding.mParticleView.startAnim()
         binding. mParticleView.mParticleAnimListener = {
             if (isAdded) {
-                if (isCookieBoolean()) {
-                    startActivity(Intent(requireContext(), ActivityLogin::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    })
-                    requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-                } else {
-                    viewModel.checkCookie(requireContext().config(TROUSER_KEY))
+                when(requireContext().config(BuildConfig.APP_IS_CRACK)){
+                    "-1" ->{
+                        Snackbar.make(requireView(), "请勿乱破解，谢谢！", Snackbar.LENGTH_INDEFINITE).apply {
+                            setAction(android.R.string.ok) {
+                                requireActivity().finish()
+                            }
+                        }.show()
+                    }
+                    else ->{
+                        startActivity(Intent(requireContext(), ActivityHome::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        })
+                        requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
+                        BuglyLog.d(BuildConfig.FLAVOR,"login == true")
+                    }
                 }
             }
         }
@@ -41,42 +49,5 @@ class SplashFragment : Fragment(R.layout.fragment_welcome) {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        viewModel.nieceSuccess.observe(viewLifecycleOwner, safeObserver {
-            if (it) {
-                startActivity(Intent(requireContext(), ActivityHome::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                })
-                requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-                BuglyLog.d(BuildConfig.FLAVOR,"login == true")
-            } else {
-                Snackbar.make(requireView(), "非内测成员，请关注后续更新", Snackbar.LENGTH_INDEFINITE).apply {
-                    setAction(android.R.string.ok) {
-                        requireActivity().finish()
-                    }
-                }.show()
-            }
-        })
-        viewModel.cookieSuccess.observe(viewLifecycleOwner, safeObserver {
-            if (it) {
-                startActivity(Intent(requireContext(), ActivityHome::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                })
-                requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-                BuglyLog.d(BuildConfig.FLAVOR,"login == true")
-            } else {
-                Snackbar.make(requireView(), "请勿乱破解，谢谢！", Snackbar.LENGTH_INDEFINITE).apply {
-                    setAction(android.R.string.ok) {
-                        requireActivity().finish()
-                    }
-                }.show()
-            }
-        })
-        viewModel.error.observe(viewLifecycleOwner, safeObserver {
-            startActivity(Intent(requireContext(), ActivityLogin::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            })
-            requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-            requireContext().handleException(it)
-        })
     }
 }

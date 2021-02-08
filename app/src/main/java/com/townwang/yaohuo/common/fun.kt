@@ -221,10 +221,13 @@ fun Context.handleException(
                     // TODO: 2021/1/17/017 访问验证
                     toast(t.message.orEmpty())
                 }
+                ErrorCode.E_1006.hashCode() ->{
+                    clearConfig(THEME_KEY, TROUSER_KEY, COOKIE_KEY, HOME_LIST_THEME_SHOW,BuildConfig.APP_IS_CRACK)
+                    LoginHelper.instance.fistLogin(this)
+                }
                 ErrorCode.E_1003.hashCode(),
-                ErrorCode.E_1006.hashCode(),
                 ErrorCode.E_1007.hashCode() -> {
-                    clearConfig(THEME_KEY, TROUSER_KEY, COOKIE_KEY, HOME_LIST_THEME_SHOW)
+                    clearConfig(THEME_KEY, TROUSER_KEY, COOKIE_KEY, HOME_LIST_THEME_SHOW,BuildConfig.APP_IS_CRACK)
                     LoginHelper.instance.restartLogin(this)
                 }
                 ErrorCode.E_1005.hashCode() -> {

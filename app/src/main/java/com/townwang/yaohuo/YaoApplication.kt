@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import androidx.multidex.MultiDex
 import com.bumptech.glide.request.target.ViewTarget
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -16,7 +15,8 @@ import com.tencent.bugly.beta.Beta
 import com.tencent.bugly.crashreport.BuglyLog
 import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.bugly.crashreport.CrashReport.UserStrategy
-import com.townwang.yaohuo.common.isCrack
+import com.townwang.yaohuo.common.config
+import com.townwang.yaohuo.common.signatureHash
 import com.townwang.yaohuo.di.koinModules
 import com.townwang.yaohuo.ui.weight.header.TaurusHeader
 import org.koin.android.ext.koin.androidContext
@@ -62,16 +62,16 @@ class YaoApplication : Application() {
                 packageManager.getPackageInfo(
                     packageName,
                     PackageManager.GET_SIGNING_CERTIFICATES
-                ).signingInfo.apkContentsSigners[0]
+                ).signingInfo.apkContentsSigners.first()
             } else {
                 packageManager.getPackageInfo(
                     packageName,
                     PackageManager.GET_SIGNATURES
-                ).signatures[0]
+                ).signatures.first()
             }
             val d = a.hashCode()
-            if (d == -508714960 || d == 1375692864) {
-                isCrack = true
+            if (signatureHash.contains(d.toLong()).not()) {
+                config(BuildConfig.APP_IS_CRACK,"-1")
             }
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()

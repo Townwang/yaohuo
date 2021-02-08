@@ -69,7 +69,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 loading?.loadSuccess()
             } else {
                 loading?.loadFailed()
-                Snackbar.make(requireView(), "请勿乱破解，谢谢！", Snackbar.LENGTH_INDEFINITE).apply {
+                loading?.loadFailed()
+                Snackbar.make(requireView(), "非内测成员，请关注后续更新", Snackbar.LENGTH_INDEFINITE).apply {
                     setAction(android.R.string.ok) {
                         requireActivity().finish()
                     }
@@ -91,28 +92,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         viewModel.error.observe(viewLifecycleOwner, safeObserver {
             loading?.loadFailed()
             context?.handleException(it)
-        })
-        viewModel.nieceSuccess.observe(viewLifecycleOwner, safeObserver {
-            if (it) {
-                requireContext().config(TROUSER_KEY, viewModel.trouser.value)
-                val intent = Intent(requireContext(), ActivityHome::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                }
-                val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    requireActivity(), binding.loginBtn, "share name"
-                ).toBundle()
-                ActivityCompat.startActivity(requireContext(), intent, bundle)
-                requireActivity().overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
-                BuglyLog.d(BuildConfig.FLAVOR, "login == true")
-                loading?.loadSuccess()
-            } else {
-                loading?.loadFailed()
-                Snackbar.make(requireView(), "非内测成员，请关注后续更新", Snackbar.LENGTH_INDEFINITE).apply {
-                    setAction(android.R.string.ok) {
-                        requireActivity().finish()
-                    }
-                }.show()
-            }
         })
     }
 
