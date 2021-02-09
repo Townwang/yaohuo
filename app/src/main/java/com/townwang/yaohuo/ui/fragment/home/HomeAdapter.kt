@@ -33,63 +33,95 @@ class HomeAdapter : ListAdapter<Product, RecyclerView.ViewHolder>(Product.CALLBA
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = getItem(position)
-        if (holder is ProductViewHolder) {
-            holder.bindData(data)
-        }
-        when (holder) {
-            is ProductViewHolderHeader -> {
-                holder.binding.searchBtn.setOnClickListener {
-                    onSearchListener?.invoke(it,holder.binding.searchValue.text.toString())
-                }
-                holder.binding.searchValue.setOnEditorActionListener { v, actionId, _ ->
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        onSearchListener?.invoke(v,holder.binding.searchValue.text.toString())
-                        return@setOnEditorActionListener true
-                    }
-                    return@setOnEditorActionListener false
-                }
+        if (holder is ProductViewHolderHeader) {
+            holder.binding.searchBtn.setOnClickListener {
+                onSearchListener?.invoke(it, holder.binding.searchValue.text.toString())
             }
-            is ProductBBSViewHolderHeader -> {
-                onBBSListener
-                holder.binding.resourceSharing.setOnClickListener {
-                    onBBSListener?.invoke(201,R.string.bbs_res_share, BuildConfig.YH_BBS_ACTION_CLASS)
+            holder.binding.searchValue.setOnEditorActionListener { v, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    onSearchListener?.invoke(v, holder.binding.searchValue.text.toString())
+                    return@setOnEditorActionListener true
                 }
-                holder.binding.integratedTechnology.setOnClickListener {
-                    onBBSListener?.invoke(197,R.string.bbs_integrated_technology, BuildConfig.YH_BBS_ACTION_CLASS)
-                }
-                holder.binding.mlTalkOver.setOnClickListener {
-                    onBBSListener?.invoke(203,R.string.bbs_ml_talk_over, BuildConfig.YH_BBS_ACTION_CLASS)
-                }
-                holder.binding.reward.setOnClickListener {
-                    onBBSListener?.invoke(204,R.string.bbs_reward, BuildConfig.YH_BBS_ACTION_CLASS)
-                }
-                holder.binding.teahouse.setOnClickListener {
-                    onBBSListener?.invoke(177,R.string.bbs_tea_house, BuildConfig.YH_BBS_ACTION_CLASS)
-                }
-                holder.binding.rewardQuestionAndAnswer.setOnClickListener {
-                    onBBSListener?.invoke(213,R.string.bbs_quest_answer, BuildConfig.YH_BBS_ACTION_CLASS)
-                }
-                holder.binding.texturedPhoto.setOnClickListener {
-                    onBBSListener?.invoke(240,R.string.bbs_textured_photo, BuildConfig.YH_BBS_ACTION_CLASS)
-                }
-                holder.binding.stationService.setOnClickListener {
-                    onBBSListener?.invoke(199,R.string.bbs_stationService, BuildConfig.YH_BBS_ACTION_CLASS)
-                }
-                holder.binding.complaint.setOnClickListener {
-                    onBBSListener?.invoke(198,R.string.bbs_complaint, BuildConfig.YH_BBS_ACTION_CLASS)
-                }
-                holder.binding.announcement.setOnClickListener {
-                    onBBSListener?.invoke(288,R.string.bbs_announcement, BuildConfig.YH_BBS_ACTION_CLASS)
-                }
-            }
-            is ProductViewHolder -> {
-                holder.itemView.setOnClickListener {
-                    onItemListListener?.invoke(it, getItem(position))
-                }
-                holder.bindData(data)
+                return@setOnEditorActionListener false
             }
         }
 
+
+        if (holder is ProductBBSViewHolderHeader) {
+            onBBSListener
+            holder.binding.resourceSharing.setOnClickListener {
+                onBBSListener?.invoke(
+                    201,
+                    R.string.bbs_res_share,
+                    BuildConfig.YH_BBS_ACTION_CLASS
+                )
+            }
+            holder.binding.integratedTechnology.setOnClickListener {
+                onBBSListener?.invoke(
+                    197,
+                    R.string.bbs_integrated_technology,
+                    BuildConfig.YH_BBS_ACTION_CLASS
+                )
+            }
+            holder.binding.mlTalkOver.setOnClickListener {
+                onBBSListener?.invoke(
+                    203,
+                    R.string.bbs_ml_talk_over,
+                    BuildConfig.YH_BBS_ACTION_CLASS
+                )
+            }
+            holder.binding.reward.setOnClickListener {
+                onBBSListener?.invoke(204, R.string.bbs_reward, BuildConfig.YH_BBS_ACTION_CLASS)
+            }
+            holder.binding.teahouse.setOnClickListener {
+                onBBSListener?.invoke(
+                    177,
+                    R.string.bbs_tea_house,
+                    BuildConfig.YH_BBS_ACTION_CLASS
+                )
+            }
+            holder.binding.rewardQuestionAndAnswer.setOnClickListener {
+                onBBSListener?.invoke(
+                    213,
+                    R.string.bbs_quest_answer,
+                    BuildConfig.YH_BBS_ACTION_CLASS
+                )
+            }
+            holder.binding.texturedPhoto.setOnClickListener {
+                onBBSListener?.invoke(
+                    240,
+                    R.string.bbs_textured_photo,
+                    BuildConfig.YH_BBS_ACTION_CLASS
+                )
+            }
+            holder.binding.stationService.setOnClickListener {
+                onBBSListener?.invoke(
+                    199,
+                    R.string.bbs_stationService,
+                    BuildConfig.YH_BBS_ACTION_CLASS
+                )
+            }
+            holder.binding.complaint.setOnClickListener {
+                onBBSListener?.invoke(
+                    198,
+                    R.string.bbs_complaint,
+                    BuildConfig.YH_BBS_ACTION_CLASS
+                )
+            }
+            holder.binding.announcement.setOnClickListener {
+                onBBSListener?.invoke(
+                    288,
+                    R.string.bbs_announcement,
+                    BuildConfig.YH_BBS_ACTION_CLASS
+                )
+            }
+        }
+        if (holder is ProductViewHolder) {
+            holder.bindData(data)
+            holder.itemView.setOnClickListener {
+                onItemListListener?.invoke(it, data)
+            }
+        }
     }
 
     override fun getItemViewType(position: Int): Int = when (position) {

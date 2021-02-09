@@ -3,6 +3,8 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.townwang.yaohuo">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 网络 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 微信需要往sd卡写入二维码 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />

@@ -37,6 +37,10 @@ android{
         buildConfigField("String", "YH_SEND_BOOK_CLASSID", '"classid"')
 
     }
+    //app字段
+    buildTypes.all {
+        buildConfigField("String", "APP_IS_CRACK", '"app is crack"')
+    }
     //Jsoup解析字段
     buildTypes.all {
 

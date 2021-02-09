@@ -1,7 +1,11 @@
 package com.townwang.yaohuo
 
+import android.content.pm.PackageManager
+import android.os.Build
+import android.util.Log
 import com.google.gson.Gson
 import com.townwang.yaohuo.common.A_HREF
+import com.townwang.yaohuo.common.config
 import com.townwang.yaohuo.common.resolve.ResolveUserInfoHelper
 import com.townwang.yaohuo.repo.data.YaoCdnReq
 import com.townwang.yaohuo.repo.enum.Level
@@ -18,8 +22,14 @@ import java.util.concurrent.Executors
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-//      val string  = "这个是我一个同学介绍的不知道可靠不，想听听妖友们的意见！ 共有3个附件: 1.img_20191104_172450.jpg(3.3MB) 2.screenshot_2019-11-04-17-23-19-554_com.tencent.mm.jpg(440.7KB) 3.screenshot_2019-11-04-17-21-34-006_com.tencent.mm.jpg(416.4KB)"
-//     print(string.substring(string.lastIndexOf("<!--listS-->"),string.indexOf("<!--listE-->")))
+
+        val  aaa  =  arrayListOf<Long>()
+        aaa.add(-508714960)
+        aaa.add(1375692864)
+        val d = -50871496
+        if (aaa.contains(d.toLong())) {
+            println("dddddddddd")
+        }
     }
 
     @Test

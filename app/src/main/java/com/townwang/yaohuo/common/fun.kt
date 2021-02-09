@@ -13,12 +13,15 @@ import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Parcelable
+import android.text.Html
+import android.text.Spanned
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -31,6 +34,7 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.common.utils.LoginHelper
 import com.townwang.yaohuo.repo.enum.ErrorCode
+import com.townwang.yaohuo.ui.weight.binding.databind.FragmentDataBinding
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog.Speed
 import java.net.SocketTimeoutException
@@ -221,10 +225,13 @@ fun Context.handleException(
                     // TODO: 2021/1/17/017 访问验证
                     toast(t.message.orEmpty())
                 }
+                ErrorCode.E_1006.hashCode() ->{
+                    clearConfig(THEME_KEY, TROUSER_KEY, COOKIE_KEY, HOME_LIST_THEME_SHOW,BuildConfig.APP_IS_CRACK)
+                    LoginHelper.instance.fistLogin(this)
+                }
                 ErrorCode.E_1003.hashCode(),
-                ErrorCode.E_1006.hashCode(),
                 ErrorCode.E_1007.hashCode() -> {
-                    clearConfig(THEME_KEY, TROUSER_KEY, COOKIE_KEY, HOME_LIST_THEME_SHOW)
+                    clearConfig(THEME_KEY, TROUSER_KEY, COOKIE_KEY, HOME_LIST_THEME_SHOW,BuildConfig.APP_IS_CRACK)
                     LoginHelper.instance.restartLogin(this)
                 }
                 ErrorCode.E_1005.hashCode() -> {
@@ -258,6 +265,10 @@ fun Context.toast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
 
+fun Context.toastLong(msg: String) {
+    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+}
+
 fun getParam(url: String, name: String): String {
     var result = ""
     val index = url.indexOf("?")
@@ -280,6 +291,13 @@ fun getUrlString(url: String): String {
     }
 }
 
+
+
+fun String.toHtml(): Spanned {
+    return if (Build.VERSION.SDK_INT >= 24) {
+        Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY)
+    } else Html.fromHtml(this)
+}
 val options = RequestOptions()
     .error(R.drawable.ic_picture_error)
     .placeholder(R.drawable.loading_anim)

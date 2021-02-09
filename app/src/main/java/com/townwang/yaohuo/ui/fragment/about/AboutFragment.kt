@@ -60,7 +60,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 ).apply {
                     flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     putExtra(WEB_VIEW_URL_KEY, BuildConfig.ABOUT_WECHAT)
-                    putExtra(WEB_VIEW_URL_TITLE, "公众号：开猿")
+                    putExtra(WEB_VIEW_URL_TITLE, "公众号：开源人")
                 }, null
             )
         }

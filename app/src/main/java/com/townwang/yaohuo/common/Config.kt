@@ -13,7 +13,10 @@ class NetworkFailureException(failure: String) : Exception(failure)
 class UseVPNException(failure: String) : Exception(failure)
 /**********************************************校验*********************************************/
 
-var isCrack = false
+val  signatureHash  =  arrayListOf<Long>().apply {
+    add(-508714960)
+    add(1375692864)
+}
 
 //浏览器参数配置
 const val USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0.1; Moto G (4)) Gecko/20100101 Firefox/54.0"

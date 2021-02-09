@@ -19,9 +19,6 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
     val loginSuccess = _loginSuccess.asLiveData()
     val loginError = _loginError.asLiveData()
     val trouser = _trouser.asLiveData()
-
-    private val _nieceSuccess = MutableLiveData<Boolean>()
-    val nieceSuccess = _nieceSuccess.asLiveData()
     fun login(loginName: String, password: String) = launchTask {
         if (loginName.isEmpty()) {
             _loginUserError.value = "用户名不能为空"
@@ -55,7 +52,7 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
             _trouser.value = trouserId
             CrashReport.setUserId(trouserId)
             if (IS_ALPHA.not()) {
-                _loginSuccess.value = isCrack
+                _loginSuccess.value = true
             } else {
                 val result = repo.neice()
                 val d =  result.select("div.rich_media_content")
@@ -63,15 +60,15 @@ class LoginModel(private val repo: Repo) : UIViewModel() {
                     .getElementsByTag("span")
                 d.forEach {
                     if (it.text() == trouserId) {
-                        _nieceSuccess.value = isCrack
+                        _loginSuccess.value  = true
                         _trouser.value = trouserId
                         return@launchTask
                     }
                 }
-                _nieceSuccess.value = false
+                _loginSuccess.value  = false
             }
         } catch (e: Exception) {
-            _nieceSuccess.value = false
+            _loginSuccess.value  = false
         }
     }
 }
