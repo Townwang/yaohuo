@@ -293,5 +293,22 @@ object PayHelper {
                 Toast.makeText(c, "未安装微信～", Toast.LENGTH_SHORT).show()
             }
         }
+        @SuppressLint("WrongConstant", "QueryPermissionsNeeded")
+        fun startWechatSearch(c: Context) {
+            val intent = Intent()
+            intent.component = ComponentName("com.tencent.mm", "com.tencent.mm.plugin.fts.ui.FTSMainUI")
+            intent.flags = 335544320
+            intent.action = "android.intent.action.VIEW"
+            val pm = c.packageManager
+            if (!(pm == null || pm.queryIntentActivities(
+                    intent,
+                    PackageManager.MATCH_DEFAULT_ONLY
+                ).size <= 0)
+            ) {
+                c.startActivity(intent)
+            } else {
+                Toast.makeText(c, "未安装微信～", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

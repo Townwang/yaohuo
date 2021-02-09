@@ -1,5 +1,6 @@
 package com.townwang.yaohuo.ui.fragment.splash
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -8,10 +9,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.common.config
 import com.townwang.yaohuo.databinding.FragmentWelcomeBinding
 import com.townwang.yaohuo.ui.activity.ActivityHome
-import com.townwang.yaohuo.ui.activity.ActivityLogin
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -22,6 +22,7 @@ class SplashFragment : Fragment(R.layout.fragment_welcome) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
+    @SuppressLint("WrongConstant")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.mParticleView.startAnim()
@@ -46,7 +47,6 @@ class SplashFragment : Fragment(R.layout.fragment_welcome) {
             }
         }
     }
-
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
     }

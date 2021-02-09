@@ -1,5 +1,7 @@
 package com.townwang.yaohuo.ui.fragment.login
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -17,6 +19,7 @@ import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentLoginBinding
 import com.townwang.yaohuo.ui.activity.ActivityHome
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuo.ui.weight.pay.PayHelper
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -69,9 +72,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 loading?.loadSuccess()
             } else {
                 loading?.loadFailed()
-                loading?.loadFailed()
-                Snackbar.make(requireView(), "非内测成员，请关注后续更新", Snackbar.LENGTH_INDEFINITE).apply {
-                    setAction(android.R.string.ok) {
+                Snackbar.make(requireView(), "非内测成员，关注公众号(<font color='#D81B60'>开源人</font>)\n在公众号文章<font color='#03A9F4'>蓝火客户端</font>留言报名".toHtml(), Snackbar.LENGTH_INDEFINITE).apply {
+                    setAction("去搜索") {
+                        val tvCopy: ClipboardManager =
+                            requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        tvCopy.text = "开源人"
+                        requireContext().toastLong("公众号复制成功，请粘贴添加")
+                        PayHelper.weZhi.startWechatSearch(requireContext())
                         requireActivity().finish()
                     }
                 }.show()

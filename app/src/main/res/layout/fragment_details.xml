@@ -188,6 +188,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 style="@style/web_view_style"
+                android:backgroundTint="@color/transparent"
                 android:background="@color/white" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
