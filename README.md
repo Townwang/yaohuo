@@ -1,16 +1,26 @@
 # yaohuo
+
+## wechat 
+![微信搜一搜.png](https://i.loli.net/2021/02/15/jSwT6k32pY4qyXB.png)
 ## YaoHuo Client
 
 address：https://yaohuo.me
 
-![24770_1855240screenshot_20191115_185521_com.townwang.yaohuo.jpg](https://i.loli.net/2019/12/26/miY3W5H4L7dqUBM.jpg)
+![微信截图_20210215220305.png](https://i.loli.net/2021/02/15/9AniMuLX43y2pw1.png)
 
 ## Original forum
 ![微信截图_20191226161212.png](https://i.loli.net/2019/12/26/ZP4fAdpUzxnBq71.png)
-## After packaging
-![24770_1259570screenshot_20191107_124904_com.townwang.yaohuo.jpg](https://i.loli.net/2019/12/26/qRtZpvke9jbTEzF.jpg)
+## v1.1 after packaging
+![微信截图_20210215220337.png](https://i.loli.net/2021/02/15/MIixvFaweuykp6O.png)
 
+## v1.2 after packaging
+![6da99860ec43c5d6cf40ec15b01da2d.jpg](https://i.loli.net/2021/02/15/XwCdAnz4V7JZUIe.jpg)
 ## Update log
+### v1.2-beta
+1. modify the overall ui
+2. add posting function
+3. change the post details page ui
+4. Fix some bugs
 
 ### v1.1-beta
 1. New message reminder
