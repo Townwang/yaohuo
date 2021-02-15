@@ -221,6 +221,7 @@
                 android:paddingBottom="50dp"
                 app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
                 tools:ignore="MissingConstraints,UnusedAttribute"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_comment_data" />
 
             <TextView

@@ -76,6 +76,7 @@ class PubListFragment : Fragment(R.layout.fragment_list_pub) {
                 requireArguments().getString(LIST_ACTION_KEY, "new")
             )
         }
+        binding.refreshLayout.setEnableAutoLoadMore(true)
         binding.refreshLayout.autoRefresh()
     }
 

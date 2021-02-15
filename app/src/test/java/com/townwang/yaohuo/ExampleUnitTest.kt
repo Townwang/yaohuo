@@ -6,6 +6,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.townwang.yaohuo.common.A_HREF
 import com.townwang.yaohuo.common.config
+import com.townwang.yaohuo.common.getParam
 import com.townwang.yaohuo.common.resolve.ResolveUserInfoHelper
 import com.townwang.yaohuo.repo.data.YaoCdnReq
 import com.townwang.yaohuo.repo.enum.Level
@@ -163,6 +164,11 @@ class ExampleUnitTest {
         val gson = Gson()
         val loginUserJson = gson.fromJson(json, YaoCdnReq::class.java)
         println(loginUserJson)
+    }
+    @Test
+    fun del(){
+        val url = "/bbs/messagelist_del.aspx?action=del&siteid=1000&classid=0&id=7587274&types=0&issystem=&backurl=myfile.aspx%3fsiteid%3d1000&page=1"
+        print(getParam(url,"backurl"))
     }
 
 }

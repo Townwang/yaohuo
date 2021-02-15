@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.widget.ImageView
@@ -16,7 +14,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
@@ -38,9 +35,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class DetailsFragment : Fragment(R.layout.fragment_details) {
-    val binding:FragmentDetailsBinding by viewbind()
+    val binding: FragmentDetailsBinding by viewbind()
     var loading: LoadingDialog? = null
-    private var page: Int = 1
     private var ot: Int = 0
     private val adapter = CommentAdapter()
     private val viewModel: DetailsModel by viewModel()
@@ -52,24 +48,15 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.commentLists.adapter = adapter
         binding.refreshLayout.setOnRefreshListener {
-            page = 1
-            ot = 0
-            adapter.datas.clear()
-            viewModel.commentDetails(page, ot)
+            viewModel.getDetails(requireArguments().getString(HOME_DETAILS_URL_KEY, ""))
         }
         binding.refreshLayout.setOnLoadMoreListener {
-            if (adapter.datas.isNullOrEmpty()) {
-                binding.refreshLayout.finishLoadMoreWithNoMoreData()
-                return@setOnLoadMoreListener
-            }
-            if (adapter.datas.last().floor == 1) {
-                binding.refreshLayout.finishLoadMoreWithNoMoreData()
-                return@setOnLoadMoreListener
-            }
-            page++
-            viewModel.commentDetails(page, ot)
+            viewModel.commentDetails(false, ot)
         }
+        binding.refreshLayout.setEnableAutoLoadMore(true)
+        binding.refreshLayout.autoRefresh()
         binding.attention.onClickListener {
             Snackbar.make(requireView(), "正在开发...", Snackbar.LENGTH_SHORT).show()
         }
@@ -128,17 +115,16 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             binding.favorite.isClickable = false
             viewModel.favorite()
         }
-        binding.commentLists.adapter = adapter
-        binding.commentLists.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        adapter.onItemListener = { item, data ->
+         adapter.onItemListener = { item, data ->
             if (data is CommitListBean) {
                 if (item is ItemCommentDataBinding) {
                     item.apply {
-                        viewModel.getUserInfo(
-                            item,
-                            getParam(data.avatar, BuildConfig.YH_REPLY_TOUSERID)
-                        )
+                        if (item.leval.text.contains("0")) {
+                            viewModel.getUserInfo(
+                                item,
+                                getParam(data.avatar, BuildConfig.YH_REPLY_TOUSERID)
+                            )
+                        }
                         WebViewHelper(requireContext(), auth).apply {
                             shouldOverrideUrlLoading = true
                         }.setHtmlCode(data.auth)
@@ -208,7 +194,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
                 binding.subtitle.text = it.reward
             }
-
             WebViewHelper(requireContext(), binding.webView).apply {
                 shouldOverrideUrlLoading = true
             }.setHtmlCode(it.content)
@@ -257,23 +242,21 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             binding.leval.text = it
         })
         viewModel.commentSize.observe(viewLifecycleOwner, safeObserver {
-            if (page == 1 && ot == 0) {
-                binding.commentValue.text = it
-            }
+            binding.commentValue.text = it
         })
         viewModel.commentLists.observe(viewLifecycleOwner, safeObserver {
             binding.commentLists.visibility = View.VISIBLE
             binding.noMore.visibility = View.GONE
             binding.refreshLayout.setEnableLoadMore(true)
-            if (it is ArrayList<CommitListBean>) {
-                adapter.datas = it
-            }
+            adapter.submitList(it)
+            adapter.notifyDataSetChanged()
         })
         viewModel.noMore.observe(viewLifecycleOwner, safeObserver {
             binding.noMore.visibility = View.VISIBLE
             if (it) {
                 binding.commentLists.visibility = View.GONE
                 binding.refreshLayout.setEnableLoadMore(false)
+                binding.refreshLayout.finishLoadMoreWithNoMoreData()
             }
         })
         viewModel.loading.observe(viewLifecycleOwner, safeObserver {
@@ -287,10 +270,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         })
         viewModel.commentSuccess.observe(viewLifecycleOwner, safeObserver {
             if (it) {
-                page = 1
-                ot = 0
-                adapter.datas.clear()
-                viewModel.commentDetails(page, ot)
+                viewModel.getDetails(requireArguments().getString(HOME_DETAILS_URL_KEY, ""))
                 loading?.loadSuccess()
             } else {
                 loading?.loadFailed()
@@ -322,7 +302,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 }
             }
         })
-        viewModel.getDetails(requireArguments().getString(HOME_DETAILS_URL_KEY, ""))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -337,11 +316,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
     private fun refreshDone(success: Boolean) {
         binding.commentTip.visibility = View.VISIBLE
-        if (page == 1) {
-            binding.refreshLayout.finishRefresh(success)
-        } else {
-            binding.refreshLayout.finishLoadMore(success)
-        }
+        binding.refreshLayout.finishRefresh(success)
+        binding.refreshLayout.finishLoadMore(success)
     }
 
     private fun sendCommit(data: CommitListBean) {
@@ -385,6 +361,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             }
         }
     }
+
     override fun onDestroy() {
         loading?.run {
             close()

@@ -57,7 +57,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             model.loadList(0, page, BuildConfig.YH_BBS_ACTION_NEW)
         }
         binding.refreshLayout.autoRefresh()
-
         adapter.onItemListListener = { _, pro ->
             if (pro is Product) {
                 val data = pro.t
@@ -120,7 +119,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         model.liveData.observe(viewLifecycleOwner, safeObserver {
-
             adapter.submitList(it)
             adapter.notifyDataSetChanged()
         })

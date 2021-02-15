@@ -11,6 +11,7 @@ class ResolveListHelper(private val document: Document) {
         get() {
             val list = document.select(NEW_LIST)
             val lists = arrayListOf<HomeData>()
+            lists.clear()
             list.forEach {
                 val hrefs = it.select(A_KEY).first()
                 val a = hrefs.attr(A_HREF)

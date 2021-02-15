@@ -8,6 +8,7 @@ import com.townwang.yaohuo.common.utils.DateFormatHelper
 import com.townwang.yaohuo.common.utils.matchValue
 import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.repo.data.details.DownloadBean
+import com.townwang.yaohuo.ui.fragment.details.Product
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.text.SimpleDateFormat
@@ -46,42 +47,42 @@ class ResolveDetailsHelper(private val document: Document) {
     val onLineState: Boolean
         get() = try {
             document.select("div.subtitle").last().select(IMG_GIF).after(IMG_ALT).first()
-            .attr(IMG_ALT) == "ONLINE"
-} catch (e: Exception) {
-    BuglyLog.e(BuildConfig.FLAVOR, e.message)
-    false
-}
+                .attr(IMG_ALT) == "ONLINE"
+        } catch (e: Exception) {
+            BuglyLog.e(BuildConfig.FLAVOR, e.message)
+            false
+        }
     val getPraiseUrl: String
         get() = try {
-        document.select("div.subtitle").last().getElementsContainingOwnText("顶")
-            .attr(A_HREF)
-} catch (e: Exception) {
-    BuglyLog.e(BuildConfig.FLAVOR, e.message)
-    ""
-}
+            document.select("div.subtitle").last().getElementsContainingOwnText("顶")
+                .attr(A_HREF)
+        } catch (e: Exception) {
+            BuglyLog.e(BuildConfig.FLAVOR, e.message)
+            ""
+        }
     val getFavoriteUrl: String
         get() = try {
-         document.getElementsContainingOwnText("收藏").last().attr(A_HREF)
-} catch (e: Exception) {
-    BuglyLog.e(BuildConfig.FLAVOR, e.message)
-    ""
-}
+            document.getElementsContainingOwnText("收藏").last().attr(A_HREF)
+        } catch (e: Exception) {
+            BuglyLog.e(BuildConfig.FLAVOR, e.message)
+            ""
+        }
     val getShareUrl: String
         get() = try {
-          document.getElementsContainingOwnText("分享").last().attr(A_HREF)
-} catch (e: Exception) {
-    BuglyLog.e(BuildConfig.FLAVOR, e.message)
-    ""
-}
+            document.getElementsContainingOwnText("分享").last().attr(A_HREF)
+        } catch (e: Exception) {
+            BuglyLog.e(BuildConfig.FLAVOR, e.message)
+            ""
+        }
     val praiseSize: String
         get() = try {
-        Regex("([()])").split(
-            document.select("div.subtitle").last().ownText().split(" ").last()
-        )[1]
-} catch (e: Exception) {
-    BuglyLog.e(BuildConfig.FLAVOR, e.message)
-    ""
-}
+            Regex("([()])").split(
+                document.select("div.subtitle").last().ownText().split(" ").last()
+            )[1]
+        } catch (e: Exception) {
+            BuglyLog.e(BuildConfig.FLAVOR, e.message)
+            ""
+        }
     val reward: String?
         get() {
             val operatingData = document.select("div.content").first().toString()
@@ -152,6 +153,7 @@ class ResolveDetailsHelper(private val document: Document) {
         get() {
             val urlList = document.getElementsContainingOwnText("次)")
             val list = arrayListOf<DownloadBean>()
+            list.clear()
             urlList.forEach {
                 if (it.hasClass("line")) {
                     val url = it.select(A_KEY).attr(A_HREF)
@@ -204,47 +206,58 @@ class ResolveDetailsHelper(private val document: Document) {
     }
 
     @SuppressLint("SimpleDateFormat")
-    fun getCommitListData(doc: Document): List<CommitListBean> {
-        val array = arrayListOf<CommitListBean>()
-        doc.select("div.line1,div.line2").forEach {
-            val url = it.select(A_KEY).first().attr(A_HREF)
-            val auth = it.select(A_KEY).last()
-            val floor = Regex("([\\[\\]])").split(it.text())[1].replace("楼", "")
+    fun getCommitListData(doc: Document): List<Product> {
+        val array = arrayListOf<Product>()
+        array.clear()
+        doc.select("div.line1,div.line2").forEachIndexed { index, element ->
+            val url = element.select(A_KEY).first().attr(A_HREF)
+            val auth = element.select(A_KEY).last()
+            val floor = Regex("([\\[\\]])").split(element.text())[1].replace("楼", "")
             var b = ""
-            val bEts = it.select("b")
+            val bEts = element.select("b")
             if (bEts.hasText()) {
                 b = bEts.text()
             }
             auth.select(IMG_GIF).remove()
             val authString = auth.html()
             val avatar = auth.attr(A_HREF)
-            val time = it.text().split(" ").last()
-            val date = it.text().split(" ")[it.text().split(" ").lastIndex - 1]
+            val time = element.text().split(" ").last()
+            val date = element.text().split(" ")[element.text().split(" ").lastIndex - 1]
             val format = SimpleDateFormat("yyyy-MM-ddHH:m")
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
             val dateObj = format.parse("$year-$date$time")
             val content = matchValue(
-                it.toString()
+                element.toString()
                 , "回</a>]"
                 , "<br>"
                 , false
             ).removePrefix("回</a>]")
                 .removeSuffix("<br>")
             array.add(
-                CommitListBean(
-                    convertText(floor),
-                    url,
-                    authString,
-                    avatar,
-                    DateFormatHelper.format(dateObj!!),
-                    content, b
+                Product(
+                    index, CommitListBean(
+                        convertText(floor),
+                        url,
+                        authString,
+                        avatar,
+                        DateFormatHelper.format(dateObj!!),
+                        content, b
+                    )
                 )
             )
         }
         return array
     }
 
+    fun getNextUrl(document: Document): String {
+        return try {
+            document.getElementsContainingOwnText("下一页").last().attr(A_HREF)
+        } catch (e: Exception) {
+            BuglyLog.e(BuildConfig.FLAVOR, e.message)
+            ""
+        }
+    }
 
     private fun convertText(floor: String): Int {
         return try {

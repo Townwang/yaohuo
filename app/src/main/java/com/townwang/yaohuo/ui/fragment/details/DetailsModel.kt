@@ -1,6 +1,6 @@
 package com.townwang.yaohuo.ui.fragment.details
 
-import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
@@ -11,7 +11,6 @@ import com.townwang.yaohuo.common.resolve.ResolveDetailsHelper
 import com.townwang.yaohuo.common.resolve.ResolveUserInfoHelper
 import com.townwang.yaohuo.databinding.ItemCommentDataBinding
 import com.townwang.yaohuo.repo.Repo
-import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.repo.data.details.DetailsContentBean
 import com.townwang.yaohuo.repo.data.local.ItemAvatarBean
 import com.townwang.yaohuo.repo.enum.Level
@@ -23,7 +22,9 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
     val data = _data.asLiveData()
     private val _medal = MutableLiveData<String>()
     val medal = _medal.asLiveData()
-    private val _commentLists = MutableLiveData<List<CommitListBean>>()
+    private val _commentLists = MutableLiveData<List<Product>>()
+    val commentLists: LiveData<List<Product>> = _commentLists
+    val commentData = mutableListOf<Product>()
     private val _commentSize = MutableLiveData<String>()
     private val _avatar = MutableLiveData<String>()
     private val _grade = MutableLiveData<String>()
@@ -34,9 +35,9 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
     val avatar = _avatar.asLiveData()
     val grade = _grade.asLiveData()
     val itemAvatar = _itemAvatar.asLiveData()
-    val commentLists = _commentLists.asLiveData()
     val commentSize = _commentSize.asLiveData()
     val noMore = _noMore.asLiveData()
+    var currentNextUrl = ""
     fun getDetails(url: String) = launchTask {
         val doc = repo.getNewListDetails(url)
         helper = ResolveDetailsHelper(doc)
@@ -53,23 +54,34 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
                 helper?.downLoad
             )
         )
-        commentDetails(1, 0)
+        commentDetails(true, 0)
     }
 
-    fun commentDetails(page: Int, ot: Int) = launchTask {
+    fun commentDetails(isRefresh: Boolean, ot: Int) = launchTask {
+        if (isRefresh) {
+            currentNextUrl = ""
+        }
         helper?.let {
-            if (it.isHaveMore) {
-                val doc = repo.comment(
-                    page,
+            val doc = if (currentNextUrl.isNullOrEmpty()) {
+                commentData.clear()
+                repo.comment(
                     it.id,
-                    it.classId,
-                    ot
+                    it.classId
                 )
-                _commentSize.postValue(it.getCommitLastFloor(doc))
-                _commentLists.postValue( it.getCommitListData(doc) )
             } else {
-                _noMore.postValue(true)
+                repo.getNext(currentNextUrl)
             }
+            if (isRefresh) {
+                _commentSize.postValue(it.getCommitLastFloor(doc))
+            }
+            commentData.addAll(it.getCommitListData(doc))
+            val nextUrl = it.getNextUrl(doc)
+            if (nextUrl == currentNextUrl) {
+                _noMore.value = true
+            } else {
+                currentNextUrl = nextUrl
+            }
+            _commentLists.value = commentData
         }
     }
 
@@ -85,7 +97,7 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         val doc = repo.getUserInfo(touserid)
         val userInfoHelper = ResolveUserInfoHelper(doc)
         _avatar.postValue(userInfoHelper.avatar)
-        _grade.postValue( Level.getLevel(userInfoHelper.grade).toString())
+        _grade.postValue(Level.getLevel(userInfoHelper.grade).toString())
         val medalImgUrl = userInfoHelper.medal
         Jsoup.parse(medalImgUrl).select(IMG_JPG).forEach {
             _medal.postValue(it.attr("src"))
@@ -96,12 +108,14 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         item.userImg.tag = touserid
         val doc = repo.getUserInfo(touserid)
         val userInfoHelper = ResolveUserInfoHelper(doc)
-        _itemAvatar.postValue( ItemAvatarBean(
-            item,
-            userInfoHelper.avatar,
-            Level.getLevel(userInfoHelper.grade),
-            touserid
-        ))
+        _itemAvatar.postValue(
+            ItemAvatarBean(
+                item,
+                userInfoHelper.avatar,
+                Level.getLevel(userInfoHelper.grade),
+                touserid
+            )
+        )
 
     }
 

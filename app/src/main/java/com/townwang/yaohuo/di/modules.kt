@@ -20,6 +20,7 @@ import com.townwang.yaohuo.ui.fragment.details.DetailsModel
 import com.townwang.yaohuo.ui.fragment.home.HomeModel
 import com.townwang.yaohuo.ui.fragment.login.LoginModel
 import com.townwang.yaohuo.ui.fragment.me.MeModel
+import com.townwang.yaohuo.ui.fragment.msg.MsgModel
 import com.townwang.yaohuo.ui.fragment.pub.ListModel
 import com.townwang.yaohuo.ui.fragment.search.SearchModel
 import com.townwang.yaohuo.ui.fragment.send.SendModel
@@ -118,6 +119,7 @@ private val viewModelModule = module {
     viewModel { MeModel(get()) }
     viewModel { HomeModel(get()) }
     viewModel { SendModel(get()) }
+    viewModel { MsgModel(get()) }
     viewModel { UploadFileModel(get()) }
 
 }

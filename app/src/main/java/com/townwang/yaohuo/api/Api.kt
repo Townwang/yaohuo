@@ -56,13 +56,12 @@ interface Api {
 
     /**
      * 评论 [页码,帖子ID,栏目ID]
+     * bbs/book_re.aspx?id=907477&classid=177
      */
     @GET("bbs/book_re.aspx")
     fun commentLists(
-        @Query("page") page: String,
         @Query(BuildConfig.YH_REPLY_ID) id: String,
-        @Query(BuildConfig.YH_SEND_BOOK_CLASSID) classId: String,
-        @Query("ot") ot: String
+        @Query(BuildConfig.YH_SEND_BOOK_CLASSID) classId: String
     ): Call<Document>
 
     /**
@@ -104,6 +103,22 @@ interface Api {
     ): Call<Document>
 
     /**
+     *
+     */
+    @GET("bbs/messagelist.aspx")
+    fun msg(): Call<Document>
+
+    /**
+     *https://yaohuo.me/bbs/messagelist_del.aspx?action=godel&siteid=1000&classid=0&id=7588090&page=1&types=0&issystem=&backurl=myfile.aspx%3fsiteid%3d1000
+     */
+    @GET("bbs/messagelist_del.aspx")
+    fun deleteMsg(
+        @Query("id") id: String,
+        @Query("backurl") backUrl: String,
+        @Query("action") action: String? = "godel"
+    ): Call<Document>
+
+    /**
      * 获取发帖参数
      */
     @GET("bbs/book_view_add.aspx")
@@ -128,7 +143,7 @@ interface Api {
     @Multipart
     @POST("upload/localhost")
     fun upLoadFile(
-        @Part file:MultipartBody.Part
+        @Part file: MultipartBody.Part
     ): Call<YaoCdnReq>
 
     /**
