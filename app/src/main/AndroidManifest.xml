@@ -49,9 +49,14 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.activity.ActivityTheme" />
         <activity android:name=".ui.activity.ActivityAbout" />
+        <activity android:name=".ui.activity.ActivityMsg" />
         <activity android:name=".ui.activity.ActivityList" />
-        <activity android:name=".ui.activity.ActivityDetails" />
-        <activity android:name=".ui.activity.ActivityWebView" />
+        <activity android:name=".ui.activity.ActivityDetails"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:hardwareAccelerated="true"/>
+        <activity android:name=".ui.activity.ActivityWebView"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:hardwareAccelerated="true"/>
         <activity android:name=".ui.activity.ActivitySearch" />
         <activity
             android:name=".ui.weight.pay.ZhiActivity"

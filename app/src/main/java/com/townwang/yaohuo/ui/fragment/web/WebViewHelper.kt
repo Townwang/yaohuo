@@ -6,16 +6,18 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.net.http.SslError
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.webkit.*
 import android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 import android.widget.ProgressBar
 import androidx.core.app.ActivityCompat
-import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.BuildConfig
+import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import org.jsoup.Jsoup
@@ -57,8 +59,27 @@ class WebViewHelper(context: Context, var webView: WebView) {
             mixedContentMode = MIXED_CONTENT_ALWAYS_ALLOW
             userAgentString = USER_AGENT
             blockNetworkImage = false
+            mediaPlaybackRequiresUserGesture = false
             textZoom = 100
         }
+//        webView.webChromeClient.setOnToggledFullscreen(object : ToggledFullscreenCallback() {
+//            fun toggledFullscreen(fullscreen: Boolean) {
+//                mImageCloseVideo.setVisibility(if (fullscreen) View.VISIBLE else View.GONE)
+//                if (fullscreen) {
+//                    getWindow().setFlags(
+//                        WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                        WindowManager.LayoutParams.FLAG_FULLSCREEN
+//                    )
+//                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+//                } else {
+//                    getWindow().setFlags(
+//                        WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+//                        WindowManager.LayoutParams.FLAG_FULLSCREEN
+//                    )
+//                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+//                }
+//            }
+//        })
         webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 currentProgress = newProgress
@@ -76,6 +97,9 @@ class WebViewHelper(context: Context, var webView: WebView) {
                 onStartListener?.invoke(view?.title)
             }
 
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+            }
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 if (shouldOverrideUrlLoading) {
                     ActivityCompat.startActivity(
@@ -130,6 +154,7 @@ class WebViewHelper(context: Context, var webView: WebView) {
         syncCookie(url.host, cookie)
         webView.loadUrl(urlService)
         webView.setDownloadListener { urlLink, _, contentDisposition, mistype, _ ->
+
             onDownloadListener?.invoke(urlLink, contentDisposition, mistype, cookie)
         }
         return webView

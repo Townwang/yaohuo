@@ -37,6 +37,20 @@ class Repo constructor(
         bbs.getResp()
     }
 
+
+    suspend fun getMsg(): Document = withRepoContext {
+        val bbs = api.msg()
+        bbs.getResp()
+    }
+
+    suspend fun deleteMsg(url: String): Document = withRepoContext {
+        val bbs = api.deleteMsg(getParam(url,"id"), getParam(url,"backurl"))
+        bbs.getResp()
+    }
+    suspend fun getNext(url: String): Document = withRepoContext {
+        val bbs = api.urlPenetrate(url)
+        bbs.getResp()
+    }
     suspend fun queryList(key: String, page: Int): Document = withRepoContext {
         val bbs = api.queryListBBS(key = key, page = page.toString())
         bbs.getResp()
@@ -101,16 +115,12 @@ class Repo constructor(
     }
 
     suspend fun comment(
-        page: Int,
         id: String,
-        classId: Int,
-        ot: Int
+        classId: Int
     ) = withRepoContext {
         val bbs = api.commentLists(
-            page.toString(),
             id,
-            classId.toString(),
-            ot.toString()
+            classId.toString()
         )
         bbs.getResp()
     }

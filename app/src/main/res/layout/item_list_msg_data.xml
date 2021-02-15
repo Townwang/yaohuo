@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.townwang.yaohuo.ui.weight.view.ScrollerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/person"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/anim_vector_about"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?colorPrimary"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:text="就啊哈哈哈哈sssssssssssssssssssssssssss哈"
+            android:textColor="?colorPrimary"
+            android:layout_margin="10dp"
+            android:textSize="@dimen/text14Size"
+            app:layout_constraintStart_toEndOf="@+id/person"
+            app:layout_constraintTop_toTopOf="@+id/person"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="0000-00-00 00:00:00"
+            android:textColor="@color/md_grey_500"
+            android:textSize="@dimen/text12Size"
+            app:layout_constraintStart_toEndOf="@+id/person"
+            app:layout_constraintTop_toBottomOf="@+id/msg"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/delete"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="@color/md_red_500"
+            android:gravity="center"
+            android:textSize="@dimen/text14Size"
+            android:textColor="@color/white"
+            android:text="删除" />
+    </LinearLayout>
+</com.townwang.yaohuo.ui.weight.view.ScrollerLayout>
