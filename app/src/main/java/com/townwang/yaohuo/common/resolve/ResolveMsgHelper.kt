@@ -4,7 +4,6 @@ import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.utils.matchValue
-import com.townwang.yaohuo.repo.data.HomeData
 import com.townwang.yaohuo.repo.data.MsgBean
 import com.townwang.yaohuo.ui.fragment.msg.Product
 import org.jsoup.nodes.Document

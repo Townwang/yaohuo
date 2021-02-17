@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.OnItemClickListener
 import com.townwang.yaohuo.common.onClickListener
-import com.townwang.yaohuo.repo.data.HomeData
 import com.townwang.yaohuo.repo.data.SelectBean
 
 class SelectAdapter : RecyclerView.Adapter<SelectViewHolder>() {

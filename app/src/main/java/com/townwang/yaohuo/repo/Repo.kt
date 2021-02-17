@@ -24,6 +24,11 @@ class Repo constructor(
         doc.getResp()
     }
 
+    suspend fun refresh() = withRepoContext {
+        val doc = api.refresh()
+        doc.getResp()
+    }
+
     suspend fun login(loginName: String, password: String): Document = withRepoContext {
         val data = HashMap<String, String>()
         data[BuildConfig.YH_LOGIN_USER_NAME] = loginName

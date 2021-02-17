@@ -4,6 +4,7 @@ import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.IMG_ALT
 import com.townwang.yaohuo.common.IMG_JPG
+import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
 class ResolveUserInfoHelper(private val document: Document) {
@@ -40,8 +41,15 @@ class ResolveUserInfoHelper(private val document: Document) {
         get() = parseContent("【身份】")
     val purview: String
         get() = parseContent("【权限】")
-    val medal: String
-        get() = parseContent("【勋章】")
+    val medal: List<String>
+        get(){
+            val lists = arrayListOf<String>()
+            lists.clear()
+            Jsoup.parse(parseContent("【勋章】")).select(IMG_JPG).forEach {
+                lists.add(it.attr("src"))
+            }
+          return lists
+        }
     val sex: String
         get() = parseContent("【性别】")
     val age: String

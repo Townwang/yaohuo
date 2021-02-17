@@ -1,16 +1,10 @@
 package com.townwang.yaohuo.common
-
-import android.util.Log
-import com.google.gson.Gson
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.utils.isHaveMsg
 import com.townwang.yaohuo.repo.data.Niece
 import com.townwang.yaohuo.repo.data.YaoCdnReq
 import com.townwang.yaohuo.repo.enum.ErrorCode
 import kotlinx.coroutines.*
-import okhttp3.RequestBody
-import okhttp3.Response
-import okhttp3.ResponseBody
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element

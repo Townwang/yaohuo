@@ -18,7 +18,7 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.utils.isHaveMessage
 import com.townwang.yaohuo.databinding.FragmentHomeBinding
-import com.townwang.yaohuo.repo.data.HomeData
+import com.townwang.yaohuo.repo.data.HomeBean
 import com.townwang.yaohuo.ui.activity.*
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -50,7 +50,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.listView.adapter = adapter
         binding.refreshLayout.setOnRefreshListener {
             page = 1
-            model.loadList(0, page, BuildConfig.YH_BBS_ACTION_NEW)
+            model.refresh(BuildConfig.YH_BBS_ACTION_NEW)
         }
         binding.refreshLayout.setOnLoadMoreListener {
             page++
@@ -60,7 +60,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         adapter.onItemListListener = { _, pro ->
             if (pro is Product) {
                 val data = pro.t
-                if (data is HomeData) {
+                if (data is HomeBean) {
                     var isBear = true
                     data.smailIng.forEach {
                         if (it == BuildConfig.YH_MATCH_LIST_BEAR) {
@@ -193,6 +193,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     fun refreshData() {
-        model.loadList(0, 1, BuildConfig.YH_BBS_ACTION_NEW)
+        model.refresh(BuildConfig.YH_BBS_ACTION_NEW)
     }
 }

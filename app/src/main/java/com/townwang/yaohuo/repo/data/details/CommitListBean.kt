@@ -4,8 +4,9 @@ data class CommitListBean(
     val floor:Int,
     val url:String,
     val auth:String,
-    val avatar:String,
+    var avatar:String,
     val time:String,
     val content:String,
-    val b:String = ""
+    val b:String = "",
+    var level:Int? = 0
 )

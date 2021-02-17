@@ -62,14 +62,14 @@ class ResolveDetailsHelper(private val document: Document) {
         }
     val getFavoriteUrl: String
         get() = try {
-            document.getElementsContainingOwnText("收藏").last().attr(A_HREF)
+            document.select("div.subtitle").last().getElementsContainingOwnText("收藏").last().attr(A_HREF)
         } catch (e: Exception) {
             BuglyLog.e(BuildConfig.FLAVOR, e.message)
             ""
         }
     val getShareUrl: String
         get() = try {
-            document.getElementsContainingOwnText("分享").last().attr(A_HREF)
+            document.select("div.subtitle").last().getElementsContainingOwnText("分享").last().attr(A_HREF)
         } catch (e: Exception) {
             BuglyLog.e(BuildConfig.FLAVOR, e.message)
             ""
@@ -256,6 +256,22 @@ class ResolveDetailsHelper(private val document: Document) {
         } catch (e: Exception) {
             BuglyLog.e(BuildConfig.FLAVOR, e.message)
             ""
+        }
+    }
+
+    fun isLast(document: Document): Boolean {
+        val commitList =
+            matchValue(
+                document.body().toString(),
+                "<!--listS-->",
+                "<!--listE-->",
+                false
+            )
+        val select = Jsoup.parse(commitList).select("div.line1,div.line2")
+        return if (select.size > 0) {
+            select.last().html().contains("沙发")
+        } else {
+            false
         }
     }
 

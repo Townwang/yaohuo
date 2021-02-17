@@ -11,7 +11,7 @@ import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentSearchBinding
-import com.townwang.yaohuo.repo.data.HomeData
+import com.townwang.yaohuo.repo.data.HomeBean
 import com.townwang.yaohuo.repo.enum.ErrorCode
 import com.townwang.yaohuo.ui.activity.ActivityDetails
 import com.townwang.yaohuo.ui.fragment.pub.PubListAdapter
@@ -41,7 +41,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 StaggeredGridLayoutManager.VERTICAL
             ))
         adapter.onItemClickListener = { v, data ->
-            if (data is HomeData) {
+            if (data is HomeBean) {
                 var isBear = true
                 data.smailIng.forEach {
                     if (it == BuildConfig.YH_MATCH_LIST_BEAR) {
@@ -80,7 +80,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             if (page == 1) {
                 adapter.datas.clear()
             }
-            adapter.datas = it as ArrayList<HomeData>
+            adapter.datas = it as ArrayList<HomeBean>
         })
         viewModel.loading.observe(viewLifecycleOwner, safeObserver {
             if (!it) {

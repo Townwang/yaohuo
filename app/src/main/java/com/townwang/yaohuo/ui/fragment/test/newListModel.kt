@@ -4,11 +4,11 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.paging.PagedList
 import com.townwang.yaohuo.common.UIViewModel
 import com.townwang.yaohuo.repo.Repo
-import com.townwang.yaohuo.repo.data.HomeData
+import com.townwang.yaohuo.repo.data.HomeBean
 
 class newListModel(private val repo: Repo) : UIViewModel() {
 
-    val history = MediatorLiveData<PagedList<HomeData>>()
+    val history = MediatorLiveData<PagedList<HomeBean>>()
     //    private val _listDates = MutableLiveData<List<HomeData>>()
 //    val listDates = _listDates.asLiveData()
 //    fun loadList(classId: Int, action: String) = launchTask {

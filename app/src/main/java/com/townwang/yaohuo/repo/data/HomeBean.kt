@@ -1,6 +1,6 @@
 package com.townwang.yaohuo.repo.data
 
-data class HomeData(
+data class HomeBean(
     val title:String,
     val a:String,
     val auth:String,

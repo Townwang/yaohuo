@@ -17,12 +17,16 @@ interface Api {
     @Headers("url_name:cn")
     @GET("neice.do")
     fun niece(): Call<Niece>
-
     /**
      * check bbs
      */
     @GET("/")
     fun checkNice(): Call<Document>
+    /**
+     * 刷新论坛
+     */
+    @GET("wapindex.aspx?sid=-2")
+    fun refresh(): Call<Document>
 
     /**
      * url 透传
@@ -103,13 +107,13 @@ interface Api {
     ): Call<Document>
 
     /**
-     *
+     * 获取消息列表
      */
     @GET("bbs/messagelist.aspx")
     fun msg(): Call<Document>
 
     /**
-     *https://yaohuo.me/bbs/messagelist_del.aspx?action=godel&siteid=1000&classid=0&id=7588090&page=1&types=0&issystem=&backurl=myfile.aspx%3fsiteid%3d1000
+     *删除消息
      */
     @GET("bbs/messagelist_del.aspx")
     fun deleteMsg(

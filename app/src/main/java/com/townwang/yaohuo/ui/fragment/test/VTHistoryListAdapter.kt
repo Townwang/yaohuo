@@ -1,10 +1,5 @@
 package com.townwang.yaohuo.ui.fragment.test
 
-import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
-import com.townwang.yaohuo.repo.data.HomeData
-
 //val itemDiffCallback = object : DiffUtil.ItemCallback<HomeData>() {
 //    override fun areItemsTheSame(oldItem: HomeData, newItem: HomeData): Boolean {
 //        return oldItem == newItem

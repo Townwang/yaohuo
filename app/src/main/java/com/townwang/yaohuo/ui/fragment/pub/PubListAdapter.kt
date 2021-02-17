@@ -6,13 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.OnItemClickListener
 import com.townwang.yaohuo.common.onClickListener
-import com.townwang.yaohuo.repo.data.HomeData
-import kotlinx.android.synthetic.main.fragment_details.*
-import okhttp3.internal.notifyAll
+import com.townwang.yaohuo.repo.data.HomeBean
 
 class PubListAdapter : RecyclerView.Adapter<PubListViewHolder>() {
     var onItemClickListener: OnItemClickListener? = null
-    var datas = arrayListOf<HomeData>()
+    var datas = arrayListOf<HomeBean>()
         set(value) {
             if (field.isNotEmpty()) {
                 if (field.last().title != value.last().title) {

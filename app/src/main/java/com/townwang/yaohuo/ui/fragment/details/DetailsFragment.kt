@@ -50,6 +50,9 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         super.onViewCreated(view, savedInstanceState)
         binding.commentLists.adapter = adapter
         binding.refreshLayout.setOnRefreshListener {
+            binding.honor.removeAllViews()
+            binding.listContent.removeAllViews()
+            binding.refreshLayout.setNoMoreData(false)
             viewModel.getDetails(requireArguments().getString(HOME_DETAILS_URL_KEY, ""))
         }
         binding.refreshLayout.setOnLoadMoreListener {
@@ -119,12 +122,13 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             if (data is CommitListBean) {
                 if (item is ItemCommentDataBinding) {
                     item.apply {
-                        if (item.leval.text.contains("0")) {
-                            viewModel.getUserInfo(
-                                item,
-                                getParam(data.avatar, BuildConfig.YH_REPLY_TOUSERID)
-                            )
-                        }
+                        Glide.with(requireContext())
+                            .load(getUrlString(data.avatar))
+                            .apply(options)
+                            .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                            .skipMemoryCache(false)
+                            .into(item.userImg)
+                        item.leval.text = data.level.toString()
                         WebViewHelper(requireContext(), auth).apply {
                             shouldOverrideUrlLoading = true
                         }.setHtmlCode(data.auth)
@@ -164,7 +168,12 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         viewModel.data.observe(viewLifecycleOwner, safeObserver {
-            viewModel.getAvatar(getParam(it.headUrl, BuildConfig.YH_REPLY_TOUSERID))
+            Glide.with(requireContext())
+                .load(getUrlString(it.headUrl))
+                .apply(options)
+                .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                .into(binding.userImg)
+
             binding.time.text = it.time
             binding.readNum.visibility = View.VISIBLE
             binding.readNum.text =
@@ -204,10 +213,19 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 }
             }
             binding.praiseValue.text = it.praiseSize
+            binding.leval.text = it.level.toString()
+            it.medal.forEach {medalUrl ->
+                val image = ImageView(requireContext())
+                Glide.with(requireContext())
+                    .load(getUrlString(medalUrl))
+                    .apply(options)
+                    .into(image)
+                binding.honor111.visibility = View.VISIBLE
+                binding.honor.addView(image)
+            }
             it.downloadList?.forEach { download ->
                 val contentLoad = ViewDownloadStyleBinding.inflate(layoutInflater)
                 contentLoad.downloadName.text = download.fileName
-
                 contentLoad.downloadUrl.onClickListener { _ ->
                     val uri = Uri.parse(Uri.encode(download.url, "-![.:/,%?&=]"))
                     ActivityCompat.startActivity(
@@ -226,35 +244,27 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     contentLoad.description.text = download.description
                     contentLoad.description.visibility = View.VISIBLE
                 }
+
                 binding.listContent.addView(contentLoad.root)
             }
-        })
-
-        viewModel.avatar.observe(viewLifecycleOwner, safeObserver {
-            Glide.with(requireContext())
-                .load(getUrlString(it))
-                .apply(options)
-                .apply(RequestOptions.bitmapTransform(CircleCrop()))
-                .into(binding.userImg)
-        })
-        viewModel.grade.observe(viewLifecycleOwner, safeObserver {
-            it ?: return@safeObserver
-            binding.leval.text = it
         })
         viewModel.commentSize.observe(viewLifecycleOwner, safeObserver {
             binding.commentValue.text = it
         })
         viewModel.commentLists.observe(viewLifecycleOwner, safeObserver {
-            binding.commentLists.visibility = View.VISIBLE
-            binding.noMore.visibility = View.GONE
             binding.refreshLayout.setEnableLoadMore(true)
             adapter.submitList(it)
             adapter.notifyDataSetChanged()
         })
         viewModel.noMore.observe(viewLifecycleOwner, safeObserver {
-            binding.noMore.visibility = View.VISIBLE
             if (it) {
-                binding.commentLists.visibility = View.GONE
+                if (adapter.currentList.size >0){
+                    binding.commentLists.visibility = View.VISIBLE
+                    binding.noMore.visibility = View.GONE
+                }else{
+                    binding.noMore.visibility = View.VISIBLE
+                    binding.commentLists.visibility = View.GONE
+                }
                 binding.refreshLayout.setEnableLoadMore(false)
                 binding.refreshLayout.finishLoadMoreWithNoMoreData()
             }
@@ -270,36 +280,13 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         })
         viewModel.commentSuccess.observe(viewLifecycleOwner, safeObserver {
             if (it) {
+                binding.honor.removeAllViews()
+                binding.listContent.removeAllViews()
+                binding.refreshLayout.setNoMoreData(false)
                 viewModel.getDetails(requireArguments().getString(HOME_DETAILS_URL_KEY, ""))
                 loading?.loadSuccess()
             } else {
                 loading?.loadFailed()
-            }
-        })
-        viewModel.medal.observe(viewLifecycleOwner, safeObserver {
-            it ?: return@safeObserver
-            if (isVisible) {
-                val image = ImageView(requireContext())
-                Glide.with(requireContext())
-                    .load(getUrlString(it))
-                    .apply(options)
-                    .into(image)
-                binding.honor.visibility = View.VISIBLE
-                binding.honor.addView(image)
-            }
-        })
-        viewModel.itemAvatar.observe(viewLifecycleOwner, safeObserver {
-            it ?: return@safeObserver
-            if (isVisible) {
-                val imgView = it.item.userImg.findViewWithTag<ImageView>(it.touserid)
-                if (imgView != null) {
-                    Glide.with(requireContext())
-                        .load(getUrlString(it.avatarUrl))
-                        .apply(options)
-                        .apply(RequestOptions.bitmapTransform(CircleCrop()))
-                        .into(it.item.userImg)
-                    it.item.leval.text = it.level.toString()
-                }
             }
         })
     }

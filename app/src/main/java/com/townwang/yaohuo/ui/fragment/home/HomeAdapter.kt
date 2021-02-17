@@ -15,7 +15,7 @@ import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.ItemHomeBbsHanderBinding
 import com.townwang.yaohuo.databinding.ItemHomeSearchHanderBinding
 import com.townwang.yaohuo.databinding.ItemListDataBinding
-import com.townwang.yaohuo.repo.data.HomeData
+import com.townwang.yaohuo.repo.data.HomeBean
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 
 class HomeAdapter : ListAdapter<Product, RecyclerView.ViewHolder>(Product.CALLBACK) {
@@ -144,7 +144,7 @@ class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun bindData(pro: Product?) {
         val data = pro?.t
         pro ?: return
-        if (data is HomeData) {
+        if (data is HomeBean) {
             binding.apply {
                 binding.title.text = data.title
                 binding.auth.text = "楼主：${data.auth}"
