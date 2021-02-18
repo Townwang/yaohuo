@@ -9,7 +9,6 @@
             android:id="@+id/commentLists"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layoutAnimation="@anim/layout_animation_fall_down"
             tools:listitem="@layout/item_comment_data"
             tools:ignore="MissingConstraints,UnusedAttribute"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

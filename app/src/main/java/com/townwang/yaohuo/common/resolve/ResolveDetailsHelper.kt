@@ -8,7 +8,7 @@ import com.townwang.yaohuo.common.utils.DateFormatHelper
 import com.townwang.yaohuo.common.utils.matchValue
 import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.repo.data.details.DownloadBean
-import com.townwang.yaohuo.ui.fragment.details.Product
+import com.townwang.yaohuo.ui.fragment.pub.details.Product
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.text.SimpleDateFormat

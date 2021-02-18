@@ -1,17 +1,20 @@
 package com.townwang.yaohuo.ui.fragment.msg
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.OnItemListener
-import com.townwang.yaohuo.common.T
-import com.townwang.yaohuo.common.onClickListener
+import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.ItemListMsgDataBinding
 import com.townwang.yaohuo.repo.data.MsgBean
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
@@ -28,7 +31,7 @@ class MsgAdapter : ListAdapter<Product, RecyclerView.ViewHolder>(Product.CALLBAC
         val data = getItem(position)
         if (holder is ProductViewHolder) {
             holder.bindData(data)
-            holder.itemView.setOnClickListener {
+            holder.binding.constraintLayout.setOnClickListener {
                 onItemListListener?.invoke(it, data)
             }
             holder.binding.delete.onClickListener {
@@ -55,9 +58,17 @@ class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         pro ?: return
         if (data is MsgBean) {
             if (data.isSystem) {
-                binding.person.setImageResource(R.drawable.anim_vector_msg)
+                Glide.with(itemView)
+                    .load(R.drawable.new_msg_img)
+                    .apply(options)
+                    .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                    .into(binding.person)
             } else {
-                binding.person.setImageResource(R.drawable.anim_vector_about)
+                Glide.with(itemView)
+                    .load(R.drawable.msg_img)
+                    .apply(options)
+                    .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                    .into(binding.person)
             }
             binding.msg.text = data.msg
             binding.time.text = data.time

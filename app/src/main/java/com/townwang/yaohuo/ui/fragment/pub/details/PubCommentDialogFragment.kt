@@ -1,4 +1,4 @@
-package com.townwang.yaohuo.ui.fragment.details
+package com.townwang.yaohuo.ui.fragment.pub.details
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.Html
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.snackbar.Snackbar

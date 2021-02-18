@@ -1,18 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smart.refresh.layout.SmartRefreshLayout
-    android:id="@+id/refreshLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    app:srlAccentColor="@android:color/white"
-    app:srlEnablePreviewInEditMode="true"
-    app:srlPrimaryColor="?colorPrimary"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.townwang.yaohuo.ui.weight.view.MyRecyclerView
-        android:id="@+id/listView"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-</com.scwang.smart.refresh.layout.SmartRefreshLayout>
+        android:background="@color/white"
+        app:srlAccentColor="@android:color/white"
+        app:srlEnablePreviewInEditMode="true"
+        app:srlPrimaryColor="?colorPrimary">
+        <com.townwang.yaohuo.ui.weight.view.MyRecyclerView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+            android:layoutAnimation="@anim/layout_animation_fall_down"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addFab"
+        android:layout_width="wrap_content"
+        android:focusable="true"
+        android:layout_margin="10dp"
+        app:backgroundTint="?colorPrimary"
+        app:fabSize="auto"
+        app:layout_behavior=".common.utils.FabBehavior"
+        app:layout_anchor="@+id/refreshLayout"
+        app:layout_anchorGravity="end|bottom"
+        app:srcCompat="@drawable/ic_baseline_notification_24"
+        android:layout_height="wrap_content"/>
+    <com.townwang.yaohuo.ui.weight.button.FloatingActionsMenu
+        android:id="@+id/menuCrop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@+id/refreshLayout"
+        app:layout_anchorGravity="end|bottom"
+        app:fab_labelStyle="@style/labels_style">
+        <com.townwang.yaohuo.ui.weight.button.FloatingActionButton
+            android:id="@+id/fab_b1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="?colorPrimary"
+            app:fab_colorPressed="#000000"
+            app:fab_icon="@drawable/ic_baseline_add_24"
+            app:fab_title="清空系统消息" />
+        <com.townwang.yaohuo.ui.weight.button.FloatingActionButton
+            android:id="@+id/fab_b2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="?colorPrimary"
+            app:fab_colorPressed="#000000"
+            app:fab_icon="@drawable/ic_baseline_add_24"
+            app:fab_title="清空聊天消息" />
+        <com.townwang.yaohuo.ui.weight.button.FloatingActionButton
+            android:id="@+id/fab_b3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="?colorPrimary"
+            app:fab_colorPressed="#ffffff"
+            app:fab_icon="@drawable/ic_baseline_add_24"
+            app:fab_title="清空收藏消息"/>
+        <com.townwang.yaohuo.ui.weight.button.FloatingActionButton
+            android:id="@+id/fab_b4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="?colorPrimary"
+            app:fab_colorPressed="#000000"
+            app:fab_icon="@drawable/ic_baseline_add_24"
+            app:fab_title="清所有收件箱"/>
+    </com.townwang.yaohuo.ui.weight.button.FloatingActionsMenu>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

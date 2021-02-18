@@ -1,4 +1,4 @@
-package com.townwang.yaohuo.ui.fragment.details
+package com.townwang.yaohuo.ui.fragment.pub.details
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -13,7 +13,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
@@ -23,7 +22,7 @@ import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.databinding.FragmentDetailsBinding
+import com.townwang.yaohuo.databinding.FragmentPubDetailsBinding
 import com.townwang.yaohuo.databinding.ItemCommentDataBinding
 import com.townwang.yaohuo.databinding.ViewDownloadStyleBinding
 import com.townwang.yaohuo.repo.data.details.CommitListBean
@@ -34,12 +33,12 @@ import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class DetailsFragment : Fragment(R.layout.fragment_details) {
-    val binding: FragmentDetailsBinding by viewbind()
+class PubDetailsFragment : Fragment(R.layout.fragment_pub_details) {
+    val binding: FragmentPubDetailsBinding by viewbind()
     var loading: LoadingDialog? = null
     private var ot: Int = 0
     private val adapter = CommentAdapter()
-    private val viewModel: DetailsModel by viewModel()
+    private val viewModel: PubDetailsModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)

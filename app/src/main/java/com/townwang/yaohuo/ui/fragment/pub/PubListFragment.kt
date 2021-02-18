@@ -19,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PubListFragment : Fragment(R.layout.fragment_list_pub) {
     private val adapter = PubListAdapter()
-    private val viewModel: ListModel by viewModel()
+    private val viewModel: PubListModel by viewModel()
     val binding: FragmentListPubBinding by viewbind()
     private var page: Int = 1
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -6,7 +6,7 @@ import com.townwang.yaohuo.common.resolve.ResolveListHelper
 import com.townwang.yaohuo.repo.Repo
 import com.townwang.yaohuo.repo.data.HomeBean
 
-class ListModel(private val repo: Repo) : UIViewModel() {
+class PubListModel(private val repo: Repo) : UIViewModel() {
     private val _listDates = MutableLiveData<List<HomeBean>>()
     val listDates = _listDates.asLiveData()
     fun loadList(classId: Int, page: Int, action: String) = launchTask {

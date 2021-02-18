@@ -25,13 +25,13 @@ class MsgModel(private val repo: Repo) : UIViewModel() {
         }
         val helper = ResolveMsgHelper()
         data.addAll(helper.getMsgList(doc))
+        _liveData.value = data
         val nextUrl = helper.getNextUrl(doc)
         if (nextUrl == currentNextUrl) {
             _noData.value = true
         } else {
             currentNextUrl = nextUrl
         }
-        _liveData.value = data
     }
 
     fun operating(url: String) = launchTask {

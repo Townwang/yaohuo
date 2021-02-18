@@ -1,17 +1,18 @@
 package com.townwang.yaohuo.ui.fragment.msg
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.handleException
-import com.townwang.yaohuo.common.safeObserver
-import com.townwang.yaohuo.common.work
+import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentMsgBinding
 import com.townwang.yaohuo.repo.data.MsgBean
+import com.townwang.yaohuo.ui.activity.ActivityMsgDetails
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -24,11 +25,12 @@ class MsgFragment : Fragment(R.layout.fragment_msg) {
         setHasOptionsMenu(true)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).work {
             supportActionBar.work {
-                title = "消息"
+                title = getString(R.string.msg)
                 setDisplayHomeAsUpEnabled(true)
             }
         }
@@ -41,11 +43,34 @@ class MsgFragment : Fragment(R.layout.fragment_msg) {
         }
         binding.refreshLayout.setEnableAutoLoadMore(true)
         binding.refreshLayout.autoRefresh()
+        binding.listView.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_MOVE){
+                binding.menuCrop.collapse()
+            }
+            false
+        }
         adapter.onDeleteListener = { _, pro ->
             if (pro is Product) {
                 val data = pro.t
                 if (data is MsgBean) {
-                    model.deleteMsg(data.deleteUrl,pro)
+                    model.deleteMsg(data.deleteUrl, pro)
+                }
+            }
+        }
+        adapter.onItemListListener = { v, pro ->
+            if (pro is Product) {
+                val data = pro.t
+                if (data is MsgBean) {
+                    startActivity(
+                        Intent(
+                            requireContext(), ActivityMsgDetails::class.java
+                        ).apply {
+                            flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                            putExtra(HOME_DETAILS_URL_KEY, data.url)
+                            putExtra(HOME_DETAILS_TITLE_KEY, data.msg)
+                        }
+                    )
+
                 }
             }
         }

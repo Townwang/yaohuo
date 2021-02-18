@@ -1,4 +1,4 @@
-package com.townwang.yaohuo.ui.fragment.details
+package com.townwang.yaohuo.ui.fragment.pub.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +14,7 @@ import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.repo.data.details.DetailsContentBean
 import com.townwang.yaohuo.repo.enum.Level
 
-class DetailsModel(private val repo: Repo) : UIViewModel() {
+class PubDetailsModel(private val repo: Repo) : UIViewModel() {
     private var helper: ResolveDetailsHelper? = null
     private val _data = MutableLiveData<DetailsContentBean>()
     val data = _data.asLiveData()

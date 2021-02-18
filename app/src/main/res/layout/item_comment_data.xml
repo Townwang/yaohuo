@@ -9,7 +9,7 @@
     android:background="@drawable/background_translucent_bg"
     android:padding="5dp">
 
-    <com.townwang.yaohuo.ui.weight.view.TownNiceImageView
+    <com.townwang.yaohuo.ui.weight.view.TownImageView
         android:id="@+id/userImg"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -17,9 +17,10 @@
         android:layout_margin="8dp"
         android:scaleType="fitCenter"
         android:src="@drawable/avatar"
-        app:border_color="?colorPrimary"
-        app:border_width="1dp"
-        app:is_circle="true"
+        app:type="circle"
+        app:borderColor="?colorPrimary"
+        app:borderWidth="1dp"
+        app:rectRoundRadius="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

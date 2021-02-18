@@ -33,7 +33,7 @@
                 android:visibility="gone"
                 tools:ignore="MissingConstraints">
 
-                <com.townwang.yaohuo.ui.weight.view.TownNiceImageView
+                <com.townwang.yaohuo.ui.weight.view.TownImageView
                     android:id="@+id/userImg"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -43,9 +43,10 @@
                     android:src="@drawable/avatar"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:border_color="?colorPrimary"
-                    app:border_width="1dp"
-                    app:is_circle="true" />
+                    app:type="circle"
+                    app:borderColor="?colorPrimary"
+                    app:borderWidth="1dp"
+                    app:rectRoundRadius="30dp"/>
 
                 <TextView
                     android:id="@+id/leval"

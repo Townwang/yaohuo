@@ -179,7 +179,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             R.id.toolbar_r_msg -> {
                 ActivityCompat.startActivity(
                     requireContext(), Intent(
-                        requireContext(), ActivityWebView::class.java
+                        requireContext(), ActivityMsg::class.java
                     ).apply {
                         flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                         putExtra(WEB_VIEW_URL_KEY, "https://yaohuo.me/bbs/messagelist.aspx")

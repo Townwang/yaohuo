@@ -45,11 +45,11 @@
     </declare-styleable>
 
     <declare-styleable name="ConsecutiveScrollerLayout_Layout">
-        <attr name="layout_isConsecutive" format="boolean"/>
-        <attr name="layout_isNestedScroll" format="boolean"/>
-        <attr name="layout_isSticky" format="boolean"/>
-        <attr name="layout_isTriggerScroll" format="boolean"/>
-        <attr name="layout_isSink" format="boolean"/>
+        <attr name="layout_isConsecutive" format="boolean" />
+        <attr name="layout_isNestedScroll" format="boolean" />
+        <attr name="layout_isSticky" format="boolean" />
+        <attr name="layout_isTriggerScroll" format="boolean" />
+        <attr name="layout_isSink" format="boolean" />
         <attr name="layout_align" format="enum">
             <enum name="LEFT" value="1" />
             <enum name="RIGHT" value="2" />
@@ -57,26 +57,66 @@
         </attr>
     </declare-styleable>
     <declare-styleable name="ConsecutiveScrollerLayout">
-        <attr name="isPermanent" format="boolean"/>
+        <attr name="isPermanent" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="TaurusHeader">
         <attr name="thPrimaryColor" format="color" />
-        <attr name="srlPrimaryColor"/>
+        <attr name="srlPrimaryColor" />
     </declare-styleable>
 
-    <declare-styleable name="NiceImageView">
-        <attr name="is_circle" format="boolean" />
-        <attr name="is_cover_src" format="boolean" />
-        <attr name="corner_radius" format="dimension" />
-        <attr name="corner_top_left_radius" format="dimension" />
-        <attr name="corner_top_right_radius" format="dimension" />
-        <attr name="corner_bottom_left_radius" format="dimension" />
-        <attr name="corner_bottom_right_radius" format="dimension" />
-        <attr name="border_width" format="dimension" />
-        <attr name="border_color" format="color" />
-        <attr name="inner_border_width" format="dimension" />
-        <attr name="inner_border_color" format="color" />
-        <attr name="mask_color" format="color" />
+    <attr name="type">
+        <enum name="none" value="0" />
+        <enum name="circle" value="1" />
+        <enum name="rounded_rect" value="2" />
+    </attr>
+    <attr name="borderColor" format="color" />
+    <attr name="borderWidth" format="dimension" />
+    <attr name="rectRoundRadius" format="dimension" />
+
+    <declare-styleable name="ImageViewPlus">
+        <attr name="type" />
+        <attr name="borderColor" />
+        <attr name="borderWidth" />
+        <attr name="rectRoundRadius" />
     </declare-styleable>
+
+    <!--  FloatingActionButton  start-->
+    <declare-styleable name="FloatingActionButton">
+        <attr name="fab_colorPressed" format="color" />
+        <attr name="fab_colorDisabled" format="color" />
+        <attr name="fab_colorNormal" format="color" />
+        <attr name="fab_icon" format="reference" />
+        <attr name="fab_size" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="mini" value="1" />
+        </attr>
+        <attr name="fab_title" format="string" />
+        <attr name="fab_stroke_visible" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="AddFloatingActionButton">
+        <attr name="fab_plusIconColor" format="color" />
+    </declare-styleable>
+    <declare-styleable name="FloatingActionsMenu">
+        <attr name="fab_addButtonColorPressed" format="color" />
+        <attr name="fab_addButtonColorNormal" format="color" />
+        <attr name="fab_addButtonSize" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="mini" value="1" />
+        </attr>
+        <attr name="fab_addButtonPlusIconColor" format="color" />
+        <attr name="fab_addButtonStrokeVisible" format="boolean" />
+        <attr name="fab_labelStyle" format="reference" />
+        <attr name="fab_labelsPosition" format="enum">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+        <attr name="fab_expandDirection" format="enum">
+            <enum name="up" value="0" />
+            <enum name="down" value="1" />
+            <enum name="left" value="2" />
+            <enum name="right" value="3" />
+        </attr>
+    </declare-styleable>
+    <!-- FloatingActionButton end-->
 </resources>
