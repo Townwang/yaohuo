@@ -1,11 +1,11 @@
 package com.townwang.yaohuo.di.interceptor
 
 import com.townwang.yaohuo.BuildConfig
-import com.townwang.yaohuo.common.USER_AGENT
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
 import okhttp3.Response
+import org.jsoup.helper.HttpConnection.DEFAULT_UA
 import java.io.IOException
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -26,7 +26,7 @@ class NetCookiesInterceptor : Interceptor {
                     builder.addHeader("accept-language", "zh-CN")
                     builder.addHeader("origin", BuildConfig.YAO_CDN_URL)
                     builder.addHeader("content-type", "multipart/form-data")
-                    builder.addHeader("user-agent", USER_AGENT)
+                    builder.addHeader("user-agent", DEFAULT_UA)
                     BuildConfig.YAO_CDN_URL.toHttpUrlOrNull()
                 }
                 "cn" -> {
@@ -41,7 +41,7 @@ class NetCookiesInterceptor : Interceptor {
                     builder.addHeader("sec-fetch-mode", "cors")
                     builder.addHeader("sec-fetch-site", "cross-site")
                     builder.addHeader("content-type", "application/x-www-form-urlencoded")
-                    builder.addHeader("user-agent", USER_AGENT)
+                    builder.addHeader("user-agent", DEFAULT_UA)
                     BuildConfig.BASE_YAOHUO_URL.toHttpUrlOrNull()
                 }
             }

@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentMsgBinding
@@ -48,6 +49,18 @@ class MsgFragment : Fragment(R.layout.fragment_msg) {
                 binding.menuCrop.collapse()
             }
             false
+        }
+        binding.fabB1.onClickListener {
+            Snackbar.make(requireView(), "正在开发...", Snackbar.LENGTH_SHORT).show()
+        }
+        binding.fabB2.onClickListener {
+            Snackbar.make(requireView(), "正在开发...", Snackbar.LENGTH_SHORT).show()
+        }
+        binding.fabB3.onClickListener {
+            Snackbar.make(requireView(), "正在开发...", Snackbar.LENGTH_SHORT).show()
+        }
+        binding.fabB4.onClickListener {
+            Snackbar.make(requireView(), "正在开发...", Snackbar.LENGTH_SHORT).show()
         }
         adapter.onDeleteListener = { _, pro ->
             if (pro is Product) {

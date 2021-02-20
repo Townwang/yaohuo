@@ -16,6 +16,7 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.IMG_GIF
 import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
 import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
+import com.townwang.yaohuo.ui.activity.ActivityMsg
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import org.jsoup.nodes.Document
 
@@ -79,7 +80,7 @@ fun clearNotificaion() {
 }
 
 private val startMsgActivity by lazy {
-    val intent = Intent(YaoApplication.getContext(), ActivityWebView::class.java).apply {
+    val intent = Intent(YaoApplication.getContext(), ActivityMsg::class.java).apply {
         flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         putExtra(WEB_VIEW_URL_KEY, "https://yaohuo.me/bbs/messagelist.aspx")
         putExtra(WEB_VIEW_URL_TITLE, "消息")

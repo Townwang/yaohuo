@@ -2,18 +2,61 @@ package com.townwang.yaohuo.ui.fragment.msg.details
 
 import androidx.lifecycle.MutableLiveData
 import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.common.resolve.ResolveMsgDetailsHelper
+import com.townwang.yaohuo.common.resolve.ResolveUserInfoHelper
 import com.townwang.yaohuo.repo.Repo
 import com.townwang.yaohuo.repo.data.details.MsgDetailsBean
+import org.jsoup.Jsoup
 
 class MsgDetailsModel(private val repo: Repo) : UIViewModel() {
+    private val _isSuccess = MutableLiveData<Boolean>()
+    val isSuccess = _isSuccess.asLiveData()
     private val _listDates = MutableLiveData<List<Product>>()
     val listDates = _listDates.asLiveData()
     val data = mutableListOf<Product>()
-    fun getMsgDetails(url:String) = launchTask {
-//        val doc = repo.getNext(url)
-        data.add(Product(0,MsgDetailsBean(true,"1","哈哈哈哈哈","https://yaohuo.me/album/upload/1000/2014/08/25/1000_1726210.png")))
-        data.add(Product(1,MsgDetailsBean(true,"2","lalallala","https://yaohuo.me/bbs/head/3.gif")))
-        data.add(Product(2,MsgDetailsBean(false,"3","ffffffffffff","https://yaohuo.me/album/upload/1000/2021/02/09/24770_1353480.png")))
+    var helper: ResolveMsgDetailsHelper? = null
+    fun getMsgDetails(url: String, torridMe: String) = launchTask {
+        val doc = repo.getNext(url)
+        helper = ResolveMsgDetailsHelper(doc)
+        val docInfo = repo.getUserInfo(helper?.torridUser ?: "")
+        val userInfoHelper = ResolveUserInfoHelper(docInfo)
+        val docInfoMe = repo.getUserInfo(torridMe)
+        val meInfoHelper = ResolveUserInfoHelper(docInfoMe)
+        data.clear()
+        helper?.getList()?.forEachIndexed { index, msgDetailsBean ->
+            if (msgDetailsBean.isUser) {
+                data.add(
+                    Product(
+                        index, MsgDetailsBean(
+                            msgDetailsBean.isUser,
+                            userInfoHelper.grade,
+                            msgDetailsBean.msg,
+                            userInfoHelper.avatar
+                        )
+                    )
+                )
+            } else {
+                data.add(
+                    Product(
+                        index, MsgDetailsBean(
+                            msgDetailsBean.isUser,
+                            meInfoHelper.grade,
+                            msgDetailsBean.msg,
+                            meInfoHelper.avatar
+                        )
+                    )
+                )
+            }
+        }
         _listDates.value = data
+    }
+
+    fun senMsg(content: String) = launchTask {
+        Jsoup.connect("").get()
+        val data = helper?.getSendData(content)
+        data?.run {
+            repo.sendMsg(this)
+            _isSuccess.value = true
+        }
     }
 }

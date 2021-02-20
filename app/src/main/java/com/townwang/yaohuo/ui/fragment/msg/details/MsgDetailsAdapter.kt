@@ -11,10 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.OnItemClickListener
-import com.townwang.yaohuo.common.T
-import com.townwang.yaohuo.common.getUrlString
-import com.townwang.yaohuo.common.options
+import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.ItemMsgLeftDetailsDataBinding
 import com.townwang.yaohuo.databinding.ItemMsgRightDetailsDataBinding
 import com.townwang.yaohuo.repo.data.details.MsgDetailsBean
@@ -72,7 +69,7 @@ class ProductViewHolderRight(view: View) : RecyclerView.ViewHolder(view) {
         pro ?: return
         if (data is MsgDetailsBean) {
             binding.leval.text = data.level
-            binding.msg.text = data.msg
+            binding.msg.text = data.msg.toHtml()
             Glide.with(itemView)
                 .load(getUrlString(data.userImg))
                 .apply(options)
@@ -90,7 +87,7 @@ class ProductViewHolderLeft(view: View) : RecyclerView.ViewHolder(view) {
         pro ?: return
         if (data is MsgDetailsBean) {
             binding.leval.text = data.level
-            binding.msg.text = data.msg
+            binding.msg.text =  data.msg.toHtml()
             Glide.with(itemView)
                 .load(getUrlString(data.userImg))
                 .apply(options)

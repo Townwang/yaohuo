@@ -17,9 +17,6 @@ val  signatureHash  =  arrayListOf<Long>().apply {
     add(-508714960)
     add(1375692864)
 }
-
-//浏览器参数配置
-const val USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0.1; Moto G (4)) Gecko/20100101 Firefox/54.0"
 //解析所用字段
 const val AK_FORM = "form"
 const val AK_NAME = "name"

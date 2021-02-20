@@ -1,7 +1,7 @@
 package com.townwang.yaohuo.repo.data
 
 data class HomeBean(
-    val title:String,
+    var title:String,
     val a:String,
     val auth:String,
     val reply:String,

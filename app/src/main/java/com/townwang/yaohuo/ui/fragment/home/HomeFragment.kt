@@ -1,6 +1,7 @@
 package com.townwang.yaohuo.ui.fragment.home
 
 import android.content.Intent
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -29,6 +30,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     var page = 1
     private val model: HomeModel by viewModel()
     lateinit var request: ActivityResultLauncher<Intent>
+    override fun onStart() {
+        super.onStart()
+       binding.marqueeView.startFlipping()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -51,12 +56,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.refreshLayout.setOnRefreshListener {
             page = 1
             model.refresh(BuildConfig.YH_BBS_ACTION_NEW)
+            model.loadTipList(288, 0, BuildConfig.YH_BBS_ACTION_CLASS)
         }
         binding.refreshLayout.setOnLoadMoreListener {
             page++
             model.loadList(0, page, BuildConfig.YH_BBS_ACTION_NEW)
         }
         binding.refreshLayout.autoRefresh()
+        val ad = binding.image.drawable
+        if (ad is AnimationDrawable) {
+            if (!ad.isRunning) {
+                ad.start()
+            } else if (ad.isRunning) {
+                ad.stop()
+            }
+        }
         adapter.onItemListListener = { _, pro ->
             if (pro is Product) {
                 val data = pro.t
@@ -121,6 +135,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         model.liveData.observe(viewLifecycleOwner, safeObserver {
             adapter.submitList(it)
             adapter.notifyDataSetChanged()
+        })
+        model.tipData.observe(viewLifecycleOwner,safeObserver {
+            val info: MutableList<String> = ArrayList()
+            it.forEach { b ->
+                info.add(b.title)
+            }
+            binding.marqueeView.startWithList(info)
         })
         model.loading.observe(viewLifecycleOwner, safeObserver {
             if (it.not()) {
@@ -192,6 +213,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        binding.marqueeView.stopFlipping()
+    }
     fun refreshData() {
         model.refresh(BuildConfig.YH_BBS_ACTION_NEW)
     }

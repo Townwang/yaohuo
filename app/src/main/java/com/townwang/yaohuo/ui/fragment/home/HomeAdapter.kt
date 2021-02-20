@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.common.OnBBSClickListener
+import com.townwang.yaohuo.common.OnItemClickListener
+import com.townwang.yaohuo.common.OnItemListener
+import com.townwang.yaohuo.common.T
 import com.townwang.yaohuo.databinding.ItemHomeBbsHanderBinding
 import com.townwang.yaohuo.databinding.ItemHomeSearchHanderBinding
 import com.townwang.yaohuo.databinding.ItemListDataBinding
@@ -46,9 +49,7 @@ class HomeAdapter : ListAdapter<Product, RecyclerView.ViewHolder>(Product.CALLBA
             }
         }
 
-
         if (holder is ProductBBSViewHolderHeader) {
-            onBBSListener
             holder.binding.resourceSharing.setOnClickListener {
                 onBBSListener?.invoke(
                     201,
@@ -105,13 +106,6 @@ class HomeAdapter : ListAdapter<Product, RecyclerView.ViewHolder>(Product.CALLBA
                 onBBSListener?.invoke(
                     198,
                     R.string.bbs_complaint,
-                    BuildConfig.YH_BBS_ACTION_CLASS
-                )
-            }
-            holder.binding.announcement.setOnClickListener {
-                onBBSListener?.invoke(
-                    288,
-                    R.string.bbs_announcement,
                     BuildConfig.YH_BBS_ACTION_CLASS
                 )
             }
@@ -195,7 +189,6 @@ class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 }
-
 
 class ProductViewHolderHeader(view: View) : RecyclerView.ViewHolder(view) {
 

@@ -21,6 +21,7 @@ import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import org.jsoup.Jsoup
+import org.jsoup.helper.HttpConnection
 import java.net.URL
 
 
@@ -57,7 +58,7 @@ class WebViewHelper(context: Context, var webView: WebView) {
             setSupportZoom(false)
             domStorageEnabled = true
             mixedContentMode = MIXED_CONTENT_ALWAYS_ALLOW
-            userAgentString = USER_AGENT
+            userAgentString = HttpConnection.DEFAULT_UA
             blockNetworkImage = false
             mediaPlaybackRequiresUserGesture = false
             textZoom = 100

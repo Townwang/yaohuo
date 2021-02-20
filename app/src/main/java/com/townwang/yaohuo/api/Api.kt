@@ -174,5 +174,13 @@ interface Api {
         @Field("vote") vote2: String? = null,//投票
         @Field("vote") vote3: String? = null//投票
     ): Call<Document>
+    /**
+     * 发送消息
+     */
+    @FormUrlEncoded
+    @POST("bbs/messagelist_add.aspx")
+    fun sendMsg(
+        @FieldMap map: Map<String, String>
+    ): Call<Document>
 
 }

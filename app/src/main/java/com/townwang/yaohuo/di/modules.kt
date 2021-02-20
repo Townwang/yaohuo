@@ -32,6 +32,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.DateFormat
+import java.util.concurrent.TimeUnit
 
 
 private val netModule = module {
@@ -53,6 +54,10 @@ private val netModule = module {
                             .build()
                     )
                 }
+                .retryOnConnectionFailure(true)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
                 .addInterceptor(NetCookiesInterceptor())
                 .addInterceptor(HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
