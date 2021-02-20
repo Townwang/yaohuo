@@ -26,6 +26,8 @@ import com.townwang.yaohuo.databinding.FragmentPubDetailsBinding
 import com.townwang.yaohuo.databinding.ItemCommentDataBinding
 import com.townwang.yaohuo.databinding.ViewDownloadStyleBinding
 import com.townwang.yaohuo.repo.data.details.CommitListBean
+import com.townwang.yaohuo.ui.activity.ActivityDetails
+import com.townwang.yaohuo.ui.activity.ActivityInfo
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
@@ -117,7 +119,7 @@ class PubDetailsFragment : Fragment(R.layout.fragment_pub_details) {
             binding.favorite.isClickable = false
             viewModel.favorite()
         }
-         adapter.onItemListener = { item, data ->
+        adapter.onItemListener = { item, data ->
             if (data is CommitListBean) {
                 if (item is ItemCommentDataBinding) {
                     item.apply {
@@ -127,6 +129,17 @@ class PubDetailsFragment : Fragment(R.layout.fragment_pub_details) {
                             .apply(RequestOptions.bitmapTransform(CircleCrop()))
                             .skipMemoryCache(false)
                             .into(item.userImg)
+                        item.userImg.onClickListener {
+                            startActivity(Intent(
+                                requireContext(), ActivityInfo::class.java
+                            ).apply {
+                                flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                                putExtra(
+                                    TROUSER_KEY,
+                                    getParam(data.url, BuildConfig.YH_REPLY_TOUSERID)
+                                )
+                            })
+                        }
                         item.leval.text = data.level.toString()
                         WebViewHelper(requireContext(), auth).apply {
                             shouldOverrideUrlLoading = true
@@ -172,7 +185,16 @@ class PubDetailsFragment : Fragment(R.layout.fragment_pub_details) {
                 .apply(options)
                 .apply(RequestOptions.bitmapTransform(CircleCrop()))
                 .into(binding.userImg)
-
+            binding.userImg.onClickListener { v ->
+                startActivity(Intent(
+                    requireContext(), ActivityInfo::class.java
+                ).apply {
+                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                    putExtra(
+                        TROUSER_KEY, it.touserId
+                    )
+                })
+            }
             binding.time.text = it.time
             binding.readNum.visibility = View.VISIBLE
             binding.readNum.text =
@@ -213,7 +235,7 @@ class PubDetailsFragment : Fragment(R.layout.fragment_pub_details) {
             }
             binding.praiseValue.text = it.praiseSize
             binding.leval.text = it.level.toString()
-            it.medal.forEach {medalUrl ->
+            it.medal.forEach { medalUrl ->
                 val image = ImageView(requireContext())
                 Glide.with(requireContext())
                     .load(getUrlString(medalUrl))
@@ -257,10 +279,10 @@ class PubDetailsFragment : Fragment(R.layout.fragment_pub_details) {
         })
         viewModel.noMore.observe(viewLifecycleOwner, safeObserver {
             if (it) {
-                if (adapter.currentList.size >0){
+                if (adapter.currentList.size > 0) {
                     binding.commentLists.visibility = View.VISIBLE
                     binding.noMore.visibility = View.GONE
-                }else{
+                } else {
                     binding.noMore.visibility = View.VISIBLE
                     binding.commentLists.visibility = View.GONE
                 }

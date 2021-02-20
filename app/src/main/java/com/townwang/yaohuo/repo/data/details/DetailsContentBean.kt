@@ -11,5 +11,6 @@ data class DetailsContentBean(
     val content:String,
     val level:Int,
     val medal:List<String>,
-    val downloadList: List<DownloadBean>?
+    val downloadList: List<DownloadBean>?,
+    val touserId:String?
 )

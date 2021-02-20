@@ -52,6 +52,7 @@
         <activity android:name=".ui.activity.ActivityMsg" />
         <activity android:name=".ui.activity.ActivityList" />
         <activity android:name=".ui.activity.ActivityMsgDetails"/>
+        <activity android:name=".ui.activity.ActivityInfo"/>
         <activity android:name=".ui.activity.ActivityDetails"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:hardwareAccelerated="true"/>

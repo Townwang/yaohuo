@@ -56,7 +56,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.refreshLayout.setOnRefreshListener {
             page = 1
             model.refresh(BuildConfig.YH_BBS_ACTION_NEW)
-            model.loadTipList(288, 0, BuildConfig.YH_BBS_ACTION_CLASS)
+            model.loadTipList(288, 0, BuildConfig.YH_BBS_ACTION_NEW)
         }
         binding.refreshLayout.setOnLoadMoreListener {
             page++

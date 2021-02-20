@@ -29,7 +29,7 @@
 
     <string name="my_id">我的ID</string>
     <string name="my_demon_crystal">我的妖晶</string>
-    <string name="bank_savings">银行存款</string>
+    <string name="bank_savings">注册时间</string>
     <string name="my_experience">我的经验</string>
     <string name="rank">我的等级</string>
     <string name="my_title">我的头衔</string>
@@ -44,7 +44,7 @@
     <string name="error_qesponse_null_pointer_exception">未能请求到数据，请稍后再试～</string>
     <string name="loading">加载中…</string>
     <string name="alert_dialog_tip_title">温馨提示</string>
-    <string name="home_send_post_loading">正在发送帖子...</string>
+    <string name="home_send_post_loading">正在发送帖子…</string>
     <string name="home_send_post_success">发帖成功</string>
     <string name="home_send_post_failure">发帖失败</string>
     <string name="list_tab_new_reply">最近回复</string>
@@ -56,7 +56,7 @@
     <string name="wei_zhi_tip">微信扫一扫，或者点击\"去捐赠\"，在微信页面右上角菜单中 \"从相册中选取二维码\"。</string>
     <string name="ali_zhi_title">捐赠·支付宝</string>
     <string name="ali_zhi_tip">支付宝扫一扫，或者点击\"去捐赠\"\n您点滴支持，是我们最大动力</string>
-    <string name="wei_loading">启动中...</string>
+    <string name="wei_loading">启动中…</string>
     <string name="act_switch">点击任何地方切换捐赠方式</string>
     <string name="donate">捐赠</string>
     <string name="donate_qa">捐赠二维码</string>

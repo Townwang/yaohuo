@@ -10,6 +10,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import retrofit2.http.Query
 import java.io.File
 
 
@@ -189,8 +190,8 @@ class Repo constructor(
     }
 
 
-    suspend fun getMe(): Document = withRepoContext {
-        val me = api.getMe()
+    suspend fun getMe( touserid: String): Document = withRepoContext {
+        val me = api.getMe(touserid)
         me.getResp()
     }
 

@@ -40,13 +40,14 @@ class PubDetailsModel(private val repo: Repo) : UIViewModel() {
                 helper?.giftMoney.orEmpty(),
                 helper?.time.orEmpty(),
                 helper?.praiseSize.orEmpty(),
-                helper?.userName.orEmpty(),
+                userInfoHelper.userName,
                 helper?.onLineState ?: false,
                 userInfoHelper.avatar,
                 helper?.content.orEmpty(),
                 Level.getLevel(userInfoHelper.grade),
                 userInfoHelper.medal,
-                helper?.downLoad
+                helper?.downLoad,
+                getParam(helper?.getHandUrl.orEmpty(), BuildConfig.YH_REPLY_TOUSERID)
             )
         )
         commentDetails(true, 0)

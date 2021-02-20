@@ -23,7 +23,7 @@ private val repoJob = Job(appJob)
 
 private val repoScope =
     CoroutineScope(
-        (Executors.newFixedThreadPool(10)
+        (Executors.newFixedThreadPool(50)
             .asCoroutineDispatcher()) + repoJob
     )
 val networkScope =

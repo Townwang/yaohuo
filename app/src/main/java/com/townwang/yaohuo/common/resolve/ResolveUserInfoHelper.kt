@@ -26,7 +26,7 @@ class ResolveUserInfoHelper(private val document: Document) {
         }
 
     val userId: String
-        get() = parseContent("【用户ID】")
+        get() = Jsoup.parse(parseContent("【用户ID】")).text()
     val userName: String
         get() = parseContent("【昵称】")
     val demonCrystal: String
@@ -38,7 +38,7 @@ class ResolveUserInfoHelper(private val document: Document) {
     val title: String
         get() = parseContent("【头衔】")
     val identity: String
-        get() = parseContent("【身份】")
+        get() =  Jsoup.parse(parseContent("【身份】")).text()
     val purview: String
         get() = parseContent("【权限】")
     val medal: List<String>

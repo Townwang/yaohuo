@@ -71,8 +71,8 @@ interface Api {
     /**
      * 我的
      */
-    @GET("myfile.aspx")
-    fun getMe(): Call<Document>
+    @GET("bbs/userinfo.aspx")
+    fun getMe(@Query("touserid") touserid: String): Call<Document>
 
     /**
      * 回帖
