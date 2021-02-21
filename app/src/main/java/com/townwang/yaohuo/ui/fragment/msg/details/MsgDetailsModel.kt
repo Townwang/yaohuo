@@ -52,7 +52,6 @@ class MsgDetailsModel(private val repo: Repo) : UIViewModel() {
     }
 
     fun senMsg(content: String) = launchTask {
-        Jsoup.connect("").get()
         val data = helper?.getSendData(content)
         data?.run {
             repo.sendMsg(this)

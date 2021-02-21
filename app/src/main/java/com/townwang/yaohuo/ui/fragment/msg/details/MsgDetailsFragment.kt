@@ -81,7 +81,7 @@ class MsgDetailsFragment : Fragment(R.layout.fragment_msg_details) {
         })
         viewModel.isSuccess.observe(viewLifecycleOwner, safeObserver {
             if (it) {
-                binding.msgContent.text.clearSpans()
+                binding.msgContent.setText("")
                 viewModel.getMsgDetails(
                     requireArguments().getString(HOME_DETAILS_URL_KEY, ""),
                     requireContext().config(TROUSER_KEY)

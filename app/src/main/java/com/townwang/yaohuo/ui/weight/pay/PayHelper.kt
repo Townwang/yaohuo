@@ -293,12 +293,21 @@ object PayHelper {
                 Toast.makeText(c, "未安装微信～", Toast.LENGTH_SHORT).show()
             }
         }
+
         @SuppressLint("WrongConstant", "QueryPermissionsNeeded")
-        fun startWechatSearch(c: Context) {
+        fun startWeChatFollowClosely(c: Context, title: String? = null) {
             val intent = Intent()
-            intent.component = ComponentName("com.tencent.mm", "com.tencent.mm.plugin.fts.ui.FTSMainUI")
+            intent.component = ComponentName(
+                "com.tencent.mm",
+                "com.tencent.mm.plugin.webview.ui.tools.fts.SosWebViewUI"
+            )
             intent.flags = 335544320
             intent.action = "android.intent.action.VIEW"
+            intent.putExtra("title", title ?: "官方唯一公众号:关注了解后续更新")
+            intent.putExtra(
+                "rawUrl",
+                "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzA4NTY4ODUzOQ==&scene=124&uin=&key=&devicetype=Windows+10+x64&version=63010048&lang=zh_CN&a8scene=1&fontgear=2"
+            )
             val pm = c.packageManager
             if (!(pm == null || pm.queryIntentActivities(
                     intent,
@@ -310,5 +319,28 @@ object PayHelper {
                 Toast.makeText(c, "未安装微信～", Toast.LENGTH_SHORT).show()
             }
         }
+//
+//        @SuppressLint("WrongConstant", "QueryPermissionsNeeded")
+//        fun startWeChatSignUp(c: Context) {
+//            val intent = Intent()
+//            intent.component = ComponentName(
+//                "com.tencent.mm",
+//                "com.tencent.mm.plugin.webview.ui.tools.fts.SosWebViewUI"
+//            )
+//            intent.flags = 335544320
+//            intent.action = "android.intent.action.VIEW"
+//            intent.putExtra("title", "请关注公众号后在此文章留言报名")
+//            intent.putExtra("rawUrl", "https://mp.weixin.qq.com/s/bkYnS0HZql7XqbDCzufeow")
+//            val pm = c.packageManager
+//            if (!(pm == null || pm.queryIntentActivities(
+//                    intent,
+//                    PackageManager.MATCH_DEFAULT_ONLY
+//                ).size <= 0)
+//            ) {
+//                c.startActivity(intent)
+//            } else {
+//                Toast.makeText(c, "未安装微信～", Toast.LENGTH_SHORT).show()
+//            }
+//        }
     }
 }

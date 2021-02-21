@@ -2,6 +2,7 @@ package com.townwang.yaohuo.di.interceptor
 
 import android.content.Context
 import android.text.TextUtils
+import android.util.Log
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.COOKIE_KEY
 import com.townwang.yaohuo.common.config
@@ -17,9 +18,7 @@ class AddCookiesInterceptor(private val mContext: Context) : Interceptor {
         val request = chain.request()
         val builder = request.newBuilder()
         val cookie = getCookie(mContext, request.url.toString(), request.url.host)
-        cookie?.let {
-            builder.addHeader("cookie", fillTime(cookie))
-        }
+        builder.addHeader("cookie", fillTime(cookie?:""))
         return chain.proceed(builder.build())
     }
 
@@ -54,7 +53,6 @@ class AddCookiesInterceptor(private val mContext: Context) : Interceptor {
                 BuildConfig.YH_COOKIE_GUID -> {
                     mContext.config(BuildConfig.YH_COOKIE_GUID, it.split("=")[1])
                 }
-
             }
             stringBuilder.append(";")
         }

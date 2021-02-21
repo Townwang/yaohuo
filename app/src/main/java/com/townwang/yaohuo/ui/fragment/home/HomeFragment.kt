@@ -1,5 +1,7 @@
 package com.townwang.yaohuo.ui.fragment.home
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
@@ -22,6 +24,7 @@ import com.townwang.yaohuo.databinding.FragmentHomeBinding
 import com.townwang.yaohuo.repo.data.HomeBean
 import com.townwang.yaohuo.ui.activity.*
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuo.ui.weight.pay.PayHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -32,8 +35,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     lateinit var request: ActivityResultLauncher<Intent>
     override fun onStart() {
         super.onStart()
-       binding.marqueeView.startFlipping()
+        binding.marqueeView.startFlipping()
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -57,6 +61,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             page = 1
             model.refresh(BuildConfig.YH_BBS_ACTION_NEW)
             model.loadTipList(288, 0, BuildConfig.YH_BBS_ACTION_NEW)
+            binding.tipAnnouncement.visibility = View.GONE
         }
         binding.refreshLayout.setOnLoadMoreListener {
             page++
@@ -136,12 +141,38 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             adapter.submitList(it)
             adapter.notifyDataSetChanged()
         })
-        model.tipData.observe(viewLifecycleOwner,safeObserver {
+        model.tipData.observe(viewLifecycleOwner, safeObserver {
             val info: MutableList<String> = ArrayList()
             it.forEach { b ->
                 info.add(b.title)
             }
             binding.marqueeView.startWithList(info)
+            binding.marqueeView.setOnItemClickListener { position, _ ->
+                val data = it[position]
+                if (position in 0..3) {
+                    var isBear = true
+                    data.smailIng.forEach { s ->
+                        if (s == BuildConfig.YH_MATCH_LIST_BEAR) {
+                            isBear = false
+                            return@forEach
+                        }
+                    }
+                    startActivity(Intent(
+                        requireContext(), ActivityDetails::class.java
+                    ).apply {
+                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                        putExtra(HOME_DETAILS_URL_KEY, data.a)
+                        putExtra(HOME_DETAILS_READ_KEY, data.read)
+                        putExtra(HOME_DETAILS_BEAR_KEY, isBear)
+                        putExtra(HOME_DETAILS_TITLE_KEY, data.title)
+                    }
+                    )
+                } else {
+                    PayHelper.weZhi.startWeChatFollowClosely(requireContext())
+                }
+            }
+            binding.tipAnnouncement.visibility = View.VISIBLE
+
         })
         model.loading.observe(viewLifecycleOwner, safeObserver {
             if (it.not()) {
@@ -217,6 +248,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onStop()
         binding.marqueeView.stopFlipping()
     }
+
     fun refreshData() {
         model.refresh(BuildConfig.YH_BBS_ACTION_NEW)
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/zhi_bg"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -28,7 +29,7 @@
             android:gravity="center"
             android:text="@string/act_switch"
             android:textColor="#F5F5F5"
-            android:textSize="12dp" />
+            android:textSize="@dimen/text12Size" />
 
         <TextView
             android:id="@+id/zhi_title"
@@ -74,7 +75,8 @@
             android:gravity="center"
             android:text="@string/wei_zhi_tip"
             android:textColor="#ffffff"
-            android:textSize="15dp" />
+            android:textSize="@dimen/text14Size"
+            tools:ignore="NestedWeights" />
 
         <Button
             android:id="@+id/zhi_btn"
@@ -84,6 +86,6 @@
             android:minWidth="296dp"
             android:layout_gravity="center"
             android:text="去捐赠"
-            android:textSize="13dp" />
+            android:textSize="@dimen/text14Size" />
     </LinearLayout>
 </LinearLayout>

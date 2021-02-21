@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
@@ -26,7 +27,6 @@ import com.townwang.yaohuo.databinding.FragmentPubDetailsBinding
 import com.townwang.yaohuo.databinding.ItemCommentDataBinding
 import com.townwang.yaohuo.databinding.ViewDownloadStyleBinding
 import com.townwang.yaohuo.repo.data.details.CommitListBean
-import com.townwang.yaohuo.ui.activity.ActivityDetails
 import com.townwang.yaohuo.ui.activity.ActivityInfo
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
@@ -49,6 +49,11 @@ class PubDetailsFragment : Fragment(R.layout.fragment_pub_details) {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val mLinearLayoutManager = LinearLayoutManager(requireContext())
+        mLinearLayoutManager.isAutoMeasureEnabled = true
+        binding.commentLists.layoutManager = mLinearLayoutManager
+        binding.commentLists.setHasFixedSize(true)
+        binding.commentLists.isNestedScrollingEnabled = false
         binding.commentLists.adapter = adapter
         binding.refreshLayout.setOnRefreshListener {
             binding.honor.removeAllViews()

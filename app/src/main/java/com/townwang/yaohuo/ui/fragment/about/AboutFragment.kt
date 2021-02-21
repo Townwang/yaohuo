@@ -54,15 +54,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             )
         }
         binding.pubWechat.onClickListener {
-            ActivityCompat.startActivity(
-                requireContext(), Intent(
-                    requireContext(), ActivityWebView::class.java
-                ).apply {
-                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    putExtra(WEB_VIEW_URL_KEY, BuildConfig.ABOUT_WECHAT)
-                    putExtra(WEB_VIEW_URL_TITLE, "公众号：开源人")
-                }, null
-            )
+            PayHelper.weZhi.startWeChatFollowClosely(requireContext())
         }
         binding.post.onClickListener {
             Snackbar.make(binding.post, "暂未开贴", Snackbar.LENGTH_SHORT).show()
