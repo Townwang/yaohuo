@@ -7,12 +7,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentListPubBinding
-import com.townwang.yaohuo.repo.data.HomeData
+import com.townwang.yaohuo.repo.data.HomeBean
 import com.townwang.yaohuo.ui.activity.ActivityDetails
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -20,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PubListFragment : Fragment(R.layout.fragment_list_pub) {
     private val adapter = PubListAdapter()
-    private val viewModel: ListModel by viewModel()
+    private val viewModel: PubListModel by viewModel()
     val binding: FragmentListPubBinding by viewbind()
     private var page: Int = 1
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +39,7 @@ class PubListFragment : Fragment(R.layout.fragment_list_pub) {
         binding.homeList.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         adapter.onItemClickListener = { v, data ->
-            if (data is HomeData) {
+            if (data is HomeBean) {
                 var isBear = true
                 data.smailIng.forEach {
                     if (it == BuildConfig.YH_MATCH_LIST_BEAR) {
@@ -86,7 +85,7 @@ class PubListFragment : Fragment(R.layout.fragment_list_pub) {
             if (page == 1) {
                 adapter.datas.clear()
             }
-            adapter.datas = it as ArrayList<HomeData>
+            adapter.datas = it as ArrayList<HomeBean>
         })
         viewModel.loading.observe(viewLifecycleOwner, safeObserver {
             if (!it) {

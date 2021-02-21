@@ -2,10 +2,6 @@ package com.townwang.yaohuo.di
 
 import android.app.Application
 import android.content.Context
-import androidx.room.Room
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.tencent.bugly.beta.Beta
 import com.townwang.yaohuo.BuildConfig
@@ -16,12 +12,13 @@ import com.townwang.yaohuo.di.interceptor.NetCookiesInterceptor
 import com.townwang.yaohuo.di.interceptor.SaveCookiesInterceptor
 import com.townwang.yaohuo.repo.Repo
 //import com.townwang.yaohuo.repo.db.ApiCacheDB
-import com.townwang.yaohuo.ui.fragment.details.DetailsModel
+import com.townwang.yaohuo.ui.fragment.pub.details.PubDetailsModel
 import com.townwang.yaohuo.ui.fragment.home.HomeModel
 import com.townwang.yaohuo.ui.fragment.login.LoginModel
 import com.townwang.yaohuo.ui.fragment.me.MeModel
 import com.townwang.yaohuo.ui.fragment.msg.MsgModel
-import com.townwang.yaohuo.ui.fragment.pub.ListModel
+import com.townwang.yaohuo.ui.fragment.msg.details.MsgDetailsModel
+import com.townwang.yaohuo.ui.fragment.pub.PubListModel
 import com.townwang.yaohuo.ui.fragment.search.SearchModel
 import com.townwang.yaohuo.ui.fragment.send.SendModel
 import com.townwang.yaohuo.ui.fragment.send.UploadFileModel
@@ -35,6 +32,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.DateFormat
+import java.util.concurrent.TimeUnit
 
 
 private val netModule = module {
@@ -56,6 +54,10 @@ private val netModule = module {
                             .build()
                     )
                 }
+                .retryOnConnectionFailure(true)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
                 .addInterceptor(NetCookiesInterceptor())
                 .addInterceptor(HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
@@ -110,17 +112,18 @@ private val repoModule = module {
     single { Repo(get()) }
 }
 private val viewModelModule = module {
-    viewModel { ListModel(get()) }
+    viewModel { PubListModel(get()) }
     viewModel { SearchModel(get()) }
     viewModel { LoginModel(get()) }
     viewModel { ThemeModel() }
-    viewModel { DetailsModel(get()) }
+    viewModel { PubDetailsModel(get()) }
     viewModel { SplashModel(get()) }
     viewModel { MeModel(get()) }
     viewModel { HomeModel(get()) }
     viewModel { SendModel(get()) }
     viewModel { MsgModel(get()) }
     viewModel { UploadFileModel(get()) }
+    viewModel { MsgDetailsModel(get()) }
 
 }
 

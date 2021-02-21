@@ -99,41 +99,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            tools:ignore="MissingConstraints">
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/reward"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/background_primary"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/mlTalkOver"
-                tools:ignore="MissingConstraints">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/bbs_reward"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text14Size"
-                    app:layout_constraintBottom_toBottomOf="@+id/reward"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/reward" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -270,7 +235,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/announcement"
+                android:id="@+id/reward"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -278,20 +243,22 @@
                 android:background="@drawable/background_primary"
                 android:orientation="horizontal"
                 android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mlTalkOver"
                 tools:ignore="MissingConstraints">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/bbs_announcement"
+                    android:text="@string/bbs_reward"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text14Size"
-                    app:layout_constraintBottom_toBottomOf="@+id/announcement"
+                    app:layout_constraintBottom_toBottomOf="@+id/reward"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/announcement" />
+                    app:layout_constraintTop_toTopOf="@+id/reward" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -1,16 +1,16 @@
 package com.townwang.yaohuo.common.resolve
 
 import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.repo.data.HomeData
+import com.townwang.yaohuo.repo.data.HomeBean
 import org.jsoup.nodes.Document
 
 
 class ResolveListHelper(private val document: Document) {
 
-    val homeListData: List<HomeData>
+    val homeListData: List<HomeBean>
         get() {
             val list = document.select(NEW_LIST)
-            val lists = arrayListOf<HomeData>()
+            val lists = arrayListOf<HomeBean>()
             lists.clear()
             list.forEach {
                 val hrefs = it.select(A_KEY).first()
@@ -27,7 +27,7 @@ class ResolveListHelper(private val document: Document) {
                 smailImg.forEach { img ->
                     smailImgs.add(img.attr(IMG_ALT))
                 }
-                lists.add(HomeData(title, a, auth, reply, read, time, smailImgs))
+                lists.add(HomeBean(title, a, auth, reply, read, time, smailImgs))
             }
             return lists
         }

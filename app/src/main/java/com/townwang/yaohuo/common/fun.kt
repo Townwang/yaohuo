@@ -218,6 +218,7 @@ fun Context.handleException(
             when (t.code) {
                 ErrorCode.E_1001.hashCode(),
                 ErrorCode.E_1009.hashCode(),
+                ErrorCode.E_1010.hashCode(),
                 ErrorCode.E_1004.hashCode() -> {
                     //2021/1/17/017 找不到帖子 和 审核 无需处理 提示即可
                     toast(t.message.orEmpty())

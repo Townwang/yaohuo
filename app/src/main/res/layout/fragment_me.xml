@@ -38,11 +38,15 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.25" />
 
-            <com.townwang.yaohuo.ui.weight.view.TownNiceImageView
+            <com.townwang.yaohuo.ui.weight.view.TownImageView
                 android:id="@+id/avatar"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/avatar"
+                app:type="circle"
+                app:borderColor="?colorPrimary"
+                app:borderWidth="1dp"
+                app:rectRoundRadius="30dp"
                 app:layout_constraintBottom_toBottomOf="@+id/guideline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

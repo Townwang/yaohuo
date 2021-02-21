@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="glideIndexTag" type="id"/>
+    <item name="glideIndexTag" type="id" />
+    <!--   fab start-->
+    <item name="fab_expand_menu_button" type="id" />
+    <item name="fab_label" type="id" />
+    <!--    fab end-->
 </resources>

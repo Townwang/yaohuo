@@ -5,14 +5,14 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.databinding.ItemListDataBinding
-import com.townwang.yaohuo.repo.data.HomeData
+import com.townwang.yaohuo.repo.data.HomeBean
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 
 class PubListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val binding: ItemListDataBinding by viewbind()
 
     @SuppressLint("SetTextI18n", "ResourceAsColor")
-    fun bind( data: HomeData) {
+    fun bind( data: HomeBean) {
         binding.title.text = data.title
         binding.auth.text = "楼主：${data.auth}"
         binding.reply.text = data.reply

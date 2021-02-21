@@ -72,13 +72,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 loading?.loadSuccess()
             } else {
                 loading?.loadFailed()
-                Snackbar.make(requireView(), "非内测成员，关注公众号(<font color='#D81B60'>开源人</font>)\n在公众号文章<font color='#03A9F4'>蓝火客户端</font>留言报名".toHtml(), Snackbar.LENGTH_INDEFINITE).apply {
-                    setAction("去搜索") {
-                        val tvCopy: ClipboardManager =
-                            requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        tvCopy.text = "开源人"
-                        requireContext().toastLong("公众号复制成功，请粘贴添加")
-                        PayHelper.weZhi.startWechatSearch(requireContext())
+                Snackbar.make(requireView(), "非内测成员，在公众号文章<font color='#03A9F4'>蓝火客户端</font>留言报名".toHtml(), Snackbar.LENGTH_INDEFINITE).apply {
+                    setAction("去报名") {
+                        PayHelper.weZhi.startWeChatFollowClosely(requireContext(),"请关注公众号后在文章留言报名")
                         requireActivity().finish()
                     }
                 }.show()

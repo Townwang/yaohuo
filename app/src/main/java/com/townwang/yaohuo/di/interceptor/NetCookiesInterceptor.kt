@@ -1,7 +1,8 @@
 package com.townwang.yaohuo.di.interceptor
 
 import com.townwang.yaohuo.BuildConfig
-import com.townwang.yaohuo.common.USER_AGENT
+import com.townwang.yaohuo.common.RANDOM_IP
+import com.townwang.yaohuo.common.RANDOM_UA
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
@@ -26,7 +27,6 @@ class NetCookiesInterceptor : Interceptor {
                     builder.addHeader("accept-language", "zh-CN")
                     builder.addHeader("origin", BuildConfig.YAO_CDN_URL)
                     builder.addHeader("content-type", "multipart/form-data")
-                    builder.addHeader("user-agent", USER_AGENT)
                     BuildConfig.YAO_CDN_URL.toHttpUrlOrNull()
                 }
                 "cn" -> {
@@ -35,19 +35,17 @@ class NetCookiesInterceptor : Interceptor {
                 else -> {
                     builder.addHeader("accept", "*/*")
                     builder.addHeader("accept-encoding", "gzip, deflate, br")
-                    builder.addHeader("accept-language", "zh-CN,zh;q=0.9,en;q=0.8")
-                    builder.addHeader("origin", BuildConfig.BASE_YAOHUO_URL)
-                    builder.addHeader("sec-fetch-dest", "empty")
-                    builder.addHeader("sec-fetch-mode", "cors")
-                    builder.addHeader("sec-fetch-site", "cross-site")
+                    builder.addHeader("accept-language", "zh-CN")
+                    builder.addHeader("Connection", "keep-alive")
                     builder.addHeader("content-type", "application/x-www-form-urlencoded")
-                    builder.addHeader("user-agent", USER_AGENT)
                     BuildConfig.BASE_YAOHUO_URL.toHttpUrlOrNull()
                 }
             }
+            builder.addHeader("user-agent", RANDOM_UA.random())
             val newUrl = newBaseUrl?.port?.let {
-                oldUrl.newBuilder().scheme(newBaseUrl.scheme)
-                    .host(newBaseUrl.host)
+                oldUrl.newBuilder()
+                    .scheme(newBaseUrl.scheme)
+                    .host(RANDOM_IP.random())
                     .port(it)
                     .build()
             }

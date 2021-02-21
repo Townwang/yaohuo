@@ -1,6 +1,9 @@
 package com.townwang.yaohuo.ui.fragment.home
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -18,9 +21,10 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.utils.isHaveMessage
 import com.townwang.yaohuo.databinding.FragmentHomeBinding
-import com.townwang.yaohuo.repo.data.HomeData
+import com.townwang.yaohuo.repo.data.HomeBean
 import com.townwang.yaohuo.ui.activity.*
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuo.ui.weight.pay.PayHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -29,6 +33,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     var page = 1
     private val model: HomeModel by viewModel()
     lateinit var request: ActivityResultLauncher<Intent>
+    override fun onStart() {
+        super.onStart()
+        binding.marqueeView.startFlipping()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -50,17 +59,27 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.listView.adapter = adapter
         binding.refreshLayout.setOnRefreshListener {
             page = 1
-            model.loadList(0, page, BuildConfig.YH_BBS_ACTION_NEW)
+            model.refresh(BuildConfig.YH_BBS_ACTION_NEW)
+            model.loadTipList(288, 0, BuildConfig.YH_BBS_ACTION_NEW)
+            binding.tipAnnouncement.visibility = View.GONE
         }
         binding.refreshLayout.setOnLoadMoreListener {
             page++
             model.loadList(0, page, BuildConfig.YH_BBS_ACTION_NEW)
         }
         binding.refreshLayout.autoRefresh()
+        val ad = binding.image.drawable
+        if (ad is AnimationDrawable) {
+            if (!ad.isRunning) {
+                ad.start()
+            } else if (ad.isRunning) {
+                ad.stop()
+            }
+        }
         adapter.onItemListListener = { _, pro ->
             if (pro is Product) {
                 val data = pro.t
-                if (data is HomeData) {
+                if (data is HomeBean) {
                     var isBear = true
                     data.smailIng.forEach {
                         if (it == BuildConfig.YH_MATCH_LIST_BEAR) {
@@ -122,6 +141,39 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             adapter.submitList(it)
             adapter.notifyDataSetChanged()
         })
+        model.tipData.observe(viewLifecycleOwner, safeObserver {
+            val info: MutableList<String> = ArrayList()
+            it.forEach { b ->
+                info.add(b.title)
+            }
+            binding.marqueeView.startWithList(info)
+            binding.marqueeView.setOnItemClickListener { position, _ ->
+                val data = it[position]
+                if (position in 0..3) {
+                    var isBear = true
+                    data.smailIng.forEach { s ->
+                        if (s == BuildConfig.YH_MATCH_LIST_BEAR) {
+                            isBear = false
+                            return@forEach
+                        }
+                    }
+                    startActivity(Intent(
+                        requireContext(), ActivityDetails::class.java
+                    ).apply {
+                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                        putExtra(HOME_DETAILS_URL_KEY, data.a)
+                        putExtra(HOME_DETAILS_READ_KEY, data.read)
+                        putExtra(HOME_DETAILS_BEAR_KEY, isBear)
+                        putExtra(HOME_DETAILS_TITLE_KEY, data.title)
+                    }
+                    )
+                } else {
+                    PayHelper.weZhi.startWeChatFollowClosely(requireContext())
+                }
+            }
+            binding.tipAnnouncement.visibility = View.VISIBLE
+
+        })
         model.loading.observe(viewLifecycleOwner, safeObserver {
             if (it.not()) {
                 binding.refreshLayout.finishRefresh()
@@ -179,7 +231,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             R.id.toolbar_r_msg -> {
                 ActivityCompat.startActivity(
                     requireContext(), Intent(
-                        requireContext(), ActivityWebView::class.java
+                        requireContext(), ActivityMsg::class.java
                     ).apply {
                         flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                         putExtra(WEB_VIEW_URL_KEY, "https://yaohuo.me/bbs/messagelist.aspx")
@@ -192,7 +244,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        binding.marqueeView.stopFlipping()
+    }
+
     fun refreshData() {
-        model.loadList(0, 1, BuildConfig.YH_BBS_ACTION_NEW)
+        model.refresh(BuildConfig.YH_BBS_ACTION_NEW)
     }
 }

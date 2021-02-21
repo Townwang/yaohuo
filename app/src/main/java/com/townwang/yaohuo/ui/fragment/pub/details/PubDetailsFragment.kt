@@ -1,4 +1,4 @@
-package com.townwang.yaohuo.ui.fragment.details
+package com.townwang.yaohuo.ui.fragment.pub.details
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -23,10 +23,11 @@ import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
-import com.townwang.yaohuo.databinding.FragmentDetailsBinding
+import com.townwang.yaohuo.databinding.FragmentPubDetailsBinding
 import com.townwang.yaohuo.databinding.ItemCommentDataBinding
 import com.townwang.yaohuo.databinding.ViewDownloadStyleBinding
 import com.townwang.yaohuo.repo.data.details.CommitListBean
+import com.townwang.yaohuo.ui.activity.ActivityInfo
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
@@ -34,12 +35,12 @@ import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class DetailsFragment : Fragment(R.layout.fragment_details) {
-    val binding: FragmentDetailsBinding by viewbind()
+class PubDetailsFragment : Fragment(R.layout.fragment_pub_details) {
+    val binding: FragmentPubDetailsBinding by viewbind()
     var loading: LoadingDialog? = null
     private var ot: Int = 0
     private val adapter = CommentAdapter()
-    private val viewModel: DetailsModel by viewModel()
+    private val viewModel: PubDetailsModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -48,8 +49,16 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val mLinearLayoutManager = LinearLayoutManager(requireContext())
+        mLinearLayoutManager.isAutoMeasureEnabled = true
+        binding.commentLists.layoutManager = mLinearLayoutManager
+        binding.commentLists.setHasFixedSize(true)
+        binding.commentLists.isNestedScrollingEnabled = false
         binding.commentLists.adapter = adapter
         binding.refreshLayout.setOnRefreshListener {
+            binding.honor.removeAllViews()
+            binding.listContent.removeAllViews()
+            binding.refreshLayout.setNoMoreData(false)
             viewModel.getDetails(requireArguments().getString(HOME_DETAILS_URL_KEY, ""))
         }
         binding.refreshLayout.setOnLoadMoreListener {
@@ -115,16 +124,28 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             binding.favorite.isClickable = false
             viewModel.favorite()
         }
-         adapter.onItemListener = { item, data ->
+        adapter.onItemListener = { item, data ->
             if (data is CommitListBean) {
                 if (item is ItemCommentDataBinding) {
                     item.apply {
-                        if (item.leval.text.contains("0")) {
-                            viewModel.getUserInfo(
-                                item,
-                                getParam(data.avatar, BuildConfig.YH_REPLY_TOUSERID)
-                            )
+                        Glide.with(requireContext())
+                            .load(getUrlString(data.avatar))
+                            .apply(options)
+                            .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                            .skipMemoryCache(false)
+                            .into(item.userImg)
+                        item.userImg.onClickListener {
+                            startActivity(Intent(
+                                requireContext(), ActivityInfo::class.java
+                            ).apply {
+                                flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                                putExtra(
+                                    TROUSER_KEY,
+                                    getParam(data.url, BuildConfig.YH_REPLY_TOUSERID)
+                                )
+                            })
                         }
+                        item.leval.text = data.level.toString()
                         WebViewHelper(requireContext(), auth).apply {
                             shouldOverrideUrlLoading = true
                         }.setHtmlCode(data.auth)
@@ -164,7 +185,21 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         viewModel.data.observe(viewLifecycleOwner, safeObserver {
-            viewModel.getAvatar(getParam(it.headUrl, BuildConfig.YH_REPLY_TOUSERID))
+            Glide.with(requireContext())
+                .load(getUrlString(it.headUrl))
+                .apply(options)
+                .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                .into(binding.userImg)
+            binding.userImg.onClickListener { v ->
+                startActivity(Intent(
+                    requireContext(), ActivityInfo::class.java
+                ).apply {
+                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                    putExtra(
+                        TROUSER_KEY, it.touserId
+                    )
+                })
+            }
             binding.time.text = it.time
             binding.readNum.visibility = View.VISIBLE
             binding.readNum.text =
@@ -204,10 +239,19 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 }
             }
             binding.praiseValue.text = it.praiseSize
+            binding.leval.text = it.level.toString()
+            it.medal.forEach { medalUrl ->
+                val image = ImageView(requireContext())
+                Glide.with(requireContext())
+                    .load(getUrlString(medalUrl))
+                    .apply(options)
+                    .into(image)
+                binding.honor111.visibility = View.VISIBLE
+                binding.honor.addView(image)
+            }
             it.downloadList?.forEach { download ->
                 val contentLoad = ViewDownloadStyleBinding.inflate(layoutInflater)
                 contentLoad.downloadName.text = download.fileName
-
                 contentLoad.downloadUrl.onClickListener { _ ->
                     val uri = Uri.parse(Uri.encode(download.url, "-![.:/,%?&=]"))
                     ActivityCompat.startActivity(
@@ -226,35 +270,27 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     contentLoad.description.text = download.description
                     contentLoad.description.visibility = View.VISIBLE
                 }
+
                 binding.listContent.addView(contentLoad.root)
             }
-        })
-
-        viewModel.avatar.observe(viewLifecycleOwner, safeObserver {
-            Glide.with(requireContext())
-                .load(getUrlString(it))
-                .apply(options)
-                .apply(RequestOptions.bitmapTransform(CircleCrop()))
-                .into(binding.userImg)
-        })
-        viewModel.grade.observe(viewLifecycleOwner, safeObserver {
-            it ?: return@safeObserver
-            binding.leval.text = it
         })
         viewModel.commentSize.observe(viewLifecycleOwner, safeObserver {
             binding.commentValue.text = it
         })
         viewModel.commentLists.observe(viewLifecycleOwner, safeObserver {
-            binding.commentLists.visibility = View.VISIBLE
-            binding.noMore.visibility = View.GONE
             binding.refreshLayout.setEnableLoadMore(true)
             adapter.submitList(it)
             adapter.notifyDataSetChanged()
         })
         viewModel.noMore.observe(viewLifecycleOwner, safeObserver {
-            binding.noMore.visibility = View.VISIBLE
             if (it) {
-                binding.commentLists.visibility = View.GONE
+                if (adapter.currentList.size > 0) {
+                    binding.commentLists.visibility = View.VISIBLE
+                    binding.noMore.visibility = View.GONE
+                } else {
+                    binding.noMore.visibility = View.VISIBLE
+                    binding.commentLists.visibility = View.GONE
+                }
                 binding.refreshLayout.setEnableLoadMore(false)
                 binding.refreshLayout.finishLoadMoreWithNoMoreData()
             }
@@ -270,36 +306,13 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         })
         viewModel.commentSuccess.observe(viewLifecycleOwner, safeObserver {
             if (it) {
+                binding.honor.removeAllViews()
+                binding.listContent.removeAllViews()
+                binding.refreshLayout.setNoMoreData(false)
                 viewModel.getDetails(requireArguments().getString(HOME_DETAILS_URL_KEY, ""))
                 loading?.loadSuccess()
             } else {
                 loading?.loadFailed()
-            }
-        })
-        viewModel.medal.observe(viewLifecycleOwner, safeObserver {
-            it ?: return@safeObserver
-            if (isVisible) {
-                val image = ImageView(requireContext())
-                Glide.with(requireContext())
-                    .load(getUrlString(it))
-                    .apply(options)
-                    .into(image)
-                binding.honor.visibility = View.VISIBLE
-                binding.honor.addView(image)
-            }
-        })
-        viewModel.itemAvatar.observe(viewLifecycleOwner, safeObserver {
-            it ?: return@safeObserver
-            if (isVisible) {
-                val imgView = it.item.userImg.findViewWithTag<ImageView>(it.touserid)
-                if (imgView != null) {
-                    Glide.with(requireContext())
-                        .load(getUrlString(it.avatarUrl))
-                        .apply(options)
-                        .apply(RequestOptions.bitmapTransform(CircleCrop()))
-                        .into(it.item.userImg)
-                    it.item.leval.text = it.level.toString()
-                }
             }
         })
     }

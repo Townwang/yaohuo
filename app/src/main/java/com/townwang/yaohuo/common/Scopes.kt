@@ -1,16 +1,10 @@
 package com.townwang.yaohuo.common
-
-import android.util.Log
-import com.google.gson.Gson
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.utils.isHaveMsg
 import com.townwang.yaohuo.repo.data.Niece
 import com.townwang.yaohuo.repo.data.YaoCdnReq
 import com.townwang.yaohuo.repo.enum.ErrorCode
 import kotlinx.coroutines.*
-import okhttp3.RequestBody
-import okhttp3.Response
-import okhttp3.ResponseBody
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -29,7 +23,7 @@ private val repoJob = Job(appJob)
 
 private val repoScope =
     CoroutineScope(
-        (Executors.newFixedThreadPool(10)
+        (Executors.newFixedThreadPool(50)
             .asCoroutineDispatcher()) + repoJob
     )
 val networkScope =
@@ -174,6 +168,9 @@ fun checkDoc(document: Element?): Throwable? {
     }
     if (tip.contains(BuildConfig.YH_MATCH_SEARCH_NO_DATA)) {
         return ApiErrorException(ErrorCode.E_1008.hashCode(), "暂无记录!")
+    }
+    if (tip.contains("内容跟上次发的重复！")) {
+        return ApiErrorException(ErrorCode.E_1010.hashCode(), "内容跟上次发的重复！")
     }
     if (doc.body().text().contains(BuildConfig.YH_MATCH_SEND_POST_LIMIT)) {
         return ApiErrorException(ErrorCode.E_1009.hashCode(), "今天你已超过发帖限制!")

@@ -2,7 +2,6 @@ package com.townwang.yaohuo.di.interceptor
 
 import android.content.Context
 import android.text.TextUtils
-import android.util.Log
 import com.townwang.yaohuo.common.COOKIE_KEY
 import okhttp3.Interceptor
 import okhttp3.Response

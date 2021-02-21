@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.ActivityPubBinding
-import com.townwang.yaohuo.ui.fragment.details.DetailsFragment
+import com.townwang.yaohuo.ui.fragment.pub.details.PubDetailsFragment
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 
 class ActivityDetails : AppCompatActivity() {
@@ -26,7 +26,7 @@ class ActivityDetails : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(
                     R.id.navHost,
-                    DetailsFragment().apply {
+                    PubDetailsFragment().apply {
                         arguments = Bundle().also {
                             it.putString(
                                 HOME_DETAILS_URL_KEY,

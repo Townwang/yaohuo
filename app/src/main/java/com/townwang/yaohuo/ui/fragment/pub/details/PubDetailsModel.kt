@@ -1,57 +1,53 @@
-package com.townwang.yaohuo.ui.fragment.details
+package com.townwang.yaohuo.ui.fragment.pub.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
-import com.townwang.yaohuo.common.IMG_JPG
 import com.townwang.yaohuo.common.UIViewModel
 import com.townwang.yaohuo.common.asLiveData
+import com.townwang.yaohuo.common.getParam
 import com.townwang.yaohuo.common.resolve.ResolveDetailsHelper
 import com.townwang.yaohuo.common.resolve.ResolveUserInfoHelper
-import com.townwang.yaohuo.databinding.ItemCommentDataBinding
 import com.townwang.yaohuo.repo.Repo
+import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.repo.data.details.DetailsContentBean
-import com.townwang.yaohuo.repo.data.local.ItemAvatarBean
 import com.townwang.yaohuo.repo.enum.Level
-import org.jsoup.Jsoup
 
-class DetailsModel(private val repo: Repo) : UIViewModel() {
+class PubDetailsModel(private val repo: Repo) : UIViewModel() {
     private var helper: ResolveDetailsHelper? = null
     private val _data = MutableLiveData<DetailsContentBean>()
     val data = _data.asLiveData()
-    private val _medal = MutableLiveData<String>()
-    val medal = _medal.asLiveData()
     private val _commentLists = MutableLiveData<List<Product>>()
     val commentLists: LiveData<List<Product>> = _commentLists
     val commentData = mutableListOf<Product>()
     private val _commentSize = MutableLiveData<String>()
-    private val _avatar = MutableLiveData<String>()
-    private val _grade = MutableLiveData<String>()
-    private val _itemAvatar = MutableLiveData<ItemAvatarBean>()
     private val _commentSuccess = MutableLiveData<Boolean>()
     private val _noMore = MutableLiveData<Boolean>()
     val commentSuccess = _commentSuccess.asLiveData()
-    val avatar = _avatar.asLiveData()
-    val grade = _grade.asLiveData()
-    val itemAvatar = _itemAvatar.asLiveData()
     val commentSize = _commentSize.asLiveData()
     val noMore = _noMore.asLiveData()
     var currentNextUrl = ""
     fun getDetails(url: String) = launchTask {
         val doc = repo.getNewListDetails(url)
         helper = ResolveDetailsHelper(doc)
+        val docInfo =
+            repo.getUserInfo(getParam(helper?.getHandUrl.orEmpty(), BuildConfig.YH_REPLY_TOUSERID))
+        val userInfoHelper = ResolveUserInfoHelper(docInfo)
         _data.postValue(
             DetailsContentBean(
                 helper?.reward.orEmpty(),
                 helper?.giftMoney.orEmpty(),
                 helper?.time.orEmpty(),
                 helper?.praiseSize.orEmpty(),
-                helper?.userName.orEmpty(),
+                userInfoHelper.userName,
                 helper?.onLineState ?: false,
-                helper?.getHandUrl.orEmpty(),
+                userInfoHelper.avatar,
                 helper?.content.orEmpty(),
-                helper?.downLoad
+                Level.getLevel(userInfoHelper.grade),
+                userInfoHelper.medal,
+                helper?.downLoad,
+                getParam(helper?.getHandUrl.orEmpty(), BuildConfig.YH_REPLY_TOUSERID)
             )
         )
         commentDetails(true, 0)
@@ -61,8 +57,8 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         if (isRefresh) {
             currentNextUrl = ""
         }
-        helper?.let {
-            val doc = if (currentNextUrl.isNullOrEmpty()) {
+        helper?.let {it->
+            val doc = if (currentNextUrl.isEmpty()) {
                 commentData.clear()
                 repo.comment(
                     it.id,
@@ -74,14 +70,25 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
             if (isRefresh) {
                 _commentSize.postValue(it.getCommitLastFloor(doc))
             }
-            commentData.addAll(it.getCommitListData(doc))
+            val lists = it.getCommitListData(doc)
+            lists.forEach { pro ->
+                val data = pro.t
+                if (data is CommitListBean) {
+                    val touserid = getParam(data.avatar, BuildConfig.YH_REPLY_TOUSERID)
+                    val docInfo = repo.getUserInfo(touserid)
+                    val userInfoHelper = ResolveUserInfoHelper(docInfo)
+                    data.avatar = userInfoHelper.avatar
+                    data.level = Level.getLevel(userInfoHelper.grade)
+                }
+            }
+            commentData.addAll(lists)
+            _commentLists.value = commentData
             val nextUrl = it.getNextUrl(doc)
-            if (nextUrl == currentNextUrl) {
+            if (nextUrl == currentNextUrl || nextUrl.isEmpty() || it.isLast(doc)) {
                 _noMore.value = true
             } else {
                 currentNextUrl = nextUrl
             }
-            _commentLists.value = commentData
         }
     }
 
@@ -93,50 +100,23 @@ class DetailsModel(private val repo: Repo) : UIViewModel() {
         repo.praise(helper?.getFavoriteUrl.orEmpty())
     }
 
-    fun getAvatar(touserid: String) = launchTask {
-        val doc = repo.getUserInfo(touserid)
-        val userInfoHelper = ResolveUserInfoHelper(doc)
-        _avatar.postValue(userInfoHelper.avatar)
-        _grade.postValue(Level.getLevel(userInfoHelper.grade).toString())
-        val medalImgUrl = userInfoHelper.medal
-        Jsoup.parse(medalImgUrl).select(IMG_JPG).forEach {
-            _medal.postValue(it.attr("src"))
-        }
-    }
-
-    fun getUserInfo(item: ItemCommentDataBinding, touserid: String) = launchTask {
-        item.userImg.tag = touserid
-        val doc = repo.getUserInfo(touserid)
-        val userInfoHelper = ResolveUserInfoHelper(doc)
-        _itemAvatar.postValue(
-            ItemAvatarBean(
-                item,
-                userInfoHelper.avatar,
-                Level.getLevel(userInfoHelper.grade),
-                touserid
-            )
-        )
-
-    }
-
     fun reply(
         content: String,
         sid: String,
         floor: String? = null,
         touserid: String? = null,
         sendmsg: String? = "1"
-    ) =
-        launchTask {
-            try {
-                helper?.run {
-                    val doc =
-                        repo.reply(sid, content, id, classId, floor, touserid, sendmsg = sendmsg)
-                    doc.body()
-                    _commentSuccess.postValue(true)
-                }
-            } catch (e: Exception) {
-                _commentSuccess.postValue(false)
-                BuglyLog.e(BuildConfig.FLAVOR, e.message)
+    ) = launchTask {
+        try {
+            helper?.run {
+                val doc =
+                    repo.reply(sid, content, id, classId, floor, touserid, sendmsg = sendmsg)
+                doc.body()
+                _commentSuccess.postValue(true)
             }
+        } catch (e: Exception) {
+            _commentSuccess.postValue(false)
+            BuglyLog.e(BuildConfig.FLAVOR, e.message)
         }
+    }
 }

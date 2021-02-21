@@ -1,11 +1,5 @@
 package com.townwang.yaohuo.repo.db
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.townwang.yaohuo.repo.data.HomeData
-import com.townwang.yaohuo.repo.data.details.SmailIngBean
-
 //@Database(
 //        entities = [
 //            SmailIngBean::class

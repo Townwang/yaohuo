@@ -1,4 +1,4 @@
-package com.townwang.yaohuo.ui.fragment.details
+package com.townwang.yaohuo.ui.fragment.pub.details
 
 import android.view.LayoutInflater
 import android.view.View

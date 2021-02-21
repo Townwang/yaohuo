@@ -1,5 +1,6 @@
 package com.townwang.yaohuo.repo
 
+import android.util.Log
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.api.Api
 import com.townwang.yaohuo.common.*
@@ -7,7 +8,9 @@ import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import retrofit2.http.Query
 import java.io.File
 
 
@@ -21,6 +24,11 @@ class Repo constructor(
 
     suspend fun checkNice() = withRepoContext {
         val doc = api.checkNice()
+        doc.getResp()
+    }
+
+    suspend fun refresh() = withRepoContext {
+        val doc = api.refresh()
         doc.getResp()
     }
 
@@ -44,13 +52,15 @@ class Repo constructor(
     }
 
     suspend fun deleteMsg(url: String): Document = withRepoContext {
-        val bbs = api.deleteMsg(getParam(url,"id"), getParam(url,"backurl"))
+        val bbs = api.deleteMsg(getParam(url, "id"), getParam(url, "backurl"))
         bbs.getResp()
     }
+
     suspend fun getNext(url: String): Document = withRepoContext {
         val bbs = api.urlPenetrate(url)
         bbs.getResp()
     }
+
     suspend fun queryList(key: String, page: Int): Document = withRepoContext {
         val bbs = api.queryListBBS(key = key, page = page.toString())
         bbs.getResp()
@@ -180,19 +190,26 @@ class Repo constructor(
     }
 
 
-    suspend fun getMe(): Document = withRepoContext {
-        val me = api.getMe()
+    suspend fun getMe( touserid: String): Document = withRepoContext {
+        val me = api.getMe(touserid)
         me.getResp()
     }
 
-    suspend fun uploadFile(file: File,type: String) = withRepoContext {
+    suspend fun uploadFile(file: File, type: String) = withRepoContext {
         val fileRequestBody = RequestBody.create(type.toMediaTypeOrNull(), file)
         val requestImgPart = MultipartBody.Part.createFormData("file", file.name, fileRequestBody)
         val repo = api.upLoadFile(requestImgPart)
         repo.getYaoResp()
     }
 
-    suspend fun deleteImg(url: String)  = withRepoContext{
-        api.urlPenetrate(url)
+    suspend fun deleteImg(url: String) = withRepoContext {
+        val repo = api.urlPenetrate(url)
+        repo.getResp()
+    }
+
+    suspend fun sendMsg(data: Map<String, String>) = withRepoContext {
+        Log.d("哈哈哈哈",data.entries.toString())
+        val repo = api.sendMsg(data)
+        repo.getResp()
     }
 }

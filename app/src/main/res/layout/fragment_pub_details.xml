@@ -33,7 +33,7 @@
                 android:visibility="gone"
                 tools:ignore="MissingConstraints">
 
-                <com.townwang.yaohuo.ui.weight.view.TownNiceImageView
+                <com.townwang.yaohuo.ui.weight.view.TownImageView
                     android:id="@+id/userImg"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -43,9 +43,10 @@
                     android:src="@drawable/avatar"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:border_color="?colorPrimary"
-                    app:border_width="1dp"
-                    app:is_circle="true" />
+                    app:type="circle"
+                    app:borderColor="?colorPrimary"
+                    app:borderWidth="1dp"
+                    app:rectRoundRadius="30dp"/>
 
                 <TextView
                     android:id="@+id/leval"
@@ -86,11 +87,12 @@
                     app:layout_constraintTop_toTopOf="@+id/userName" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/honor"
+                    android:id="@+id/honor111"
                     android:layout_width="0dp"
                     android:visibility="gone"
                     android:layout_marginTop="5dp"
                     android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:layout_marginBottom="5dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="@+id/attention"
@@ -103,6 +105,12 @@
                         android:textColor="@color/cardview_dark_background"
                         android:layout_height="wrap_content"
                         tools:ignore="HardcodedText" />
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/honor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -113,7 +121,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="@+id/userImg"
-                    app:layout_constraintTop_toBottomOf="@+id/honor">
+                    app:layout_constraintTop_toBottomOf="@+id/honor111">
 
                     <TextView
                         android:id="@+id/icon"
@@ -217,7 +225,6 @@
                 android:id="@+id/commentLists"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layoutAnimation="@anim/layout_animation_fall_down"
                 android:paddingBottom="50dp"
                 app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
                 tools:ignore="MissingConstraints,UnusedAttribute"

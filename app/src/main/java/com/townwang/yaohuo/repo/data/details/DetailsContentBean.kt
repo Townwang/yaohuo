@@ -9,5 +9,8 @@ data class DetailsContentBean(
     val onLineState:Boolean = false,
     val headUrl:String,
     val content:String,
-    val downloadList: List<DownloadBean>?
+    val level:Int,
+    val medal:List<String>,
+    val downloadList: List<DownloadBean>?,
+    val touserId:String?
 )

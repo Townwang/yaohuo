@@ -1,6 +1,7 @@
 package com.townwang.yaohuo.ui.fragment.me
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -26,11 +27,20 @@ class MeFragment : Fragment(R.layout.fragment_me) {
         (activity as AppCompatActivity).work {
             supportActionBar.work {
                 title = getString(R.string.home_me)
-                setDisplayHomeAsUpEnabled(false)
+                if (arguments == null) {
+                    setDisplayHomeAsUpEnabled(false)
+                } else {
+                    setDisplayHomeAsUpEnabled(true)
+                }
             }
         }
         binding.refreshLayout.setOnRefreshListener {
-            viewModel.getMeData()
+            viewModel.getMeData(
+                arguments?.getString(TROUSER_KEY, "")
+                    ?: requireContext().config(
+                    TROUSER_KEY
+                )
+            )
         }
         binding.refreshLayout.autoRefresh()
         binding.refreshLayout.setEnableLoadMore(false)
@@ -64,5 +74,15 @@ class MeFragment : Fragment(R.layout.fragment_me) {
                 .into(binding.avatar)
         })
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                requireActivity().finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

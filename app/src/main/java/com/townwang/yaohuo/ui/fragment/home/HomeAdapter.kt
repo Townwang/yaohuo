@@ -11,11 +11,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.*
+import com.townwang.yaohuo.common.OnBBSClickListener
+import com.townwang.yaohuo.common.OnItemClickListener
+import com.townwang.yaohuo.common.OnItemListener
+import com.townwang.yaohuo.common.T
 import com.townwang.yaohuo.databinding.ItemHomeBbsHanderBinding
 import com.townwang.yaohuo.databinding.ItemHomeSearchHanderBinding
 import com.townwang.yaohuo.databinding.ItemListDataBinding
-import com.townwang.yaohuo.repo.data.HomeData
+import com.townwang.yaohuo.repo.data.HomeBean
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 
 class HomeAdapter : ListAdapter<Product, RecyclerView.ViewHolder>(Product.CALLBACK) {
@@ -46,9 +49,7 @@ class HomeAdapter : ListAdapter<Product, RecyclerView.ViewHolder>(Product.CALLBA
             }
         }
 
-
         if (holder is ProductBBSViewHolderHeader) {
-            onBBSListener
             holder.binding.resourceSharing.setOnClickListener {
                 onBBSListener?.invoke(
                     201,
@@ -108,13 +109,6 @@ class HomeAdapter : ListAdapter<Product, RecyclerView.ViewHolder>(Product.CALLBA
                     BuildConfig.YH_BBS_ACTION_CLASS
                 )
             }
-            holder.binding.announcement.setOnClickListener {
-                onBBSListener?.invoke(
-                    288,
-                    R.string.bbs_announcement,
-                    BuildConfig.YH_BBS_ACTION_CLASS
-                )
-            }
         }
         if (holder is ProductViewHolder) {
             holder.bindData(data)
@@ -144,7 +138,7 @@ class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun bindData(pro: Product?) {
         val data = pro?.t
         pro ?: return
-        if (data is HomeData) {
+        if (data is HomeBean) {
             binding.apply {
                 binding.title.text = data.title
                 binding.auth.text = "楼主：${data.auth}"
@@ -195,7 +189,6 @@ class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 }
-
 
 class ProductViewHolderHeader(view: View) : RecyclerView.ViewHolder(view) {
 
