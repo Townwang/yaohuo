@@ -1,5 +1,7 @@
 package com.townwang.yaohuo.common
 
+import com.townwang.yaohuo.BuildConfig
+
 //app public field
 const val THEME_KEY = "theme key"
 const val HOME_LIST_THEME_SHOW = "home list theme show"
@@ -63,6 +65,17 @@ val RANDOM_UA = arrayOf(
     "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11",
     "Mozilla/5.0 (X11; U; Linux x86_64; zh-CN; rv:1.9.2.10) Gecko/20100922 Ubuntu/10.10 (maverick) Firefox/3.6.10",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+)
+
+val clearList = arrayListOf(
+    BuildConfig.YH_COOKIE_SID,
+    BuildConfig.YH_COOKIE_SESSION_ID,
+    BuildConfig.YH_COOKIE_GUID,
+    THEME_KEY,
+    TROUSER_KEY,
+    COOKIE_KEY,
+    HOME_LIST_THEME_SHOW,
+    BuildConfig.APP_IS_CRACK
 )
 
 //解析所用字段

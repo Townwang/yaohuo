@@ -1,5 +1,6 @@
 package com.townwang.yaohuo.common
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import java.io.ByteArrayOutputStream
@@ -18,13 +19,16 @@ fun Context.config(key: String, value: String? = null): String {
     }
 }
 
-fun Context.clearConfig(vararg key: String) {
-    key.forEach {
+@SuppressLint("CommitPrefEdits")
+fun Context.clearConfig() {
+    clearList.forEach {
         val sp = getSharedPreferences(
             it,
             Context.MODE_PRIVATE
         )
-        sp.all.clear()
+        val editor  = sp.edit()
+        editor.clear()
+        editor.apply()
     }
 }
 @Suppress("UNCHECKED_CAST")
