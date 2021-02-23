@@ -228,24 +228,12 @@ fun Context.handleException(
                     toast(t.message.orEmpty())
                 }
                 ErrorCode.E_1006.hashCode() -> {
-                    clearConfig(
-                        THEME_KEY,
-                        TROUSER_KEY,
-                        COOKIE_KEY,
-                        HOME_LIST_THEME_SHOW,
-                        BuildConfig.APP_IS_CRACK
-                    )
+                    clearConfig()
                     LoginHelper.instance.fistLogin(this)
                 }
                 ErrorCode.E_1003.hashCode(),
                 ErrorCode.E_1007.hashCode() -> {
-                    clearConfig(
-                        THEME_KEY,
-                        TROUSER_KEY,
-                        COOKIE_KEY,
-                        HOME_LIST_THEME_SHOW,
-                        BuildConfig.APP_IS_CRACK
-                    )
+                    clearConfig()
                     LoginHelper.instance.restartLogin(this)
                 }
                 ErrorCode.E_1005.hashCode() -> {

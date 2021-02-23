@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import com.townwang.wechat.openWeChatToFollowInterface
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
@@ -24,7 +25,6 @@ import com.townwang.yaohuo.databinding.FragmentHomeBinding
 import com.townwang.yaohuo.repo.data.HomeBean
 import com.townwang.yaohuo.ui.activity.*
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
-import com.townwang.yaohuo.ui.weight.pay.PayHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -168,7 +168,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                     )
                 } else {
-                    PayHelper.weZhi.startWeChatFollowClosely(requireContext())
+                    requireContext().openWeChatToFollowInterface("MzA4NTY4ODUzOQ")
                 }
             }
             binding.tipAnnouncement.visibility = View.VISIBLE

@@ -98,6 +98,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
     kapt 'androidx.room:room-compiler:2.2.5'
+    //weChat api
+    implementation 'com.townwang:wechat:1.0.5'
     // material
     implementation 'com.google.android.material:material:1.2.1'
     // gson

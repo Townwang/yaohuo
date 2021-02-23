@@ -9,14 +9,14 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.beta.Beta
+import com.townwang.wechat.PayConfig
+import com.townwang.wechat.*
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentAboutBinding
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
-import com.townwang.yaohuo.ui.weight.pay.PayConfig
-import com.townwang.yaohuo.ui.weight.pay.PayHelper
 class AboutFragment : Fragment(R.layout.fragment_about) {
     val binding: FragmentAboutBinding by viewbind()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,14 +54,13 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             )
         }
         binding.pubWechat.onClickListener {
-            PayHelper.weZhi.startWeChatFollowClosely(requireContext())
+            requireContext().openWeChatToFollowInterface("MzA4NTY4ODUzOQ")
         }
         binding.post.onClickListener {
             Snackbar.make(binding.post, "暂未开贴", Snackbar.LENGTH_SHORT).show()
         }
         binding.praise.onClickListener {
-            PayHelper.setupPay(
-                requireContext(),
+            requireContext().openDonate(
                 PayConfig(
                     "fkx083710xkhl4xuxzpud4e",
                     R.mipmap.alipay, R.mipmap.wechat
