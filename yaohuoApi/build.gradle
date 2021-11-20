@@ -1,0 +1,100 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdkVersion 30
+    //服务器地址
+    buildTypes.all{
+        buildConfigField("String", "BASE_URL", '"https://townwang.com/"')
+        buildConfigField("String", "CN_URL", '"http://cdn.townwang.cn/"')
+        buildConfigField("String", "BASE_YAOHUO_URL", '"https://yaohuo.me/"')
+        buildConfigField("String", "YAO_CDN_URL", '"https://tu.yaohuo.me/"')
+        buildConfigField("String", "CLOSED_ALPHA_LIST", '"https://mp.weixin.qq.com/s/-BKVd9_ctFCPEF9q_WlEOw"')
+        buildConfigField("String", "ABOUT_WECHAT", '"https://mp.weixin.qq.com/s/Zrj_Dbx6COy8npwgPNf9tQ"')
+    }
+    //妖火字段
+    buildTypes.all {
+        //cookie
+        buildConfigField("String", "YH_COOKIE_SID", '"sidyaohuo"')
+        buildConfigField("String", "YH_COOKIE_SESSION_ID", '"ASP.NET_SessionId"')
+        buildConfigField("String", "YH_COOKIE_GUID", '"GUID"')
+        //login
+        buildConfigField("String", "YH_LOGIN_USER_NAME", '"logname"')
+        buildConfigField("String", "YH_LOGIN_PASSWORD", '"logpass"')
+        buildConfigField("String", "YH_LOGIN_SACESID", '"savesid"')
+        //reply
+        buildConfigField("String", "YH_REPLY_CONTENT", '"content"')
+        buildConfigField("String", "YH_REPLY_SEND_MSG", '"sendmsg"')
+        buildConfigField("String", "YH_REPLY_SEND_MSG2", '"sendmsg2"')
+        buildConfigField("String", "YH_REPLY_REPLY", '"reply"')
+        buildConfigField("String", "YH_REPLY_TOUSERID", '"touserid"')
+        buildConfigField("String", "YH_REPLY_ID", '"id"')
+        buildConfigField("String", "YH_REPLY_SID", '"sid"')
+        //bbs action
+        buildConfigField("String", "YH_BBS_ACTION_CLASS", '"class"')
+        buildConfigField("String", "YH_BBS_ACTION_NEW", '"new"')
+        buildConfigField("String", "YH_BBS_ACTION_GOOD", '"good"')
+        buildConfigField("String", "YH_BBS_ACTION_SERCH", '"search"')
+        //send post
+        buildConfigField("String", "YH_SEND_BOOK_TITLE", '"book_title"')
+        buildConfigField("String", "YH_SEND_BOOK_CONTENT", '"book_content"')
+        buildConfigField("String", "YH_SEND_BOOK_CLASSID", '"classid"')
+
+    }
+    //app字段
+    buildTypes.all {
+        buildConfigField("String", "APP_IS_CRACK", '"app is crack"')
+    }
+    //Jsoup解析字段
+    buildTypes.all {
+
+    }
+    //妖火匹配字段
+    buildTypes.all {
+        buildConfigField("String", "YH_MATCH_404", '"Error 404 (Not Found)"')
+        buildConfigField("String", "YH_MATCH_VERIFY", '"访问验证"')
+        buildConfigField("String", "YH_MATCH_IDENTITY", '"身份失效了，请重新登录网站"')
+        buildConfigField("String", "YH_MATCH_CHECK", '"正在审核中"')
+        buildConfigField("String", "YH_MATCH_INPUT_PSD", '"请输入您的密码"')
+        buildConfigField("String", "YH_MATCH_LOGIN", '"请先登录网站"')
+        buildConfigField("String", "YH_MATCH_COOKIE_OLD", '"请开启JavaScript并刷新该页"')
+        buildConfigField("String", "YH_MATCH_LOGIN_SUCCESS", '"登录成功"')
+        buildConfigField("String", "YH_MATCH_LOGIN_PASS_ERROR", '"密码错误"')
+        buildConfigField("String", "YH_MATCH_LOGIN_USER_ERROR", '"用户ID/用户名/手机号不存！"')
+        buildConfigField("String", "YH_MATCH_LOGIN_MAX_ERROR", '"登录失败次数超过10次了，请明天再来!"')
+        buildConfigField("String", "YH_MATCH_SEARCH_NO_DATA", '"暂无记录"')
+        buildConfigField("String", "YH_MATCH_SEND_POST_LIMIT", '"今天你已超过发帖限制："')
+
+        buildConfigField("String", "YH_MATCH_MY_ID", '"我的ID"')
+        buildConfigField("String", "YH_MATCH_MY_MONEY", '"我的妖晶"')
+        buildConfigField("String", "YH_MATCH_MY_BACK", '"银行存款"')
+        buildConfigField("String", "YH_MATCH_MY_MANAGER", '"管理"')
+        buildConfigField("String", "YH_MATCH_MY_EX", '"我的经验"')
+        buildConfigField("String", "YH_MATCH_MY_RANK", '"我的等级"')
+        buildConfigField("String", "YH_MATCH_MY_TITLE", '"我的头衔"')
+        buildConfigField("String", "YH_MATCH_MY_IDENTITY", '"我的身份"')
+        buildConfigField("String", "YH_MATCH_MY_MANAGEMENT", '"管理权限"')
+        buildConfigField("String", "YH_MATCH_MY_ROOM", '"我的空间"')
+
+        buildConfigField("String", "YH_MATCH_LIST_FILE", '"附"')
+        buildConfigField("String", "YH_MATCH_LIST_GIVE", '"赏"')
+        buildConfigField("String", "YH_MATCH_LIST_MEAT", '"肉"')
+        buildConfigField("String", "YH_MATCH_LIST_BEAR", '"结"')
+        buildConfigField("String", "YH_MATCH_LIST_LI", '"礼"')
+        buildConfigField("String", "YH_MATCH_LIST_FIME", '"精"')
+        buildConfigField("String", "YH_MATCH_LIST_HOT", '"总顶"')
+
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    //Jsoup
+    api 'org.jsoup:jsoup:1.10.3'
+    // Retrofit 2
+    api 'com.squareup.retrofit2:retrofit:2.5.0'
+    api 'com.squareup.retrofit2:converter-gson:2.4.0'
+    api 'com.squareup.okhttp3:logging-interceptor:4.8.1'
+}

@@ -9,10 +9,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.config
+import com.townwang.yaohuoapi.manager.config
 import com.townwang.yaohuo.databinding.FragmentWelcomeBinding
 import com.townwang.yaohuo.ui.activity.ActivityHome
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.BuildConfig.APP_IS_CRACK
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SplashFragment : Fragment(R.layout.fragment_welcome) {
@@ -28,7 +29,7 @@ class SplashFragment : Fragment(R.layout.fragment_welcome) {
         binding.mParticleView.startAnim()
         binding. mParticleView.mParticleAnimListener = {
             if (isAdded) {
-                when(requireContext().config(BuildConfig.APP_IS_CRACK)){
+                when(requireContext().config(APP_IS_CRACK)){
                     "-1" ->{
                         Snackbar.make(requireView(), "请勿乱破解，谢谢！", Snackbar.LENGTH_INDEFINITE).apply {
                             setAction(android.R.string.ok) {

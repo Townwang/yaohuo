@@ -13,11 +13,10 @@ import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.IMG_GIF
-import com.townwang.yaohuo.common.WEB_VIEW_URL_KEY
-import com.townwang.yaohuo.common.WEB_VIEW_URL_TITLE
+import com.townwang.yaohuoapi.IMG_GIF
+import com.townwang.yaohuoapi.WEB_VIEW_URL_KEY
+import com.townwang.yaohuoapi.WEB_VIEW_URL_TITLE
 import com.townwang.yaohuo.ui.activity.ActivityMsg
-import com.townwang.yaohuo.ui.activity.ActivityWebView
 import org.jsoup.nodes.Document
 
 

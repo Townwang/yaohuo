@@ -16,6 +16,8 @@ import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.utils.clearNotificaion
 import com.townwang.yaohuo.databinding.FragmentWebviewBinding
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.WEB_VIEW_URL_KEY
+import com.townwang.yaohuoapi.WEB_VIEW_URL_TITLE
 
 class WebViewFragment : Fragment(R.layout.fragment_webview) {
     val binding: FragmentWebviewBinding by viewbind()

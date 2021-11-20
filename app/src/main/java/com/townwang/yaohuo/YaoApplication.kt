@@ -15,10 +15,11 @@ import com.tencent.bugly.beta.Beta
 import com.tencent.bugly.crashreport.BuglyLog
 import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.bugly.crashreport.CrashReport.UserStrategy
-import com.townwang.yaohuo.common.config
-import com.townwang.yaohuo.common.signatureHash
+import com.townwang.yaohuoapi.manager.config
+import com.townwang.yaohuoapi.signatureHash
 import com.townwang.yaohuo.di.koinModules
 import com.townwang.yaohuo.ui.weight.header.TaurusHeader
+import com.townwang.yaohuoapi.BuildConfig.APP_IS_CRACK
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -72,7 +73,7 @@ class YaoApplication : Application() {
             }
             val d = a.hashCode()
             if (signatureHash.contains(d.toLong()).not()) {
-                config(BuildConfig.APP_IS_CRACK,"-1")
+                config(APP_IS_CRACK,"-1")
             }
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()

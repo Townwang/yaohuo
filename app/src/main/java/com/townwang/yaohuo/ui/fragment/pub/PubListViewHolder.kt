@@ -7,6 +7,7 @@ import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.databinding.ItemListDataBinding
 import com.townwang.yaohuo.repo.data.HomeBean
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.BuildConfig.*
 
 class PubListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val binding: ItemListDataBinding by viewbind()
@@ -27,31 +28,31 @@ class PubListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         if (data.smailIng.isNotEmpty()) {
             data.smailIng.forEach {
                 when (it) {
-                    BuildConfig.YH_MATCH_LIST_FILE -> {
+                    YH_MATCH_LIST_FILE -> {
                         binding.annex.visibility = View.VISIBLE
                         binding.annex.text = it
                     }
-                    BuildConfig.YH_MATCH_LIST_GIVE -> {
+                    YH_MATCH_LIST_GIVE -> {
                         binding.reward.visibility = View.VISIBLE
                         binding.reward.text = it
                     }
-                    BuildConfig.YH_MATCH_LIST_MEAT -> {
+                    YH_MATCH_LIST_MEAT -> {
                         binding.meat.visibility = View.VISIBLE
                         binding.meat.text = it
                     }
-                    BuildConfig.YH_MATCH_LIST_BEAR -> {
+                    YH_MATCH_LIST_BEAR -> {
                         binding.bear.visibility = View.VISIBLE
                         binding.bear.text = it
                     }
-                    BuildConfig.YH_MATCH_LIST_LI -> {
+                    YH_MATCH_LIST_LI -> {
                         binding.ceremony.visibility = View.VISIBLE
                         binding.ceremony.text = it
                     }
-                    BuildConfig.YH_MATCH_LIST_FIME -> {
+                    YH_MATCH_LIST_FIME -> {
                         binding.fine.visibility = View.VISIBLE
                         binding.fine.text = it
                     }
-                    BuildConfig.YH_MATCH_LIST_HOT -> {
+                    YH_MATCH_LIST_HOT -> {
                         binding.headline.visibility = View.VISIBLE
                         binding.headline.text = "头条"
                     }

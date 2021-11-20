@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.THEME_KEY
-import com.townwang.yaohuo.common.config
+import com.townwang.yaohuoapi.THEME_KEY
+import com.townwang.yaohuoapi.manager.config
 import com.townwang.yaohuo.common.setActTheme
 import com.townwang.yaohuo.common.work
 import com.townwang.yaohuo.databinding.ActivityPubBinding

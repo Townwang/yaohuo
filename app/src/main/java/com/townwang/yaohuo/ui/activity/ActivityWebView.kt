@@ -7,6 +7,10 @@ import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.ActivityWebviewBinding
 import com.townwang.yaohuo.ui.fragment.web.WebViewFragment
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.THEME_KEY
+import com.townwang.yaohuoapi.WEB_VIEW_URL_KEY
+import com.townwang.yaohuoapi.WEB_VIEW_URL_TITLE
+import com.townwang.yaohuoapi.manager.config
 
 class ActivityWebView : AppCompatActivity() {
     val binding: ActivityWebviewBinding by viewbind()
@@ -25,8 +29,14 @@ class ActivityWebView : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.navHost, WebViewFragment().apply {
                     arguments = Bundle().also {
-                        it.putString(WEB_VIEW_URL_KEY, intent.getStringExtra(WEB_VIEW_URL_KEY))
-                        it.putString(WEB_VIEW_URL_TITLE, intent.getStringExtra(WEB_VIEW_URL_TITLE))
+                        it.putString(
+                            WEB_VIEW_URL_KEY, intent.getStringExtra(
+                                WEB_VIEW_URL_KEY
+                            ))
+                        it.putString(
+                            WEB_VIEW_URL_TITLE, intent.getStringExtra(
+                                WEB_VIEW_URL_TITLE
+                            ))
                     }
                 }).commit()
         }

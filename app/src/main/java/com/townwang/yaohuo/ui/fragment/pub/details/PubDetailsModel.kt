@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
+import com.townwang.yaohuo.BuildConfig.FLAVOR
 import com.townwang.yaohuo.common.UIViewModel
 import com.townwang.yaohuo.common.asLiveData
 import com.townwang.yaohuo.common.getParam
@@ -13,6 +14,7 @@ import com.townwang.yaohuo.repo.Repo
 import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.repo.data.details.DetailsContentBean
 import com.townwang.yaohuo.repo.enum.Level
+import com.townwang.yaohuoapi.BuildConfig.YH_REPLY_TOUSERID
 
 class PubDetailsModel(private val repo: Repo) : UIViewModel() {
     private var helper: ResolveDetailsHelper? = null
@@ -32,7 +34,7 @@ class PubDetailsModel(private val repo: Repo) : UIViewModel() {
         val doc = repo.getNewListDetails(url)
         helper = ResolveDetailsHelper(doc)
         val docInfo =
-            repo.getUserInfo(getParam(helper?.getHandUrl.orEmpty(), BuildConfig.YH_REPLY_TOUSERID))
+            repo.getUserInfo(getParam(helper?.getHandUrl.orEmpty(), YH_REPLY_TOUSERID))
         val userInfoHelper = ResolveUserInfoHelper(docInfo)
         _data.postValue(
             DetailsContentBean(
@@ -47,7 +49,7 @@ class PubDetailsModel(private val repo: Repo) : UIViewModel() {
                 Level.getLevel(userInfoHelper.grade),
                 userInfoHelper.medal,
                 helper?.downLoad,
-                getParam(helper?.getHandUrl.orEmpty(), BuildConfig.YH_REPLY_TOUSERID)
+                getParam(helper?.getHandUrl.orEmpty(), YH_REPLY_TOUSERID)
             )
         )
         commentDetails(true, 0)
@@ -74,7 +76,7 @@ class PubDetailsModel(private val repo: Repo) : UIViewModel() {
             lists.forEach { pro ->
                 val data = pro.t
                 if (data is CommitListBean) {
-                    val touserid = getParam(data.avatar, BuildConfig.YH_REPLY_TOUSERID)
+                    val touserid = getParam(data.avatar, YH_REPLY_TOUSERID)
                     val docInfo = repo.getUserInfo(touserid)
                     val userInfoHelper = ResolveUserInfoHelper(docInfo)
                     data.avatar = userInfoHelper.avatar
@@ -116,7 +118,7 @@ class PubDetailsModel(private val repo: Repo) : UIViewModel() {
             }
         } catch (e: Exception) {
             _commentSuccess.postValue(false)
-            BuglyLog.e(BuildConfig.FLAVOR, e.message)
+            BuglyLog.e(FLAVOR, e.message)
         }
     }
 }

@@ -6,11 +6,9 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.net.http.SslError
 import android.view.View
-import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.webkit.*
 import android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
@@ -18,8 +16,12 @@ import android.widget.ProgressBar
 import androidx.core.app.ActivityCompat
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.YaoApplication
-import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.ui.activity.ActivityWebView
+import com.townwang.yaohuoapi.BuildConfig.BASE_YAOHUO_URL
+import com.townwang.yaohuoapi.COOKIE_KEY
+import com.townwang.yaohuoapi.IMG_GIF
+import com.townwang.yaohuoapi.WEB_VIEW_URL_KEY
+import com.townwang.yaohuoapi.WEB_VIEW_URL_TITLE
 import org.jsoup.Jsoup
 import org.jsoup.helper.HttpConnection
 import java.net.URL
@@ -166,7 +168,7 @@ class WebViewHelper(context: Context, var webView: WebView) {
             YaoApplication.getContext().getSharedPreferences(COOKIE_KEY, Context.MODE_PRIVATE)
         val cookie = cookieMaps.getString("yaohuo.me", "")
         syncCookie("yaohuo.me", cookie)
-        webView.loadDataWithBaseURL(BuildConfig.BASE_YAOHUO_URL, getNewContent(htmlCode), "text/html", "UTF-8", null)
+        webView.loadDataWithBaseURL(BASE_YAOHUO_URL, getNewContent(htmlCode), "text/html", "UTF-8", null)
         return webView
     }
 

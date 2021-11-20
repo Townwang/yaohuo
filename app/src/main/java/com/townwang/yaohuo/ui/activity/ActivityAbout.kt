@@ -28,6 +28,4 @@ class ActivityAbout : AppCompatActivity() {
                 .commit()
         }
     }
-
-
 }

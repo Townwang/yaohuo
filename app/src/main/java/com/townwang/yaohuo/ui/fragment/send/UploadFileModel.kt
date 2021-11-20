@@ -1,13 +1,10 @@
 package com.townwang.yaohuo.ui.fragment.send
 
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.Gson
-import com.townwang.yaohuo.common.ApiErrorException
 import com.townwang.yaohuo.common.UIViewModel
 import com.townwang.yaohuo.common.asLiveData
 import com.townwang.yaohuo.repo.Repo
-import com.townwang.yaohuo.repo.data.YaoCdnReq
-import okhttp3.MediaType
+import com.townwang.yaohuoapi.data.YaoCdnReq
 import java.io.File
 
 class UploadFileModel(private val repo: Repo) : UIViewModel() {

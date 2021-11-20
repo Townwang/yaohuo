@@ -10,7 +10,7 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.townwang.yaohuo.R
-import com.townwang.yaohuo.common.SEND_CONTENT_KEY
+import com.townwang.yaohuoapi.SEND_CONTENT_KEY
 import com.townwang.yaohuo.common.onClickListener
 import com.townwang.yaohuo.databinding.FragmentCommentDialogBinding
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind

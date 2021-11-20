@@ -9,7 +9,7 @@ import android.widget.BaseAdapter
 import com.bumptech.glide.Glide
 import com.townwang.yaohuo.common.OnClickListener
 import com.townwang.yaohuo.databinding.ItemImageDataBinding
-import com.townwang.yaohuo.repo.data.YaoCdnReq
+import com.townwang.yaohuoapi.data.YaoCdnReq
 
 class ImageAdapter(val context: Context) : BaseAdapter() {
     val onClickListener: OnClickListener? = null

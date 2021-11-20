@@ -15,6 +15,8 @@ import com.townwang.yaohuo.databinding.FragmentMsgBinding
 import com.townwang.yaohuo.repo.data.MsgBean
 import com.townwang.yaohuo.ui.activity.ActivityMsgDetails
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.HOME_DETAILS_TITLE_KEY
+import com.townwang.yaohuoapi.HOME_DETAILS_URL_KEY
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MsgFragment : Fragment(R.layout.fragment_msg) {

@@ -20,6 +20,7 @@ import com.townwang.yaohuo.databinding.ItemHomeSearchHanderBinding
 import com.townwang.yaohuo.databinding.ItemListDataBinding
 import com.townwang.yaohuo.repo.data.HomeBean
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.BuildConfig.*
 
 class HomeAdapter : ListAdapter<Product, RecyclerView.ViewHolder>(Product.CALLBACK) {
     var onItemListListener: OnItemClickListener? = null
@@ -54,59 +55,59 @@ class HomeAdapter : ListAdapter<Product, RecyclerView.ViewHolder>(Product.CALLBA
                 onBBSListener?.invoke(
                     201,
                     R.string.bbs_res_share,
-                    BuildConfig.YH_BBS_ACTION_CLASS
+                    YH_BBS_ACTION_CLASS
                 )
             }
             holder.binding.integratedTechnology.setOnClickListener {
                 onBBSListener?.invoke(
                     197,
                     R.string.bbs_integrated_technology,
-                    BuildConfig.YH_BBS_ACTION_CLASS
+                   YH_BBS_ACTION_CLASS
                 )
             }
             holder.binding.mlTalkOver.setOnClickListener {
                 onBBSListener?.invoke(
                     203,
                     R.string.bbs_ml_talk_over,
-                    BuildConfig.YH_BBS_ACTION_CLASS
+                    YH_BBS_ACTION_CLASS
                 )
             }
             holder.binding.reward.setOnClickListener {
-                onBBSListener?.invoke(204, R.string.bbs_reward, BuildConfig.YH_BBS_ACTION_CLASS)
+                onBBSListener?.invoke(204, R.string.bbs_reward, YH_BBS_ACTION_CLASS)
             }
             holder.binding.teahouse.setOnClickListener {
                 onBBSListener?.invoke(
                     177,
                     R.string.bbs_tea_house,
-                    BuildConfig.YH_BBS_ACTION_CLASS
+                    YH_BBS_ACTION_CLASS
                 )
             }
             holder.binding.rewardQuestionAndAnswer.setOnClickListener {
                 onBBSListener?.invoke(
                     213,
                     R.string.bbs_quest_answer,
-                    BuildConfig.YH_BBS_ACTION_CLASS
+                    YH_BBS_ACTION_CLASS
                 )
             }
             holder.binding.texturedPhoto.setOnClickListener {
                 onBBSListener?.invoke(
                     240,
                     R.string.bbs_textured_photo,
-                    BuildConfig.YH_BBS_ACTION_CLASS
+                    YH_BBS_ACTION_CLASS
                 )
             }
             holder.binding.stationService.setOnClickListener {
                 onBBSListener?.invoke(
                     199,
                     R.string.bbs_stationService,
-                    BuildConfig.YH_BBS_ACTION_CLASS
+                    YH_BBS_ACTION_CLASS
                 )
             }
             holder.binding.complaint.setOnClickListener {
                 onBBSListener?.invoke(
                     198,
                     R.string.bbs_complaint,
-                    BuildConfig.YH_BBS_ACTION_CLASS
+                    YH_BBS_ACTION_CLASS
                 )
             }
         }
@@ -154,31 +155,31 @@ class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 if (data.smailIng.isNotEmpty()) {
                     data.smailIng.forEach {
                         when (it) {
-                            BuildConfig.YH_MATCH_LIST_FILE -> {
+                            YH_MATCH_LIST_FILE -> {
                                 binding.annex.visibility = View.VISIBLE
                                 binding.annex.text = it
                             }
-                            BuildConfig.YH_MATCH_LIST_GIVE -> {
+                            YH_MATCH_LIST_GIVE -> {
                                 binding.reward.visibility = View.VISIBLE
                                 binding.reward.text = it
                             }
-                            BuildConfig.YH_MATCH_LIST_MEAT -> {
+                            YH_MATCH_LIST_MEAT -> {
                                 binding.meat.visibility = View.VISIBLE
                                 binding.meat.text = it
                             }
-                            BuildConfig.YH_MATCH_LIST_BEAR -> {
+                            YH_MATCH_LIST_BEAR -> {
                                 binding.bear.visibility = View.VISIBLE
                                 binding.bear.text = it
                             }
-                            BuildConfig.YH_MATCH_LIST_LI -> {
+                            YH_MATCH_LIST_LI -> {
                                 binding.ceremony.visibility = View.VISIBLE
                                 binding.ceremony.text = it
                             }
-                            BuildConfig.YH_MATCH_LIST_FIME -> {
+                            YH_MATCH_LIST_FIME -> {
                                 binding.fine.visibility = View.VISIBLE
                                 binding.fine.text = it
                             }
-                            BuildConfig.YH_MATCH_LIST_HOT -> {
+                            YH_MATCH_LIST_HOT -> {
                                 binding.headline.visibility = View.VISIBLE
                                 binding.headline.text = "头条"
                             }

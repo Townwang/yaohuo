@@ -1,7 +1,7 @@
 package com.townwang.yaohuo.common.resolve
 
-import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.repo.data.HomeBean
+import com.townwang.yaohuoapi.*
 import org.jsoup.nodes.Document
 
 

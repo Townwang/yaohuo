@@ -8,6 +8,8 @@ import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.ActivityLoginBinding
 import com.townwang.yaohuo.ui.fragment.login.LoginFragment
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.THEME_KEY
+import com.townwang.yaohuoapi.manager.config
 
 class ActivityLogin : AppCompatActivity() {
     val binding: ActivityLoginBinding by viewbind()

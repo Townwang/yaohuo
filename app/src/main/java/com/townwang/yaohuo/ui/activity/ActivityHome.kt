@@ -6,7 +6,6 @@ import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.beta.Beta
@@ -18,6 +17,8 @@ import com.townwang.yaohuo.ui.fragment.home.HomeFragment
 import com.townwang.yaohuo.ui.fragment.send.SendFragment
 import com.townwang.yaohuo.ui.fragment.send.SendModel
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.THEME_KEY
+import com.townwang.yaohuoapi.manager.config
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

@@ -1,1 +1,3 @@
+include ':text'
+include ':yaohuoApi'
 include ':app'

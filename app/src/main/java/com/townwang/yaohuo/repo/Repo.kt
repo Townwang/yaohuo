@@ -2,15 +2,17 @@ package com.townwang.yaohuo.repo
 
 import android.util.Log
 import com.townwang.yaohuo.BuildConfig
-import com.townwang.yaohuo.api.Api
+import com.townwang.yaohuoapi.Api
 import com.townwang.yaohuo.common.*
-import okhttp3.MediaType
+import com.townwang.yaohuoapi.AK_FORM
+import com.townwang.yaohuoapi.AK_NAME
+import com.townwang.yaohuoapi.AK_VALUE
+import com.townwang.yaohuoapi.BuildConfig.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import retrofit2.http.Query
 import java.io.File
 
 
@@ -18,12 +20,11 @@ class Repo constructor(
     private val api: Api
 ) {
     suspend fun neice() = withRepoContext {
-        val doc = api.urlPenetrate(BuildConfig.CLOSED_ALPHA_LIST)
-        doc.getResp()
+        Jsoup.connect(CLOSED_ALPHA_LIST).get()
     }
 
     suspend fun checkNice() = withRepoContext {
-        val doc = api.checkNice()
+        val doc = api.refresh()
         doc.getResp()
     }
 
@@ -34,8 +35,8 @@ class Repo constructor(
 
     suspend fun login(loginName: String, password: String): Document = withRepoContext {
         val data = HashMap<String, String>()
-        data[BuildConfig.YH_LOGIN_USER_NAME] = loginName
-        data[BuildConfig.YH_LOGIN_PASSWORD] = password
+        data[YH_LOGIN_USER_NAME] = loginName
+        data[YH_LOGIN_PASSWORD] = password
         val con = api.login(data)
         con.getResp()
     }
@@ -52,6 +53,7 @@ class Repo constructor(
     }
 
     suspend fun deleteMsg(url: String): Document = withRepoContext {
+
         val bbs = api.deleteMsg(getParam(url, "id"), getParam(url, "backurl"))
         bbs.getResp()
     }
@@ -145,18 +147,18 @@ class Repo constructor(
         sendmsg: String? = null
     ): Document = withRepoContext {
         val data = HashMap<String, String>()
-        data[BuildConfig.YH_REPLY_CONTENT] = content
-        data[BuildConfig.YH_REPLY_SEND_MSG] = sendmsg ?: "1"
-        data[BuildConfig.YH_REPLY_SEND_MSG2] = sendmsg ?: "1"
+        data[YH_REPLY_CONTENT] = content
+        data[YH_REPLY_SEND_MSG] = sendmsg ?: "1"
+        data[YH_REPLY_SEND_MSG2] = sendmsg ?: "1"
         floor?.apply {
-            data[BuildConfig.YH_REPLY_REPLY] = floor
+            data[YH_REPLY_REPLY] = floor
         }
         touserid?.apply {
-            data[BuildConfig.YH_REPLY_TOUSERID] = touserid
+            data[YH_REPLY_TOUSERID] = touserid
         }
-        data[BuildConfig.YH_REPLY_SID] = sid
-        data[BuildConfig.YH_REPLY_ID] = id
-        data[BuildConfig.YH_SEND_BOOK_CLASSID] = classId.toString()
+        data[YH_REPLY_SID] = sid
+        data[YH_REPLY_ID] = id
+        data[YH_SEND_BOOK_CLASSID] = classId.toString()
         val rep = api.reply(data)
         rep.getResp()
     }
@@ -172,17 +174,19 @@ class Repo constructor(
         val ets = rs.select(AK_FORM)
         val data = HashMap<String, String>()
         ets.first().allElements.forEach {
-            if (it.attr(AK_NAME) == BuildConfig.YH_SEND_BOOK_TITLE) {
+            if (it.attr(AK_NAME) == YH_SEND_BOOK_TITLE) {
                 it.attr(AK_VALUE, title)
             }
-            if (it.attr(AK_NAME) == BuildConfig.YH_SEND_BOOK_CONTENT) {
+            if (it.attr(AK_NAME) == YH_SEND_BOOK_CONTENT) {
                 it.attr(AK_VALUE, content)
             }
-            if (it.attr(AK_NAME) == BuildConfig.YH_SEND_BOOK_CLASSID) {
+            if (it.attr(AK_NAME) == YH_SEND_BOOK_CLASSID) {
                 it.attr(AK_VALUE, classId)
             }
             if (it.attr(AK_NAME).isNotEmpty()) {
-                data[it.attr(AK_NAME)] = it.attr(AK_VALUE)
+                data[it.attr(AK_NAME)] = it.attr(
+                    AK_VALUE
+                )
             }
         }
         val rep = api.sendGeneral(data)

@@ -2,8 +2,8 @@ package com.townwang.yaohuo.common.resolve
 
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
-import com.townwang.yaohuo.common.IMG_ALT
-import com.townwang.yaohuo.common.IMG_JPG
+import com.townwang.yaohuoapi.IMG_ALT
+import com.townwang.yaohuoapi.IMG_JPG
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 

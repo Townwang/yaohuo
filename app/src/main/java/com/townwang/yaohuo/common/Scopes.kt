@@ -2,8 +2,11 @@ package com.townwang.yaohuo.common
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.common.utils.isHaveMsg
 import com.townwang.yaohuo.repo.data.Niece
-import com.townwang.yaohuo.repo.data.YaoCdnReq
+import com.townwang.yaohuoapi.data.YaoCdnReq
 import com.townwang.yaohuo.repo.enum.ErrorCode
+import com.townwang.yaohuoapi.ApiErrorException
+import com.townwang.yaohuoapi.BuildConfig.*
+import com.townwang.yaohuoapi.NetworkFailureException
 import kotlinx.coroutines.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -51,13 +54,22 @@ suspend fun <T : Niece> Call<T>.getUResp() =
                         if (body.code == 200) {
                             it.resume(body)
                         } else {
-                            it.resumeWithException(ApiErrorException(body.code, body.message))
+                            it.resumeWithException(
+                                ApiErrorException(
+                                    body.code,
+                                    body.message
+                                )
+                            )
                         }
                     } else {
                         it.resumeWithException(NullResponseBodyException())
                     }
                 } else {
-                    it.resumeWithException(NetworkFailureException(result.message()))
+                    it.resumeWithException(
+                        NetworkFailureException(
+                            result.message()
+                        )
+                    )
                 }
             }.onFailure { error ->
                 it.resumeWithException(error)
@@ -87,7 +99,11 @@ suspend fun Call<YaoCdnReq>.getYaoResp() =
                         it.resumeWithException(NullResponseBodyException())
                     }
                 } else {
-                    it.resumeWithException(NetworkFailureException(result.message()))
+                    it.resumeWithException(
+                        NetworkFailureException(
+                            result.message()
+                        )
+                    )
                 }
             }.onFailure { error ->
                 it.resumeWithException(error)
@@ -133,7 +149,11 @@ suspend fun <T : Document> Call<T>.getResp() = withContext(networkScope.coroutin
                     it.resumeWithException(throwable)
                 }
             } else {
-                it.resumeWithException(NetworkFailureException(result.message()))
+                it.resumeWithException(
+                    NetworkFailureException(
+                        result.message()
+                    )
+                )
             }
         }.onFailure { error ->
             it.resumeWithException(error)
@@ -144,36 +164,66 @@ suspend fun <T : Document> Call<T>.getResp() = withContext(networkScope.coroutin
 fun checkDoc(document: Element?): Throwable? {
     document ?: return null
     val doc = Jsoup.parse(document.toString())
-    val tip = document.select("div.tip")?.first()?.toString() ?: ""
-    if (doc.title().contains(BuildConfig.YH_MATCH_404)) {
-        return ApiErrorException(ErrorCode.E_1001.hashCode(), "找不到此贴了!")
+    val tip = doc.select("div.tip")?.first()?.toString() ?: ""
+    if (doc.title().contains(YH_MATCH_404)) {
+        return ApiErrorException(
+            ErrorCode.E_1001.hashCode(),
+            "找不到此贴了!"
+        )
     }
-    if (doc.title().contains(BuildConfig.YH_MATCH_VERIFY)) {
-        return ApiErrorException(ErrorCode.E_1002.hashCode(), "访问验证")
+    if (doc.title().contains(YH_MATCH_VERIFY)) {
+        return ApiErrorException(
+            ErrorCode.E_1002.hashCode(),
+            "访问验证"
+        )
     }
-    if (tip.contains(BuildConfig.YH_MATCH_IDENTITY)) {
-        return ApiErrorException(ErrorCode.E_1003.hashCode(), "身份失效了，请重新登录网站")
+    if (tip.contains(YH_MATCH_IDENTITY)) {
+        return ApiErrorException(
+            ErrorCode.E_1003.hashCode(),
+            "身份失效了，请重新登录网站"
+        )
     }
-    if (tip.contains(BuildConfig.YH_MATCH_CHECK)) {
-        return ApiErrorException(ErrorCode.E_1004.hashCode(), "正在审核中...")
+    if (tip.contains(YH_MATCH_CHECK)) {
+        return ApiErrorException(
+            ErrorCode.E_1004.hashCode(),
+            "正在审核中..."
+        )
     }
-    if (tip.contains(BuildConfig.YH_MATCH_INPUT_PSD)) {
-        return ApiErrorException(ErrorCode.E_1005.hashCode(), "IP已经更改，需要校验密码")
+    if (tip.contains(YH_MATCH_INPUT_PSD)) {
+        return ApiErrorException(
+            ErrorCode.E_1005.hashCode(),
+            "IP已经更改，需要校验密码"
+        )
     }
-    if (tip.contains(BuildConfig.YH_MATCH_LOGIN)) {
-        return ApiErrorException(ErrorCode.E_1006.hashCode(), "请先登录网站")
+    if (tip.contains(YH_MATCH_LOGIN)) {
+        return ApiErrorException(
+            ErrorCode.E_1006.hashCode(),
+            "请先登录网站"
+        )
     }
-    if (tip.contains(BuildConfig.YH_MATCH_COOKIE_OLD)) {
-        return ApiErrorException(ErrorCode.E_1007.hashCode(), "Cookie过期，需要重新登录")
+    if (tip.contains(YH_MATCH_COOKIE_OLD)) {
+        return ApiErrorException(
+            ErrorCode.E_1007.hashCode(),
+            "Cookie过期，需要重新登录"
+        )
     }
-    if (tip.contains(BuildConfig.YH_MATCH_SEARCH_NO_DATA)) {
-        return ApiErrorException(ErrorCode.E_1008.hashCode(), "暂无记录!")
+    if (tip.contains(YH_MATCH_SEARCH_NO_DATA)) {
+        return ApiErrorException(
+            ErrorCode.E_1008.hashCode(),
+            "暂无记录!"
+        )
     }
     if (tip.contains("内容跟上次发的重复！")) {
-        return ApiErrorException(ErrorCode.E_1010.hashCode(), "内容跟上次发的重复！")
+        return ApiErrorException(
+            ErrorCode.E_1010.hashCode(),
+            "内容跟上次发的重复！"
+        )
     }
-    if (doc.body().text().contains(BuildConfig.YH_MATCH_SEND_POST_LIMIT)) {
-        return ApiErrorException(ErrorCode.E_1009.hashCode(), "今天你已超过发帖限制!")
+    if (doc.body().text().contains(YH_MATCH_SEND_POST_LIMIT)) {
+        return ApiErrorException(
+            ErrorCode.E_1009.hashCode(),
+            "今天你已超过发帖限制!"
+        )
     }
     return null
 }

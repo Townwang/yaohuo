@@ -16,6 +16,9 @@ import com.townwang.yaohuo.repo.enum.ErrorCode
 import com.townwang.yaohuo.ui.activity.ActivityDetails
 import com.townwang.yaohuo.ui.fragment.pub.PubListAdapter
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.*
+import com.townwang.yaohuoapi.BuildConfig.YH_MATCH_LIST_BEAR
+import com.townwang.yaohuoapi.manager.config
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
@@ -44,7 +47,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             if (data is HomeBean) {
                 var isBear = true
                 data.smailIng.forEach {
-                    if (it == BuildConfig.YH_MATCH_LIST_BEAR) {
+                    if (it == YH_MATCH_LIST_BEAR) {
                         isBear = false
                         return@forEach
                     }

@@ -10,6 +10,9 @@ import com.townwang.yaohuo.repo.data.TabBean
 import com.townwang.yaohuo.ui.fragment.pub.PubListFragment
 import com.townwang.yaohuo.ui.fragment.pub.TabListAdapter
 import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.*
+import com.townwang.yaohuoapi.BuildConfig.*
+import com.townwang.yaohuoapi.manager.config
 
 class ActivityList : AppCompatActivity() {
     val binding: ActivityListBinding by viewbind()
@@ -29,41 +32,47 @@ class ActivityList : AppCompatActivity() {
             if (intent.getIntExtra(LIST_CLASS_ID_KEY, 0) != 0) {
                 list.add(TabBean(getString(R.string.list_tab_new_reply), PubListFragment().apply {
                     arguments = Bundle().also {
-                        it.putInt(LIST_CLASS_ID_KEY, intent.getIntExtra(LIST_CLASS_ID_KEY, 0))
+                        it.putInt(
+                            LIST_CLASS_ID_KEY, intent.getIntExtra(
+                                LIST_CLASS_ID_KEY, 0))
                         it.putString(
                             LIST_BBS_NAME_KEY,
                             intent.getStringExtra(LIST_BBS_NAME_KEY)
                         )
                         it.putString(
                             LIST_ACTION_KEY,
-                            BuildConfig.YH_BBS_ACTION_CLASS
+                            YH_BBS_ACTION_CLASS
                         )
                     }
                 }))
             }
             list.add(TabBean(getString(R.string.list_tab_new_send), PubListFragment().apply {
                 arguments = Bundle().also {
-                    it.putInt(LIST_CLASS_ID_KEY, intent.getIntExtra(LIST_CLASS_ID_KEY, 0))
+                    it.putInt(
+                        LIST_CLASS_ID_KEY, intent.getIntExtra(
+                            LIST_CLASS_ID_KEY, 0))
                     it.putString(
                         LIST_BBS_NAME_KEY,
                         intent.getStringExtra(LIST_BBS_NAME_KEY)
                     )
                     it.putString(
                         LIST_ACTION_KEY,
-                        BuildConfig.YH_BBS_ACTION_NEW
+                        YH_BBS_ACTION_NEW
                     )
                 }
             }))
             list.add(TabBean(getString(R.string.list_tab_marrow), PubListFragment().apply {
                 arguments = Bundle().also {
-                    it.putInt(LIST_CLASS_ID_KEY, intent.getIntExtra(LIST_CLASS_ID_KEY, 0))
+                    it.putInt(
+                        LIST_CLASS_ID_KEY, intent.getIntExtra(
+                            LIST_CLASS_ID_KEY, 0))
                     it.putString(
                         LIST_BBS_NAME_KEY,
                         intent.getStringExtra(LIST_BBS_NAME_KEY)
                     )
                     it.putString(
                         LIST_ACTION_KEY,
-                        BuildConfig.YH_BBS_ACTION_GOOD
+                        YH_BBS_ACTION_GOOD
                     )
                 }
             }))

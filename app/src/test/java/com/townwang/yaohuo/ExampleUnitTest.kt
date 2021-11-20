@@ -1,18 +1,13 @@
 package com.townwang.yaohuo
 
-import android.content.pm.PackageManager
-import android.os.Build
-import android.util.Log
 import com.google.gson.Gson
-import com.townwang.yaohuo.common.A_HREF
-import com.townwang.yaohuo.common.config
+import com.townwang.yaohuoapi.A_HREF
 import com.townwang.yaohuo.common.getParam
 import com.townwang.yaohuo.common.resolve.ResolveUserInfoHelper
-import com.townwang.yaohuo.repo.data.YaoCdnReq
+import com.townwang.yaohuoapi.data.YaoCdnReq
 import com.townwang.yaohuo.repo.enum.Level
 import org.jsoup.Jsoup
 import org.junit.Test
-import java.util.concurrent.Executors
 
 
 /**
