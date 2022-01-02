@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <include
-            android:id="@+id/appbarLayout"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            layout="@layout/appbar"/>
+        android:id="@+id/appbarLayout"
+        layout="@layout/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <!--content-->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/appbarLayout"
+        app:tabBackground="@color/white"
         app:tabGravity="fill"
-        app:tabMaxWidth="0dp"
         app:tabIndicatorColor="?colorPrimary"
+        app:tabIndicatorFullWidth="false"
+        app:tabMaxWidth="0dp"
+        app:tabRippleColor="?colorPrimaryDark"
         app:tabSelectedTextColor="?colorPrimary"
         app:tabTextColor="@color/md_black_1000"
-        app:tabIndicatorFullWidth="false"
-        app:tabBackground="@color/white"
-        app:tabRippleColor="?colorPrimaryDark"
-        app:layout_constraintTop_toBottomOf="@+id/appbarLayout"
         tools:ignore="MissingConstraints" />
 
     <androidx.viewpager.widget.ViewPager
