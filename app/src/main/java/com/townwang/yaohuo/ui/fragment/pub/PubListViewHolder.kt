@@ -3,10 +3,10 @@ package com.townwang.yaohuo.ui.fragment.pub
 import android.annotation.SuppressLint
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.townwang.binding.ext.viewbind
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.databinding.ItemListDataBinding
 import com.townwang.yaohuo.repo.data.HomeBean
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import com.townwang.yaohuoapi.BuildConfig.*
 
 class PubListViewHolder(view: View) : RecyclerView.ViewHolder(view) {

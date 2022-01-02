@@ -7,12 +7,12 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.townwang.binding.ext.viewbind
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.OnItemListener
 import com.townwang.yaohuo.common.T
 import com.townwang.yaohuo.databinding.ItemCommentDataBinding
 import com.townwang.yaohuo.repo.data.details.CommitListBean
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 
 class CommentAdapter : ListAdapter<Product, RecyclerView.ViewHolder>(Product.CALLBACK) {
     var onItemListener: OnItemListener? = null

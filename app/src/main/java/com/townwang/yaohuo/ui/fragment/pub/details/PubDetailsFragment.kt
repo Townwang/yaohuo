@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.scwang.smart.refresh.layout.api.RefreshFooter
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
+import com.townwang.binding.ext.viewbind
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentPubDetailsBinding
@@ -29,7 +30,6 @@ import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.ui.activity.ActivityInfo
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import com.townwang.yaohuoapi.*
 import com.townwang.yaohuoapi.BuildConfig.*
 import com.townwang.yaohuoapi.manager.config

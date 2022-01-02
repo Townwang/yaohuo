@@ -11,13 +11,13 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.crashreport.BuglyLog
+import com.townwang.binding.ext.viewbind
 import com.townwang.wechat.openWeChatToFollowInterface
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentLoginBinding
 import com.townwang.yaohuo.ui.activity.ActivityHome
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import com.townwang.yaohuoapi.TROUSER_KEY
 import com.townwang.yaohuoapi.manager.clearConfig
 import com.townwang.yaohuoapi.manager.config

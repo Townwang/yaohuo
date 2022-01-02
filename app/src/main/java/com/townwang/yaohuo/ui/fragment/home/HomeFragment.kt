@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import com.townwang.binding.ext.viewbind
 import com.townwang.wechat.openWeChatToFollowInterface
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
@@ -22,7 +23,6 @@ import com.townwang.yaohuo.common.utils.isHaveMessage
 import com.townwang.yaohuo.databinding.FragmentHomeBinding
 import com.townwang.yaohuo.repo.data.HomeBean
 import com.townwang.yaohuo.ui.activity.*
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import com.townwang.yaohuoapi.*
 import com.townwang.yaohuoapi.BuildConfig.YH_BBS_ACTION_NEW
 import com.townwang.yaohuoapi.BuildConfig.YH_MATCH_LIST_BEAR

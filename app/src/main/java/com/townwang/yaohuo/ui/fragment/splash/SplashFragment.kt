@@ -7,12 +7,12 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.crashreport.BuglyLog
+import com.townwang.binding.ext.viewbind
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuoapi.manager.config
 import com.townwang.yaohuo.databinding.FragmentWelcomeBinding
 import com.townwang.yaohuo.ui.activity.ActivityHome
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import com.townwang.yaohuoapi.BuildConfig.APP_IS_CRACK
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

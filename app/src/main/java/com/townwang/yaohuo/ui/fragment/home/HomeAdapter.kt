@@ -9,6 +9,7 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.townwang.binding.ext.viewbind
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.OnBBSClickListener
@@ -19,7 +20,6 @@ import com.townwang.yaohuo.databinding.ItemHomeBbsHanderBinding
 import com.townwang.yaohuo.databinding.ItemHomeSearchHanderBinding
 import com.townwang.yaohuo.databinding.ItemListDataBinding
 import com.townwang.yaohuo.repo.data.HomeBean
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import com.townwang.yaohuoapi.BuildConfig.*
 
 class HomeAdapter : ListAdapter<Product, RecyclerView.ViewHolder>(Product.CALLBACK) {

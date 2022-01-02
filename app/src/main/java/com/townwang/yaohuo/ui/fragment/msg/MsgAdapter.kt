@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
+import com.townwang.binding.ext.viewbind
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.ItemListMsgDataBinding
 import com.townwang.yaohuo.repo.data.MsgBean
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 
 class MsgAdapter : ListAdapter<Product, RecyclerView.ViewHolder>(Product.CALLBACK) {
     var onItemListListener: OnItemListener? = null

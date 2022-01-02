@@ -11,11 +11,11 @@ import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import com.townwang.binding.ext.viewbind
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.utils.clearNotificaion
 import com.townwang.yaohuo.databinding.FragmentWebviewBinding
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import com.townwang.yaohuoapi.WEB_VIEW_URL_KEY
 import com.townwang.yaohuoapi.WEB_VIEW_URL_TITLE
 

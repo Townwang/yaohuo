@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.townwang.binding.ext.viewbind
 import com.townwang.yaohuo.R
 import com.townwang.yaohuoapi.THEME_KEY
 import com.townwang.yaohuoapi.manager.config
@@ -13,7 +14,6 @@ import com.townwang.yaohuo.common.reload
 import com.townwang.yaohuo.common.work
 import com.townwang.yaohuo.databinding.FragmentThemeBinding
 import com.townwang.yaohuo.repo.data.ThemeList
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ThemeFragment : Fragment(R.layout.fragment_theme) {

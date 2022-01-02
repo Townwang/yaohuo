@@ -5,7 +5,7 @@ plugins {
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     //服务器地址
     buildTypes.all{
         buildConfigField("String", "BASE_URL", '"https://townwang.com/"')
