@@ -3,6 +3,7 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.townwang.yaohuo">
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 网络 -->
@@ -11,7 +12,7 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" /> <!-- 创建与删除文件 -->
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" /> <!-- 必选 -->
@@ -29,37 +30,60 @@
         android:name=".YaoApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/DefaultAppTheme"
         android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="n">
-        <activity android:name=".ui.activity.ActivityWelcome">
+        <activity
+            android:name=".ui.activity.ActivityWelcome"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.ActivityLogin" />
+        <activity
+            android:name=".ui.activity.ActivityLogin"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.ActivityHome"
+            android:exported="false"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.activity.ActivityTheme" />
-        <activity android:name=".ui.activity.ActivityAbout" />
-        <activity android:name=".ui.activity.ActivityMsg" />
-        <activity android:name=".ui.activity.ActivityList" />
-        <activity android:name=".ui.activity.ActivityMsgDetails"/>
-        <activity android:name=".ui.activity.ActivityInfo"/>
-        <activity android:name=".ui.activity.ActivityDetails"
+        <activity
+            android:name=".ui.activity.ActivityTheme"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.ActivityAbout"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.ActivityMsg"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.ActivityList"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.ActivityMsgDetails"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.ActivityInfo"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.ActivityDetails"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:hardwareAccelerated="true"/>
-        <activity android:name=".ui.activity.ActivityWebView"
+            android:exported="false"
+            android:hardwareAccelerated="true" />
+        <activity
+            android:name=".ui.activity.ActivityWebView"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:hardwareAccelerated="true"/>
-        <activity android:name=".ui.activity.ActivitySearch" />
+            android:exported="false"
+            android:hardwareAccelerated="true" />
+        <activity
+            android:name=".ui.activity.ActivitySearch"
+            android:exported="false" />
     </application>
 
 </manifest>
