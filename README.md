@@ -16,6 +16,10 @@ address：https://yaohuo.me
 ## v1.2 after packaging
 ![6da99860ec43c5d6cf40ec15b01da2d.jpg](https://i.loli.net/2021/02/15/XwCdAnz4V7JZUIe.jpg)
 ## Update log
+### v1.3-beta
+1. remove redundant navigation
+2. update support 31
+3. Fix some bugs
 ### v1.2-beta
 1. modify the overall ui
 2. add posting function
