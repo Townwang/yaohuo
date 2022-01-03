@@ -1,7 +1,5 @@
 package com.townwang.yaohuo.ui.fragment.login
 
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -13,13 +11,16 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.crashreport.BuglyLog
+import com.townwang.binding.ext.viewbind
 import com.townwang.wechat.openWeChatToFollowInterface
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentLoginBinding
 import com.townwang.yaohuo.ui.activity.ActivityHome
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.TROUSER_KEY
+import com.townwang.yaohuoapi.manager.clearConfig
+import com.townwang.yaohuoapi.manager.config
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -75,7 +76,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 requireContext().clearConfig()
                 Snackbar.make(requireView(), "非内测成员，在公众号文章<font color='#03A9F4'>蓝火客户端</font>留言报名".toHtml(), Snackbar.LENGTH_INDEFINITE).apply {
                     setAction("去报名") {
-                        requireContext().openWeChatToFollowInterface("MzA4NTY4ODUzOQ","请关注公众号后在文章留言报名")
+                        requireContext().openWeChatToFollowInterface("gh_738e684f3c40")
                         requireActivity().finish()
                     }
                 }.show()

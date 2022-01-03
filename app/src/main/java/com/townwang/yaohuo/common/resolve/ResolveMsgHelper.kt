@@ -2,10 +2,13 @@ package com.townwang.yaohuo.common.resolve
 
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
-import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.common.utils.matchValue
 import com.townwang.yaohuo.repo.data.MsgBean
 import com.townwang.yaohuo.ui.fragment.msg.Product
+import com.townwang.yaohuoapi.A_HREF
+import com.townwang.yaohuoapi.A_KEY
+import com.townwang.yaohuoapi.IMG_GIF
+import com.townwang.yaohuoapi.NEW_LIST
 import org.jsoup.nodes.Document
 
 

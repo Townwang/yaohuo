@@ -1,4 +1,4 @@
-//package com.townwang.yaohuo.ui.fragment.test
+package com.townwang.yaohuo.ui.fragment.test//package com.townwang.yaohuo.ui.fragment.test
 //
 //import android.os.Bundle
 //import android.view.LayoutInflater

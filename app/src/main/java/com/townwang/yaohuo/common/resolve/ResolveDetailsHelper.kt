@@ -9,6 +9,9 @@ import com.townwang.yaohuo.common.utils.matchValue
 import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.repo.data.details.DownloadBean
 import com.townwang.yaohuo.ui.fragment.pub.details.Product
+import com.townwang.yaohuoapi.*
+import com.townwang.yaohuoapi.BuildConfig.YH_REPLY_ID
+import com.townwang.yaohuoapi.BuildConfig.YH_SEND_BOOK_CLASSID
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.text.SimpleDateFormat
@@ -17,14 +20,14 @@ import java.util.*
 class ResolveDetailsHelper(private val document: Document) {
     val id: String
         get() = try {
-            getParam(getFavoriteUrl, BuildConfig.YH_REPLY_ID)
+            getParam(getFavoriteUrl, YH_REPLY_ID)
         } catch (e: Exception) {
             BuglyLog.e(BuildConfig.FLAVOR, e.message)
             ""
         }
     val classId: Int
         get() = try {
-            getParam(getFavoriteUrl, BuildConfig.YH_SEND_BOOK_CLASSID).toInt()
+            getParam(getFavoriteUrl,YH_SEND_BOOK_CLASSID).toInt()
         } catch (e: Exception) {
             BuglyLog.e(BuildConfig.FLAVOR, e.message)
             0
@@ -39,14 +42,18 @@ class ResolveDetailsHelper(private val document: Document) {
 
     val getHandUrl: String
         get() = try {
-            document.select("div.subtitle").last().select(A_KEY).first().attr(A_HREF)
+            document.select("div.subtitle").last().select(A_KEY).first().attr(
+                A_HREF
+            )
         } catch (e: Exception) {
             BuglyLog.e(BuildConfig.FLAVOR, e.message)
             ""
         }
     val onLineState: Boolean
         get() = try {
-            document.select("div.subtitle").last().select(IMG_GIF).after(IMG_ALT).first()
+            document.select("div.subtitle").last().select(IMG_GIF).after(
+                IMG_ALT
+            ).first()
                 .attr(IMG_ALT) == "ONLINE"
         } catch (e: Exception) {
             BuglyLog.e(BuildConfig.FLAVOR, e.message)
@@ -62,14 +69,18 @@ class ResolveDetailsHelper(private val document: Document) {
         }
     val getFavoriteUrl: String
         get() = try {
-            document.select("div.subtitle").last().getElementsContainingOwnText("收藏").last().attr(A_HREF)
+            document.select("div.subtitle").last().getElementsContainingOwnText("收藏").last().attr(
+                A_HREF
+            )
         } catch (e: Exception) {
             BuglyLog.e(BuildConfig.FLAVOR, e.message)
             ""
         }
     val getShareUrl: String
         get() = try {
-            document.select("div.subtitle").last().getElementsContainingOwnText("分享").last().attr(A_HREF)
+            document.select("div.subtitle").last().getElementsContainingOwnText("分享").last().attr(
+                A_HREF
+            )
         } catch (e: Exception) {
             BuglyLog.e(BuildConfig.FLAVOR, e.message)
             ""
@@ -156,7 +167,9 @@ class ResolveDetailsHelper(private val document: Document) {
             list.clear()
             urlList.forEach {
                 if (it.hasClass("line")) {
-                    val url = it.select(A_KEY).attr(A_HREF)
+                    val url = it.select(A_KEY).attr(
+                        A_HREF
+                    )
                     val name = it.ownText().substring(0, it.ownText().indexOf("("))
                     val description =
                         "<div>" + it.ownText().substring(it.ownText().indexOf("次)"))
@@ -210,7 +223,9 @@ class ResolveDetailsHelper(private val document: Document) {
         val array = arrayListOf<Product>()
         array.clear()
         doc.select("div.line1,div.line2").forEachIndexed { index, element ->
-            val url = element.select(A_KEY).first().attr(A_HREF)
+            val url = element.select(A_KEY).first().attr(
+                A_HREF
+            )
             val auth = element.select(A_KEY).last()
             val floor = Regex("([\\[\\]])").split(element.text())[1].replace("楼", "")
             var b = ""

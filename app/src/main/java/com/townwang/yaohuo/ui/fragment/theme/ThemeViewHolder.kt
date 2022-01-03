@@ -5,11 +5,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.townwang.binding.ext.viewbind
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.startAnimator
 import com.townwang.yaohuo.databinding.ItemThemeDataBinding
 import com.townwang.yaohuo.repo.data.ThemeList
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
 
 class ThemeViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     val binding: ItemThemeDataBinding by viewbind()

@@ -7,13 +7,15 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.townwang.binding.ext.viewbind
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentListPubBinding
 import com.townwang.yaohuo.repo.data.HomeBean
 import com.townwang.yaohuo.ui.activity.ActivityDetails
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.*
+import com.townwang.yaohuoapi.BuildConfig.YH_MATCH_LIST_BEAR
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -42,7 +44,7 @@ class PubListFragment : Fragment(R.layout.fragment_list_pub) {
             if (data is HomeBean) {
                 var isBear = true
                 data.smailIng.forEach {
-                    if (it == BuildConfig.YH_MATCH_LIST_BEAR) {
+                    if (it == YH_MATCH_LIST_BEAR) {
                         isBear = false
                         return@forEach
                     }

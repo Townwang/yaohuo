@@ -1,7 +1,6 @@
 package com.townwang.yaohuo.ui.fragment.home
 
-import android.content.ClipboardManager
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
@@ -16,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import com.townwang.binding.ext.viewbind
 import com.townwang.wechat.openWeChatToFollowInterface
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
@@ -24,7 +24,10 @@ import com.townwang.yaohuo.common.utils.isHaveMessage
 import com.townwang.yaohuo.databinding.FragmentHomeBinding
 import com.townwang.yaohuo.repo.data.HomeBean
 import com.townwang.yaohuo.ui.activity.*
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.*
+import com.townwang.yaohuoapi.BuildConfig.YH_BBS_ACTION_NEW
+import com.townwang.yaohuoapi.BuildConfig.YH_MATCH_LIST_BEAR
+import com.townwang.yaohuoapi.manager.config
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -59,13 +62,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.listView.adapter = adapter
         binding.refreshLayout.setOnRefreshListener {
             page = 1
-            model.refresh(BuildConfig.YH_BBS_ACTION_NEW)
-            model.loadTipList(288, 0, BuildConfig.YH_BBS_ACTION_NEW)
+            model.refresh(YH_BBS_ACTION_NEW)
+            model.loadTipList(288, 0, YH_BBS_ACTION_NEW)
             binding.tipAnnouncement.visibility = View.GONE
         }
         binding.refreshLayout.setOnLoadMoreListener {
             page++
-            model.loadList(0, page, BuildConfig.YH_BBS_ACTION_NEW)
+            model.loadList(0, page, YH_BBS_ACTION_NEW)
         }
         binding.refreshLayout.autoRefresh()
         val ad = binding.image.drawable
@@ -82,7 +85,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 if (data is HomeBean) {
                     var isBear = true
                     data.smailIng.forEach {
-                        if (it == BuildConfig.YH_MATCH_LIST_BEAR) {
+                        if (it == YH_MATCH_LIST_BEAR) {
                             isBear = false
                             return@forEach
                         }
@@ -135,6 +138,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         model.liveData.observe(viewLifecycleOwner, safeObserver {
@@ -152,7 +156,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 if (position in 0..3) {
                     var isBear = true
                     data.smailIng.forEach { s ->
-                        if (s == BuildConfig.YH_MATCH_LIST_BEAR) {
+                        if (s == YH_MATCH_LIST_BEAR) {
                             isBear = false
                             return@forEach
                         }
@@ -168,7 +172,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                     )
                 } else {
-                    requireContext().openWeChatToFollowInterface("MzA4NTY4ODUzOQ")
+                    requireContext().openWeChatToFollowInterface("gh_738e684f3c40")
                 }
             }
             binding.tipAnnouncement.visibility = View.VISIBLE
@@ -208,6 +212,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 true
             }
             R.id.toolbar_r_setting -> {
+                model.loadXlsx()
                 Snackbar.make(requireView(), "正在开发...", Snackbar.LENGTH_SHORT).show()
                 true
             }
@@ -250,6 +255,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     fun refreshData() {
-        model.refresh(BuildConfig.YH_BBS_ACTION_NEW)
+        model.refresh(YH_BBS_ACTION_NEW)
     }
 }

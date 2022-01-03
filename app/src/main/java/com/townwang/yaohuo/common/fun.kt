@@ -27,20 +27,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
+import com.google.gson.Gson
 import com.tencent.bugly.crashreport.BuglyLog
 import com.townwang.yaohuo.BuildConfig
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.YaoApplication
 import com.townwang.yaohuo.common.utils.LoginHelper
-import com.townwang.yaohuo.common.utils.matchValue
 import com.townwang.yaohuo.repo.enum.ErrorCode
+import com.townwang.yaohuoapi.*
+import com.townwang.yaohuoapi.BuildConfig.BASE_YAOHUO_URL
+import com.townwang.yaohuoapi.manager.clearConfig
+import com.townwang.yaohuoapi.manager.config
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog.Speed
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
+val gson = Gson()
 
 typealias OnItemClickListener = (view: T, data: T) -> Unit
 typealias OnItemListener = (view: T, data: T) -> Unit
@@ -289,7 +292,7 @@ fun getUrlString(url: String): String {
     return if (url.contains("https://", true) || url.contains("http://", true)) {
         url
     } else {
-        BuildConfig.BASE_YAOHUO_URL + url
+        BASE_YAOHUO_URL + url
     }
 }
 

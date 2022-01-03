@@ -9,6 +9,7 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.tencent.bugly.beta.Beta
+import com.townwang.binding.ext.viewbind
 import com.townwang.wechat.PayConfig
 import com.townwang.wechat.*
 import com.townwang.yaohuo.BuildConfig
@@ -16,7 +17,9 @@ import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentAboutBinding
 import com.townwang.yaohuo.ui.activity.ActivityWebView
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.WEB_VIEW_URL_KEY
+import com.townwang.yaohuoapi.WEB_VIEW_URL_TITLE
+
 class AboutFragment : Fragment(R.layout.fragment_about) {
     val binding: FragmentAboutBinding by viewbind()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +57,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             )
         }
         binding.pubWechat.onClickListener {
-            requireContext().openWeChatToFollowInterface("MzA4NTY4ODUzOQ")
+            requireContext().openWeChatToFollowInterface("gh_738e684f3c40")
         }
         binding.post.onClickListener {
             Snackbar.make(binding.post, "暂未开贴", Snackbar.LENGTH_SHORT).show()

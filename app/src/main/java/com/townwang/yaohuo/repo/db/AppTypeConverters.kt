@@ -1,10 +1,5 @@
 package com.townwang.yaohuo.repo.db
 
-import androidx.room.TypeConverter
-import com.townwang.yaohuo.common.IMG_GIF
-import org.jsoup.Jsoup
-import org.jsoup.select.Elements
-import java.util.*
 //
 //class AppTypeConverters {
 //    @TypeConverter

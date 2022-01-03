@@ -20,7 +20,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.scwang.smart.refresh.layout.api.RefreshFooter
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
-import com.townwang.yaohuo.BuildConfig
+import com.townwang.binding.ext.viewbind
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.*
 import com.townwang.yaohuo.databinding.FragmentPubDetailsBinding
@@ -30,7 +30,9 @@ import com.townwang.yaohuo.repo.data.details.CommitListBean
 import com.townwang.yaohuo.ui.activity.ActivityInfo
 import com.townwang.yaohuo.ui.activity.ActivityWebView
 import com.townwang.yaohuo.ui.fragment.web.WebViewHelper
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.*
+import com.townwang.yaohuoapi.BuildConfig.*
+import com.townwang.yaohuoapi.manager.config
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -93,7 +95,7 @@ class PubDetailsFragment : Fragment(R.layout.fragment_pub_details) {
                 loading?.show()
                 viewModel.reply(
                     message,
-                    requireContext().config(BuildConfig.YH_COOKIE_SID),
+                    requireContext().config(YH_COOKIE_SID),
                     sendmsg = "1"
                 )
                 dialogFragment.dismiss()
@@ -141,7 +143,7 @@ class PubDetailsFragment : Fragment(R.layout.fragment_pub_details) {
                                 flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                                 putExtra(
                                     TROUSER_KEY,
-                                    getParam(data.url, BuildConfig.YH_REPLY_TOUSERID)
+                                    getParam(data.url, YH_REPLY_TOUSERID)
                                 )
                             })
                         }
@@ -216,7 +218,7 @@ class PubDetailsFragment : Fragment(R.layout.fragment_pub_details) {
             }
             if (it.giftMoney.isNotEmpty()) {
                 binding.linearTop.visibility = View.VISIBLE
-                binding.icon.text = BuildConfig.YH_MATCH_LIST_MEAT
+                binding.icon.text = YH_MATCH_LIST_MEAT
                 binding.icon.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
                 binding.subtitle.text =
@@ -224,7 +226,7 @@ class PubDetailsFragment : Fragment(R.layout.fragment_pub_details) {
             }
             if (it.reward.isNotEmpty()) {
                 binding.linearTop.visibility = View.VISIBLE
-                binding.icon.text = BuildConfig.YH_MATCH_LIST_GIVE
+                binding.icon.text = YH_MATCH_LIST_GIVE
                 binding.icon.background =
                     ContextCompat.getDrawable(requireContext(), R.drawable.background_yellow_10)
                 binding.subtitle.text = it.reward
@@ -339,7 +341,7 @@ class PubDetailsFragment : Fragment(R.layout.fragment_pub_details) {
         } else {
             if (getParam(
                     data.url,
-                    BuildConfig.YH_REPLY_TOUSERID
+                    YH_REPLY_TOUSERID
                 ) != requireContext().config(TROUSER_KEY)
             ) {
                 val magTransaction = childFragmentManager.beginTransaction()
@@ -361,9 +363,9 @@ class PubDetailsFragment : Fragment(R.layout.fragment_pub_details) {
                     loading?.show()
                     viewModel.reply(
                         msg,
-                        requireContext().config(BuildConfig.YH_COOKIE_SID),
+                        requireContext().config(YH_COOKIE_SID),
                         data.floor.toString(),
-                        getParam(data.url, BuildConfig.YH_REPLY_TOUSERID),
+                        getParam(data.url, YH_REPLY_TOUSERID),
                         "0"
                     )
                     dialogFragment.dismiss()

@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
+import com.townwang.binding.ext.viewbind
 import com.townwang.yaohuo.R
 import com.townwang.yaohuo.common.Loading
 import com.townwang.yaohuo.common.handleException
@@ -25,8 +26,7 @@ import com.townwang.yaohuo.common.safeObserver
 import com.townwang.yaohuo.databinding.FragmentSendBinding
 import com.townwang.yaohuo.databinding.ProBbsSwitchBinding
 import com.townwang.yaohuo.repo.data.SelectBean
-import com.townwang.yaohuo.repo.data.YaoCdnReq
-import com.townwang.yaohuo.ui.weight.binding.ext.viewbind
+import com.townwang.yaohuoapi.data.YaoCdnReq
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
