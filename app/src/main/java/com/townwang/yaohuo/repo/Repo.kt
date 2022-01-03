@@ -216,4 +216,8 @@ class Repo constructor(
         val repo = api.sendMsg(data)
         repo.getResp()
     }
+
+    suspend fun getXlsx() = withRepoContext {
+        api.getXlsx()
+    }
 }

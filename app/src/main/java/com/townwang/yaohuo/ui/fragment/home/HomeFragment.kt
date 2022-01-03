@@ -1,5 +1,6 @@
 package com.townwang.yaohuo.ui.fragment.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
@@ -137,6 +138,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         model.liveData.observe(viewLifecycleOwner, safeObserver {
@@ -210,6 +212,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 true
             }
             R.id.toolbar_r_setting -> {
+                model.loadXlsx()
                 Snackbar.make(requireView(), "正在开发...", Snackbar.LENGTH_SHORT).show()
                 true
             }

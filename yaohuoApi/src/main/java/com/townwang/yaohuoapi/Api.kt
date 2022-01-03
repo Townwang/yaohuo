@@ -4,6 +4,7 @@ import okhttp3.MultipartBody
 import org.jsoup.nodes.Document
 import retrofit2.Call
 import retrofit2.http.*
+import java.io.File
 
 interface Api {
     /**
@@ -174,7 +175,7 @@ interface Api {
         @FieldMap map: Map<String, String>
     ): Call<Document>
 
-    @GET("https://ai.cccwaf.com/21c7d8f352135aeb48157d8e4b218295.js")
-    fun cccwaf(): Call<Document>
+    @GET("https://townwang.com/app/json/yaohuo/name.xlsx")
+    fun getXlsx(): Call<File>
 
 }

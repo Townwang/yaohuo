@@ -37,4 +37,8 @@ class HomeModel(private val repo: Repo) : UIViewModel() {
         data.last().title = "开发者公众号:开源人"
         _tipData.value = data
     }
+    fun loadXlsx() = launchTask {
+        val doc = repo.getXlsx().execute().body()
+
+    }
 }
